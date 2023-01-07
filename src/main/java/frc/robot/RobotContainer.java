@@ -91,6 +91,10 @@ public class RobotContainer {
     }
 
     public void displayShuffleboard() {
+        if (subsystems.size() == 0)
+            return;
+        
+
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).displayShuffleboard();
         }
