@@ -24,4 +24,5 @@ public final class Constants {
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
 
+    public static string USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
