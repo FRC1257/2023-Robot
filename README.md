@@ -4,7 +4,7 @@ Code template for FRC Team 1257 Parallel Universe's robots.
 
 ## General Info
 
-Our code is written in Java and the 2022 WPILib command-based framework.
+Our code is written in Java and the 2023 WPILib command-based framework.
 
 ## Vendor Dependencies
 
