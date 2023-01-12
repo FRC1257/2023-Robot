@@ -31,6 +31,7 @@ public class RobotContainer {
     private ArrayList<SnailSubsystem> subsystems;
 
     private Drivetrain drivetrain;
+    private Vision vision;
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -68,9 +69,13 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, true));
 
+        // Vision
+        vision = new Vision();
+
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
+        subsystems.add(vision);
     }
 
     /**
@@ -83,7 +88,7 @@ public class RobotContainer {
         driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-
+        // TODO: add a button for TurnToAprilTagCommand
     }
 
     /**
