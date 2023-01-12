@@ -5,7 +5,7 @@ import ToScoreCommand;
 
 public class generateTrajedies extends SequentialCommandGroup {
  private boolean charge; 
- private boolean score
+ private boolean score;
  private boolean cargo; 
  private double maxVelocity;
  private double minVelocity;
@@ -24,21 +24,21 @@ public class generateTrajedies extends SequentialCommandGroup {
   }
  public void TrajediesDecider() {
    if (this.score){
-      
+    ToScoreCommands obj1 = new ToScoreCommands(this.StartPos, this.NewPos, this.minVelocity, this.maxVelocity);  
     
-   } 
+     } 
    if (this.cargo){
     ToCargoCommands obj1 = new ToCargoCommands(this.StartPos, this.NewPos, this.minVelocity, this.maxVelocity);
     
-   }
+      }
    if (this.charge){
     ToChargeCommands obj1 = new ToChargeCommands(this.StartPos, this.minVelocity, this.maxVelocity);
     
-   }
+      }
    
    
-   } 
+     } 
   
-  }
+   }
  
 }
