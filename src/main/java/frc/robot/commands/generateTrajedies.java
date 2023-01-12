@@ -2,6 +2,8 @@ package frc.robot.commands;
 import ToChargeCommand;
 import ToCargoCommand;
 import ToScoreCommand;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants.Drivetrain.*;
 
 public class generateTrajedies extends SequentialCommandGroup {
  private boolean charge; 
