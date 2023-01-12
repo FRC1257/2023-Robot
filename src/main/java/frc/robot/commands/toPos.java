@@ -1,3 +1,3 @@
-public class toPos.java { 
+public class toPos { 
   
 } 
