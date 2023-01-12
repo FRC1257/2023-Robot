@@ -1,5 +1,7 @@
 package frc.robot.commands;
 import ToChargeCommand;
+import ToCargoCommand;
+import ToScoreCommand;
 
 public class generateTrajedies {
  private boolean charge; 
@@ -18,15 +20,17 @@ public class generateTrajedies {
    this.NewPos = NewPos; 
    
   }
- public void TrajediesDecider (){
+ public void TrajediesDecider() {
    if (this.score = true){
       
     
-   } else if (this.cargo = true){
+   } 
+   if (this.cargo = true){
+    ToCargoCommands obj1 = new ToCargoCommands(this.StartPos, this.NewPos, this.minVelocity, this.maxVelocity);
     
-    
-   } else if (this.charge = true){
-    
+   }
+   if (this.charge = true){
+    ToChargeCommands obj1 = new ToChargeCommands(this.StartPos, this.minVelocity, this.maxVelocity);
     
    }
    
