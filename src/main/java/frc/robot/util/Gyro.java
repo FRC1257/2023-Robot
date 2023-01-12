@@ -2,7 +2,6 @@ package frc.robot.util;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,7 +22,7 @@ public class Gyro {
     private final ADXRS450_Gyro gyro;
 
     private Gyro() {
-        navx = new AHRS(Port.kMXP);
+        navx = new AHRS();
         resetRoll = 0;
         resetPitch = 0;
 
