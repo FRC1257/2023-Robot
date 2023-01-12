@@ -35,7 +35,9 @@ public class generateTrajedies extends SequentialCommandGroup {
     ToChargeCommands obj1 = new ToChargeCommands(this.StartPos, this.minVelocity, this.maxVelocity);
     
       }
-   
+   if (this.StartPos != this.NewPos){
+    
+     }
    
      } 
   
