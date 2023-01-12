@@ -10,18 +10,14 @@ public class generateTrajedies extends SequentialCommandGroup {
  private boolean score;
  private boolean cargo; 
  private Drivetrain driveTrain; 
- private double maxVelocity;
- private double minVelocity;
  private final Pose2d StartPos;
  private final Pose2d NewPos;
  
-  public generateTrajedies (boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, double maxVelocity, double minVelocity, Pose2d StartPos, Pose2d NewPos) {
+  public generateTrajedies (boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPos, Pose2d NewPos) {
    this.charge = charge;
    this.score = score;
    this.cargo = cargo;
-   this.driveTrain = driveTrain
-   this.maxVelocity = maxVelocity;
-   this.minVelocity = minVelocity;
+   this.driveTrain = driveTrain;
    this.StartPos = StartPos;
    this.NewPos = NewPos;
    
