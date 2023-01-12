@@ -24,19 +24,19 @@ public class generateTrajedies extends SequentialCommandGroup {
   }
  public void TrajediesDecider() {
    if (this.score){
-    ToScoreCommands obj1 = new ToScoreCommands(this.StartPos, this.NewPos, this.minVelocity, this.maxVelocity);  
+    ToScoreCommands obj1 = new ToScoreCommands(this.StartPos);  
     
      } 
    if (this.cargo){
-    ToCargoCommands obj1 = new ToCargoCommands(this.StartPos, this.NewPos, this.minVelocity, this.maxVelocity);
+    ToCargoCommands obj1 = new ToCargoCommands(this.StartPos, this.NewPos);
     
       }
    if (this.charge){
-    ToChargeCommands obj1 = new ToChargeCommands(this.StartPos, this.minVelocity, this.maxVelocity);
+    ToChargeCommands obj1 = new ToChargeCommands(this.StartPos);
     
       }
    if (this.StartPos != this.NewPos){
-    
+    ToPos obj1 = new ToPos(this.StartPos, this.NewPos);
      }
    
      } 
