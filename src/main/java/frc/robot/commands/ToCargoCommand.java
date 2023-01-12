@@ -33,7 +33,8 @@ public class ToCargoCommand extends CommandBase {
         //double x, y;
         //center line 107.39 in = 2.727706 m
         trajPoints.add(startPose);
-        //waypoints.add(waypoint);
+        //Pose2d waypoint = new Pose2d(x, y, someRotation);
+        //trajPoints.add(waypoint);
         trajPoints.add(endPose);
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
         Trajectory trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
