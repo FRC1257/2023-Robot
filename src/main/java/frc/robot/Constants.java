@@ -17,10 +17,10 @@ public final class Constants {
         public final static int CONTROLLER_OPERATOR_ID = 1;
 
         // Drivetrain
-        public final static int DRIVE_FRONT_LEFT = 8;
-        public final static int DRIVE_FRONT_RIGHT = 10;
-        public final static int DRIVE_BACK_LEFT = 7;
-        public final static int DRIVE_BACK_RIGHT = 9;
+        public final static int DRIVE_FRONT_LEFT = 17;
+        public final static int DRIVE_FRONT_RIGHT = 13;
+        public final static int DRIVE_BACK_LEFT = 5;
+        public final static int DRIVE_BACK_RIGHT = 2;
     }
 
     public static class Drivetrain {
@@ -30,8 +30,8 @@ public final class Constants {
         public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
         // driving modifiers
-        public static double DRIVE_SLOW_TURN_MULT = 0.45;
-        public static double DRIVE_SLOW_FORWARD_MULT = 0.45;
+        public static double DRIVE_SLOW_TURN_MULT = 0.25;
+        public static double DRIVE_SLOW_FORWARD_MULT = 0.25;
 
         // closed loop driving
         public static double DRIVE_CLOSED_MAX_VEL = 4.0; // m/s
