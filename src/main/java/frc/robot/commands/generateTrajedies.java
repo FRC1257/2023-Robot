@@ -12,12 +12,14 @@ public class generateTrajedies extends SequentialCommandGroup {
  private final Pose2d StartPos;
  private final Pose2d NewPos;
  
-  public generateTrajedies (boolean charge, boolean score, boolean cargo, Pose2d StartPos, Pose2d NewPos) {
+  public generateTrajedies (boolean charge, boolean score, boolean cargo, double maxVelocity, double minVelocity, Pose2d StartPos, Pose2d NewPos) {
    this.charge = charge;
    this.score = score;
-   this.cargo = cargo
+   this.cargo = cargo;
+   this.maxVelocity = maxVelocity;
+   this.minVelocity = minVelocity;
    this.StartPos = StartPos;
-   this.NewPos = NewPos; 
+   this.NewPos = NewPos;
    
   }
  public void TrajediesDecider() {
