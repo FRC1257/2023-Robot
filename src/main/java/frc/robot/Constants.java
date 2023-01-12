@@ -12,6 +12,14 @@ package frc.robot;
  */
 public final class Constants {
 
+    public static class FourBarSubsystem{
+        public final static int FOUR_BAR_ID = 0;
+        public final static double FOUR_BAR_RAISE_SPEED = 0.5;
+        public final static double FOUR_BAR_NEUTRAL_SPEED = 0;
+        public final static double FOUR_BAR_LOWER_SPEED = -0.5; 
+        
+    }
+
     public static class ElectricalLayout {
         public final static int CONTROLLER_DRIVER_ID = 0;
         public final static int CONTROLLER_OPERATOR_ID = 1;
@@ -23,5 +31,7 @@ public final class Constants {
 
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
+
+
 
 }
