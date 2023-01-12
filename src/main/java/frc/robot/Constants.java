@@ -66,11 +66,18 @@ public final class Constants {
         // profiling position PID (for further refinement of tracking)
         public static double DRIVE_PROFILE_LEFT_P = 0.1;
         public static double DRIVE_PROFILE_RIGHT_P = 0.1;
+
+        // vision PID
+        public static final double TRACKED_TAG_ROTATION_KP = 0.0175;
+        public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
+        public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
+        public static final double APRILTAG_POWER_CAP = 0.75;
     }
 
     public static class Vision {
         public static double VISION_KP = 0.02;
         public static double VISION_FEEDFORWARD = 0.01;
+        public static double TRACKED_TAG_ROTATION_KP = 0.0175;
     }
 
     public static class Autonomous {
@@ -82,4 +89,5 @@ public final class Constants {
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
     public final static int NEO_CURRENT_LIMIT = 80; // amps
 
+    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
