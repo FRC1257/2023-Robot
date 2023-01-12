@@ -5,6 +5,8 @@ public class generateTrajedies {
  private boolean charge; 
  private boolean score
  private boolean cargo; 
+ private double maxVelocity;
+ private double minVelocity;
  private final Pose2d StartPos;
  private final Pose2d NewPos;
  
@@ -16,6 +18,21 @@ public class generateTrajedies {
    this.NewPos = NewPos; 
    
   }
- 
+ public void TrajediesDecider (){
+   if (this.score = true){
+      
+    
+   } else if (this.cargo = true){
+    
+    
+   } else if (this.charge = true){
+    
+    
+   }
+   
+   
+   } 
+  
+  }
  
 }
