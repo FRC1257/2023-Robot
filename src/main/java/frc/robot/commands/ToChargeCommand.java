@@ -11,19 +11,20 @@ import static frc.robot.Constants.Drivetrain.*;
 
 public class ToChargeCommand extends CommandBase {
 
-    private final DriveTrain drivetrain;
+    private final Drivetrain drivetrain;
     private final Pose2d CurrentPosition;
 
-    public ToChargeCommand(DriveTrain drivetrain, Pose2d startPose) {
+    public ToChargeCommand(Drivetrain drivetrain, Pose2d CurrentPosition) {
         this.drivetrain = drivetrain;
-        this.startPose = startPose;
+        this.CurrentPosition = CurrentPosition;
 
         addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
-        
+        List<Pose2d> TrajPointsOne;
+        List<Pose2d> TrajPointsTwo;
     }
 
       @Override
