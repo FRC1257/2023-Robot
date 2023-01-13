@@ -10,5 +10,9 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Drivetrain.*;
 
 public class ToScoreCommand{
+    // TODO
+
+    public ToScoreCommand(Drivetrain driveTrain, Pose2d startPos, Pose2d newPos) {
+    }
   
 }
