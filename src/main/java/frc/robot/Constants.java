@@ -68,7 +68,7 @@ public final class Constants {
         public static double DRIVE_PROFILE_RIGHT_P = 0.1;
 
         // vision PID
-        public static final double TRACKED_TAG_ROTATION_KP = 0.0175;
+        public static final double TRACKED_TAG_ROTATION_KP = 0.375;
         public static final double TRACKED_TAG_DISTANCE_DRIVE_KP = 0.3; // P (Proportional) constant of a PID loop
         public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
         public static final double APRILTAG_POWER_CAP = 0.75;
