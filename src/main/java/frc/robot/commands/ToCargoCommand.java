@@ -1,4 +1,5 @@
 package frc.robot.commands;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -7,7 +8,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.Constants.Drivetrain.*;
+import static frc.robot.Constants.Drivetrain.*;
+
 public class ToCargoCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private final Pose2d startPose;
@@ -26,7 +28,7 @@ public class ToCargoCommand extends CommandBase {
         //generate trajectory and follow it
         //must choose at least one waypoint on one side of the charging station, depending on where the end location is
         // might get stuck on charging station or waste time
-        List<Pose2d> trajPoints; 
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>(); 
         //waypoint locations
         //x= blue 96.75 in or red 484.81 in = 2.45745 m or 12.314174
         //y= outer 29.695 in or inner 125.695 in  = 0.754253 m or 3.192653 m
