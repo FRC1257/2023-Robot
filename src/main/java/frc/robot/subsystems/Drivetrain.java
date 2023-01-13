@@ -81,6 +81,7 @@ public class Drivetrain extends SnailSubsystem {
      */
     public enum State {
         MANUAL_DRIVE,
+        TURN_TRACK,
         VELOCITY_DRIVE,
         DRIVE_DIST,
         TURN_ANGLE,
@@ -231,6 +232,11 @@ public class Drivetrain extends SnailSubsystem {
                 // drivetrain.arcadeDrive(speedForward, speedTurn);
                 break;
             }
+            case TURN_TRACK: {
+                // kinda misleading var names
+                frontLeftMotor.set(speedForward);
+                frontRightMotor.set(speedTurn);
+            }
             case VELOCITY_DRIVE: {
                 double adjustedSpeedForward = reverseEnabled ? -speedForward : speedForward;
                 adjustedSpeedForward = slowModeEnabled ? adjustedSpeedForward * DRIVE_SLOW_FORWARD_MULT : adjustedSpeedForward;
@@ -358,6 +364,14 @@ public class Drivetrain extends SnailSubsystem {
  
         defaultState = State.MANUAL_DRIVE;
         state = State.MANUAL_DRIVE;
+    }
+
+    public void aprilTurn(double speedForward, double speedTurn) {
+        this.speedForward = speedForward;
+        this.speedTurn = speedTurn;
+ 
+        defaultState = State.TURN_TRACK;
+        state = State.TURN_TRACK;
     }
  
     // speeds should be between in real life units (m/s and deg/s)
