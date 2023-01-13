@@ -28,7 +28,7 @@ public class ToCargoCommand extends CommandBase {
         //generate trajectory and follow it
         //must choose at least one waypoint on one side of the charging station, depending on where the end location is
         // might get stuck on charging station or waste time
-        List<Pose2d> trajPoints = new ArrayList<>(); 
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>(); 
         //waypoint locations
         //x= blue 96.75 in or red 484.81 in = 2.45745 m or 12.314174
         //y= outer 29.695 in or inner 125.695 in  = 0.754253 m or 3.192653 m
