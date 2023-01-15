@@ -10,12 +10,18 @@ public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
     private Command autoCommand;
-
+    
     @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
 
         PortForwarder.add(5800, "photonvision.local", 5800);
+
+        if (isSimulation()) {
+            System.out.println("Running in simulation");
+        } else {
+            System.out.println("Running on robot");
+        }
     
         /* var instance = NetworkTableInstance.getDefault();
         PhotonCamera camera = new PhotonCamera(instance, "Microsoft-LifeCam-3000");

@@ -430,6 +430,8 @@ public class Drivetrain extends SnailSubsystem {
         setRobotPose(trajectory.getInitialPose());
  
         this.trajectory = trajectory;
+
+        m_field.getObject("traj").setTrajectory(trajectory);       
  
         pathTimer.reset();
         pathTimer.start();
@@ -462,6 +464,7 @@ public class Drivetrain extends SnailSubsystem {
  
     @Override
     public void displayShuffleboard() {
+        SmartDashboard.putData("Field", m_field);
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reverseEnabled, slowModeEnabled});
         SmartDashboard.putString("Drive State", state.name());
  
