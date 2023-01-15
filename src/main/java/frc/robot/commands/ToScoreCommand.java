@@ -14,18 +14,22 @@ public class ToScoreCommand extends CommandBase{
     private final Drivetrain drivetrain;
     private final Pose2d CurrentPosition;
     private final Pose2d NextPosition;
+    private Trajectory trajectory;
 
     public ToScoreCommand(Drivetrain drivetrain, Pose2d CurrentPosition, Pose2d NextPosition) {
         this.CurrentPosition = CurrentPosition;
         this.NextPosition = NextPosition;
         this.drivetrain = drivetrain;
 
+        TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
+        trajectory = TrajectoryGenerator.generateTrajectory(List.of(CurrentPosition, NextPosition), config);
+
         addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
-
+        drivetrain.driveTrajectory(trajectory);
     }
 
     @Override
@@ -41,6 +45,10 @@ public class ToScoreCommand extends CommandBase{
     @Override
     public boolean isFinished() {
         return drivetrain.getState() != Drivetrain.State.TRAJECTORY;
+    }
+
+    public Trajectory getTrajectory() {
+        return trajectory;
     }
   
 }

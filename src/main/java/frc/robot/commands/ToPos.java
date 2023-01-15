@@ -22,11 +22,6 @@ public class ToPos extends CommandBase {
         this.NewPos = NewPos; 
         this.drivetrain = drivetrain;
 
-        addRequirements(drivetrain);
-    }
-
-    @Override
-    public void initialize() {
         //generate trajectory and follow it
         //must choose at least one waypoint on one side of the charging station, depending on where the end location is
         // might get stuck on charging station or waste time
@@ -43,12 +38,18 @@ public class ToPos extends CommandBase {
         
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
         trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
-        
+
+        addRequirements(drivetrain);
+    }
+
+    @Override
+    public void initialize() {
+        drivetrain.driveTrajectory(trajectory);
     }
 
     @Override
     public void execute() {
-        drivetrain.driveTrajectory(trajectory);
+        
     }
 
     @Override
@@ -59,5 +60,9 @@ public class ToPos extends CommandBase {
     @Override
     public boolean isFinished() {
         return drivetrain.getState() != Drivetrain.State.TRAJECTORY;
+    }
+
+    public Trajectory getTrajectory() {
+        return trajectory;
     }
 } 

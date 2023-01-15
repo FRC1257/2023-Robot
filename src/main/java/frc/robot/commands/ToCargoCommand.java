@@ -14,17 +14,14 @@ public class ToCargoCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private final Pose2d startPose;
     private final Pose2d endPose;
+    private Trajectory trajectory;
+
 
     public ToCargoCommand(Drivetrain drivetrain, Pose2d startPose, Pose2d endPose) {
         this.drivetrain = drivetrain;
         this.startPose = startPose;
         this.endPose = endPose;
 
-        addRequirements(drivetrain);
-    }
-
-    @Override
-    public void initialize() {
         //generate trajectory and follow it
         //must choose at least one waypoint on one side of the charging station, depending on where the end location is
         // might get stuck on charging station or waste time
@@ -39,7 +36,13 @@ public class ToCargoCommand extends CommandBase {
         //trajPoints.add(waypoint);
         trajPoints.add(endPose);
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
-        Trajectory trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+        trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+
+        addRequirements(drivetrain);
+    }
+
+    @Override
+    public void initialize() {
         drivetrain.driveTrajectory(trajectory);
     }
 
@@ -56,5 +59,9 @@ public class ToCargoCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return drivetrain.getState() != Drivetrain.State.TRAJECTORY;
+    }
+
+    public Trajectory getTrajectory() {
+        return trajectory;
     }
 }

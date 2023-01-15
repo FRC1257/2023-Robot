@@ -14,18 +14,14 @@ public class ToChargeCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Pose2d CurrentPosition;
+    private final Pose2d NextPositionOne;
 
-    public ToChargeCommand(Drivetrain drivetrain, Pose2d CurrentPosition) {
+    private Trajectory trajectory;
+
+    public ToChargeCommand(Drivetrain drivetrain, Pose2d CurrentPosition, Pose2d endPose) {
         this.drivetrain = drivetrain;
         this.CurrentPosition = CurrentPosition;
-        
-
-        addRequirements(drivetrain);
-    }
-
-    @Override
-    public void initialize() {
-
+        this.NextPositionOne = endPose;
         List<Pose2d> TrajPointsOne = new ArrayList<Pose2d>();
         List<Pose2d> TrajPointsTwo = new ArrayList<Pose2d>();
 
@@ -33,17 +29,24 @@ public class ToChargeCommand extends CommandBase {
         TrajPointsTwo.add(CurrentPosition);
 
         TrajPointsOne.add(NextPositionOne);
-        TrajPointsTwo.add(NextPositionTwo);
+        TrajPointsTwo.add(NextPositionOne);
 
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
-        Trajectory trajectoryOne = TrajectoryGenerator.generateTrajectory(TrajPointsOne, config);
+        trajectory = TrajectoryGenerator.generateTrajectory(TrajPointsOne, config);
         Trajectory trajectoryTwo = TrajectoryGenerator.generateTrajectory(TrajPointsTwo, config);
 
-        if(trajectoryOne.getTotalTimeSeconds() > trajectoryTwo.getTotalTimeSeconds()) {
+        addRequirements(drivetrain);
+    }
+
+    @Override
+    public void initialize() {
+        drivetrain.driveTrajectory(trajectory);
+
+        /* if(trajectoryOne.getTotalTimeSeconds() > trajectoryTwo.getTotalTimeSeconds()) {
             drivetrain.driveTrajectory(trajectoryOne);
         } else {
             drivetrain.driveTrajectory(trajectoryTwo);
-        }
+        } */
     }
 
       @Override
@@ -59,6 +62,10 @@ public class ToChargeCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         return drivetrain.getState() != Drivetrain.State.TRAJECTORY;
+    }
+
+    public Trajectory getTrajectory() {
+        return trajectory;
     }
 }
   
