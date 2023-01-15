@@ -14,12 +14,11 @@ public class ToChargeCommand extends CommandBase {
 
     private final Drivetrain drivetrain;
     private final Pose2d CurrentPosition;
-    private final Pose2d NextPositionOne;
-    private final Pose2d NextPositionTwo;
 
     public ToChargeCommand(Drivetrain drivetrain, Pose2d CurrentPosition) {
         this.drivetrain = drivetrain;
         this.CurrentPosition = CurrentPosition;
+        
 
         addRequirements(drivetrain);
     }
@@ -35,12 +34,16 @@ public class ToChargeCommand extends CommandBase {
 
         TrajPointsOne.add(NextPositionOne);
         TrajPointsTwo.add(NextPositionTwo);
-        
-        // Create Two different Tajectories : Trajectory_A, Trajectory_B
-        // Compare the lengths of Trajectory_A and Trajectory_B
-        // Determine the shortest possible route to the Charging station
-        // Generate Trajectory 
-        // Generate Second Straight Line Trajectory [Trajectory_C]
+
+        TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC);
+        Trajectory trajectoryOne = TrajectoryGenerator.generateTrajectory(TrajPointsOne, config);
+        Trajectory trajectoryTwo = TrajectoryGenerator.generateTrajectory(TrajPointsTwo, config);
+
+        if(trajectoryOne.getTotalTimeSeconds() > trajectoryTwo.getTotalTimeSeconds()) {
+            drivetrain.driveTrajectory(trajectoryOne);
+        } else {
+            drivetrain.driveTrajectory(trajectoryTwo);
+        }
     }
 
       @Override
