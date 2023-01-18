@@ -1,5 +1,10 @@
 package frc.robot;
 
+import java.util.List;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be
@@ -81,7 +86,49 @@ public final class Constants {
     }
 
     public static class Autonomous {
-        
+        // all of these positions have been estimated using PathWeaver
+        // TODO calculate true positions
+        public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
+            new Pose2d(1.425, 0.453,Rotation2d.fromDegrees(0)), // Score location 1 on blue side
+            new Pose2d(1.425,1.044,Rotation2d.fromDegrees(0)), // score 2
+            new Pose2d(1.425,1.579,Rotation2d.fromDegrees(0)), // 3
+            new Pose2d(1.425,2.204,Rotation2d.fromDegrees(0)), // ...
+            new Pose2d(1.425,2.773,Rotation2d.fromDegrees(0)),
+            new Pose2d(1.425,3.273,Rotation2d.fromDegrees(0)),
+            new Pose2d(1.425,3.831,Rotation2d.fromDegrees(0)),
+            new Pose2d(1.425,4.433,Rotation2d.fromDegrees(0)),
+            new Pose2d(1.425,5.082,Rotation2d.fromDegrees(0))
+        };
+
+        public static Pose2d[] RED_SCORE_POSE = new Pose2d[] {
+            new Pose2d(15.15, 0.453,Rotation2d.fromDegrees(180)), // Score location 1 on blue side
+            new Pose2d(15.15,1.044,Rotation2d.fromDegrees(180)), // score 2
+            new Pose2d(15.15,1.579,Rotation2d.fromDegrees(180)), // 3
+            new Pose2d(15.15,2.204,Rotation2d.fromDegrees(180)), // ...
+            new Pose2d(15.15,2.773,Rotation2d.fromDegrees(180)),
+            new Pose2d(15.15,3.273,Rotation2d.fromDegrees(180)),
+            new Pose2d(15.15,3.831,Rotation2d.fromDegrees(180)),
+            new Pose2d(15.15,4.433,Rotation2d.fromDegrees(180)),
+            new Pose2d(15.15,5.082,Rotation2d.fromDegrees(180))
+        };
+
+        public static Pose2d[] BLUE_CARGO_POSE = new Pose2d[] {
+            new Pose2d(7.066, 0.896, Rotation2d.fromDegrees(0)),
+            new Pose2d(7.066, 2.125, Rotation2d.fromDegrees(0)),
+            new Pose2d(7.066, 3.353, Rotation2d.fromDegrees(0)),
+            new Pose2d(7.066, 4.602, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d[] RED_CARGO_POSE = new Pose2d[] {
+            new Pose2d(9.5, 0.896, Rotation2d.fromDegrees(0)),
+            new Pose2d(9.5, 2.125, Rotation2d.fromDegrees(0)),
+            new Pose2d(9.5, 3.353, Rotation2d.fromDegrees(0)),
+            new Pose2d(9.5, 4.602, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0));
+        public static Pose2d RED_CHARGE_POSE = new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0));
+
     }
 
     public static double PI = 3.14159265;
