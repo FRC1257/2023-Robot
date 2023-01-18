@@ -1,6 +1,9 @@
 package frc.robot;
 
+
+
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SnailSubsystem;
@@ -19,6 +22,11 @@ import static frc.robot.Constants.UPDATE_PERIOD;;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+    private static final String kDefaultAuto = "Default";
+private static final String kCustomAuto = "My Auto";
+private String m_autoSelected;
+private final SendableChooser<String> side_chooser = new SendableChooser<>();
 
     private SnailController driveController;
     private SnailController operatorController;
@@ -113,4 +121,8 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
     }
+
+
+  
+
 }
