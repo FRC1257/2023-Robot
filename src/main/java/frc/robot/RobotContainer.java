@@ -1,6 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SnailSubsystem;
@@ -28,6 +30,13 @@ public class RobotContainer {
     private Notifier updateNotifier;
     private int outputCounter;
 
+    SendableChooser<Pose2d> scorePositionChooser = new SendableChooser<>();
+    SendableChooser<Pose2d> gamePieceChooser = new SendableChooser<>(); 
+
+    boolean score;
+    boolean cargo;
+    boolean charge;
+
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
@@ -42,6 +51,9 @@ public class RobotContainer {
         outputCounter = 0;
 
         SmartDashboard.putBoolean("Testing", false);
+        SmartDashboard.putBoolean("Auto Score", score);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
