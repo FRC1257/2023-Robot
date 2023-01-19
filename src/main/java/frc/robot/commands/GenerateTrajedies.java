@@ -22,6 +22,7 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
+    private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private final Pose2d chargePose;
 
     public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
@@ -37,11 +38,13 @@ public class GenerateTrajedies {
             ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
+            ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINTS_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
+            ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINTS_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
         }
         this.StartPose = ALLIANCE_START_POSE[StartPose]; 
@@ -90,7 +93,18 @@ public class GenerateTrajedies {
 
         // we either go for cargo or leave the tarmac to get points
         if (cargo) {
-            ToCargoCommand step2 = new ToCargoCommand(driveTrain, currentPose, getCargoLocation());
+            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+            Pose2d endPose = getCargoLocation();
+            trajPoints.add(currentPose);
+            if (endPose.getY() > CHARGE_STATION_UPPER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            } else if (endPose.getY() < CHARGE_STATION_LOWER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            }
+            //finish this
+            ToPos step2 = new ToPos(driveTrain, currentPose, getCargoLocation());
             currentPose = getCargoLocation();
             fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
             command.addCommands(step2);
