@@ -15,9 +15,10 @@ public class generateTrajedies {
     private Drivetrain driveTrain;
     private final Pose2d StartPos;
     private final Pose2d NewPos;
-    private SequentialCommandGroup command = new SequentialCommandGroup();
-    private Pose2d currentPos = new Pose2d();
-    private Trajectory fullTrajectory = new Trajectory();
+    private SequentialCommandGroup command;
+    private Pose2d currentPos; 
+    private Trajectory fullTrajectory;
+    private Pose2d[] ALLIANCE_POSE;
 
     public generateTrajedies(boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPos,
             Pose2d NewPos) {
@@ -28,7 +29,14 @@ public class generateTrajedies {
         this.StartPos = StartPos;
         this.currentPos = StartPos;
         this.NewPos = NewPos;
-
+        command = new SequentialCommandGroup();
+        currentPos = new Pose2d();
+        fullTrajectory = new Trajectory();
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_POSE = Autonomous.BLUE_CARGO_POSE;
+        } else {
+            ALLIANCE_POSE = Autonomous.RED_CARGO_POSE;
+        }
     }
 
     // TODO make method to get positions
@@ -46,21 +54,12 @@ public class generateTrajedies {
     //gets the cargoLocation based on what side the robot is on
 
     public Pose2d getCargoLocation() {
-        
-        if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            return Autonomous.BLUE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
-        } else {
-            return Autonomous.RED_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
-        }
+        return ALLIANCE_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
 
+    // 2 getScoreLocation() methods for some reason?
     public Pose2d getscoreLocation() {
-        
-        if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            return Autonomous.BLUE_CARGO_POSE[RobotContainer.scorePositionChooser.getSelected()];
-        } else {
-            return Autonomous.RED_CARGO_POSE[RobotContainer.scorePositionChooser.getSelected()];
-        }
+        return ALLIANCE_POSE[RobotContainer.scorePositionChooser.getSelected()];
     }
 
     public Pose2d getChargeLocation() {
