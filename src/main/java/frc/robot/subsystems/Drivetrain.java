@@ -38,6 +38,7 @@ import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
 
+
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.Drivetrain.*;
@@ -429,6 +430,8 @@ public class Drivetrain extends SnailSubsystem {
         setRobotPose(trajectory.getInitialPose());
  
         this.trajectory = trajectory;
+
+        m_field.getObject("traj").setTrajectory(trajectory);       
  
         pathTimer.reset();
         pathTimer.start();
@@ -461,6 +464,7 @@ public class Drivetrain extends SnailSubsystem {
  
     @Override
     public void displayShuffleboard() {
+        SmartDashboard.putData("Field", m_field);
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reverseEnabled, slowModeEnabled});
         SmartDashboard.putString("Drive State", state.name());
  
@@ -625,6 +629,10 @@ public class Drivetrain extends SnailSubsystem {
  
     public State getState() {
         return state;
+    }
+
+    public void drawTrajectory(Trajectory trajectory) {
+        m_field.getObject("traj").setTrajectory(trajectory);
     }
 }
  
