@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.GenerateTrajedies;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
@@ -36,6 +37,8 @@ public class RobotContainer {
     private SnailController operatorController;
     
     private ArrayList<SnailSubsystem> subsystems;
+
+    private GenerateTrajedies generateTrajedies;
 
     private Drivetrain drivetrain;
     private Vision vision;
@@ -127,11 +130,25 @@ public class RobotContainer {
         configurescorePositionChooser();
     }
 
+    private Pose2d estimatedCurrentPose2d() {
+        // TODO: Implement this with PhotonVision
+        return new Pose2d(0, 0, new Rotation2d(0.0));
+    }
+
     /**
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        return null;
+        generateTrajedies = new GenerateTrajedies(
+            SmartDashboard.getBoolean("Auto Goto Charge", charge),
+            SmartDashboard.getBoolean("Auto Score", score),
+            SmartDashboard.getBoolean("Auto Get Cargo", cargo),
+            drivetrain,
+            estimatedCurrentPose2d()
+        );
+        
+        drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
+        return generateTrajedies.getCommand();
     }
 
     /**
