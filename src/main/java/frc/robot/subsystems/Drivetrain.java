@@ -630,6 +630,10 @@ public class Drivetrain extends SnailSubsystem {
     public State getState() {
         return state;
     }
+
+    public void drawTrajectory(Trajectory trajectory) {
+        m_field.getObject("traj").setTrajectory(trajectory);
+    }
 }
  
 

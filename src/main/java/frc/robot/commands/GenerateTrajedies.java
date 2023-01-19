@@ -2,6 +2,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
@@ -14,7 +15,7 @@ public class GenerateTrajedies {
     private boolean cargo;
     private Drivetrain driveTrain;
     private final Pose2d StartPose;
-    private final Pose2d NewPose;
+    
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
     private Trajectory fullTrajectory;
@@ -22,15 +23,14 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private final Pose2d chargePose;
 
-    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, Pose2d StartPose,
-            Pose2d NewPose) {
+    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, Pose2d StartPose) {
         this.charge = isCharge;
         this.score = isScore;
         this.cargo = isCargo;
         this.driveTrain = driveTrain;
         this.StartPose = StartPose;
         this.currentPose = StartPose;
-        this.NewPose = NewPose;
+        
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
         fullTrajectory = new Trajectory();
@@ -48,16 +48,6 @@ public class GenerateTrajedies {
 
     // TODO make method to get positions
     // also TODO make method to get the trajectories to visualize
-
-    @Deprecated
-    public Pose2d getscoreLocation() {
-        // should be stored as a constant then retrieved for this
-        // currently returning this random thing
-
-        // in reality we would probably need to use some more variables
-        // like station (one of the 3 blocks) and score num (one of the 3 places to score) to get it 
-        return new Pose2d(3, 0, new Rotation2d(0.0));
-    }
 
     //gets the cargoLocation based on what side the robot is on
 
@@ -92,30 +82,30 @@ public class GenerateTrajedies {
         if (score) {
             ToScoreCommand step1 = new ToScoreCommand(driveTrain, StartPose, getScoreLocation());
             currentPose = getScoreLocation();
-            // fullTrajectory = fullTrajectory.concatenate(step1.getTrajectory());
-            command.andThen(step1);
+            fullTrajectory = fullTrajectory.concatenate(step1.getTrajectory());
+            command.addCommands(step1);
         }
 
         // we either go for cargo or leave the tarmac to get points
         if (cargo) {
             ToCargoCommand step2 = new ToCargoCommand(driveTrain, currentPose, getCargoLocation());
             currentPose = getCargoLocation();
-            // fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
-            command.andThen(step2);
+            fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
+            command.addCommands(step2);
         } 
         else {
             ToPos step2 = new ToPos(driveTrain, currentPose, getLeaveCommunityPose());
             currentPose = getLeaveCommunityPose();
-            // fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
-            command.andThen(step2);
+            fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
+            command.addCommands(step2);
         }
 
         // step 3 go for charge
         if (charge) {
             ToChargeCommand step3 = new ToChargeCommand(driveTrain, currentPose, getChargeLocation());
             currentPose = getChargeLocation();
-            // fullTrajectory = fullTrajectory.concatenate(step3.getTrajectory());
-            command.andThen(step3);
+            fullTrajectory = fullTrajectory.concatenate(step3.getTrajectory());
+            command.addCommands(step3);
         }
 
         // if none of these have run something has gone wrong
@@ -123,8 +113,8 @@ public class GenerateTrajedies {
         if (StartPose.equals(currentPose)) {
             ToPos leave = new ToPos(driveTrain, currentPose, getLeaveCommunityPose());
             currentPose = getLeaveCommunityPose();
-            // fullTrajectory = fullTrajectory.concatenate(leave.getTrajectory());
-            command.andThen(leave);
+            fullTrajectory = fullTrajectory.concatenate(leave.getTrajectory());
+            command.addCommands(leave);
         }
 
     }
@@ -136,5 +126,9 @@ public class GenerateTrajedies {
 
     public Trajectory getTrajectory() {
         return fullTrajectory;
+    }
+
+    public void displayField(Field2d m_field) {
+        m_field.getObject("traj").setTrajectory(fullTrajectory);
     }
 }
