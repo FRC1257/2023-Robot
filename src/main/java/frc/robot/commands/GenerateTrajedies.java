@@ -24,9 +24,9 @@ public class GenerateTrajedies {
 
     public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, Pose2d StartPose,
             Pose2d NewPose) {
-        this.charge = charge;
-        this.score = score;
-        this.cargo = cargo;
+        this.charge = isCharge;
+        this.score = isScore;
+        this.cargo = isCargo;
         this.driveTrain = driveTrain;
         this.StartPose = StartPose;
         this.currentPose = StartPose;
