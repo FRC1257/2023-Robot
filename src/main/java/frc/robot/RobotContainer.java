@@ -142,6 +142,12 @@ public class RobotContainer {
     //senderchooser methods
 
     public void configuregamePieceChooser() {
+        gamePieceChooser.setDefaultOption("-1", -1);
+        gamePieceChooser.addOption("1st Position", 0);
+        gamePieceChooser.addOption("2nd Position", 1);
+        gamePieceChooser.addOption("3rd Position", 2);
+        gamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(gamePieceChooser);
     }
     
   
