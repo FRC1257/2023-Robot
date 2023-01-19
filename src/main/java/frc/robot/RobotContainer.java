@@ -217,10 +217,10 @@ public class RobotContainer {
     }
 
     public void configurestartPositionChooser() {
-        gamePieceChooser.setDefaultOption("-1", -1);
-        gamePieceChooser.addOption("1st Position", 0);
-        gamePieceChooser.addOption("2nd Position", 1);
-        gamePieceChooser.addOption("3rd Position", 2);
+        startPositionChooser.setDefaultOption("-1", -1);
+        startPositionChooser.addOption("1st Position", 0);
+        startPositionChooser.addOption("2nd Position", 1);
+        startPositionChooser.addOption("3rd Position", 2);
         SmartDashboard.putData(startPositionChooser);
     }
 
