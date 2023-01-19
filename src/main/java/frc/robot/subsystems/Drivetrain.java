@@ -37,7 +37,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
-import frc.robot.util.SnailVision;
+
 
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.ElectricalLayout.*;
