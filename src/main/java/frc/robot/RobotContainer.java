@@ -47,6 +47,7 @@ public class RobotContainer {
     //Chris's choosers
     public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
 
     //booleans regarding the score, cargo, and charge
     boolean score;
@@ -95,7 +96,7 @@ public class RobotContainer {
         drivetrain = new Drivetrain(getStartingPos());
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
-             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, true));
+             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
         // Vision
         vision = new Vision();
@@ -113,8 +114,8 @@ public class RobotContainer {
         // Drivetrain bindings
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
     }
@@ -195,4 +196,13 @@ public class RobotContainer {
         scorePositionChooser.addOption("9th Position", 8);
         SmartDashboard.putData(scorePositionChooser);
     }
+
+    public void configurestartPositionChooser() {
+        gamePieceChooser.setDefaultOption("-1", -1);
+        gamePieceChooser.addOption("1st Position", 0);
+        gamePieceChooser.addOption("2nd Position", 1);
+        gamePieceChooser.addOption("3rd Position", 2);
+        SmartDashboard.putData(startPositionChooser);
+    }
+
 }
