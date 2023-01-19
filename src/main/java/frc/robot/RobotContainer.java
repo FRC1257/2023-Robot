@@ -131,9 +131,10 @@ public class RobotContainer {
         configurescorePositionChooser();
     }
 
-    private Pose2d estimatedCurrentPose2d() {
+    private int estimatedCurrentPose2d() {
         // TODO: Implement this with PhotonVision
-        return new Pose2d(0, 0, new Rotation2d(0.0));
+        // return new Pose2d(0, 0, new Rotation2d(0.0));
+        return startPositionChooser.getSelected();
     }
 
     /**

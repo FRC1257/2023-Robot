@@ -19,31 +19,33 @@ public class GenerateTrajedies {
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
     private Trajectory fullTrajectory;
+    private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private final Pose2d chargePose;
 
-    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, Pose2d StartPose) {
+    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
         this.charge = isCharge;
         this.score = isScore;
         this.cargo = isCargo;
         this.driveTrain = driveTrain;
-        this.StartPose = StartPose;
-        this.currentPose = StartPose;
         
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
         fullTrajectory = new Trajectory();
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
         } else {
+            ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
-            
         }
+        this.StartPose = ALLIANCE_START_POSE[StartPose]; 
+        this.currentPose = this.StartPose;
     }
 
     // TODO make method to get positions

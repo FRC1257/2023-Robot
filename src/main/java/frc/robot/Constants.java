@@ -90,6 +90,7 @@ public final class Constants {
     public static class Autonomous {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
+
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
             new Pose2d(1.425, 0.453,Rotation2d.fromDegrees(0)), // Score location 1 on blue side
             new Pose2d(1.425,1.044,Rotation2d.fromDegrees(0)), // score 2
@@ -131,6 +132,18 @@ public final class Constants {
         public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0));
         public static Pose2d RED_CHARGE_POSE = new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0));
 
+        // bottom to top (farthest from community to closest)
+        public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
+            new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(180)),
+            new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(180)),
+            new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(180)),
+        };
+
+        public static Pose2d[] RED_START_POSE = new Pose2d[] {
+            new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(0)),
+            new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(0)),
+            new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(0)),
+        };
     }
 
     public static double PI = 3.14159265;
