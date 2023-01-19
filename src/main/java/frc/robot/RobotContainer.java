@@ -3,8 +3,14 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.vision.TurnToAprilTagCommand;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.SnailController;
 
@@ -12,7 +18,7 @@ import java.util.ArrayList;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
-import static frc.robot.Constants.UPDATE_PERIOD;;
+import static frc.robot.Constants.UPDATE_PERIOD;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +36,9 @@ public class RobotContainer {
     private SnailController operatorController;
     
     private ArrayList<SnailSubsystem> subsystems;
+
+    private Drivetrain drivetrain;
+    private Vision vision;
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -69,6 +78,10 @@ public class RobotContainer {
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
 
+    private Pose2d getStartingPos() {
+        return new Pose2d(0, 0, new Rotation2d(0.0));
+    }
+
     /**
      * Set up the choosers on shuffleboard for getting score positions
      */
@@ -79,16 +92,31 @@ public class RobotContainer {
      */
     private void configureSubsystems() {
         // declare each of the subsystems here
+        drivetrain = new Drivetrain(getStartingPos());
+        // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
+        drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
+             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, true));
+
+        // Vision
+        vision = new Vision();
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
+        subsystems.add(drivetrain);
+        subsystems.add(vision);
     }
 
     /**
-     * Define button -> command mappings.
+     * Define {@link Button} -> command mappings.
      */
     private void configureButtonBindings() {
-        
+        // Drivetrain bindings
+        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
+        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
     }
 
     /**
