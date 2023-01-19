@@ -44,7 +44,7 @@ public class generateTrajedies {
     }
 
     //gets the cargoLocation based on what side the robot is on
-    
+
     public Pose2d getCargoLocation() {
         
         if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
