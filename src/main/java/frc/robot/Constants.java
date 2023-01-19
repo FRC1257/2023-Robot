@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

@@ -146,6 +146,16 @@ public class RobotContainer {
     
   
     public void configurescorePositionChooser() {
-
+        scorePositionChooser.setDefaultOption("-1", -1);
+        scorePositionChooser.addOption("1st Position", 0);
+        scorePositionChooser.addOption("2nd Position", 1);
+        scorePositionChooser.addOption("3rd Position", 2);
+        scorePositionChooser.addOption("4th Position", 3);
+        scorePositionChooser.addOption("5th Position", 4);
+        scorePositionChooser.addOption("6th Position", 5);
+        scorePositionChooser.addOption("7th Position", 6);
+        scorePositionChooser.addOption("8th Position", 7);
+        scorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(scorePositionChooser);
     }
 }
