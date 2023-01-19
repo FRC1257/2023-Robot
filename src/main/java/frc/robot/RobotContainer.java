@@ -23,9 +23,8 @@ import static frc.robot.Constants.UPDATE_PERIOD;;
 public class RobotContainer {
 
     private static final String kDefaultAuto = "Default";
-private static final String kCustomAuto = "My Auto";
-private String m_autoSelected;
-private final SendableChooser<String> side_chooser = new SendableChooser<>();
+    private static final String kCustomAuto = "My Auto";
+    private String m_autoSelected;
 
     private SnailController driveController;
     private SnailController operatorController;
@@ -35,9 +34,12 @@ private final SendableChooser<String> side_chooser = new SendableChooser<>();
     private Notifier updateNotifier;
     private int outputCounter;
 
-    SendableChooser<Pose2d> scorePositionChooser = new SendableChooser<>();
-    SendableChooser<Pose2d> gamePieceChooser = new SendableChooser<>(); 
 
+    //Chris's choosers
+    SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
+    SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
+
+    //booleans regarding the score, cargo, and charge
     boolean score;
     boolean cargo;
     boolean charge;
@@ -64,6 +66,13 @@ private final SendableChooser<String> side_chooser = new SendableChooser<>();
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
 
+    /**
+     * Set up the choosers on shuffleboard for getting score positions
+     */
+
+    public void configurescorePositionChooser() {
+
+    }
     /**
      * Declare all of our subsystems and their default bindings
      */
@@ -131,7 +140,7 @@ private final SendableChooser<String> side_chooser = new SendableChooser<>();
         }
     }
 
-
+    //senderchooser
   
 
 }
