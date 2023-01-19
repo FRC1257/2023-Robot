@@ -22,7 +22,7 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private final Pose2d chargePose;
 
-    public GenerateTrajedies(boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPose,
+    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, Pose2d StartPose,
             Pose2d NewPose) {
         this.charge = charge;
         this.score = score;
