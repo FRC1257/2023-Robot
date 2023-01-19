@@ -129,6 +129,7 @@ public class RobotContainer {
     public void configureAutoChoosers() {
         configuregamePieceChooser();
         configurescorePositionChooser();
+        configurestartPositionChooser();
     }
 
     private int estimatedCurrentPose2d() {
