@@ -8,7 +8,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
 import frc.robot.RobotContainer;
 
-public class generateTrajedies {
+public class GenerateTrajedies {
     private boolean charge;
     private boolean score;
     private boolean cargo;
@@ -20,7 +20,7 @@ public class generateTrajedies {
     private Trajectory fullTrajectory;
     private Pose2d[] ALLIANCE_POSE;
 
-    public generateTrajedies(boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPos,
+    public GenerateTrajedies(boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPos,
             Pose2d NewPos) {
         this.charge = charge;
         this.score = score;
@@ -78,42 +78,43 @@ public class generateTrajedies {
         return new Pose2d(5, 5, new Rotation2d(0.0));
     }
 
-    public void TrajediesDecider() {
+    private void trajediesDecider() {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
-        if (this.score) {
-            ToScoreCommand step1 = new ToScoreCommand(this.driveTrain, this.StartPos, getScoreLocation());
-            this.currentPos = getScoreLocation();
+        if (score) {
+            ToScoreCommand step1 = new ToScoreCommand(driveTrain, StartPos, getScoreLocation());
+            currentPos = getScoreLocation();
             // fullTrajectory = fullTrajectory.concatenate(step1.getTrajectory());
             command.andThen(step1);
         }
 
         // we either go for cargo or leave the tarmac to get points
-        if (this.cargo) {
-            ToCargoCommand step2 = new ToCargoCommand(this.driveTrain, this.currentPos, getCargoLocation());
-            this.currentPos = getCargoLocation();
+        if (cargo) {
+            ToCargoCommand step2 = new ToCargoCommand(driveTrain, currentPos, getCargoLocation());
+            currentPos = getCargoLocation();
             // fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
             command.andThen(step2);
-        } else {
-            ToPos step2 = new ToPos(this.driveTrain, this.currentPos, getLeaveCommunityPose());
-            this.currentPos = getLeaveCommunityPose();
+        } 
+        else {
+            ToPos step2 = new ToPos(driveTrain, currentPos, getLeaveCommunityPose());
+            currentPos = getLeaveCommunityPose();
             // fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
             command.andThen(step2);
         }
 
         // step 3 go for charge
-        if (this.charge) {
-            ToChargeCommand step3 = new ToChargeCommand(this.driveTrain, this.currentPos, getChargeLocation());
-            this.currentPos = getChargeLocation();
+        if (charge) {
+            ToChargeCommand step3 = new ToChargeCommand(driveTrain, currentPos, getChargeLocation());
+            currentPos = getChargeLocation();
             // fullTrajectory = fullTrajectory.concatenate(step3.getTrajectory());
             command.andThen(step3);
         }
 
         // if none of these have run something has gone wrong
         // so just leave the community
-        if (this.StartPos.equals(this.currentPos)) {
-            ToPos leave = new ToPos(this.driveTrain, this.currentPos, getLeaveCommunityPose());
-            this.currentPos = getLeaveCommunityPose();
+        if (StartPos.equals(currentPos)) {
+            ToPos leave = new ToPos(driveTrain, currentPos, getLeaveCommunityPose());
+            currentPos = getLeaveCommunityPose();
             // fullTrajectory = fullTrajectory.concatenate(leave.getTrajectory());
             command.andThen(leave);
         }
@@ -121,12 +122,11 @@ public class generateTrajedies {
     }
 
     public SequentialCommandGroup getCommand() {
-        TrajediesDecider();
-        return this.command;
+        trajediesDecider();
+        return command;
     }
 
     public Trajectory getTrajectory() {
-        return this.fullTrajectory;
+        return fullTrajectory;
     }
-
 }
