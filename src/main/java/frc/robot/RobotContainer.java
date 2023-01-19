@@ -57,6 +57,9 @@ public class RobotContainer {
         
         outputCounter = 0;
 
+        // Field Side
+        SmartDashboard.getBoolean("isAllianceBlue", false)
+
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("Auto Score", score);
