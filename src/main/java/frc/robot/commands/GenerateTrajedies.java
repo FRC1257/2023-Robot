@@ -18,7 +18,8 @@ public class GenerateTrajedies {
     private SequentialCommandGroup command;
     private Pose2d currentPos; 
     private Trajectory fullTrajectory;
-    private Pose2d[] ALLIANCE_POSE;
+    private Pose2d[] ALLIANCE_CARGO_POSE;
+    private Pose2d[] ALLIANCE_SCORE_POSE;
 
     public GenerateTrajedies(boolean charge, boolean score, boolean cargo, Drivetrain driveTrain, Pose2d StartPos,
             Pose2d NewPos) {
@@ -33,9 +34,11 @@ public class GenerateTrajedies {
         currentPos = new Pose2d();
         fullTrajectory = new Trajectory();
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            ALLIANCE_POSE = Autonomous.BLUE_CARGO_POSE;
+            ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
+            ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
         } else {
-            ALLIANCE_POSE = Autonomous.RED_CARGO_POSE;
+            ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
+            ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
         }
     }
 
@@ -54,12 +57,12 @@ public class GenerateTrajedies {
     //gets the cargoLocation based on what side the robot is on
 
     public Pose2d getCargoLocation() {
-        return ALLIANCE_POSE[RobotContainer.gamePieceChooser.getSelected()];
+        return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
 
     // 2 getScoreLocation() methods for some reason?
     public Pose2d getscoreLocation() {
-        return ALLIANCE_POSE[RobotContainer.scorePositionChooser.getSelected()];
+        return ALLIANCE_SCORE_POSE[RobotContainer.scorePositionChooser.getSelected()];
     }
 
     public Pose2d getChargeLocation() {
