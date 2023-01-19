@@ -95,7 +95,8 @@ public class RobotContainer {
      * Set up the choosers on shuffleboard for autonomous
      */
     public void configureAutoChoosers() {
-        
+        configuregamePieceChooser();
+        configurescorePositionChooser();
     }
 
     /**
