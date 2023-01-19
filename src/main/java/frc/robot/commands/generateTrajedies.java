@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
 
@@ -42,11 +43,12 @@ public class generateTrajedies {
     }
 
     public Pose2d getCargoLocation() {
-        // should be stored as a constant then retrieved for this
-        // currently returning this random thing
-
-        // in reality there are 4 possible places so we would need to get input for those
-        return new Pose2d(5, 0, new Rotation2d(0.0));
+        
+        if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            return BLUE_CARGO_POSE[gamePieceChooser.getSelected()];
+        } else {
+            return RED_CARGO_POSE[gamePieceChooser.getSelected()];
+        }
     }
 
     public Pose2d getChargeLocation() {
