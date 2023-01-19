@@ -1,11 +1,12 @@
 package frc.robot.commands;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants.Autonomous;
+import frc.robot.RobotContainer;
 
 public class generateTrajedies {
     private boolean charge;
@@ -45,9 +46,18 @@ public class generateTrajedies {
     public Pose2d getCargoLocation() {
         
         if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            return BLUE_CARGO_POSE[gamePieceChooser.getSelected()];
+            return Autonomous.BLUE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
         } else {
-            return RED_CARGO_POSE[gamePieceChooser.getSelected()];
+            return Autonomous.RED_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
+        }
+    }
+
+    public Pose2d getscoreLocation() {
+        
+        if(SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            return Autonomous.BLUE_CARGO_POSE[RobotContainer.scorePositionChooser.getSelected()];
+        } else {
+            return Autonomous.RED_CARGO_POSE[RobotContainer.scorePositionChooser.getSelected()];
         }
     }
 

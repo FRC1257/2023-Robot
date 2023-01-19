@@ -36,8 +36,8 @@ public class RobotContainer {
 
 
     //Chris's choosers
-    SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
-    SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
 
     //booleans regarding the score, cargo, and charge
     boolean score;
@@ -58,6 +58,7 @@ public class RobotContainer {
         outputCounter = 0;
 
         SmartDashboard.putBoolean("Testing", false);
+        //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("Auto Score", score);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
@@ -70,9 +71,7 @@ public class RobotContainer {
      * Set up the choosers on shuffleboard for getting score positions
      */
 
-    public void configurescorePositionChooser() {
-
-    }
+   
     /**
      * Declare all of our subsystems and their default bindings
      */
@@ -140,7 +139,13 @@ public class RobotContainer {
         }
     }
 
-    //senderchooser
-  
+    //senderchooser methods
 
+    public void configuregamePieceChooser() {
+    }
+    
+  
+    public void configurescorePositionChooser() {
+
+    }
 }
