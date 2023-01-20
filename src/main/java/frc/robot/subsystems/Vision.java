@@ -18,6 +18,7 @@ import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 
@@ -41,13 +42,10 @@ public class Vision extends SnailSubsystem {
     public Vision() {
         camList.add(new Pair<PhotonCamera, Transform3d>(camera, robotToCam));
         try {
-            aprilTagFieldLayout = new AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
-            System.out.println("loaded field layout");
+            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+            DriverStation.reportWarning("AprilTagFieldLayout loaded", false);
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(" failed to load field layout");
-            System.out.print(e);
-            System.out.println(AprilTagFields.kDefaultField.m_resourceFile);
+            // This should be impossible
         }
         poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camera, Constants.Vision.CAMERA_TO_ROBOT);
     }
