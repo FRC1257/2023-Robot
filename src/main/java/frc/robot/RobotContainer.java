@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -127,9 +128,9 @@ public class RobotContainer {
      * Set up the choosers on shuffleboard for autonomous
      */
     public void configureAutoChoosers() {
-        configuregamePieceChooser();
-        configurescorePositionChooser();
-        configurestartPositionChooser();
+        configureGamePieceChooser();
+        configureScorePositionChooser();
+        configureStartPositionChooser();
     }
 
     private int estimatedCurrentPose2d() {
@@ -151,6 +152,7 @@ public class RobotContainer {
         );
         
         drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
+        DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajedies.getCommand();
     }
 
@@ -192,7 +194,7 @@ public class RobotContainer {
 
     //senderchooser methods
 
-    public void configuregamePieceChooser() {
+    public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("-1", -1);
         gamePieceChooser.addOption("1st Position", 0);
         gamePieceChooser.addOption("2nd Position", 1);
@@ -202,7 +204,7 @@ public class RobotContainer {
     }
     
   
-    public void configurescorePositionChooser() {
+    public void configureScorePositionChooser() {
         scorePositionChooser.setDefaultOption("-1", -1);
         scorePositionChooser.addOption("1st Position", 0);
         scorePositionChooser.addOption("2nd Position", 1);
@@ -216,7 +218,7 @@ public class RobotContainer {
         SmartDashboard.putData(scorePositionChooser);
     }
 
-    public void configurestartPositionChooser() {
+    public void configureStartPositionChooser() {
         startPositionChooser.setDefaultOption("-1", -1);
         startPositionChooser.addOption("1st Position", 0);
         startPositionChooser.addOption("2nd Position", 1);

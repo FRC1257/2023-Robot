@@ -1,13 +1,13 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.RobotPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 
 /**
  * Inspired by UMN Ri3D
@@ -29,7 +30,7 @@ public class Vision extends SnailSubsystem {
     Transform3d robotToCam = new Transform3d(); // Stores the transform from the center of the robot to the camera
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
-    RobotPoseEstimator poseEstimator; // stores the pose estimator
+    PhotonPoseEstimator poseEstimator; // stores the pose estimator
     AprilTagFieldLayout aprilTagFieldLayout; // stores the field layout
     public Pose2d prevEstimatedRobotPose;
 
@@ -48,12 +49,12 @@ public class Vision extends SnailSubsystem {
             System.out.print(e);
             System.out.println(AprilTagFields.kDefaultField.m_resourceFile);
         }
-        poseEstimator = new RobotPoseEstimator(aprilTagFieldLayout, RobotPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camList);
+        poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camera, Constants.Vision.CAMERA_TO_ROBOT);
     }
 
     @Override
     public void periodic() {
-        PhotonPipelineResult result = camera.getLatestResult(); // Query the latest result from PhotonVision
+        result = camera.getLatestResult(); // Query the latest result from PhotonVision
         hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
                                          // true
         if (hasTarget) {
@@ -73,10 +74,10 @@ public class Vision extends SnailSubsystem {
         poseEstimator.setReferencePose(prevEstimatedRobotPose);
     
         double currentTime = Timer.getFPGATimestamp();
-        Optional<Pair<Pose3d, Double>> result = poseEstimator.update();
-        if (result.isPresent()) {
-            prevEstimatedRobotPose = result.get().getFirst().toPose2d();
-            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, currentTime - result.get().getSecond());
+        Optional<EstimatedRobotPose> tag = poseEstimator.update();
+        if (tag.isPresent()) {
+            prevEstimatedRobotPose = tag.get().estimatedPose.toPose2d();
+            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, currentTime - tag.get().timestampSeconds);
         } else {
             return new Pair<Pose2d, Double>(null, 0.0);
         }
