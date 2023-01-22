@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
+import static frc.robot.Constants.Autonomous;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -39,24 +40,28 @@ public class RobotContainer {
     
     private ArrayList<SnailSubsystem> subsystems;
 
-    private GenerateTrajedies generateTrajedies;
 
     private Drivetrain drivetrain;
     private Vision vision;
 
     private Notifier updateNotifier;
     private int outputCounter;
+    private int displayTrajCounter;
 
+    private boolean updateTraj = true;
 
-    //Chris's choosers
+    // choosers
     public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
 
     //booleans regarding the score, cargo, and charge
-    boolean score;
-    boolean cargo;
-    boolean charge;
+    private boolean score;
+    private boolean cargo;
+    private boolean charge;
+
+    private GenerateTrajedies generateTrajedies;
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -70,10 +75,11 @@ public class RobotContainer {
         configureButtonBindings();
         
         outputCounter = 0;
+        displayTrajCounter = 0;
 
         // Field Side
-        SmartDashboard.putBoolean("isAllianceBlue", false);
-        SmartDashboard.putBoolean("Testing", false);
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+        SmartDashboard.putBoolean("Testing", true);
         //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("Auto Score", score);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
@@ -83,8 +89,24 @@ public class RobotContainer {
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
 
+    public void stopDisplayingTraj() {
+        updateTraj = false;
+    }
+
+    private boolean getAllianceColor() {
+        return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
+    }
+
     private Pose2d getStartingPos() {
         return new Pose2d(0, 0, new Rotation2d(0.0));
+        /* Pose2d[] ALLIANCE_START_POSE;
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
+        } else {
+            ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
+        }
+        return ALLIANCE_START_POSE[startPositionChooser.getSelected()]; 
+         */
     }
 
     /**
@@ -109,6 +131,16 @@ public class RobotContainer {
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
+
+        // generate auto
+        generateTrajedies = new GenerateTrajedies(
+            drivetrain,
+            charge,
+            score,
+            cargo,
+            drivetrain,
+            0
+        );
     }
 
     /**
@@ -143,16 +175,19 @@ public class RobotContainer {
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
+        updateAutoChoosers();
+
         generateTrajedies = new GenerateTrajedies(
-            SmartDashboard.getBoolean("Auto Goto Charge", charge),
-            SmartDashboard.getBoolean("Auto Score", score),
-            SmartDashboard.getBoolean("Auto Get Cargo", cargo),
+            drivetrain,
+            charge,
+            score,
+            cargo,
             drivetrain,
             estimatedCurrentPose2d()
         );
         
-        drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
-        DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
+        // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
+        // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajedies.getCommand();
     }
 
@@ -190,12 +225,42 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
+
+
+        int DELAY_BETWEEN_NEXT = 100;
+        if (updateTraj && displayTrajCounter % DELAY_BETWEEN_NEXT == 0) { // change the trajectory drawn
+            generateTrajedies.incrementOutputCounter();
+            drivetrain.drawTrajectory(generateTrajedies.displayField());
+        }
+
+        if (updateTraj && checkIfUpdate()) {
+            DriverStation.reportWarning("Updating Auto", cargo);
+            updateAutoChoosers();
+
+            generateTrajedies = new GenerateTrajedies(
+                drivetrain,
+                charge,
+                score,
+                cargo,
+                drivetrain,
+                estimatedCurrentPose2d()
+            );
+        }
+
+        if (updateTraj) {
+            displayTrajCounter++;
+            if (displayTrajCounter > DELAY_BETWEEN_NEXT * 3) {
+                displayTrajCounter = 0;
+            }
+        }
+
+        
     }
 
-    //senderchooser methods
+    //sendable chooser methods
 
     public void configureGamePieceChooser() {
-        gamePieceChooser.setDefaultOption("-1", -1);
+        gamePieceChooser.setDefaultOption("-1", 0);
         gamePieceChooser.addOption("1st Position", 0);
         gamePieceChooser.addOption("2nd Position", 1);
         gamePieceChooser.addOption("3rd Position", 2);
@@ -205,7 +270,7 @@ public class RobotContainer {
     
   
     public void configureScorePositionChooser() {
-        scorePositionChooser.setDefaultOption("-1", -1);
+        scorePositionChooser.setDefaultOption("-1", 0);
         scorePositionChooser.addOption("1st Position", 0);
         scorePositionChooser.addOption("2nd Position", 1);
         scorePositionChooser.addOption("3rd Position", 2);
@@ -219,11 +284,22 @@ public class RobotContainer {
     }
 
     public void configureStartPositionChooser() {
-        startPositionChooser.setDefaultOption("-1", -1);
+        startPositionChooser.setDefaultOption("Set me", 0);
         startPositionChooser.addOption("1st Position", 0);
         startPositionChooser.addOption("2nd Position", 1);
         startPositionChooser.addOption("3rd Position", 2);
         SmartDashboard.putData(startPositionChooser);
+    }
+
+
+    public boolean checkIfUpdate() {
+        return score != SmartDashboard.getBoolean("Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false);
+    }
+
+    public void updateAutoChoosers() {
+        score = SmartDashboard.getBoolean("Auto Score", false);
+        cargo = SmartDashboard.getBoolean("Auto Get Cargo", false);
+        charge = SmartDashboard.getBoolean("Auto Goto Charge", false);
     }
 
 }

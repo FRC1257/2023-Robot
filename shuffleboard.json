@@ -50,19 +50,6 @@
               "_showGlyph": false
             }
           },
-          "16,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto Score",
-              "_title": "SmartDashboard/Auto Score",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "6,4": {
             "size": [
               2,
@@ -93,21 +80,6 @@
               "Colors/traj": "#FFFFFFFF"
             }
           },
-          "3,0": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/isAllianceBlue",
-              "_title": "isAllianceBlue",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
           "8,0": {
             "size": [
               2,
@@ -130,19 +102,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Drive State",
               "_title": "Drive State",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
-              "_title": "SendableChooser[2]",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -172,6 +131,309 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Slow Turn Mult",
+              "_title": "Drive Slow Turn Mult",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Closed Max Vel",
+              "_title": "Drive Closed Max Vel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Closed Max Rot",
+              "_title": "Drive Closed Max Rot",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Traj Max Vel",
+              "_title": "Drive Traj Max Vel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Traj Max Acc",
+              "_title": "Drive Traj Max Acc",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Dist kP",
+              "_title": "Drive Dist kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Dist kI",
+              "_title": "Drive Dist kI",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Dist kD",
+              "_title": "Drive Dist kD",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Dist Angle kP",
+              "_title": "Drive Dist Angle kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Dist Max Output",
+              "_title": "Drive Dist Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Angle kP",
+              "_title": "Drive Angle kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Angle kI",
+              "_title": "Drive Angle kI",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Angle kD",
+              "_title": "Drive Angle kD",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Angle Max Output",
+              "_title": "Drive Angle Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Vel Left kP",
+              "_title": "Drive Vel Left kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Vel Left kFF",
+              "_title": "Drive Vel Left kFF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Vel Right kP",
+              "_title": "Drive Vel Right kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Vel Right kFF",
+              "_title": "Drive Vel Right kFF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Profile Left kP",
+              "_title": "Drive Profile Left kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive Profile Right kP",
+              "_title": "Drive Profile Right kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Auto Score",
+              "_title": "Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Auto Score",
+              "_title": "/SmartDashboard/Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "18,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Path Time Left",
+              "_title": "Path Time Left",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -186,14 +448,106 @@
         "hgap": 16.0,
         "vgap": 16.0,
         "titleType": 0,
-        "tiles": {}
+        "tiles": {
+          "0,0": {
+            "size": [
+              4,
+              7
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Ungrouped",
+              "_title": "Ungrouped",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": [
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[1]",
+                  "_title": "PIDController[1]",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Gyro",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/ADXRS450_Gyro[0]",
+                  "_title": "ADXRS450_Gyro[0]",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Visuals/Major tick spacing": 45.0,
+                  "Visuals/Starting angle": 180.0,
+                  "Visuals/Show tick mark ring": true,
+                  "Visuals/Counter clockwise": false
+                },
+                {
+                  "_type": "Gyro",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/navX-Sensor[4]",
+                  "_title": "navX-Sensor[4]",
+                  "_glyph": 148,
+                  "_showGlyph": false,
+                  "Visuals/Major tick spacing": 45.0,
+                  "Visuals/Starting angle": 180.0,
+                  "Visuals/Show tick mark ring": true,
+                  "Visuals/Counter clockwise": false
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[2]",
+                  "_title": "PIDController[2]",
+                  "_glyph": 148,
+                  "_showGlyph": false
+                },
+                {
+                  "_type": "Subsystem Layout",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Scheduler/Ids",
+                  "_title": "Scheduler/Ids",
+                  "_glyph": 149,
+                  "_showGlyph": false,
+                  "Layout/Label position": "BOTTOM",
+                  "_children": []
+                }
+              ]
+            }
+          },
+          "4,0": {
+            "size": [
+              4,
+              7
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Vision",
+              "_title": "Vision",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": []
+            }
+          },
+          "8,0": {
+            "size": [
+              4,
+              7
+            ],
+            "content": {
+              "_type": "Subsystem Layout",
+              "_source0": "network_table:///LiveWindow/Drivetrain",
+              "_title": "Drivetrain",
+              "_glyph": 149,
+              "_showGlyph": false,
+              "Layout/Label position": "BOTTOM",
+              "_children": []
+            }
+          }
+        }
       }
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
-    "y": 0.0,
-    "width": 1536.0,
-    "height": 816.0
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }

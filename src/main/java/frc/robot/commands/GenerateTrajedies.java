@@ -21,14 +21,16 @@ public class GenerateTrajedies {
     
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
-    private Trajectory fullTrajectory;
+    private List<Trajectory> trajectoryList = new ArrayList<Trajectory>();
     private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private final Pose2d chargePose;
 
-    public GenerateTrajedies(boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
+    private int outputCounter = 0;
+
+    public GenerateTrajedies(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
         this.charge = isCharge;
         this.score = isScore;
         this.cargo = isCargo;
@@ -36,7 +38,7 @@ public class GenerateTrajedies {
         
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
-        fullTrajectory = new Trajectory();
+        // trajectoryList.add(new Trajectory());
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
             ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
@@ -52,6 +54,8 @@ public class GenerateTrajedies {
         }
         this.StartPose = ALLIANCE_START_POSE[StartPose]; 
         this.currentPose = this.StartPose;
+
+        trajediesDecider();
     }
 
     // TODO make method to get positions
@@ -84,13 +88,13 @@ public class GenerateTrajedies {
         return new Pose2d(5, 5, new Rotation2d(0.0));
     }
 
-    private void trajediesDecider() {
+    public void trajediesDecider() {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
         if (score) {
             ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()));
             currentPose = getScoreLocation();
-            fullTrajectory = fullTrajectory.concatenate(step1.getTrajectory());
+            trajectoryList.add(step1.getTrajectory());
             command.addCommands(step1);
         }
 
@@ -112,13 +116,13 @@ public class GenerateTrajedies {
             trajPoints.add(endPose);
             ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints);
             currentPose = getCargoLocation();
-            fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
+            trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
         } 
         else {
             ToPosCommand step2 = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()));
             currentPose = getLeaveCommunityPose();
-            fullTrajectory = fullTrajectory.concatenate(step2.getTrajectory());
+            trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
         }
 
@@ -126,7 +130,7 @@ public class GenerateTrajedies {
         if (charge) {
             ToChargeCommand step3 = new ToChargeCommand(driveTrain, currentPose, getChargeLocation());
             currentPose = getChargeLocation();
-            fullTrajectory = fullTrajectory.concatenate(step3.getTrajectory());
+            trajectoryList.add(step3.getTrajectory());
             command.addCommands(step3);
         }
 
@@ -135,7 +139,7 @@ public class GenerateTrajedies {
         if (StartPose.equals(currentPose)) {
             ToPosCommand leave = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()));
             currentPose = getLeaveCommunityPose();
-            fullTrajectory = fullTrajectory.concatenate(leave.getTrajectory());
+            trajectoryList.add(leave.getTrajectory());
             command.addCommands(leave);
         }
 
@@ -146,11 +150,27 @@ public class GenerateTrajedies {
         return command;
     }
 
-    public Trajectory getTrajectory() {
-        return fullTrajectory;
+    public List<Trajectory> getTrajectories() {
+        return trajectoryList;
     }
 
-    public void displayField(Field2d m_field) {
-        m_field.getObject("traj").setTrajectory(fullTrajectory);
+    public Trajectory displayField() {
+        return getTrajectory(outputCounter % trajectoryList.size());    
+    }
+
+    public void incrementOutputCounter() {
+        outputCounter++;
+    }
+
+    public Trajectory getTrajectory(int index) {
+        return trajectoryList.get(index);
+    }
+
+    public Trajectory getFullTrajectory() {
+        Trajectory fullTrajectory = new Trajectory();
+        for (Trajectory traj : trajectoryList) {
+            fullTrajectory = fullTrajectory.concatenate(traj);
+        }
+        return fullTrajectory;
     }
 }
