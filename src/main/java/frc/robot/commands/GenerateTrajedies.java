@@ -92,7 +92,7 @@ public class GenerateTrajedies {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
         if (score) {
-            ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()));
+            ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()), true);
             currentPose = getScoreLocation();
             trajectoryList.add(step1.getTrajectory());
             command.addCommands(step1);
@@ -114,13 +114,13 @@ public class GenerateTrajedies {
             }
             
             trajPoints.add(endPose);
-            ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints);
+            ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
             currentPose = getCargoLocation();
             trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
         } 
         else {
-            ToPosCommand step2 = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()));
+            ToPosCommand step2 = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()),false);
             currentPose = getLeaveCommunityPose();
             trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
@@ -137,7 +137,7 @@ public class GenerateTrajedies {
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
-            ToPosCommand leave = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()));
+            ToPosCommand leave = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()), false);
             currentPose = getLeaveCommunityPose();
             trajectoryList.add(leave.getTrajectory());
             command.addCommands(leave);
