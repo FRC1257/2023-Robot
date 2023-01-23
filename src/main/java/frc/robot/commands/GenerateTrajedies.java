@@ -28,8 +28,6 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private final Pose2d chargePose;
 
-    private int outputCounter = 0;
-
     public GenerateTrajedies(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
         this.charge = isCharge;
         this.score = isScore;
@@ -83,7 +81,7 @@ public class GenerateTrajedies {
     public Pose2d getLeaveCommunityPose() {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
-
+        // TODO fix this
         // in reality there are 6 possible places so we would just need to use the varialbes we have
         return new Pose2d(5, 5, new Rotation2d(0.0));
     }
@@ -154,16 +152,12 @@ public class GenerateTrajedies {
         return trajectoryList;
     }
 
-    public Trajectory displayField() {
-        return getTrajectory(outputCounter % trajectoryList.size());    
-    }
-
-    public void incrementOutputCounter() {
-        outputCounter++;
-    }
-
     public Trajectory getTrajectory(int index) {
-        return trajectoryList.get(index);
+        if (index < trajectoryList.size()) {
+            return trajectoryList.get(index);
+        } else {
+            return null;
+        }
     }
 
     public Trajectory getFullTrajectory() {

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -84,6 +85,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Auto Score", score);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", 0);
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
@@ -227,10 +229,11 @@ public class RobotContainer {
         }
 
 
-        int DELAY_BETWEEN_NEXT = 100;
-        if (updateTraj && displayTrajCounter % DELAY_BETWEEN_NEXT == 0) { // change the trajectory drawn
-            generateTrajedies.incrementOutputCounter();
-            drivetrain.drawTrajectory(generateTrajedies.displayField());
+        if (updateTraj) { // change the trajectory drawn
+            // generateTrajedies.incrementOutputCounter();
+            Trajectory traj = generateTrajedies.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            if (traj != null)
+                drivetrain.drawTrajectory(traj);
         }
 
         if (updateTraj && checkIfUpdate()) {
@@ -246,15 +249,7 @@ public class RobotContainer {
                 estimatedCurrentPose2d()
             );
         }
-
-        if (updateTraj) {
-            displayTrajCounter++;
-            if (displayTrajCounter > DELAY_BETWEEN_NEXT * 3) {
-                displayTrajCounter = 0;
-            }
-        }
-
-        
+    
     }
 
     //sendable chooser methods

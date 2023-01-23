@@ -53,7 +53,7 @@ public final class Constants {
 
         // trajectory following
         public static double DRIVE_TRAJ_MAX_VEL = 1.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 1.25; // m/s^2
+        public static double DRIVE_TRAJ_MAX_ACC = 0.950; //.75;  // m/s^2
         public static double DRIVE_TRAJ_RAMSETE_B = 2.0;
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
@@ -135,10 +135,10 @@ public final class Constants {
         };
 
         public static Pose2d[] RED_CARGO_POSE = new Pose2d[] {
-                new Pose2d(9.5, 0.896, Rotation2d.fromDegrees(0)),
-                new Pose2d(9.5, 2.125, Rotation2d.fromDegrees(0)),
-                new Pose2d(9.5, 3.353, Rotation2d.fromDegrees(0)),
-                new Pose2d(9.5, 4.602, Rotation2d.fromDegrees(0)),
+                new Pose2d(9.5, 0.896, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 2.125, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 3.353, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 4.602, Rotation2d.fromDegrees(180)),
         };
 
         public static Pose2d[] BLUE_WAYPOINT_POSE = new Pose2d[] {
@@ -159,15 +159,15 @@ public final class Constants {
 
         // bottom to top (farthest from community to closest)
         public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
-                new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(180)),
-                new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(180)),
-                new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(180)),
+                new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(0)),
+                new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(0)),
+                new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(0)),
         };
 
         public static Pose2d[] RED_START_POSE = new Pose2d[] {
-                new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(0)),
-                new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(0)),
-                new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(0)),
+                new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(180)),
+                new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(180)),
+                new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
         };
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;

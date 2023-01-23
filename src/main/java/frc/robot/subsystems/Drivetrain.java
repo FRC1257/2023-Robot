@@ -534,6 +534,7 @@ public class Drivetrain extends SnailSubsystem {
  
     @Override
     public void tuningInit() {
+        Gyro.getInstance().outputValues();
         SmartDashboard.putNumber("Drive Slow Turn Mult", DRIVE_SLOW_TURN_MULT);
  
         SmartDashboard.putNumber("Drive Closed Max Vel", DRIVE_CLOSED_MAX_VEL);
@@ -564,6 +565,7 @@ public class Drivetrain extends SnailSubsystem {
  
     @Override
     public void tuningPeriodic() {
+        Gyro.getInstance().outputValues();
         DRIVE_SLOW_TURN_MULT = SmartDashboard.getNumber("Drive Slow Turn Mult", DRIVE_SLOW_TURN_MULT);
  
         DRIVE_CLOSED_MAX_VEL = SmartDashboard.getNumber("Drive Closed Max Vel", DRIVE_CLOSED_MAX_VEL);
