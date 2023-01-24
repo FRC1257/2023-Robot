@@ -172,6 +172,8 @@ public final class Constants {
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;
 
+        public static double CHARGE_CENTER_Y = 2.75;
+
     };
 
 
