@@ -47,7 +47,7 @@ public class Vision extends SnailSubsystem {
         } catch (Exception e) {
             // This should be impossible
         }
-        poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camera, Constants.Vision.CAMERA_TO_ROBOT);
+        poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, Constants.Vision.CAMERA_TO_ROBOT);
     }
 
     @Override

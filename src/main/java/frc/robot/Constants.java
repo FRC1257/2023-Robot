@@ -2,8 +2,9 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 
@@ -92,7 +93,7 @@ public final class Constants {
         public static double VISION_FEEDFORWARD = 0.01;
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
 
-        public static Transform3d CAMERA_TO_ROBOT = new Transform3d();
+        public static Transform3d CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
