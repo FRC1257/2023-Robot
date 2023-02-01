@@ -124,7 +124,20 @@ public class GenerateTrajedies {
             command.addCommands(step2);
         } 
         else {
-            ToPosCommand step2 = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()),false);
+            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+            trajPoints.add(currentPose);
+            Pose2d endPose = getCargoLocation();
+
+            // going around the charging station, if convenient
+            if (endPose.getY() > Autonomous.CHARGE_STATION_UPPER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            } else if (endPose.getY() < Autonomous.CHARGE_STATION_LOWER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            }
+            trajPoints.add(getLeaveCommunityPose());
+            ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
             currentPose = getLeaveCommunityPose();
             trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
@@ -141,7 +154,20 @@ public class GenerateTrajedies {
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
-            ToPosCommand leave = new ToPosCommand(driveTrain, List.of(currentPose, getLeaveCommunityPose()), false);
+            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+            trajPoints.add(currentPose);
+            Pose2d endPose = getCargoLocation();
+
+            // going around the charging station, if convenient
+            if (endPose.getY() > Autonomous.CHARGE_STATION_UPPER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            } else if (endPose.getY() < Autonomous.CHARGE_STATION_LOWER_Y) {
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            }
+            trajPoints.add(getLeaveCommunityPose());
+            ToPosCommand leave = new ToPosCommand(driveTrain, trajPoints, false);
             currentPose = getLeaveCommunityPose();
             trajectoryList.add(leave.getTrajectory());
             command.addCommands(leave);
