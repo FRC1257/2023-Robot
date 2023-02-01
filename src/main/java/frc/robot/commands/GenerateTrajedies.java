@@ -110,7 +110,7 @@ public class GenerateTrajedies {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
             }
             
-            trajPoints.add(endPose);
+            trajPoints.add(getCargoLocation());
             ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
             currentPose = getCargoLocation();
             trajectoryList.add(step2.getTrajectory());
