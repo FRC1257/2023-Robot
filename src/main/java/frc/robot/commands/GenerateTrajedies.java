@@ -100,10 +100,9 @@ public class GenerateTrajedies {
         if (cargo) {
             List<Pose2d> trajPoints = new ArrayList<Pose2d>();
             trajPoints.add(currentPose);
-            Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
@@ -120,10 +119,9 @@ public class GenerateTrajedies {
         else {
             List<Pose2d> trajPoints = new ArrayList<Pose2d>();
             trajPoints.add(currentPose);
-            Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
@@ -150,10 +148,9 @@ public class GenerateTrajedies {
         if (StartPose.equals(currentPose)) {
             List<Pose2d> trajPoints = new ArrayList<Pose2d>();
             trajPoints.add(currentPose);
-            Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
