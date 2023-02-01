@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
  
+import java.util.Optional;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -37,7 +39,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
-
+import org.photonvision.EstimatedRobotPose;
 
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.ElectricalLayout.*;
@@ -63,14 +65,16 @@ public class Drivetrain extends SnailSubsystem {
     private RamseteController ramseteController;
     private Trajectory trajectory;
     private Timer pathTimer; // measures how far along we are on our current profile / trajectory
- 
+    
     private final Field2d m_field = new Field2d();
- 
+    
     private DifferentialDriveKinematics driveKinematics;
     private DifferentialDriveOdometry driveOdometry;
+    private final DifferentialDrivePoseEstimator poseEstimator;
  
+    
     // private DifferentialDrive drivetrain;
- 
+    
     /**
      * MANUAL_DRIVE - uses joystick inputs as direct inputs into an arcade drive setup
      * VELOCITY_DRIVE - linearly converts joystick inputs into real world values and achieves them with velocity PID
@@ -106,24 +110,30 @@ public class Drivetrain extends SnailSubsystem {
  
     // if enabled, switches the front and back of the robot from the driving perspective
     private boolean reverseEnabled;
-   
+    
     // if enabled, makes turning much slower to make the robot more precise
     private boolean slowModeEnabled;
- 
+    
     private double testingTargetLeftSpeed;
     private double testingTargetRightSpeed;
  
+    Vision vision;
+
     public Drivetrain(Pose2d initialPoseMeters) {
         configureMotors();
         configureEncoders();
         configurePID();
  
+        vision = new Vision();
+
         ramseteController = new RamseteController(DRIVE_TRAJ_RAMSETE_B, DRIVE_TRAJ_RAMSETE_ZETA);
  
         driveKinematics = new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M);
         // - to make + be ccw
         driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), initialPoseMeters);
- 
+
+        poseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), leftEncoder.getPositionConversionFactor(), initialPoseMeters);
+
         pathTimer = new Timer();
  
         SmartDashboard.putData("Field", m_field);
@@ -351,10 +361,20 @@ public class Drivetrain extends SnailSubsystem {
             }
         }
  
-        driveOdometry.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(),
-            rightEncoder.getPosition());
+        updateOdometry();
     }
- 
+
+    public void updateOdometry() {
+        poseEstimator.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), leftEncoder.getPosition());
+
+        Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+        }
+    }
+
     // speeds should be between -1.0 and 1.0 and should NOT be squared before being passed in
     // speedForward: -1 = backward, +1 = forward
     // speedTurn: -1 = ccw, +1 = cw

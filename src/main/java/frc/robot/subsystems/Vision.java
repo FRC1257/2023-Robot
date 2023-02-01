@@ -68,17 +68,10 @@ public class Vision extends SnailSubsystem {
         return tagPose.get().toPose2d();
     }
 
-    public Pair<Pose2d, Double> getEstimatedGlobalPose() {
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         poseEstimator.setReferencePose(prevEstimatedRobotPose);
-    
-        double currentTime = Timer.getFPGATimestamp();
-        Optional<EstimatedRobotPose> tag = poseEstimator.update();
-        if (tag.isPresent()) {
-            prevEstimatedRobotPose = tag.get().estimatedPose.toPose2d();
-            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, currentTime - tag.get().timestampSeconds);
-        } else {
-            return new Pair<Pose2d, Double>(null, 0.0);
-        }
+
+        return poseEstimator.update();
     }
 
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it
