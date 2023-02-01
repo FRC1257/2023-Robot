@@ -86,12 +86,6 @@ public class GenerateTrajedies {
         return new Pose2d(5, 5, new Rotation2d(0.0));
     }
 
-    public Pose2d[] getWaypoints(){
-        if(currentPose.getY() > CHARGE_CENTER_Y){
-            return new Pose2d[] {ALLIANCE_START_POSE[1], ALLIANCE_WAYPOINTS_POSE[2]};
-        }
-    }
-
     public void trajediesDecider() {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
