@@ -103,7 +103,7 @@ public class GenerateTrajedies {
             Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (startPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
@@ -123,7 +123,7 @@ public class GenerateTrajedies {
             Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (startPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
@@ -153,7 +153,7 @@ public class GenerateTrajedies {
             Pose2d endPose = getCargoLocation();
 
             // going around the charging station, if convenient
-            if (startPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             } else {
@@ -166,6 +166,8 @@ public class GenerateTrajedies {
             trajectoryList.add(leave.getTrajectory());
             command.addCommands(leave);
         }
+
+        trajectoryList.add(getFullTrajectory());
 
     }
 

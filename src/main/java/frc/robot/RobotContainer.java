@@ -71,8 +71,9 @@ public class RobotContainer {
         driveController = new SnailController(CONTROLLER_DRIVER_ID);
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
-        configureSubsystems();
         configureAutoChoosers();
+        configureSubsystems();
+        
         configureButtonBindings();
         
         outputCounter = 0;

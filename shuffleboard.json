@@ -11,10 +11,10 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "9,2": {
+          "11,2": {
             "size": [
               4,
-              3
+              2
             ],
             "content": {
               "_type": "ComboBox Chooser",
@@ -24,9 +24,9 @@
               "_showGlyph": false
             }
           },
-          "6,1": {
+          "13,4": {
             "size": [
-              2,
+              4,
               2
             ],
             "content": {
@@ -37,7 +37,7 @@
               "_showGlyph": false
             }
           },
-          "13,2": {
+          "11,6": {
             "size": [
               2,
               2
@@ -50,7 +50,7 @@
               "_showGlyph": false
             }
           },
-          "17,6": {
+          "13,6": {
             "size": [
               2,
               2
@@ -93,22 +93,9 @@
               "_showGlyph": false
             }
           },
-          "5,0": {
+          "7,4": {
             "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive State",
-              "_title": "Drive State",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "10,5": {
-            "size": [
-              3,
+              4,
               2
             ],
             "content": {
@@ -128,32 +115,6 @@
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/isAllianceBlue",
               "_title": "SmartDashboard/isAllianceBlue",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Slow Turn Mult",
-              "_title": "Drive Slow Turn Mult",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Closed Max Vel",
-              "_title": "Drive Closed Max Vel",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -366,7 +327,7 @@
               "_showGlyph": false
             }
           },
-          "8,2": {
+          "7,1": {
             "size": [
               1,
               1
@@ -392,7 +353,7 @@
               "_showGlyph": false
             }
           },
-          "15,6": {
+          "9,6": {
             "size": [
               2,
               2
@@ -418,7 +379,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
+          "6,2": {
             "size": [
               1,
               1
@@ -431,7 +392,7 @@
               "_showGlyph": false
             }
           },
-          "7,3": {
+          "7,2": {
             "size": [
               1,
               1
@@ -440,19 +401,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Roll Angle",
               "_title": "Roll Angle",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pitch Angle",
-              "_title": "Pitch Angle",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -512,6 +460,49 @@
               "Layout/Number of rows": 3,
               "Layout/Label position": "BOTTOM",
               "_children": {}
+            }
+          },
+          "5,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "SmartDashboard/View Trajectory Pos",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Drive State",
+              "_title": "Drive State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pitch Angle",
+              "_title": "Pitch Angle",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -754,12 +745,166 @@
           }
         }
       }
+    },
+    {
+      "title": "Auto",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "9,0": {
+            "size": [
+              10,
+              7
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "SmartDashboard/Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "A2023_Charged_Up",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false,
+              "Colors/traj": "#FFFFFFFF"
+            }
+          },
+          "6,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "Score Location",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
+              "_title": "Cargo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
+              "_title": "Start",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Get Cargo",
+              "_title": "Auto Get Cargo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Goto Charge",
+              "_title": "Auto Charge",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Score",
+              "_title": "Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/isAllianceBlue",
+              "_title": "Blue?",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Testing",
+              "_title": "SmartDashboard/Testing",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,2": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "Change View of Trajectory",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }
