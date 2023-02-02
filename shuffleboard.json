@@ -504,6 +504,21 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "8,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_title": "Update Visual",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -895,6 +910,19 @@
               "Slider Settings/Max": 5.0,
               "Slider Settings/Block increment": 0.0625,
               "Visuals/Display value": true
+            }
+          },
+          "2,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_title": "SmartDashboard/Update Visual",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

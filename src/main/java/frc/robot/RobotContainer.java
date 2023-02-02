@@ -61,6 +61,8 @@ public class RobotContainer {
     private boolean cargo;
     private boolean charge;
 
+    private boolean updateVisual = false;
+
     private GenerateTrajedies generateTrajedies;
 
 
@@ -86,6 +88,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Update Visual", false);
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
@@ -248,6 +251,7 @@ public class RobotContainer {
                 drivetrain,
                 estimatedCurrentPose2d()
             );
+            resetDashboard();
         }
     
     }
@@ -288,13 +292,25 @@ public class RobotContainer {
 
 
     public boolean checkIfUpdate() {
-        return score != SmartDashboard.getBoolean("Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false);
+        return score != SmartDashboard.getBoolean("Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false);
     }
 
     public void updateAutoChoosers() {
         score = SmartDashboard.getBoolean("Auto Score", false);
         cargo = SmartDashboard.getBoolean("Auto Get Cargo", false);
         charge = SmartDashboard.getBoolean("Auto Goto Charge", false);
+    }
+
+    public void resetDashboard() {
+        // Field Side
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+        
+        //getting the auto values for score, cargo, and charge
+        SmartDashboard.putBoolean("Auto Score", score);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("Update Visual", false);
     }
 
 }
