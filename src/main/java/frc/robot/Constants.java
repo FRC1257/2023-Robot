@@ -148,10 +148,10 @@ public final class Constants {
                 new Pose2d(4.8, 0.754, Rotation2d.fromDegrees(0)),
         };
         public static Pose2d[] RED_WAYPOINT_POSE = new Pose2d[] {
-                new Pose2d(13.5, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(11.6, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(13.5, 0.754, Rotation2d.fromDegrees(0)),
-                new Pose2d(11.6, 0.754, Rotation2d.fromDegrees(0)),
+                new Pose2d(13.5, 4.73, Rotation2d.fromDegrees(180)),
+                new Pose2d(11.6, 4.73, Rotation2d.fromDegrees(180)),
+                new Pose2d(13.5, 0.754, Rotation2d.fromDegrees(180)),
+                new Pose2d(11.6, 0.754, Rotation2d.fromDegrees(180)),
         };
 
         public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0));
