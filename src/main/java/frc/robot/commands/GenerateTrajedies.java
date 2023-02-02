@@ -26,6 +26,8 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
+    private Pose2d ALLIANCE_CHARGE_POSE_WAYPOINT;
+    private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
     private final Pose2d chargePose;
 
     public GenerateTrajedies(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
@@ -40,15 +42,19 @@ public class GenerateTrajedies {
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
             ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
+            ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.BLUE_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
+            ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
+            ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.RED_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
+            ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
         }
         this.StartPose = ALLIANCE_START_POSE[StartPose]; 
         this.currentPose = this.StartPose;
@@ -78,12 +84,15 @@ public class GenerateTrajedies {
         return chargePose;
     }
 
-    public Pose2d getLeaveCommunityPose() {
+    public Pose2d getLeaveCommunityPose(Pose2d currentPose) {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
         // TODO fix this
         // in reality there are 6 possible places so we would just need to use the varialbes we have
-        return new Pose2d(5, 5, new Rotation2d(0.0));
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            return ALLIANCE_LEAVE_COMMUNITY[0];
+        } 
+        return ALLIANCE_LEAVE_COMMUNITY[1];
     }
 
     public void trajediesDecider() {
@@ -128,16 +137,16 @@ public class GenerateTrajedies {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
             }
-            trajPoints.add(getLeaveCommunityPose());
+            trajPoints.add(getLeaveCommunityPose(currentPose));
             ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
-            currentPose = getLeaveCommunityPose();
+            currentPose = getLeaveCommunityPose(currentPose);
             trajectoryList.add(step2.getTrajectory());
             command.addCommands(step2);
         }
 
         // step 3 go for charge
         if (charge) {
-            ToChargeCommand step3 = new ToChargeCommand(driveTrain, currentPose, getChargeLocation());
+            ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(currentPose, ALLIANCE_CHARGE_POSE_WAYPOINT, getChargeLocation()), false);
             currentPose = getChargeLocation();
             trajectoryList.add(step3.getTrajectory());
             command.addCommands(step3);
@@ -157,9 +166,9 @@ public class GenerateTrajedies {
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
                 trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
             }
-            trajPoints.add(getLeaveCommunityPose());
+            trajPoints.add(getLeaveCommunityPose(currentPose));
             ToPosCommand leave = new ToPosCommand(driveTrain, trajPoints, false);
-            currentPose = getLeaveCommunityPose();
+            currentPose = getLeaveCommunityPose(currentPose);
             trajectoryList.add(leave.getTrajectory());
             command.addCommands(leave);
         }

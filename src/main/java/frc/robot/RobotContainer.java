@@ -73,7 +73,6 @@ public class RobotContainer {
 
         configureAutoChoosers();
         configureSubsystems();
-        
         configureButtonBindings();
         
         outputCounter = 0;
