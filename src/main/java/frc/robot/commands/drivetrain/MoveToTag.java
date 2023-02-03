@@ -30,21 +30,21 @@ public class MoveToTag extends CommandBase {
 
     @Override
     public void initialize() {
-        vision.setPipeline(0);
+        // vision.setPipeline(0);
         
-        Pose2d finalPose = vision.getTagPose2d(tag_id);
+        // Pose2d finalPose = vision.getTagPose2d(tag_id);
 
-        ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
+        // ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
 
-        TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(12), Units.feetToMeters(12));
-        config.setReversed(true);
-        Pair<Pose2d, Double> currentPose = vision.getEstimatedGlobalPose();
+        // TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(12), Units.feetToMeters(12));
+        // config.setReversed(true);
+        // Pair<Pose2d, Double> currentPose = vision.getEstimatedGlobalPose();
 
-        trajectory = TrajectoryGenerator.generateTrajectory(
-        currentPose.getFirst(),
-        interiorWaypoints,
-        finalPose,
-        config);
+        // trajectory = TrajectoryGenerator.generateTrajectory(
+        // currentPose.getFirst(),
+        // interiorWaypoints,
+        // finalPose,
+        // config);
         
         
     }

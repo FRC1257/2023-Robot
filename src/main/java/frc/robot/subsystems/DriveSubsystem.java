@@ -82,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
     resetEncoders();
     m_odometry =
         new DifferentialDriveOdometry(
-            Rotation2d.fromDegrees(getHeading())
+            Rotation2d.fromDegrees(getHeading()), 0, 0
            );
 
     if (RobotBase.isSimulation()) { // If our robot is simulated
@@ -176,12 +176,12 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @param pose The pose to which to set the odometry.
    */
-  public void resetOdometry(Pose2d pose) {
-    resetEncoders();
-    m_drivetrainSimulator.setPose(pose);
-    m_odometry.resetPosition(pose, 
-        Rotation2d.fromDegrees(getHeading()));
-  }
+  // public void resetOdometry(Pose2d pose) {
+  //   resetEncoders();
+  //   m_drivetrainSimulator.setPose(pose);
+  //   m_odometry.resetPosition(pose, 
+  //       Rotation2d.fromDegrees(getHeading()));
+  // }
 
   /**
    * Drives the robot using arcade controls.

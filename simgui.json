@@ -22,9 +22,15 @@
         "Robot": {
           "style": "Line"
         },
+        "image": "C:\\Users\\YY\\stuff\\Screenshot 2023-02-02 164738.png",
         "traj": {
           "style": "Track"
         },
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[0]": {
         "window": {
           "visible": true
         }
@@ -33,13 +39,15 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/SendableChooser[2]": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
   "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
     "transitory": {
       "FMSInfo": {
         "open": true
@@ -61,7 +69,9 @@
         "open": true
       },
       "open": true
-    },
-    "visible": true
+    }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }
