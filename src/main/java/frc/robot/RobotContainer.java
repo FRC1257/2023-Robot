@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.pneumatics.PneumaticsExtend;
+import frc.robot.commands.pneumatics.PneumaticsOff;
+import frc.robot.commands.pneumatics.PneumaticsRetract;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -33,6 +36,8 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+    private PneumaticExample pneumatics;
+
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -73,10 +78,14 @@ public class RobotContainer {
         // Vision
         vision = new Vision();
 
+        // pneumatics
+        pneumatics = new PneumaticExample();
+
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
+        subsystems.add(pneumatics);
     }
 
     /**
@@ -84,12 +93,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        driveController.getButton(Button.kY.value).onTrue(new PneumaticsExtend(pneumatics));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kA.value).onTrue(new PneumaticsOff(pneumatics));
+        driveController.getButton(Button.kB.value).onTrue(new PneumaticsRetract(pneumatics));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
     }
 
     /**

@@ -25,6 +25,9 @@ public final class Constants {
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
+
+        public final static int DOUBLE_SOLENOID_FORWARD = 0;
+        public final static int DOUBLE_SOLENOID_REVERSE = 1;
     }
 
     public static class Drivetrain {
