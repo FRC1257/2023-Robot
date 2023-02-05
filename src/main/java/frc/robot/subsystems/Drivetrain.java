@@ -274,19 +274,7 @@ public class Drivetrain extends SnailSubsystem {
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
 
-                if (simulation) {
-                    m_drivetrainSimulator.setInputs(arcadeSpeeds[0], arcadeSpeeds[1]);
-
-                    m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
-                    m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
-                    m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
-                    m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
-                    m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
-
-                    driveOdometry.update(Gyro.getInstance().getGyro().getRotation2d(),
-                    m_leftEncoderSim.getDistance(),
-                    m_rightEncoderSim.getDistance());
-                }
+                updateSimulation(arcadeSpeeds[0], arcadeSpeeds[1]);
 
                 // drivetrain.arcadeDrive(speedForward, speedTurn);
                 break;
@@ -295,20 +283,8 @@ public class Drivetrain extends SnailSubsystem {
                 // kinda misleading var names
                 frontLeftMotor.set(speedForward);
                 frontRightMotor.set(speedTurn);
-
-                if (simulation) {
-                    m_drivetrainSimulator.setInputs(speedForward, speedTurn);
-
-                    m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
-                    m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
-                    m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
-                    m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
-                    m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
-
-                    driveOdometry.update(Gyro.getInstance().getGyro().getRotation2d(),
-                    m_leftEncoderSim.getDistance(),
-                    m_rightEncoderSim.getDistance());
-                }
+                updateSimulation(speedForward, speedTurn);
+                break;
             }
             case VELOCITY_DRIVE: {
                 double adjustedSpeedForward = reverseEnabled ? -speedForward : speedForward;
@@ -328,6 +304,7 @@ public class Drivetrain extends SnailSubsystem {
                 // for testing output
                 testingTargetLeftSpeed = wheelSpeeds.leftMetersPerSecond;
                 testingTargetRightSpeed = wheelSpeeds.rightMetersPerSecond;
+                updateSimulation(testingTargetLeftSpeed, testingTargetRightSpeed);
                 break;
             }
             case DRIVE_DIST: {
@@ -351,20 +328,7 @@ public class Drivetrain extends SnailSubsystem {
                 double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(forwardOutput, turnOutput);
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
-
-                if (simulation) {
-                    m_drivetrainSimulator.setInputs(arcadeSpeeds[0], arcadeSpeeds[1]);
-
-                    m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
-                    m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
-                    m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
-                    m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
-                    m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
-
-                    driveOdometry.update(Gyro.getInstance().getGyro().getRotation2d(),
-                    m_leftEncoderSim.getDistance(),
-                    m_rightEncoderSim.getDistance());
-                }
+                updateSimulation(arcadeSpeeds[0], arcadeSpeeds[1]);
 
                 break;
             }
@@ -387,6 +351,7 @@ public class Drivetrain extends SnailSubsystem {
                 double[] arcadeSpeeds = ArcadeDrive.arcadeDrive(0, turnOutput);
                 frontLeftMotor.set(arcadeSpeeds[0]);
                 frontRightMotor.set(arcadeSpeeds[1]);
+                updateSimulation(arcadeSpeeds[0], arcadeSpeeds[1]);
                 break;
             }
             case DRIVE_DIST_PROFILED: {
@@ -413,6 +378,7 @@ public class Drivetrain extends SnailSubsystem {
                         positionError * DRIVE_PROFILE_LEFT_P, ArbFFUnits.kPercentOut);
                 rightPIDController.setReference(wheelSpeeds.rightMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT,
                         positionError * DRIVE_PROFILE_RIGHT_P, ArbFFUnits.kPercentOut);
+                updateSimulation(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
                 break;
             }
             case TRAJECTORY: {
@@ -426,16 +392,24 @@ public class Drivetrain extends SnailSubsystem {
                     pathTimer.reset();
                     trajectory = null;
                     state = defaultState;
+                    // stop the bot
+                    frontLeftMotor.set(0);
+                    frontRightMotor.set(0);
                     break;
                 }
 
                 Trajectory.State currentState = trajectory.sample(pathTimer.get());
+                ChassisSpeeds chassisSpeeds;
                 if (simulation) {
-                    m_field.setRobotPose(currentState.poseMeters);
+                    //m_field.setRobotPose(currentState.poseMeters);
+                    chassisSpeeds = ramseteController.calculate(m_drivetrainSimulator.getPose(), currentState);
                 }
-                ChassisSpeeds chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
+                else {
+                    chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
+                }
+                
                 DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
-
+                updateSimulation(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
                 leftPIDController.setReference(wheelSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
                 rightPIDController.setReference(wheelSpeeds.rightMetersPerSecond, ControlType.kVelocity,
                         DRIVE_VEL_SLOT);
@@ -539,6 +513,9 @@ public class Drivetrain extends SnailSubsystem {
                 leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), pose);
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
+        if (simulation) {
+            m_drivetrainSimulator.setPose(pose);
+        }
     }
 
     public void endPID() {
@@ -624,6 +601,16 @@ public class Drivetrain extends SnailSubsystem {
                     driveOdometry.getPoseMeters().getX(),
                     driveOdometry.getPoseMeters().getY()
             });
+            if (simulation) {
+                SmartDashboard.putNumberArray("Drive Simulation (x, y)", new double[] {
+                        m_drivetrainSimulator.getPose().getTranslation().getX(),
+                        m_drivetrainSimulator.getPose().getTranslation().getY()
+                });
+                SmartDashboard.putNumberArray("Simulation Encoders (Lp, Rp, Lv, Rv)", new double[] {
+                    m_leftEncoderSim.getDistance(), m_leftEncoderSim.getDistance(),
+                    m_leftEncoderSim.getRate(), m_rightEncoderSim.getRate()
+            });
+            }
 
         }
     }
@@ -725,13 +712,28 @@ public class Drivetrain extends SnailSubsystem {
         m_field.setRobotPose(driveOdometry.getPoseMeters());
         if (simulation) {
             // TODO get simulation working
-            // m_field.setRobotPose(m_drivetrainSimulator.getPose());
+            m_field.setRobotPose(m_drivetrainSimulator.getPose());
         }
     }
 
     @Override
     public void simulationPeriodic() {
-        
+        m_drivetrainSimulator.update(0.020);
+
+        m_leftEncoderSim.setDistance(m_drivetrainSimulator.getLeftPositionMeters());
+        m_leftEncoderSim.setRate(m_drivetrainSimulator.getLeftVelocityMetersPerSecond());
+        m_rightEncoderSim.setDistance(m_drivetrainSimulator.getRightPositionMeters());
+        m_rightEncoderSim.setRate(m_drivetrainSimulator.getRightVelocityMetersPerSecond());
+        m_gyroSim.setAngle(-m_drivetrainSimulator.getHeading().getDegrees());
+    }
+
+    private void updateSimulation(double leftSpeed, double rightSpeed) {
+        if (simulation) {
+            m_drivetrainSimulator.setInputs(
+                leftSpeed * RobotController.getBatteryVoltage(),
+                rightSpeed * RobotController.getBatteryVoltage()
+            );
+        }
     }
 
     public State getState() {
