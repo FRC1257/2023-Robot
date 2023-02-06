@@ -29,7 +29,7 @@ public class MoveToTag extends CommandBase {
     }
 
     @Override
-    public void initialize() {
+    public void initialize() {/* 
         vision.setPipeline(0);
         
         Pose2d finalPose = vision.getTagPose2d(tag_id);
@@ -44,7 +44,7 @@ public class MoveToTag extends CommandBase {
         currentPose.getFirst(),
         interiorWaypoints,
         finalPose,
-        config);
+        config); */
         
         
     }

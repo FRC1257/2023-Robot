@@ -20,6 +20,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 /**
@@ -48,15 +49,20 @@ public class Vision extends SnailSubsystem {
             // This should be impossible
         }
         poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, Constants.Vision.CAMERA_TO_ROBOT);
+        poseEstimator.setReferencePose(new Pose2d());
     }
 
     @Override
     public void periodic() {
-        result = camera.getLatestResult(); // Query the latest result from PhotonVision
-        hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
-                                         // true
-        if (hasTarget) {
-            this.result = result;
+        try {
+            result = camera.getLatestResult(); // Query the latest result from PhotonVision
+            hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
+                                            // true
+            if (hasTarget) {
+                this.result = result;
+            }
+        } catch (Exception e) {
+            // lol
         }
     }
 
@@ -104,8 +110,13 @@ public class Vision extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        // TODO Auto-generated method stub
+        Optional<EstimatedRobotPose> result = poseEstimator.update();
 
+        if (result.isPresent()) {
+            EstimatedRobotPose camPose = result.get();
+            SmartDashboard.putNumberArray("Vision poses", new double[] {
+            camPose.estimatedPose.toPose2d().getX(), camPose.estimatedPose.toPose2d().getY(), camPose.timestampSeconds });
+        }
     }
 
     @Override
