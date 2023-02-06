@@ -268,5 +268,4 @@ public final class Constants {
     public final static int NEO_CURRENT_LIMIT = 80; // amps
 
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
-    public final static boolean drawIdealPath = true;
 }

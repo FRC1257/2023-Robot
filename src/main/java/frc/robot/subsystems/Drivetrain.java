@@ -400,8 +400,8 @@ public class Drivetrain extends SnailSubsystem {
 
                 Trajectory.State currentState = trajectory.sample(pathTimer.get());
                 ChassisSpeeds chassisSpeeds;
-                if (simulation && drawIdealPath) {
-                    m_field.setRobotPose(currentState.poseMeters);
+                if (simulation) {
+                    //m_field.setRobotPose(currentState.poseMeters);
                     chassisSpeeds = ramseteController.calculate(m_drivetrainSimulator.getPose(), currentState);
                 }
                 else {
@@ -710,7 +710,7 @@ public class Drivetrain extends SnailSubsystem {
         DRIVE_PROFILE_RIGHT_P = SmartDashboard.getNumber("Drive Profile Right kP", DRIVE_PROFILE_RIGHT_P);
 
         m_field.setRobotPose(driveOdometry.getPoseMeters());
-        if (simulation && !drawIdealPath) {
+        if (simulation) {
             // TODO get simulation working
             m_field.setRobotPose(m_drivetrainSimulator.getPose());
         }
