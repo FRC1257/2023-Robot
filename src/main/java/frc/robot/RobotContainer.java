@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.GenerateTrajedies;
+import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
@@ -63,7 +63,7 @@ public class RobotContainer {
 
     private boolean updateVisual = false;
 
-    private GenerateTrajedies generateTrajedies;
+    private GenerateTrajectories generateTrajectories;
 
 
     /**
@@ -138,7 +138,7 @@ public class RobotContainer {
         subsystems.add(vision);
 
         // generate auto
-        generateTrajedies = new GenerateTrajedies(
+        generateTrajectories = new GenerateTrajectories(
             drivetrain,
             charge,
             score,
@@ -182,7 +182,7 @@ public class RobotContainer {
     public Command getAutoCommand() {
         updateAutoChoosers();
 
-        generateTrajedies = new GenerateTrajedies(
+        generateTrajectories = new GenerateTrajectories(
             drivetrain,
             charge,
             score,
@@ -193,7 +193,7 @@ public class RobotContainer {
         
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
-        return generateTrajedies.getCommand();
+        return generateTrajectories.getCommand();
     }
 
     /**
@@ -234,7 +234,7 @@ public class RobotContainer {
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            Trajectory traj = generateTrajedies.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj);
         }
@@ -243,7 +243,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", cargo);
             updateAutoChoosers();
 
-            generateTrajedies = new GenerateTrajedies(
+            generateTrajectories = new GenerateTrajectories(
                 drivetrain,
                 charge,
                 score,
