@@ -100,7 +100,8 @@ public class Drivetrain extends SnailSubsystem {
         DRIVE_DIST,
         TURN_ANGLE,
         DRIVE_DIST_PROFILED,
-        TRAJECTORY
+        TRAJECTORY,
+        Subbadabado
     }
 
     private State defaultState = State.VELOCITY_DRIVE;
