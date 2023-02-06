@@ -12,12 +12,12 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
 import frc.robot.RobotContainer;
 
-public class GenerateTrajedies {
+public class GenerateTrajectories {
     private boolean charge;
     private boolean score;
     private boolean cargo;
     private Drivetrain driveTrain;
-    private final Pose2d StartPose;
+    private Pose2d StartPose;
     
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
@@ -28,9 +28,9 @@ public class GenerateTrajedies {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private Pose2d ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
-    private final Pose2d chargePose;
+    private Pose2d chargePose;
 
-    public GenerateTrajedies(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
         this.charge = isCharge;
         this.score = isScore;
         this.cargo = isCargo;
