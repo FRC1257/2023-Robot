@@ -25,7 +25,7 @@ public class PDBalanceCommand extends CommandBase {
 	@Override
 	public void execute() {
 		double velocity = controller.calculate(gyro.getPitchAngle(), Autonomous.BALANCE_SETPOINT_ANGLE);
-		drivetrain.velocityDrive(Math.min(velocity, 1), 0);
+		drivetrain.velocityDrive(-Math.min(velocity, 1), 0);
 	}
 
 	@Override
