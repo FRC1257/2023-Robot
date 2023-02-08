@@ -85,7 +85,10 @@ public final class Constants {
     }
 
     public static class Autonomous {
-        
+        public static double BALANCE_KP = 0.01;
+        public static double BALANCE_KD = 0.01;
+        public static double BALANCE_SETPOINT_ANGLE = 0;
+        public static double BALANCE_THRESHOLD_DEGREES = 1;
     }
 
     public static double PI = 3.14159265;
