@@ -36,6 +36,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
@@ -368,10 +369,10 @@ public class Drivetrain extends SnailSubsystem {
     public void updateOdometry() {
         poseEstimator.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), leftEncoder.getPosition());
 
-        Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+        Pair<Pose2d, Double> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
 
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
+        if (vision.hasTarget) {
+            EstimatedRobotPose camPose = vision.getEstimatedRobotPose();
             poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
     }
