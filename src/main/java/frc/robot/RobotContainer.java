@@ -10,6 +10,7 @@ import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.util.Gyro;
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
@@ -86,11 +87,12 @@ public class RobotContainer {
         // Drivetrain bindings
         // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
+        driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain));
     }
 
     /**
@@ -127,6 +129,8 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).displayShuffleboard();
         }
+
+        Gyro.getInstance().outputValues();
 
         outputCounter = (outputCounter + 1) % (subsystems.size() * 3);
     }

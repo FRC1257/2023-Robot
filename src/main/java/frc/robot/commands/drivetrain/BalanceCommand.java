@@ -14,6 +14,8 @@ public class BalanceCommand extends CommandBase {
   private double drivePower;
   private Gyro gyro = Gyro.getInstance();
 
+  private int levelCounter; 
+
   public BalanceCommand(Drivetrain drivetrain) {
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);
@@ -25,10 +27,20 @@ public class BalanceCommand extends CommandBase {
 
   @Override
   public void execute() {
+    this.currentAngle = gyro.getRollAngle();
 
-    this.currentAngle = gyro.getPitchAngle();
+    if (Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES) {
+      levelCounter ++;
+    } else {
+      levelCounter = 0;
+    }
+
     error = Autonomous.BALANCE_SETPOINT_ANGLE - currentAngle;
     drivePower = -Math.min(Autonomous.BALANCE_KP * error, 1);
+    // Limit the max power
+    if (Math.abs(drivePower) > 0.4) {
+      drivePower = Math.copySign(0.4, drivePower);
+    }
     drivetrain.velocityDrive(drivePower, 0);
 
   }
@@ -40,6 +52,6 @@ public class BalanceCommand extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES;
+    return levelCounter > Autonomous.BALANCE_STEPS_THRESHOLD;
   }
 }
