@@ -5,6 +5,8 @@ import edu.wpi.first.math.controller.PIDController;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
 import frc.robot.util.Gyro;
+import edu.wpi.first.math.MathUtil;
+
 public class PDBalanceCommand extends CommandBase {
 	private final Drivetrain drivetrain;
 	private final PIDController controller;
@@ -25,7 +27,7 @@ public class PDBalanceCommand extends CommandBase {
 	@Override
 	public void execute() {
 		double velocity = controller.calculate(gyro.getPitchAngle(), Autonomous.BALANCE_SETPOINT_ANGLE);
-		drivetrain.velocityDrive(-Math.min(velocity, 1), 0);
+		drivetrain.velocityDrive(-MathUtil.clamp(velocity, -1.0, 1.0), 0);
 	}
 
 	@Override
