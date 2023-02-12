@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.robot.Constants.ElectricalLayout;
 
 public class Extender extends SnailSubsystem{
 
@@ -7,8 +10,8 @@ public class Extender extends SnailSubsystem{
     private DoubleSolenoid extenderSolenoidLeft;
 
     public Extender() {
-        extenderSolenoidLeft = new DoubleSolenoid(null, 0, 0);
-        extenderSolenoidRight = new DoubleSolenoid(null, 0, 0)
+        extenderSolenoidLeft = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.EXTENDER_LEFT_FORWARD_ID, ElectricalLayout.EXTENDER_LEFT_REVERSE_ID);
+        extenderSolenoidRight = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.EXTENDER_RIGHT_FORWARD_ID, ElectricalLayout.EXTENDER_RIGHT_REVERSE_ID);
     }
 
     public enum State {
@@ -20,7 +23,16 @@ public class Extender extends SnailSubsystem{
 
     @Override
     public void update() {
-    
+        switch(extenderState) {
+            case RETRACTED:
+                extenderSolenoidLeft.set(Value.kReverse);
+                extenderSolenoidRight.set(Value.kReverse);
+                break;
+            case EXTENDED:
+                extenderSolenoidLeft.set(Value.kForward);
+                extenderSolenoidRight.set(Value.kForward);
+                break;
+        }
     }
 
     public void extended() {
@@ -29,6 +41,10 @@ public class Extender extends SnailSubsystem{
 
     public void retract() {
         extenderState = State.RETRACTED;
+    }
+
+    public State getState() {
+        return extenderState;
     }
 
     @Override
