@@ -18,7 +18,7 @@ public class Arm extends SnailSubsystem {
     }
 
     private State state = State.MANUAL;
-    private DoubleSupplier speedSupplier;
+    private double speed;
 
   public Arm() {
       motorLeft = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
