@@ -5,16 +5,18 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import static frc.robot.Constants.ElectricalLayout.*;
-import static frc.robot.Constants.Arm.*;
+import static frc.robot.Constants.IntakeArm.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 public class IntakeArm extends SnailSubsystem {
 
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
-  
+    private SparkMaxPIDController pidController;
+    private CANEncoder encoder; 
    public enum State {
-        MANUAL
+        MANUAL,
+        PID,
     }
 
     private State state = State.MANUAL;
@@ -32,13 +34,15 @@ public class IntakeArm extends SnailSubsystem {
       motorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
       
       motorRight.follow(motorLeft);
+      pidController = motorLeft.getPIDController();
+      encoder = new CANEncoder(motorLeft);
 }
   
    @Override
     public void update() {
         switch(state) {
             case MANUAL:
-                armMotor.set(speed);
+                motorLeft.set(speed);
                 break;
         }
     }
