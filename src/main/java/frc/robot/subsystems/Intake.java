@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
 import frc.robot.Constants.IntakeSpeed;
 
@@ -57,12 +58,11 @@ public class Intake extends SnailSubsystem {
     public State getState() {
         return intakeState;
     }
-    
+
 
     @Override
     public void displayShuffleboard() {
-        // TODO Auto-generated method stub
-        
+        SmartDashboard.putNumber("Intake Speed", intakeMotor.get());
     }
 
     @Override
