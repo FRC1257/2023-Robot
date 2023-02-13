@@ -11,9 +11,9 @@ public class ClawAlt extends SnailSubsystem {
     public enum State {
       INTAKING,
       EJECTING,
-      NEUTRAL
+      NEUTRAL,
     }
-    
+    //cube and cone states?
     private State state = State.NEUTRAL;
     
     public ClawAlt() {
