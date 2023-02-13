@@ -8,7 +8,7 @@ import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.Arm.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
-public class Arm extends SnailSubsystem {
+public class IntakeArm extends SnailSubsystem {
 
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
@@ -20,7 +20,7 @@ public class Arm extends SnailSubsystem {
     private State state = State.MANUAL;
     private double speed;
 
-  public Arm() {
+  public IntakeArm() {
       motorLeft = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
       motorLeft.restoreFactoryDefaults();
       motorLeft.setIdleMode(IdleMode.kBrake);
