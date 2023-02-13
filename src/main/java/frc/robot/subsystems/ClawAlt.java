@@ -8,11 +8,17 @@ import java.frc.robot.Constants.*;
 public class ClawAlt extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
-    public enum State {
+    public enum RollerState {
       INTAKING,
       EJECTING,
-      NEUTRAL,
+      NEUTRAL
     }
+    
+    public enum ClawState {
+      CUBEINTAKE,
+      CONEINTAKE
+    }
+    
     //cube and cone states?
     private State state = State.NEUTRAL;
     
@@ -68,6 +74,14 @@ public class ClawAlt extends SnailSubsystem {
 
     public void intake() {
         state = State.INTAKING;
+    }
+    
+    public void cubeintake() {
+        state = State.CUBEINTAKE;
+    }
+    
+    public void coneintake() {
+        state = State.CONEINTAKE;
     }
     
     public State getState() {
