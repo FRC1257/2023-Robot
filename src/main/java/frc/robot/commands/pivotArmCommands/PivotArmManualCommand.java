@@ -1,5 +1,5 @@
 
-package frc.robot.commands;
+package frc.robot.commands.pivotArmCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PivotArm;
@@ -32,6 +32,6 @@ public class PivotArmManualCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-
+        return false;
     }
 }
