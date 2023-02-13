@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import java.frc.robot.Constants.*;
 
-public class ClawAlt extends SnailSubsystem {
+public class Claw extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
     private DoubleSolenoid solenoid;
