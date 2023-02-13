@@ -8,6 +8,8 @@ import java.frc.robot.Constants.*;
 public class ClawAlt extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
+    private DoubleSolenoid solenoid;
+    
     public enum RollerState {
       INTAKING,
       EJECTING,
@@ -20,7 +22,8 @@ public class ClawAlt extends SnailSubsystem {
     }
     
     //cube and cone states?
-    private State state = State.NEUTRAL;
+    private RollerState;
+    private ClawState;
     
     public ClawAlt() {
         motorLeft = new CANSparkMax(CLAW_MOTOR_LEFT, MotorType.kBrushless);
@@ -28,6 +31,10 @@ public class ClawAlt extends SnailSubsystem {
         motorInit(motorLeft);
         motorInit(motorRight);
         motorRight.follow(motorLeft, true);
+        rollerstate = RollerState.NEUTRAL;
+        
+        solenoid = new DoubleSolenoid(CLAW_FORWARD_ID, CLAW_REVERSE_ID);
+        clawstate = ClawState.CUBEINTAKE;
     }
     private void motorInit(CANSparkMax motor) {
         motor.restoreFactoryDefaults();
@@ -36,7 +43,7 @@ public class ClawAlt extends SnailSubsystem {
     }
     @Override
     public void update() {
-        switch(state) {
+        switch(rollerstate) {
             case NEUTRAL:
                 motorLeft.set(0.0);
                 break;
@@ -45,6 +52,15 @@ public class ClawAlt extends SnailSubsystem {
                 break;
             case EJECTING:
                 motorLeft.set(-0.85);
+                break;
+        }
+        
+        switch(clawstate) {
+            case CUBEINTAKE:
+                solenoid.set(Value.kReverse);
+                break;
+            case CONEINTAKE:
+                solenoid.set(Value.kForward);
                 break;
         }
     }
@@ -84,7 +100,10 @@ public class ClawAlt extends SnailSubsystem {
         state = State.CONEINTAKE;
     }
     
-    public State getState() {
-        return state;
+    public RollerState getRollerState() {
+        return rollerstate;
+    }
+    public ClawState getClawState() {
+        return clawstate;
     }
 }
