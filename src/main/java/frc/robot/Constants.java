@@ -183,7 +183,7 @@ public final class Constants {
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
     public final static int NEO_CURRENT_LIMIT = 80; // amps
 
-    public static String USB_CAMERA_NAME = "Front Camera";
-    public static String USB_CAMERA_NAME_TWO = "Back Camera";
+    public static String USB_CAMERA_NAME_FRONT = "Front Camera";
+    public static String USB_CAMERA_NAME_BACK = "Back Camera";
     
 }
