@@ -91,19 +91,23 @@ public class Vision extends SnailSubsystem {
         poseEstimator.setReferencePose(prevEstimatedRobotPose);
         poseEstimator2.setReferencePose(prevEstimatedRobotPose);
 
-        Optional<EstimatedRobotPose> update1 = poseEstimator.update();
-        Optional<EstimatedRobotPose> update2 = poseEstimator2.update();
-
-        if (update1.isPresent()) {
+        try {
+            Optional<EstimatedRobotPose> update1 = poseEstimator.update();
+            Optional<EstimatedRobotPose> update2 = poseEstimator2.update();
+            if (update1.isPresent()) {
+                estimate = update1;
+                return update1;
+            } else if (update2.isPresent()) {
+                estimate = update2;
+                return update2;
+            }
+    
             estimate = update1;
             return update1;
-        } else if (update2.isPresent()) {
-            estimate = update2;
-            return update2;
+        } catch (Exception e) {
+            return estimate;
         }
 
-        estimate = update1;
-        return update1;
     }
 
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it
