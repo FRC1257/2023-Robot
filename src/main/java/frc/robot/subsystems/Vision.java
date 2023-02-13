@@ -1,8 +1,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +8,7 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.RobotPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -18,63 +17,65 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 
 /**
  * Inspired by UMN Ri3D
  */
 public class Vision extends SnailSubsystem {
-    PhotonCamera camera_front = new PhotonCamera(Constants.Vision.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used in the
+    PhotonCamera camera = new PhotonCamera(Constants.USB_CAMERA_NAME); // Declare the name of the camera used in the
                                                                        // pipeline
-    PhotonCamera camera_back = new PhotonCamera(Constants.Vision.USB_CAMERA_NAME_BACK); // Declare the name of the camera used in
-                                                                                 // the pipeline
- // Stores the transform from the center of the robot to the camera
+    PhotonCamera camera2 = new PhotonCamera(Constants.USB_CAMERA_NAME_TWO);
+    Transform3d robotToCam = new Transform3d(); // Stores the transform from the center of the robot to the camera
+    Transform3d robotToCam2 = new Transform3d(new Translation3d(), new Rotation3d(0.0, 180.0, 0.0));
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
-    PhotonPoseEstimator poseEstimatorFront; // stores the pose estimator
-    PhotonPoseEstimator poseEstimatorBack; // stores the pose estimator
+    PhotonPoseEstimator poseEstimator; // stores the pose estimator
+    PhotonPoseEstimator poseEstimator2; // stores the pose estimator
     AprilTagFieldLayout aprilTagFieldLayout; // stores the field layout
     public Pose2d prevEstimatedRobotPose;
-    private Pose2d poseEstimate = new Pose2d();
-    private EstimatedRobotPose estimatedRobotPose;
 
-    // stores camera and transform to center of robot
-    ArrayList<Pair<PhotonCamera, Transform3d>> camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
+    private Optional<EstimatedRobotPose> estimate;
 
     public Vision() {
-        camList.add(new Pair<PhotonCamera, Transform3d>(camera_front, Constants.Vision.CAMERA_TO_ROBOT_FRONT));
-        camList.add(new Pair<PhotonCamera, Transform3d>(camera_back, Constants.Vision.CAMERA_TO_ROBOT_BACK));
-
         try {
-            aprilTagFieldLayout = new AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
-            System.out.println("loaded field layout");
+            aprilTagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.kDefaultField.m_resourceFile);
+            DriverStation.reportWarning("AprilTagFieldLayout loaded", false);
         } catch (Exception e) {
-            // TODO: handle exception
-            System.out.println(" failed to load field layout");
-            System.out.print(e);
-            System.out.println(AprilTagFields.kDefaultField.m_resourceFile);
+            // This should be impossible
         }
-        poseEstimatorFront = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camera_front, Constants.Vision.CAMERA_TO_ROBOT_FRONT);
-        poseEstimatorBack = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS, camera_back, Constants.Vision.CAMERA_TO_ROBOT_BACK);
+        poseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, Constants.Vision.CAMERA_TO_ROBOT);
+        poseEstimator.setReferencePose(new Pose2d());
+
+        poseEstimator2 = new PhotonPoseEstimator(aprilTagFieldLayout, PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera2, robotToCam2);
+        poseEstimator2.setReferencePose(new Pose2d());
     }
 
     @Override
     public void periodic() {
-        PhotonPipelineResult front_result = camera_front.getLatestResult(); // Query the latest result from PhotonVision
-        hasTarget = front_result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
-                                         // true
-        if (hasTarget) {
-            this.result = front_result;
-            return;
-        }
+        try {
+            result = camera.getLatestResult(); // Query the latest result from PhotonVision
+            hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
+                                            // true
+            if (hasTarget) {
+                this.result = result;
+                return;
+            }
 
-        PhotonPipelineResult back_result = camera_back.getLatestResult(); // Query the latest result from PhotonVision
-        hasTarget = back_result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
-                                         // true
-        if (hasTarget) {
-            this.result = back_result;
+            result = camera2.getLatestResult(); // Query the latest result from PhotonVision
+            hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean will be
+                                            // true
+            if (hasTarget) {
+                this.result = result;
+            }
+        } catch (Exception e) {
+            // lol
         }
     }
 
@@ -86,30 +87,23 @@ public class Vision extends SnailSubsystem {
         return tagPose.get().toPose2d();
     }
 
-    public Pair<Pose2d, Double> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
-        poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
-    
-        double currentTime = Timer.getFPGATimestamp();
-        Optional<EstimatedRobotPose> result = poseEstimatorFront.update();
-        if (result.isPresent()) {
-            this.estimatedRobotPose = result.get();
-            this.prevEstimatedRobotPose = result.get().estimatedPose.toPose2d();
-            this.poseEstimate = result.get().estimatedPose.toPose2d();
-            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, currentTime - result.get().timestampSeconds);
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+        poseEstimator.setReferencePose(prevEstimatedRobotPose);
+        poseEstimator2.setReferencePose(prevEstimatedRobotPose);
+
+        Optional<EstimatedRobotPose> update1 = poseEstimator.update();
+        Optional<EstimatedRobotPose> update2 = poseEstimator2.update();
+
+        if (update1.isPresent()) {
+            estimate = update1;
+            return update1;
+        } else if (update2.isPresent()) {
+            estimate = update2;
+            return update2;
         }
 
-        poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
-    
-        Optional<EstimatedRobotPose> result_back = poseEstimatorFront.update();
-        if (result_back.isPresent()) {
-            this.estimatedRobotPose = result.get();
-            this.prevEstimatedRobotPose = result_back.get().estimatedPose.toPose2d();
-            this.poseEstimate = result_back.get().estimatedPose.toPose2d();
-            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, currentTime - result_back.get().timestampSeconds);
-        }
-
-        return new Pair<Pose2d, Double>(null, 0.0);
-        
+        estimate = update1;
+        return update1;
     }
 
     public PhotonTrackedTarget getTargetWithID(int id) { // Returns the apriltag target with the specified ID (if it
@@ -131,10 +125,6 @@ public class Vision extends SnailSubsystem {
         }
     }
 
-    public EstimatedRobotPose getEstimatedRobotPose() {
-        return estimatedRobotPose;
-    }
-
     public boolean getHasTarget() {
         return hasTarget; // Returns whether or not a target was found
     }
@@ -146,28 +136,20 @@ public class Vision extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        // TODO Auto-generated method stub
+        if (estimate == null) 
+            return;
 
-        SmartDashboard.putNumberArray("Vision poses", new double[] {
-            poseEstimate.getX(), poseEstimate.getY()
-        });
-    
+        if (estimate.isPresent()) {
+            EstimatedRobotPose camPose = estimate.get();
+            SmartDashboard.putNumberArray("Vision poses", new double[] {
+            camPose.estimatedPose.toPose2d().getX(), camPose.estimatedPose.toPose2d().getY(), camPose.timestampSeconds });
+        }
     }
 
     @Override
     public void tuningInit() {
         // TODO Auto-generated method stub
 
-    }
-
-    public double getVisionAdd() {
-        double visionAdd = 0.0;
-
-        if (result.hasTargets()) {
-            visionAdd = 0; // result.getBestTarget().getHorizontalAngleOffset();
-        }
-
-        return visionAdd;
     }
 
     @Override
@@ -177,7 +159,7 @@ public class Vision extends SnailSubsystem {
     }
 
     public void setPipeline(int i) {
-        camera_front.setPipelineIndex(i);
-        camera_back.setPipelineIndex(i);
+        camera.setPipelineIndex(i);
+        camera2.setPipelineIndex(i);
     }
 }
