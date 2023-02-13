@@ -67,7 +67,8 @@ public class ClawAlt extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        
+        SmartDashboard.putNumber("Left Motor Current", motorLeft.getOutputCurrent());
+        SmartDashboard.putNumber("Right Motor Current", motorRight.getOutputCurrent());
     }
 
     @Override
