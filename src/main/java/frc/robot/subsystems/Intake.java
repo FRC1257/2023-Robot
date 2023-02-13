@@ -10,20 +10,28 @@ import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 public class Arm extends SnailSubsystem {
 
-    private CANSparkMax armMotor;
+    private CANSparkMax motorLeft;
+    private CANSparkMax motorRight;
   
    public enum State {
         MANUAL
     }
 
     private State state = State.MANUAL;
-    private double speed = 0;
+    private DoubleSupplier speedSupplier;
 
   public Arm() {
-      armMotor = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
-      armMotor.restoreFactoryDefaults();
-      armMotor.setIdleMode(IdleMode.kBrake);
-      armMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
+      motorLeft = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
+      motorLeft.restoreFactoryDefaults();
+      motorLeft.setIdleMode(IdleMode.kBrake);
+      motorLeft.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
+      
+      motorRight = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
+      motorRight.restoreFactoryDefaults();
+      motorRight.setIdleMode(IdleMode.kBrake);
+      motorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
+      
+      motorRight.follow(motorLeft);
 }
   
    @Override
