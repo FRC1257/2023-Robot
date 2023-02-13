@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Roller extends SnailSubsystem {
+public class ClawAlt extends SnailSubsystem {
 
     public enum State {
       INTAKING,
@@ -12,7 +12,7 @@ public class Roller extends SnailSubsystem {
       NEUTRAL
     }
 
-    public Roller() {
+    public ClawAlt() {
 
     }
 
