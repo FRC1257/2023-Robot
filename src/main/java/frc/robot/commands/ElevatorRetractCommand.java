@@ -1,14 +1,14 @@
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Extender;
+import frc.robot.subsystems.Elevator;
 
 public class ElevatorRetractCommand extends CommandBase {
 
-    private Extender extender;
+    private Elevator elevator;
 
-    public ElevatorRetractCommand(Extender extender) {
-        this.extender = extender;
+    public ElevatorRetractCommand(Elevator elevator) {
+        this.elevator = elevator;
 
-        addRequirements(extender);
+        addRequirements(elevator);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class ElevatorRetractCommand extends CommandBase {
 
     @Override
     public void execute() {
-        extender.retract();
+        elevator.retract();
     }
 
     @Override
