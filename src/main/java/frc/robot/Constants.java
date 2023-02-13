@@ -25,6 +25,9 @@ public final class Constants {
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
+
+        public final static int INTAKE_MOTOR_ID = 0;
+        public final static int NEO_CURRENT_LIMIT = 25;
     }
 
     public static class Drivetrain {
@@ -86,6 +89,12 @@ public final class Constants {
 
     public static class Autonomous {
         
+    }
+
+    public static class IntakeSpeed {
+        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
+        public static final double INTAKE_INTAKING_SPEED = 0.85;
+        public static final double INTAKE_EJECTING_SPEED = -0.85;
     }
 
     public static double PI = 3.14159265;
