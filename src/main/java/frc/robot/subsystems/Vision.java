@@ -20,14 +20,14 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import static frc.robot.Constants.Vision;
 
 public class Vision extends SnailSubsystem {
-    PhotonCamera frontCamera = new PhotonCamera(Constants.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used
+    PhotonCamera frontCamera = new PhotonCamera(Vision.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used
                                                                                   // in the
     // pipeline
-    PhotonCamera backCamera = new PhotonCamera(Constants.USB_CAMERA_NAME_BACK);
-    Transform3d robotToCam = new Transform3d(); // Stores the transform from the center of the robot to the camera
-    Transform3d robotToCam2 = new Transform3d(new Translation3d(), new Rotation3d(0.0, 180.0, 0.0));
+    PhotonCamera backCamera = new PhotonCamera(Vision.USB_CAMERA_NAME_BACK);
+    
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
     PhotonPoseEstimator frontPoseEstimator; // stores the pose estimator
@@ -46,11 +46,11 @@ public class Vision extends SnailSubsystem {
         }
         frontPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
                 PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, frontCamera,
-                Constants.Vision.CAMERA_TO_ROBOT);
+                Vision.CAMERA_TO_ROBOT_FRONT);
         frontPoseEstimator.setReferencePose(new Pose2d());
 
         backPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
-                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera, robotToCam2);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera, Vision.CAMERA_TO_ROBOT_BACK);
         backPoseEstimator.setReferencePose(new Pose2d());
     }
 
@@ -74,7 +74,8 @@ public class Vision extends SnailSubsystem {
                 result = currentResult;
             }
         } catch (Exception e) {
-            // lol
+            // we had an error where photonvision "saw" a tag that didn't exist
+            // this is a dirty try catch but it stops the robot frm breaking
         }
     }
 
@@ -107,6 +108,7 @@ public class Vision extends SnailSubsystem {
             chosenEstimate = frontEstimate;
             return frontEstimate;
         } catch (Exception e) {
+            // stops the exception like periodic
             return chosenEstimate;
         }
 
@@ -124,6 +126,7 @@ public class Vision extends SnailSubsystem {
     }
 
     public PhotonTrackedTarget getBestTarget() {
+        // get the target that we have saved
         if (hasTarget) {
             return result.getBestTarget(); // Returns the best (closest) target
         } else {
@@ -136,15 +139,13 @@ public class Vision extends SnailSubsystem {
     }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
     public void displayShuffleboard() {
         if (chosenEstimate == null)
             return;
-
+        // display the pose it sees
         if (chosenEstimate.isPresent()) {
             EstimatedRobotPose camPose = chosenEstimate.get();
             SmartDashboard.putNumberArray("Vision poses", new double[] {

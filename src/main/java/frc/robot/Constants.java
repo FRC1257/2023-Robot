@@ -93,10 +93,13 @@ public final class Constants {
         public static double VISION_FEEDFORWARD = 0.01;
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
 
-        public static Transform3d CAMERA_TO_ROBOT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(), new Rotation3d(0.0, 180.0, 0.0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
+        public static String USB_CAMERA_NAME_FRONT = "Front Camera";
+        public static String USB_CAMERA_NAME_BACK = "Back Camera";
     };
 
 
@@ -182,8 +185,5 @@ public final class Constants {
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
     public final static int NEO_CURRENT_LIMIT = 80; // amps
-
-    public static String USB_CAMERA_NAME_FRONT = "Front Camera";
-    public static String USB_CAMERA_NAME_BACK = "Back Camera";
     
 }
