@@ -74,7 +74,7 @@ public class Intake extends SnailSubsystem {
     @Override
     public void tuningPeriodic() {
         // TODO Auto-generated method stub
-        
+    
     }
 
-}
+} 
