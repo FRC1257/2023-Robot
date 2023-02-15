@@ -20,10 +20,17 @@ public class PivotArm extends SnailSubsystem {
     private double speed = 0;
 
     public PivotArm() {
-        armMotor = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
-        armMotor.restoreFactoryDefaults();
-        armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        leftArmMotor = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
+        leftArmMotor.restoreFactoryDefaults();
+        leftArmMotor.setIdleMode(IdleMode.kBrake);
+        leftArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+
+        rightArmMotor = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
+        rightArmMotor.restoreFactoryDefaults();
+        rightArmMotor.setIdleMode(IdleMode.kBrake);
+        rightArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+
+        rightArmMotor.follow(leftArmMotor);
     }
 
     @Override
@@ -31,16 +38,23 @@ public class PivotArm extends SnailSubsystem {
         switch (state) {
             case MANUAL: {
                 armMotor.set(speed);
+                break;
             }
             case PID: {
-                // TODO: Add PID
+                pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
+                if (bumpSwitch.get()) {
+                    endPID();
+                }
+                break;
             }
         }
     }
 
     @Override
     public void displayShuffleboard() {
-        
+        SmartDashboard.putNumber("Motor Speed", encoder.getVelocity());
+        SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+        SmartDashboard.putNumber("Setpoint", setpoint);
     }
 
     @Override
@@ -58,5 +72,7 @@ public class PivotArm extends SnailSubsystem {
         state = State.MANUAL;
     }
 
-    public State getState() { return state; }
+    public State getState() {
+        return state;
+    }
 }
