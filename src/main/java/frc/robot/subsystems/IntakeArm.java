@@ -14,6 +14,8 @@ public class IntakeArm extends SnailSubsystem {
     private CANSparkMax motorRight;
     private SparkMaxPIDController pidController;
     private SparkMaxRelativeEncoder encoder; 
+    private DigitalInput bumpSwitch;
+    
    public enum State {
         MANUAL,
         PID,
@@ -47,6 +49,8 @@ public class IntakeArm extends SnailSubsystem {
       encoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR);
       encoder.setVelocityConversionFactor(INTAKE_ARM_VELOCITY_FACTOR);
       encoder.setPosition(0.0);
+      
+      bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
 }
   
    @Override
@@ -57,7 +61,7 @@ public class IntakeArm extends SnailSubsystem {
                 break;
             case PID:
                 pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
-                if (Math.abs(encoder.getPosition() - setpoint < INTAKE_ARM_PID_TOLERANCE) {
+                if (bumpSwitch.get()) {
                     endPID();
                 }
                 break;
@@ -65,7 +69,10 @@ public class IntakeArm extends SnailSubsystem {
     }
   
    public void displayShuffleboard() {
-
+        SmartDashboard.putNumber("Motor Speed", encoder.getVelocity());
+        SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
+        SmartDashboard.putNumber("Setpoint", setpoint);
+        
     }
 
     public void tuningInit() {
