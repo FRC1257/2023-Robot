@@ -84,6 +84,14 @@ public final class Constants {
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
     }
 
+    public static class IntakeArm {
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = -1;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = -1;
+        public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
+        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
+        public static final double INTAKE_ARM_GEAR_FACTOR = 162; 
+        public static final int INTAKE_BUMP_SWITCH_ID = -1;
+    }
     public static class Autonomous {
         
     }

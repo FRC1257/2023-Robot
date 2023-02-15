@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.IntakeArm.*;
-import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 public class IntakeArm extends SnailSubsystem {
 
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
     private SparkMaxPIDController pidController;
-    private SparkMaxRelativeEncoder encoder; 
+    private RelativeEncoder encoder; 
     private DigitalInput bumpSwitch;
     private double setpoint;
    public enum State {
@@ -52,7 +52,7 @@ public class IntakeArm extends SnailSubsystem {
       
       encoder = motorLeft.getEncoder();
       encoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR);
-      encoder.setVelocityConversionFactor(INTAKE_ARM_VELOCITY_FACTOR);
+      encoder.setVelocityConversionFactor(INTAKE_ARM_GEAR_FACTOR / 60);
       encoder.setPosition(0.0);
       
       bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
