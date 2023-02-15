@@ -21,7 +21,7 @@ public class IntakeArm extends SnailSubsystem {
 
     private State state = State.MANUAL;
     private double speed;
-
+    private boolean isPIDFinished;
   public IntakeArm() {
       motorLeft = new CANSparkMax(ARM_MOTOR_ID, MotorType.kBrushless);
       motorLeft.restoreFactoryDefaults();
@@ -41,6 +41,7 @@ public class IntakeArm extends SnailSubsystem {
       pidController.setD(INTAKE_ARM_PID[2]);
       pidController.setFF(INTAKE_ARM_PID[3]);
       pidController.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
+    
       
       encoder = new SparkMaxRelativeEncoder(motorLeft);
       encoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR);
@@ -55,7 +56,10 @@ public class IntakeArm extends SnailSubsystem {
                 motorLeft.set(speed);
                 break;
             case PID:
-                // add PID
+                pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
+                if (Math.abs(encoder.getPosition() - setpoint < INTAKE_ARM_PID_TOLERANCE) {
+                    endPID();
+                }
                 break;
         }
     }
@@ -71,11 +75,20 @@ public class IntakeArm extends SnailSubsystem {
     public void tuningPeriodic() {
 
     }
-  
+    
+   public void endPID() {
+   	    state = state.MANUAL;
+        isPIDFinished = true;
+   }
    public void manualControl(double speed){
         this.speed = speed;
         state = State.MANUAL;
     }
+    
+   public void setPosition(double setpoint) {
+        state = State.PID;
+        if (!isPIDFinished) this.setpoint = setpoint;
+   }
 
     public State getState() {
         return state;
