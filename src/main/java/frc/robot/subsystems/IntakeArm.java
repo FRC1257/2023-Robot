@@ -51,6 +51,7 @@ public class IntakeArm extends SnailSubsystem {
       encoder.setPosition(0.0);
       
       bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
+      isPIDFinished = false;
 }
   
    @Override
