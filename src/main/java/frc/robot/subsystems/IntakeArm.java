@@ -15,7 +15,7 @@ public class IntakeArm extends SnailSubsystem {
     private SparkMaxPIDController pidController;
     private SparkMaxRelativeEncoder encoder; 
     private DigitalInput bumpSwitch;
-    
+    private double setpoint;
    public enum State {
         MANUAL,
         PID,
@@ -62,7 +62,7 @@ public class IntakeArm extends SnailSubsystem {
                 break;
             case PID:
                 pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
-                if (bumpSwitch.get()) {
+                if (Math.abs(primaryEncoder.getPosition() - setpoint) < INTAKE_ARM_PID_TOLERANCE) {
                     endPID();
                 }
                 break;
