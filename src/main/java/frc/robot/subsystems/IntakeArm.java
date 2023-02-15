@@ -73,6 +73,7 @@ public class IntakeArm extends SnailSubsystem {
         SmartDashboard.putNumber("Motor Speed", encoder.getVelocity());
         SmartDashboard.putNumber("Encoder Position", encoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setpoint);
+        SmartDashboard.putBoolean("Limit Switch State", bumpSwitch.get());
         
     }
 
