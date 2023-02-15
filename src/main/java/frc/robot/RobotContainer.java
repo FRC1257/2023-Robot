@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Delay;
+import frc.robot.commands.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.vision.AlignPosCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -109,12 +111,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
     }
 
     /**

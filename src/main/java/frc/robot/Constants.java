@@ -58,6 +58,10 @@ public final class Constants {
         public static double DRIVE_TRAJ_RAMSETE_B = 2.0;
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
+        // aligning
+        public static double DRIVE_ALIGN_MAX_VEL = 0.75; // m/s
+        public static double DRIVE_ALIGN_MAX_ACC = 0.350; //.75;  // m/s^2
+
         // linear position PID
         public static double[] DRIVE_DIST_PID = { 3.50, 0.0, 0.0 };
         public static double DRIVE_DIST_ANGLE_P = 0.1;
@@ -94,7 +98,7 @@ public final class Constants {
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
 
         public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
-        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(), new Rotation3d(0.0, 180.0, 0.0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);

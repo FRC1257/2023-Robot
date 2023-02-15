@@ -369,6 +369,8 @@ public class Drivetrain extends SnailSubsystem {
         poseEstimator.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), leftEncoder.getPosition());
 
         Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+        if (result == null) 
+            return;
 
         if (result.isPresent()) {
             EstimatedRobotPose camPose = result.get();
@@ -656,6 +658,10 @@ public class Drivetrain extends SnailSubsystem {
 
     public void drawTrajectory(Trajectory trajectory) {
         m_field.getObject("traj").setTrajectory(trajectory);
+    }
+
+    public Pose2d getPosition() {
+        return poseEstimator.getEstimatedPosition();
     }
 }
  
