@@ -29,7 +29,7 @@ public class PivotWrist extends SnailSubsystem {
 
     private RelativeEncoder primaryEncoder;
     private SparkMaxPIDController armPID;
-
+    private boolean isPIDFinished;
     // private DigitalInput limitSwitch;
     DigitalInput limitSwitch;
 
@@ -69,6 +69,7 @@ public class PivotWrist extends SnailSubsystem {
         wristPID.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
 
         limitSwitch = new DigitalInput(ARM_LIMIT_SWITCH_PORT_ID); //have to get ID later for constant
+        isPIDFinished = false;
     }
     
     /**
@@ -135,7 +136,7 @@ public class PivotWrist extends SnailSubsystem {
     // Set PID
     public void setPosition(double setpoint) {
         state = State.PID;
-        if (!getlimitSwitch()) {
+        if (!isPIDFinished) {
             this.setpoint = setpoint;
         }
     }
