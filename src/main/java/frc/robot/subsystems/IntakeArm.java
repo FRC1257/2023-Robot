@@ -1,8 +1,13 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.IntakeArm.*;
@@ -45,7 +50,7 @@ public class IntakeArm extends SnailSubsystem {
       pidController.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
     
       
-      encoder = new SparkMaxRelativeEncoder(motorLeft);
+      encoder = motorLeft.getEncoder();
       encoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR);
       encoder.setVelocityConversionFactor(INTAKE_ARM_VELOCITY_FACTOR);
       encoder.setPosition(0.0);
@@ -62,7 +67,7 @@ public class IntakeArm extends SnailSubsystem {
                 break;
             case PID:
                 pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
-                if (Math.abs(primaryEncoder.getPosition() - setpoint) < INTAKE_ARM_PID_TOLERANCE) {
+                if (Math.abs(encoder.getPosition() - setpoint) < INTAKE_ARM_PID_TOLERANCE) {
                     endPID();
                 }
                 break;
@@ -86,7 +91,7 @@ public class IntakeArm extends SnailSubsystem {
     }
     
    public void endPID() {
-   	    state = state.MANUAL;
+   	    state = State.MANUAL;
         isPIDFinished = true;
    }
    public void manualControl(double speed){
