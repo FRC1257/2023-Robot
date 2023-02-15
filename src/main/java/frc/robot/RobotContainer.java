@@ -28,11 +28,13 @@ public class RobotContainer {
 
     private SnailController driveController;
     private SnailController operatorController;
-    
+
+    private pivotWrist;
     private ArrayList<SnailSubsystem> subsystems;
 
     private Drivetrain drivetrain;
     private Vision vision;
+    
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -72,11 +74,14 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
+        pivotWrist = new PivotWrist;
+        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist));
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
+        subsystem.add(PivotWrist)
     }
 
     /**
@@ -90,7 +95,10 @@ public class RobotContainer {
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
+
     }
+
 
     /**
      * Set up the choosers on shuffleboard for autonomous
