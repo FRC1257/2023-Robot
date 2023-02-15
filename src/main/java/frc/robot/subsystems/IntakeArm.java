@@ -13,7 +13,7 @@ public class IntakeArm extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
     private SparkMaxPIDController pidController;
-    private CANEncoder encoder; 
+    private SparkMaxRelativeEncoder encoder; 
    public enum State {
         MANUAL,
         PID,
@@ -34,8 +34,18 @@ public class IntakeArm extends SnailSubsystem {
       motorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
       
       motorRight.follow(motorLeft);
+      
       pidController = motorLeft.getPIDController();
-      encoder = new CANEncoder(motorLeft);
+      pidController.setP(INTAKE_ARM_PID[0]);
+      pidController.setI(INTAKE_ARM_PID[1]);
+      pidController.setD(INTAKE_ARM_PID[2]);
+      pidController.setFF(INTAKE_ARM_PID[3]);
+      pidController.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
+      
+      encoder = new SparkMaxRelativeEncoder(motorLeft);
+      encoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR);
+      encoder.setVelocityConversionFactor(INTAKE_ARM_VELOCITY_FACTOR);
+      encoder.setPosition(0.0);
 }
   
    @Override
@@ -43,6 +53,9 @@ public class IntakeArm extends SnailSubsystem {
         switch(state) {
             case MANUAL:
                 motorLeft.set(speed);
+                break;
+            case PID:
+                // add PID
                 break;
         }
     }
