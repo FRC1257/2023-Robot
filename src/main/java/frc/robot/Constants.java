@@ -88,7 +88,7 @@ public final class Constants {
     };
 
 
-    public static class Vision {
+    public static class VisionConstants {
         public static double VISION_KP = 0.02;
         public static double VISION_FEEDFORWARD = 0.01;
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;

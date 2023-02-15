@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-
+import frc.robot.commands.Delay;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
@@ -81,6 +81,10 @@ public class RobotContainer {
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
    
+    private Pose2d getStartingPos() {
+        return new Pose2d(0, 0, new Rotation2d(0.0));
+    }
+    
     /**
      * Declare all of our subsystems and their default bindings
      */

@@ -20,13 +20,13 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import static frc.robot.Constants.Vision;
+import static frc.robot.Constants.VisionConstants;
 
 public class Vision extends SnailSubsystem {
-    PhotonCamera frontCamera = new PhotonCamera(Vision.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used
+    PhotonCamera frontCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used
                                                                                   // in the
     // pipeline
-    PhotonCamera backCamera = new PhotonCamera(Vision.USB_CAMERA_NAME_BACK);
+    PhotonCamera backCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_BACK);
     
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
@@ -46,11 +46,11 @@ public class Vision extends SnailSubsystem {
         }
         frontPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
                 PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, frontCamera,
-                Vision.CAMERA_TO_ROBOT_FRONT);
+                VisionConstants.CAMERA_TO_ROBOT_FRONT);
         frontPoseEstimator.setReferencePose(new Pose2d());
 
         backPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
-                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera, Vision.CAMERA_TO_ROBOT_BACK);
+                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera, VisionConstants.CAMERA_TO_ROBOT_BACK);
         backPoseEstimator.setReferencePose(new Pose2d());
     }
 
