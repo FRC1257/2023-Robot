@@ -34,20 +34,24 @@ public class Claw extends SnailSubsystem {
     
     public Claw() {
         motorLeft = new CANSparkMax(CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
-        motorRight = new CANSparkMax(CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);
+        motorRight = new CANSparkMax(CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);        
+
         motorInit(motorLeft);
-        motorInit(motorRight);
+        motorInit(motorLeft);
+
         motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
         
         solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, CLAW_FORWARD_ID, CLAW_REVERSE_ID);
         clawState = ClawState.CUBEINTAKE;
     }
+
     private void motorInit(CANSparkMax motor) {
         motor.restoreFactoryDefaults();
         motor.setIdleMode(IdleMode.kBrake);
         motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
     }
+    
     @Override
     public void update() {
         switch(rollerState) {
@@ -74,8 +78,8 @@ public class Claw extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Left Motor Current", motorLeft.getOutputCurrent());
-        SmartDashboard.putNumber("Right Motor Current", motorRight.getOutputCurrent());
+        SmartDashboard.putNumber("Left Motor", motorLeft.get());
+        SmartDashboard.putNumber("Right Motor", motorRight.get());
     }
 
     @Override
