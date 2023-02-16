@@ -88,6 +88,12 @@ public final class Constants {
         
     }
 
+    public static class PivotArm {
+        public static double[] PIVOT_ARM_PID = new double[] {1257, 1257, 1257};
+        public static double PIVOT_ARM_PID_TOLERANCE = 1257;
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257;
+    }
+
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
