@@ -92,7 +92,7 @@ public class IntakeArm extends SnailSubsystem {
    	    state = State.MANUAL;
         isPIDFinished = true;
    }
-   public void manualControl(double speed){
+   public void manual(double speed){
         this.speed = speed;
         state = State.MANUAL;
     }
