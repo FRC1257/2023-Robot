@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
+import frc.robot.commands.IntakeNeutralCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.SnailController;
@@ -76,7 +77,7 @@ public class RobotContainer {
 
         // Intake
         intake = new Intake();
-
+        intake.setDefaultCommand(new IntakeNeutralCommand());
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
