@@ -7,11 +7,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-<<<<<<< HEAD
+import frc.robot.subsystems.*;
 import frc.robot.commands.ClawConeStateCommand;
 import frc.robot.commands.ClawCubeStateCommand;
-=======
->>>>>>> c5eaf04d0de9c5fb30434e02e6f6fc7c2dc55022
 import frc.robot.commands.ClawEjectCommand;
 import frc.robot.commands.ClawIntakeCommand;
 import frc.robot.commands.ClawNeutralCommand;
@@ -35,6 +33,8 @@ public class RobotContainer {
 
     private SnailController driveController;
     private SnailController operatorController;
+
+    private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;
 
@@ -78,8 +78,8 @@ public class RobotContainer {
         claw = new Claw();
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
-        subsystems.add(claw);
 
+        subsystems.add(claw);
     }
 
     /**
