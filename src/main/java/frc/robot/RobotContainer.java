@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -17,6 +18,9 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
+import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_BOT;
+import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_TOP;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,6 +37,7 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+    private IntakeArm intakearm;
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -72,11 +77,12 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
-
+        intakearm = new IntakeArm();
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
+        subsystems.add(intakearm);
     }
 
     /**
@@ -90,6 +96,9 @@ public class RobotContainer {
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
+        driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
+
     }
 
     /**

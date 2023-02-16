@@ -92,6 +92,8 @@ public final class Constants {
         public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
         public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
         public static final int INTAKE_BUMP_SWITCH_ID = -3;
+        public static double INTAKE_SETPOINT_TOP = 1257; // lol
+        public static double INTAKE_SETPOINT_BOT = -1257; // lol
     }
     public static class Autonomous {
         
