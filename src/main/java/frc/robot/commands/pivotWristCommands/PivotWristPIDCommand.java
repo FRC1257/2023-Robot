@@ -1,26 +1,27 @@
 // need to bind command
-package frc.robot.commands.rollerintake;
+package frc.robot.commands.pivotWristCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PivotWrist;
 
 public class PivotWristPIDCommand extends CommandBase {
     private PivotWrist pivotWrist;
+    private double setPoint;
 
-    public PivotWristPIDCommand(PivotWrist pivotWrist)
+    public PivotWristPIDCommand(PivotWrist pivotWrist, double setPoint){
     this.pivotWrist = pivotWrist;
+    this.setPoint = setPoint;
     addRequirements(pivotWrist);
     
     }
 
     @Override
     public void initialize() {
-
+        pivotWrist.setPosition(setPoint);
     }
 
     @Override
     public void execute() {
-    pivotWrist.setPosition();
     }
 
     @Override
@@ -30,6 +31,6 @@ public class PivotWristPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-    return pivotWrist.getState() != pivotWrist.State.PID;
+    return pivotWrist.getState() != PivotWrist.State.PID;
     }
-
+}

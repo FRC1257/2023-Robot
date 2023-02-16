@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.pivotWristCommands.PivotWristManualCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -29,7 +30,7 @@ public class RobotContainer {
     private SnailController driveController;
     private SnailController operatorController;
 
-    private pivotWrist;
+    private PivotWrist pivotWrist;
     private ArrayList<SnailSubsystem> subsystems;
 
     private Drivetrain drivetrain;
@@ -74,14 +75,14 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
-        pivotWrist = new PivotWrist;
+        pivotWrist = new PivotWrist();
         pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist));
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
-        subsystem.add(PivotWrist)
+        subsystems.add(pivotWrist);
     }
 
     /**

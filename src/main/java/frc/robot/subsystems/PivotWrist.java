@@ -13,9 +13,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.SnailSubsystem;
-
-import static frc.robot.Constants.ElectricalLayout.*;
 // need to add constants: import static frc.robot.Constants.IntakeArm(actually pivot wrist).*; 
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
@@ -166,45 +163,44 @@ public class PivotWrist extends SnailSubsystem {
     
     @Override
     public void tuningInit() {
-        SmartDashboard.putNumber("Pivot Wrist PID P", INTAKE_ARM_PID[0]);
-        SmartDashboard.putNumber("Pivot Wrist PID I", INTAKE_ARM_PID[1]);
-        SmartDashboard.putNumber("Pivot Wrist PID D", INTAKE_ARM_PID[2]);
-        SmartDashboard.putNumber("Pivot Wrist PID FF", INTAKE_ARM_PID[3]);
+        SmartDashboard.putNumber("Pivot Wrist PID P", PivotWristConstants.wristPID[0]);
+        SmartDashboard.putNumber("Pivot Wrist PID I", PivotWristConstants.wristPID[1]);
+        SmartDashboard.putNumber("Pivot Wrist PID D", PivotWristConstants.wristPID[2]);
+        SmartDashboard.putNumber("Pivot Wrist PID FF", PivotWristConstants.wristPID[3]);
 
-        SmartDashboard.putNumber("Pivot Wrist PID Tolerance", INTAKE_ARM_PID_TOLERANCE);
-        SmartDashboard.putNumber("Pivot Wrist PID Max Output", INTAKE_ARM_PID_MAX_OUTPUT);
-        SmartDashboard.putNumber("Pivot Wrist Prof Max Vel", INTAKE_ARM_PROFILE_MAX_VEL);
-        SmartDashboard.putNumber("Pivot Wrist Prof Max Accel", INTAKE_ARM_PROFILE_MAX_ACC);
+        SmartDashboard.putNumber("Pivot Wrist PID Tolerance", PivotWristConstants.wrist_PID_TOLERANCE);
+        SmartDashboard.putNumber("Pivot Wrist PID Max Output", PivotWristConstants.wrist_PID_MAX_OUTPUT);
+        SmartDashboard.putNumber("Pivot Wrist Prof Max Vel", PivotWristConstants.wrist_MAX_VEL);
+        SmartDashboard.putNumber("Pivot Wrist Prof Max Accel", PivotWristConstants.wrist_MAX_ACC);
         
-        SmartDashboard.putNumber("Pivot Wrist Setpoint Top", INTAKE_SETPOINT_TOP);
-        SmartDashboard.putNumber("Pivot Wrist Setpoint Bottom", INTAKE_SETPOINT_BOT);
+        SmartDashboard.putNumber("Pivot Wrist Setpoint Top", PivotWristConstants.Wrist_SETPOINT_TOP);
+        SmartDashboard.putNumber("Pivot Wrist Setpoint Bottom", PivotWristConstants.Wrist_SETPOINT_BOT);
     }
 
     @Override
     public void tuningPeriodic() {
         // Change the P, I, and D values
-        INTAKE_ARM_PID[0] = SmartDashboard.getNumber("Pivot Wrist P", INTAKE_ARM_PID[0]);
-        INTAKE_ARM_PID[1] = SmartDashboard.getNumber("Pivot Wrist PID I", INTAKE_ARM_PID[1]);
-        INTAKE_ARM_PID[2] = SmartDashboard.getNumber("Pivot Wrist PID D", INTAKE_ARM_PID[2]);
-        INTAKE_ARM_PID[3] = SmartDashboard.getNumber("Pivot Wrist PID FF", INTAKE_ARM_PID[3]);
+        PivotWristConstants.wristPID[0] = SmartDashboard.getNumber("Pivot Wrist P", PivotWristConstants.wristPID[0]);
+        PivotWristConstants.wristPID[1] = SmartDashboard.getNumber("Pivot Wrist PID I", PivotWristConstants.wristPID[1]);
+        PivotWristConstants.wristPID[2] = SmartDashboard.getNumber("Pivot Wrist PID D", PivotWristConstants.wristPID[2]);
+        PivotWristConstants.wristPID[3] = SmartDashboard.getNumber("Pivot Wrist PID FF", PivotWristConstants.wristPID[3]);
         
-        INTAKE_ARM_PID_TOLERANCE = SmartDashboard.getNumber("Pivot Wrist PID Tolerance", INTAKE_ARM_PID_TOLERANCE);
-        INTAKE_ARM_PID_MAX_OUTPUT = SmartDashboard.getNumber("Pivot Wrist PID Max Output", INTAKE_ARM_PID_MAX_OUTPUT);
+        PivotWristConstants.Wrist_PID_TOLERANCE = SmartDashboard.getNumber("Pivot Wrist PID Tolerance", PivotWristConstants.wrist_PID_TOLERANCE);
+        PivotWristConstants.wrist_PID_MAX_OUTPUT = SmartDashboard.getNumber("Pivot Wrist PID Max Output", PivotWristConstants.wrist_PID_MAX_OUTPUT);
         
-        INTAKE_ARM_PROFILE_MAX_VEL = SmartDashboard.getNumber("Pivot Wrist Prof Max Vel", INTAKE_ARM_PROFILE_MAX_VEL);
-        INTAKE_ARM_PROFILE_MAX_ACC = SmartDashboard.getNumber("Pivot Wrist Prof Max Accel", INTAKE_ARM_PROFILE_MAX_ACC);
+        PivotWristConstants.wrist_MAX_VEL = SmartDashboard.getNumber("Pivot Wrist Prof Max Vel", PivotWristConstants.wrist_MAX_VEL);
+        PivotWristConstants.wrist_MAX_ACC = SmartDashboard.getNumber("Pivot Wrist Prof Max Accel", PivotWristConstants.wrist_MAX_ACC);
         
-        INTAKE_SETPOINT_TOP = SmartDashboard.getNumber("Intake Setpoint Top", INTAKE_SETPOINT_TOP);
-        INTAKE_SETPOINT_BOT = SmartDashboard.getNumber("Intake Setpoint Bottom", INTAKE_SETPOINT_BOT);
+    
         
         // Set PID
-        if(wristPID.getP() != INTAKE_ARM_PID[0])  wristPID.setP(INTAKE_ARM_PID[0]);
-        if(wristPID.getI() != INTAKE_ARM_PID[1]) wristPID.setI(INTAKE_ARM_PID[1]);
-        if(wristPID.getD() != INTAKE_ARM_PID[2]) wristPID.setD(INTAKE_ARM_PID[2]);
-        if(wristPID.getFF() != INTAKE_ARM_PID[3]) wristPID.setFF(INTAKE_ARM_PID[3]);
-        if(wristPID.getOutputMin() != -INTAKE_ARM_PID_MAX_OUTPUT) wristPID.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
-        if(wristPID.getSmartMotionMaxVelocity(INTAKE_ARM_PID_SLOT_VEL) != INTAKE_ARM_PROFILE_MAX_VEL) wristPID.setSmartMotionMaxVelocity(INTAKE_ARM_PROFILE_MAX_VEL, INTAKE_ARM_PID_SLOT_VEL);
-        if(wristPID.getSmartMotionMaxAccel(INTAKE_ARM_PID_SLOT_ACC) != INTAKE_ARM_PROFILE_MAX_ACC) wristPID.setSmartMotionMaxVelocity(INTAKE_ARM_PROFILE_MAX_ACC, INTAKE_ARM_PID_SLOT_ACC);
+        if(wristPID.getP() != PivotWristConstants.wristPID[0])  wristPID.setP(PivotWristConstants.wristPID[0]);
+        if(wristPID.getI() != PivotWristConstants.wristPID[1]) wristPID.setI(PivotWristConstants.wristPID[1]);
+        if(wristPID.getD() != PivotWristConstants.wristPID[2]) wristPID.setD(PivotWristConstants.wristPID[2]);
+        if(wristPID.getFF() != PivotWristConstants.wristPID[3]) wristPID.setFF(PivotWristConstants.wristPID[3]);
+        if(wristPID.getOutputMin() != -PivotWristConstants.wrist_PID_MAX_OUTPUT) wristPID.setOutputRange(-PivotWristConstants.wrist_PID_MAX_OUTPUT, PivotWristConstants.wrist_PID_MAX_OUTPUT);
+        if(wristPID.getSmartMotionMaxVelocity(PivotWristConstants.Wrist_PID_SLOT_VEL) != PivotWristConstants.wrist_MAX_VEL) wristPID.setSmartMotionMaxVelocity(PivotWristConstants.wrist_MAX_VEL, PivotWristConstants.Wrist_PID_SLOT_ACC);
+        if(wristPID.getSmartMotionMaxAccel(PivotWristConstants.Wrist_PID_SLOT_ACC) != PivotWristConstants.wrist_MAX_ACC) wristPID.setSmartMotionMaxVelocity(PivotWristConstants.wrist_MAX_ACC, PivotWristConstants.Wrist_PID_SLOT_ACC);
     }
 
     /**
