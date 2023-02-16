@@ -58,7 +58,8 @@ public class RobotContainer {
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
 
     //booleans regarding the score, cargo, and charge
-    private boolean score;
+    private boolean firstScore;
+    private boolean secondScore;
     private boolean cargo;
     private boolean charge;
 
@@ -85,7 +86,8 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", true);
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("Auto Score", score);
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", 0);
@@ -142,7 +144,8 @@ public class RobotContainer {
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
             charge,
-            score,
+            firstScore,
+            secondScore,
             cargo,
             drivetrain,
             0
@@ -187,7 +190,8 @@ public class RobotContainer {
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
             charge,
-            score,
+            firstScore,
+            secondScore,
             cargo,
             drivetrain,
             estimatedCurrentPose2d()
@@ -248,7 +252,8 @@ public class RobotContainer {
             generateTrajectories = new GenerateTrajectories(
                 drivetrain,
                 charge,
-                score,
+                firstScore,
+                secondScore,
                 cargo,
                 drivetrain,
                 estimatedCurrentPose2d()
@@ -307,11 +312,12 @@ public class RobotContainer {
 
 
     public boolean checkIfUpdate() {
-        return score != SmartDashboard.getBoolean("Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false);
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false);
     }
 
     public void updateAutoChoosers() {
-        score = SmartDashboard.getBoolean("Auto Score", false);
+        firstScore = SmartDashboard.getBoolean("1st Auto Score", false);
+        secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", false);
         cargo = SmartDashboard.getBoolean("Auto Get Cargo", false);
         charge = SmartDashboard.getBoolean("Auto Goto Charge", false);
     }
@@ -321,7 +327,8 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("Auto Score", score);
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));

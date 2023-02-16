@@ -14,7 +14,8 @@ import frc.robot.RobotContainer;
 
 public class GenerateTrajectories {
     private boolean charge;
-    private boolean score;
+    private boolean firstScore;
+    private boolean secondScore;
     private boolean cargo;
     private Drivetrain driveTrain;
     private Pose2d StartPose;
@@ -30,9 +31,11 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
     private Pose2d chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
         this.charge = isCharge;
-        this.score = isScore;
+        this.firstScore = isFirstScore;
+        this.secondScore = isSecondScore;
+
         this.cargo = isCargo;
         this.driveTrain = driveTrain;
         
@@ -72,8 +75,12 @@ public class GenerateTrajectories {
     }
 
     // 2 getScoreLocation() methods for some reason?
-    public Pose2d getScoreLocation() {
+    public Pose2d getFirstScoreLocation() {
         return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
+    }
+
+    public Pose2d getSecondScoreLocation() {
+        return ALLIANCE_SCORE_POSE[RobotContainer.secondScorePositionChooser.getSelected()];
     }
 
     public Pose2d getChargeLocation() {
@@ -98,8 +105,8 @@ public class GenerateTrajectories {
     public void trajediesDecider() {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
-        if (score) {
-            addScoreTrajectory();
+        if (firstScore) {
+            addFirstScoreTrajectory();
         }
 
         // then we either go for cargo or leave the tarmac to get points
@@ -127,9 +134,9 @@ public class GenerateTrajectories {
 
     }
 
-    public void addScoreTrajectory() {
-        ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()), true);
-        currentPose = getScoreLocation();
+    public void addFirstScoreTrajectory() {
+        ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getFirstScoreLocation()), true);
+        currentPose = getFirstScoreLocation();
         trajectoryList.add(step1.getTrajectory());
         command.addCommands(step1);
     }
