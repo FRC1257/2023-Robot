@@ -6,6 +6,10 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import static frc.robot.Constants.PivotArm.*;
 
 import static frc.robot.Constants.ElectricalLayout.*;
@@ -19,6 +23,7 @@ public class PivotArm extends SnailSubsystem {
     private double speed;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
+    private DigitalInput bumpSwitch;
 
 
     public enum State {
@@ -48,6 +53,8 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setI(PIVOT_ARM_PID[1]);
         armPIDController.setD(PIVOT_ARM_PID[2]);
         armPIDController.setOutputRange(-PIVOT_ARM_PID_MAX_OUTPUT, PIVOT_ARM_PID_MAX_OUTPUT);
+
+        bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
     }
 
     @Override
@@ -77,7 +84,10 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        
+        SmartDashboard.putNumber("Motor Speed", leftArmEncoder.getVelocity());
+        SmartDashboard.putNumber("Encoder Position", leftArmEncoder.getPosition());
+        SmartDashboard.putNumber("Setpoint", setPoint);
+        SmartDashboard.putBoolean("Limit Switch State", bumpSwitch.get());
     }
 
     @Override

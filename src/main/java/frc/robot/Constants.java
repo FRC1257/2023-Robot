@@ -19,6 +19,7 @@ public final class Constants {
     public static class ElectricalLayout {
         public final static int CONTROLLER_DRIVER_ID = 0;
         public final static int CONTROLLER_OPERATOR_ID = 1;
+        public final static int INTAKE_BUMP_SWITCH_ID = -1257;
 
         // Drivetrain
         public final static int DRIVE_FRONT_LEFT = 17;
