@@ -105,11 +105,13 @@ public class GenerateTrajectories {
     public void trajediesDecider() {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
+        // Step 1
         if (firstScore) {
             addFirstScoreTrajectory();
         }
 
         // then we either go for cargo or leave the tarmac to get points
+        // Step 2
         if (cargo) {
             // going for cargo implies leaving community
             addCargoTrajectory();
@@ -118,10 +120,16 @@ public class GenerateTrajectories {
             addLeaveCommunityTrajectory();
         }
 
-        
+        // Step 3
+        if (secondScore) {
+            addSecondScoreTrajectory();
+        }
         // step 3 go for charge
-        if (charge) {
+        else if (charge) {
             addChargeTrajectory();
+        }
+        else {
+            // TODO: addParkTrajectory()
         }
 
         // if none of these have run something has gone wrong
@@ -134,11 +142,19 @@ public class GenerateTrajectories {
 
     }
 
+    // step variables aren't random, they actually represent the order of the trajectories
     public void addFirstScoreTrajectory() {
         ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getFirstScoreLocation()), true);
         currentPose = getFirstScoreLocation();
         trajectoryList.add(step1.getTrajectory());
         command.addCommands(step1);
+    }
+
+    public void addSecondScoreTrajectory() {
+        ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(StartPose, getSecondScoreLocation()), true);
+        currentPose = getSecondScoreLocation();
+        trajectoryList.add(step3.getTrajectory());
+        command.addCommands(step3);
     }
 
     public void addCargoTrajectory() {
