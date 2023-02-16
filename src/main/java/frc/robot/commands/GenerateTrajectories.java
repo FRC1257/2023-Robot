@@ -99,82 +99,85 @@ public class GenerateTrajectories {
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
         if (score) {
-            ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()), true);
-            currentPose = getScoreLocation();
-            trajectoryList.add(step1.getTrajectory());
-            command.addCommands(step1);
+            addScoreTrajectory();
         }
 
         // we either go for cargo or leave the tarmac to get points
         if (cargo) {
-            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-            trajPoints.add(currentPose);
-
-            // going around the charging station, if convenient
-            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            } else {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            }
-            
-            trajPoints.add(getCargoLocation());
-            ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
-            currentPose = getCargoLocation();
-            trajectoryList.add(step2.getTrajectory());
-            command.addCommands(step2);
+            addCargoTrajectory();
         } 
         else {
-            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-            trajPoints.add(currentPose);
-
-            // going around the charging station, if convenient
-            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            } else {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            }
-            trajPoints.add(getLeaveCommunityPose(currentPose));
-            ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
-            currentPose = getLeaveCommunityPose(currentPose);
-            trajectoryList.add(step2.getTrajectory());
-            command.addCommands(step2);
+            addLeaveCommunityTrajectory();
         }
 
         // step 3 go for charge
         if (charge) {
-            ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(currentPose, ALLIANCE_CHARGE_POSE_WAYPOINT, getChargeLocation()), false);
-            currentPose = getChargeLocation();
-            trajectoryList.add(step3.getTrajectory());
-            command.addCommands(step3);
+            addChargeTrajectory();
         }
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
-            List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-            trajPoints.add(currentPose);
-
-            // going around the charging station, if convenient
-            if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            } else {
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-                trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            }
-            trajPoints.add(getLeaveCommunityPose(currentPose));
-            ToPosCommand leave = new ToPosCommand(driveTrain, trajPoints, false);
-            currentPose = getLeaveCommunityPose(currentPose);
-            trajectoryList.add(leave.getTrajectory());
-            command.addCommands(leave);
+           addLeaveCommunityTrajectory(); 
         }
 
         trajectoryList.add(getFullTrajectory());
 
+    }
+
+    public void addScoreTrajectory() {
+        ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getScoreLocation()), true);
+        currentPose = getScoreLocation();
+        trajectoryList.add(step1.getTrajectory());
+        command.addCommands(step1);
+    }
+
+    public void addCargoTrajectory() {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+        }
+        
+        trajPoints.add(getCargoLocation());
+        ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
+        currentPose = getCargoLocation();
+        trajectoryList.add(step2.getTrajectory());
+        command.addCommands(step2);
+    }
+
+    public void addLeaveCommunityTrajectory() {
+        // this method and addCargoTrajectory are almost identical, different by one line
+        // TODO: refactor further to avoid confusion
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+        }
+        trajPoints.add(getLeaveCommunityPose(currentPose));
+        ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
+        currentPose = getLeaveCommunityPose(currentPose);
+        trajectoryList.add(step2.getTrajectory());
+        command.addCommands(step2);
+    }
+
+    public void addChargeTrajectory() {
+        ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(currentPose, ALLIANCE_CHARGE_POSE_WAYPOINT, getChargeLocation()), false);
+        currentPose = getChargeLocation();
+        trajectoryList.add(step3.getTrajectory());
+        command.addCommands(step3);
     }
 
     public SequentialCommandGroup getCommand() {
