@@ -8,7 +8,7 @@ public class PivotArmManualCommand extends CommandBase{
     private double speed;
 	public PivotArmManualCommand(PivotArm pivotArm, double speed) {
         this.pivotArm = pivotArm;
-this.speed = speed;
+        this.speed = speed;
         addRequirements(pivotArm);
     }
 
