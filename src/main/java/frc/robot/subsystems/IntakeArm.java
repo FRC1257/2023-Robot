@@ -31,15 +31,9 @@ public class IntakeArm extends SnailSubsystem {
     private boolean isPIDFinished;
   public IntakeArm() {
       motorLeft = new CANSparkMax(INTAKE_ARM_MOTOR_LEFT_ID, MotorType.kBrushless);
-      motorLeft.restoreFactoryDefaults();
-      motorLeft.setIdleMode(IdleMode.kBrake);
-      motorLeft.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
-      
       motorRight = new CANSparkMax(INTAKE_ARM_MOTOR_RIGHT_ID, MotorType.kBrushless);
-      motorRight.restoreFactoryDefaults();
-      motorRight.setIdleMode(IdleMode.kBrake);
-      motorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT); // in amps
-      
+      motorInit(motorLeft);
+      motorInit(motorRight);
       motorRight.follow(motorLeft);
       
       pidController = motorLeft.getPIDController();
@@ -58,7 +52,11 @@ public class IntakeArm extends SnailSubsystem {
       bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
       isPIDFinished = false;
 }
-  
+    private void motorInit(CANSparkMax motor) {
+        motor.restoreFactoryDefaults();
+        motor.setIdleMode(IdleMode.kBrake);
+        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+    }
    @Override
     public void update() {
         switch(state) {
