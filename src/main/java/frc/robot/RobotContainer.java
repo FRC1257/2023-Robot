@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ClawConeStateCommand;
+import frc.robot.commands.ClawCubeStateCommand;
 import frc.robot.commands.ClawEjectCommand;
 import frc.robot.commands.ClawIntakeCommand;
 import frc.robot.commands.drivetrain.*;
@@ -96,8 +97,8 @@ public class RobotContainer {
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         driveController.getButton(Button.kRightBumper.value).whileTrue(new ClawIntakeCommand(claw));
         driveController.getButton(Button.kRightBumper.value).whileFalse(new ClawEjectCommand(claw));
-        driveController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeCommand(claw));
-        driveController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeCommand(claw));
+        driveController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
+        driveController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
     }
 
     /**
