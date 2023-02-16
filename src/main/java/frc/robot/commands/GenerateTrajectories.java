@@ -123,6 +123,12 @@ public class GenerateTrajectories {
         // Step 3
         if (secondScore) {
             addSecondScoreTrajectory();
+            if (charge) {
+                addChargeTrajectory();
+            }
+            else {
+                // TODO: addParkTrajectory()
+            }
         }
         // step 3 go for charge
         else if (charge) {
@@ -151,7 +157,22 @@ public class GenerateTrajectories {
     }
 
     public void addSecondScoreTrajectory() {
-        ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(StartPose, getSecondScoreLocation()), true);
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+        
+        // TODO: fix this, doesn't really work
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+        }
+
+        trajPoints.add(getSecondScoreLocation());
+        ToPosCommand step3 = new ToPosCommand(driveTrain, trajPoints, false);
         currentPose = getSecondScoreLocation();
         trajectoryList.add(step3.getTrajectory());
         command.addCommands(step3);

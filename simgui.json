@@ -10,7 +10,8 @@
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
-      "/SmartDashboard/SendableChooser[2]": "String Chooser"
+      "/SmartDashboard/SendableChooser[2]": "String Chooser",
+      "/SmartDashboard/SendableChooser[3]": "String Chooser"
     },
     "windows": {
       "/FMSInfo": {
@@ -22,7 +23,7 @@
         "Robot": {
           "style": "Line"
         },
-        "image": "C:\\Users\\YY\\stuff\\Screenshot 2023-02-02 164738.png",
+        "image": "C:\\Users\\Chris\\Downloads\\fieldlayout2023.png",
         "traj": {
           "style": "Track"
         },
@@ -44,6 +45,11 @@
         "window": {
           "visible": true
         }
+      },
+      "/SmartDashboard/SendableChooser[3]": {
+        "window": {
+          "visible": true
+        }
       }
     }
   },
@@ -53,6 +59,9 @@
         "open": true
       },
       "SmartDashboard": {
+        "SendableChooser[3]": {
+          "open": true
+        },
         "open": true
       }
     }
@@ -70,8 +79,5 @@
       },
       "open": true
     }
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

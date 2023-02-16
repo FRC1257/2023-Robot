@@ -19,7 +19,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-              "_title": "/SmartDashboard/SendableChooser[0]",
+              "_title": "/SmartDashboard/First Score Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -32,7 +32,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
-              "_title": "/SmartDashboard/SendableChooser[1]",
+              "_title": "/SmartDashboard/Second Score Pos",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -101,7 +101,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
-              "_title": "/SmartDashboard/SendableChooser[2]",
+              "_title": "/SmartDashboard/Game Piece Chooser",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -519,6 +519,45 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "9,8": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_title": "SmartDashboard/1st Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,8": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Opt. 2nd Auto Score",
+              "_title": "SmartDashboard/Opt. 2nd Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "19,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[3]",
+              "_title": "/SmartDashboard/Start Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -663,7 +702,7 @@
               "_title": "SmartDashboard/Field",
               "_glyph": 148,
               "_showGlyph": false,
-              "Game/Game": "A2023_Charged_Up",
+              "Game/Game": "A2022_Rapid_React",
               "Visuals/Robot Icon Size": 50.0,
               "Visuals/Show Outside Circles": false,
               "Colors/traj": "#FFFFFFFF"
@@ -783,7 +822,7 @@
               "_title": "SmartDashboard/Field",
               "_glyph": 148,
               "_showGlyph": false,
-              "Game/Game": "A2023_Charged_Up",
+              "Game/Game": "A2022_Rapid_React",
               "Visuals/Robot Icon Size": 50.0,
               "Visuals/Show Outside Circles": false,
               "Colors/traj": "#FFFFFFFF"
@@ -930,9 +969,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 814.4000244140625
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1066.0
   }
 }
