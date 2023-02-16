@@ -261,7 +261,15 @@ public final class Constants {
 
     };
 
-
+    public static class Claw {
+        public static int CLAW_MOTOR_LEFT_ID = -1;
+        public static int CLAW_MOTOR_RIGHT_ID = -1;
+        public static int CLAW_FORWARD_ID = -1;
+        public static int CLAW_REVERSE_ID = -1;
+        public static double ROLLER_NEUTRAL_SPEED = 0.0;
+        public static double ROLLER_INTAKING_SPEED = 0.85;
+        public static double ROLLER_EJECTING_SPEED = -0.85;
+    }
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps

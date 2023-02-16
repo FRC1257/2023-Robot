@@ -4,10 +4,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.Constants;
-
+import static frc.robot.Constants.Claw.*;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -32,32 +33,32 @@ public class Claw extends SnailSubsystem {
     private ClawState clawState;
     
     public Claw() {
-        motorLeft = new CANSparkMax(CLAW_MOTOR_LEFT, MotorType.kBrushless);
-        motorRight = new CANSparkMax(CLAW_MOTOR_RIGHT, MotorType.kBrushless);
+        motorLeft = new CANSparkMax(CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
+        motorRight = new CANSparkMax(CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);
         motorInit(motorLeft);
         motorInit(motorRight);
         motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
         
-        solenoid = new DoubleSolenoid(CLAW_FORWARD_ID, CLAW_REVERSE_ID);
+        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, CLAW_FORWARD_ID, CLAW_REVERSE_ID);
         clawState = ClawState.CUBEINTAKE;
     }
     private void motorInit(CANSparkMax motor) {
         motor.restoreFactoryDefaults();
         motor.setIdleMode(IdleMode.kBrake);
-        motor.setSmartCurrentLimit(Constants.NEO_550_CURRENT_LIMIT);
+        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
     }
     @Override
     public void update() {
         switch(rollerState) {
             case NEUTRAL:
-                motorLeft.set(0.0);
+                motorLeft.set(ROLLER_NEUTRAL_SPEED);
                 break;
             case INTAKING:
-                motorLeft.set(0.85);
+                motorLeft.set(ROLLER_INTAKING_SPEED);
                 break;
             case EJECTING:
-                motorLeft.set(-0.85);
+                motorLeft.set(ROLLER_EJECTING_SPEED);
                 break;
         }
         
