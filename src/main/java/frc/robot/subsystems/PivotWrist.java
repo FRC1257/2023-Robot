@@ -1,12 +1,15 @@
 //need to bind commands and put constants
 
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems;
 
+import frc.robot.Constants;
+import frc.robot.Constants.PivotWristConstants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,13 +28,17 @@ import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 public class PivotWrist extends SnailSubsystem {
 
     private final CANSparkMax pivotWristMotor;
+    private final CANSparkMax pivotWristMotor2;
     private double setpoint;
 
     private RelativeEncoder primaryEncoder;
-    private SparkMaxPIDController armPID;
+    private SparkMaxPIDController wristPID;
     private boolean isPIDFinished;
     // private DigitalInput limitSwitch;
     DigitalInput limitSwitch;
+    public double PIVOT_WRIST_RAISE_SPEED;
+    public double PIVOT_WRIST_NEUTRAL_SPEED;
+    public double PIVOT_WRIST_LOWER_SPEED;
 
     public enum State {
         MANUAL,
@@ -41,12 +48,12 @@ public class PivotWrist extends SnailSubsystem {
 
     public PivotWrist() {
         // Set motor
-        pivotWristMotor = new CANSparkMax(PIVOT_WRIST_ID, MotorType.kBrushless);
+        pivotWristMotor = new CANSparkMax(Constants.PIVOT_WRIST_ID1, MotorType.kBrushless);
         pivotWristMotor.restoreFactoryDefaults();
         pivotWristMotor.setIdleMode(IdleMode.kBrake);
         pivotWristMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
-        pivotWristMotor2 = new CANSparkMax(PIVOT_WRIST_ID, MotorType.kBrushless);
+        pivotWristMotor2 = new CANSparkMax(Constants.PIVOT_WRIST_ID2, MotorType.kBrushless);
         pivotWristMotor2.restoreFactoryDefaults();
         pivotWristMotor2.setIdleMode(IdleMode.kBrake);
         pivotWristMotor2.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
@@ -56,19 +63,19 @@ public class PivotWrist extends SnailSubsystem {
 
         // Get Encoder
         primaryEncoder = pivotWristMotor.getEncoder();
-        primaryEncoder.setPositionConversionFactor(INTAKE_ARM_GEAR_FACTOR); // verify with build
-        primaryEncoder.setVelocityConversionFactor(INTAKE_ARM_GEAR_FACTOR / 60);
+        primaryEncoder.setPositionConversionFactor(PivotWristConstants.wristEnconderPCF); // verify with build
+        primaryEncoder.setVelocityConversionFactor(PivotWristConstants.wristEnconderPCF / 60);
         resetEncoder();
 
         // Get PID Controller and set
         wristPID = pivotWristMotor.getPIDController();
-        wristPID.setP(INTAKE_ARM_PID[0]);
-        wristPID.setI(INTAKE_ARM_PID[1]);
-        wristPID.setD(INTAKE_ARM_PID[2]);
-        wristPID.setFF(INTAKE_ARM_PID[3]);
-        wristPID.setOutputRange(-INTAKE_ARM_PID_MAX_OUTPUT, INTAKE_ARM_PID_MAX_OUTPUT);
+        wristPID.setP(PivotWristConstants.wristPID[0]);
+        wristPID.setI(PivotWristConstants.wristPID[1]);
+        wristPID.setD(PivotWristConstants.wristPID[2]);
+        wristPID.setFF(PivotWristConstants.wristPID[3]);
+        wristPID.setOutputRange(-PivotWristConstants.wrist_PID_MAX_OUTPUT, PivotWristConstants.wrist_PID_MAX_OUTPUT);
 
-        limitSwitch = new DigitalInput(ARM_LIMIT_SWITCH_PORT_ID); //have to get ID later for constant
+        limitSwitch = new DigitalInput(PivotWristConstants.wrist_LIMIT_SWITCH_PORT_ID); //have to get ID later for constant
         isPIDFinished = false;
     }
     
@@ -80,16 +87,16 @@ public class PivotWrist extends SnailSubsystem {
         switch(state) {
             case MANUAL:
             // put each speed case in constants so something like intakeArmMotor.set(INTAKE_ARM_LOWER_SPEED);
-                public static final double PIVOT_WRIST_RAISE_SPEED = 0.6;
-                public static final double PIVOT_WRIST_NEUTRAL_SPEED = 0.0;
-                public static final double PIVOT_WRIST_LOWER_SPEED = -0.45;
+                PIVOT_WRIST_RAISE_SPEED = 1257;
+                PIVOT_WRIST_NEUTRAL_SPEED = 0.0;
+                PIVOT_WRIST_LOWER_SPEED = -1257;
                 break;
             case PID:
                 // send the desired setpoint to the PID controller and specify we want to use position control
                 wristPID.setReference(setpoint, CANSparkMax.ControlType.kPosition);
 
                 // check our error and update the state if we finish
-                if(Math.abs(primaryEncoder.getPosition() - setpoint) < INTAKE_ARM_PID_TOLERANCE) {
+                if(Math.abs(primaryEncoder.getPosition() - setpoint) < PivotWristConstants.wrist_PID_TOLERANCE) {
                     endPID();
                 }
                 break;
@@ -116,20 +123,20 @@ public class PivotWrist extends SnailSubsystem {
     }
 
     public void raise() {
-        if (state = State.MANUAL) {
-            pivotWristMotor.set(PIVOT_WRIST_RAISE_SPEED)
+        if (state.equals(State.MANUAL)) {
+            pivotWristMotor.set(PIVOT_WRIST_RAISE_SPEED);
         }
     }
 
     public void lower() {
-        if (state = State.MANUAL) {
-            pivotWristMotor.set(PIVOT_WRIST_LOWER_SPEED)
+        if (state.equals(State.MANUAL)) {
+            pivotWristMotor.set(PIVOT_WRIST_LOWER_SPEED);
         }
     }
 
      public void neutral() {
-        if (state = State.MANUAL) {
-            pivotWristMotor.set(PIVOT_WRIST_NEUTRAL_SPEED)
+        if (state.equals(State.MANUAL)) {
+            pivotWristMotor.set(PIVOT_WRIST_NEUTRAL_SPEED);
         }
     }
 
@@ -150,10 +157,10 @@ public class PivotWrist extends SnailSubsystem {
         // Display Encoder position and setpoint
         SmartDashboard.putNumberArray("Pivot Wrist Dist PID (pos, setpt)", new double[] {primaryEncoder.getPosition(), setpoint});
         SmartDashboard.putString("Pivot Wrist State", state.name());
-        SmartDashboard.putNumber("Pivot Wrist Current", intakeArmMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Pivot Wrist Current", pivotWristMotor.getOutputCurrent());
         SmartDashboard.putBoolean("Pivot Wrist Limit Switch", limitSwitch.get());
-        SmartDashboard.putNumber("Motor Speed", encoder.getVelocity();)
-        SmartDashboard.putNumber("Encoder position", encoder.getPosition());
+        SmartDashboard.putNumber("Motor Speed", primaryEncoder.getVelocity());
+        SmartDashboard.putNumber("Encoder position", primaryEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setpoint);
     }
     

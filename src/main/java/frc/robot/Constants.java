@@ -27,6 +27,16 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 2;
     }
 
+
+    public static class PivotWrist{
+        public final static int wristEnconderPCF = 1257;
+
+    }
+
+
+
+
+    
     public static class Drivetrain {
         // drivetrain constants
         public static double DRIVE_TRACK_WIDTH_M = 0.66; // m
@@ -93,6 +103,7 @@ public final class Constants {
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
     public final static int NEO_CURRENT_LIMIT = 80; // amps
     public final static int ARM_MOTOR_ID = 0;
-
+    public final static int PIVOT_WRIST_ID1 = 1;
+    public final static int PIVOT_WRIST_ID2 = 2;
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
