@@ -11,7 +11,7 @@ public class PivotArmManualCommand extends CommandBase {
 
     public PivotArmManualCommand(PivotArm pivotArm) {
         this.pivotArm = pivotArm;
-        
+
         addRequirements(pivotArm);
     }
     
