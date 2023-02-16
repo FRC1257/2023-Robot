@@ -28,9 +28,19 @@ public final class Constants {
     }
 
 
-    public static class PivotWrist{
-        public final static int wristEnconderPCF = 1257;
-
+    public static class PivotWristConstants{
+        public static int wristEnconderPCF = 1257;
+        public static double[] wristPID = new double[] {1257, 1257, 1257, 1257};
+        public static double wrist_PID_MAX_OUTPUT = 1257;
+        public static double wrist_PID_TOLERANCE = 1257;
+        public static int wrist_LIMIT_SWITCH_PORT_ID = 1257;
+        public static double wrist_MAX_VEL = 1257.0;
+        public static double wrist_MAX_ACC = 1257.0;
+        public static double Wrist_PID_TOLERANCE = 1257.0;
+        public static int Wrist_PID_SLOT_VEL = 0;
+        public static int Wrist_PID_SLOT_ACC = 0;
+        public static double Wrist_SETPOINT_TOP = 1257.0; // in encoder revs
+        public static double Wrist_SETPOINT_BOT = -1257.0; // in enc
     }
 
 

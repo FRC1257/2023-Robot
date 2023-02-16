@@ -116,7 +116,6 @@ public class PivotWrist extends SnailSubsystem {
 
     public void manual() {
         state = State.MANUAL;
-        
     }
 
     public void raise() {

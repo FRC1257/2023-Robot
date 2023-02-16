@@ -1,5 +1,5 @@
 // need to bind command
-package frc.robot.commands.rollerintake;
+package frc.robot.commands.pivotWristCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PivotWrist;
@@ -7,7 +7,7 @@ import frc.robot.subsystems.PivotWrist;
 public class PivotWristNeutralCommand extends CommandBase {
     private PivotWrist pivotWrist;
 
-    public PivotWristNeutralCommand(PivotWrist pivotWrist)
+    public PivotWristNeutralCommand(PivotWrist pivotWrist){
     this.pivotWrist = pivotWrist;
     addRequirements(pivotWrist);
     
@@ -32,3 +32,4 @@ public class PivotWristNeutralCommand extends CommandBase {
     public boolean isFinished() {
     return false;
     }
+}
