@@ -9,7 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.IntakeArm.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
@@ -26,7 +25,7 @@ public class IntakeArm extends SnailSubsystem {
         PID,
     }
 
-    private State state = State.MANUAL;
+    private State state;
     private double speed;
     private boolean isPIDFinished;
   public IntakeArm() {
@@ -49,6 +48,7 @@ public class IntakeArm extends SnailSubsystem {
       encoder.setVelocityConversionFactor(INTAKE_ARM_GEAR_FACTOR / 60);
       encoder.setPosition(0.0);
       
+      state = State.MANUAL;
       bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
       isPIDFinished = false;
 }
