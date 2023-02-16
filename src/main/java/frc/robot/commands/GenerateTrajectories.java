@@ -73,7 +73,7 @@ public class GenerateTrajectories {
 
     // 2 getScoreLocation() methods for some reason?
     public Pose2d getScoreLocation() {
-        return ALLIANCE_SCORE_POSE[RobotContainer.scorePositionChooser.getSelected()];
+        return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
     }
 
     public Pose2d getChargeLocation() {
@@ -102,14 +102,16 @@ public class GenerateTrajectories {
             addScoreTrajectory();
         }
 
-        // we either go for cargo or leave the tarmac to get points
+        // then we either go for cargo or leave the tarmac to get points
         if (cargo) {
+            // going for cargo implies leaving community
             addCargoTrajectory();
         } 
         else {
             addLeaveCommunityTrajectory();
         }
 
+        
         // step 3 go for charge
         if (charge) {
             addChargeTrajectory();

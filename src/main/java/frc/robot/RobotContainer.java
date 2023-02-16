@@ -52,7 +52,8 @@ public class RobotContainer {
     private boolean updateTraj = true;
 
     // choosers
-    public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> firstScorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> secondScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
 
@@ -166,7 +167,8 @@ public class RobotContainer {
      */
     public void configureAutoChoosers() {
         configureGamePieceChooser();
-        configureScorePositionChooser();
+        configureFirstScorePositionChooser();
+        configureSecondScorePositionChooser();
         configureStartPositionChooser();
     }
 
@@ -267,19 +269,32 @@ public class RobotContainer {
         SmartDashboard.putData(gamePieceChooser);
     }
     
-  
-    public void configureScorePositionChooser() {
-        scorePositionChooser.setDefaultOption("-1", 0);
-        scorePositionChooser.addOption("1st Position", 0);
-        scorePositionChooser.addOption("2nd Position", 1);
-        scorePositionChooser.addOption("3rd Position", 2);
-        scorePositionChooser.addOption("4th Position", 3);
-        scorePositionChooser.addOption("5th Position", 4);
-        scorePositionChooser.addOption("6th Position", 5);
-        scorePositionChooser.addOption("7th Position", 6);
-        scorePositionChooser.addOption("8th Position", 7);
-        scorePositionChooser.addOption("9th Position", 8);
-        SmartDashboard.putData(scorePositionChooser);
+    public void configureFirstScorePositionChooser() {
+        firstScorePositionChooser.setDefaultOption("-1", 0);
+        firstScorePositionChooser.addOption("1st Position", 0);
+        firstScorePositionChooser.addOption("2nd Position", 1);
+        firstScorePositionChooser.addOption("3rd Position", 2);
+        firstScorePositionChooser.addOption("4th Position", 3);
+        firstScorePositionChooser.addOption("5th Position", 4);
+        firstScorePositionChooser.addOption("6th Position", 5);
+        firstScorePositionChooser.addOption("7th Position", 6);
+        firstScorePositionChooser.addOption("8th Position", 7);
+        firstScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(firstScorePositionChooser);
+    }
+
+    public void configureSecondScorePositionChooser() {
+        secondScorePositionChooser.setDefaultOption("-1", 0);
+        secondScorePositionChooser.addOption("1st Position", 0);
+        secondScorePositionChooser.addOption("2nd Position", 1);
+        secondScorePositionChooser.addOption("3rd Position", 2);
+        secondScorePositionChooser.addOption("4th Position", 3);
+        secondScorePositionChooser.addOption("5th Position", 4);
+        secondScorePositionChooser.addOption("6th Position", 5);
+        secondScorePositionChooser.addOption("7th Position", 6);
+        secondScorePositionChooser.addOption("8th Position", 7);
+        secondScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(secondScorePositionChooser);
     }
 
     public void configureStartPositionChooser() {
