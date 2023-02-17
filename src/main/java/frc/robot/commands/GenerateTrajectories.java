@@ -17,7 +17,9 @@ public class GenerateTrajectories {
     private boolean firstScore;
     private boolean secondScore;
     private boolean cargo;
-    private Drivetrain driveTrain;
+    private boolean threePiece;
+    private boolean blue;
+    private Drivetrain drivetrain;
     private Pose2d StartPose;
     
     private SequentialCommandGroup command;
@@ -27,17 +29,19 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
-    private Pose2d ALLIANCE_CHARGE_POSE_WAYPOINT;
+    private Pose2d[] ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
-    private Pose2d chargePose;
+    private Pose2d[] ALLIANCE_PARK_POSE;
+    private Pose2d[] chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, Drivetrain driveTrain, int StartPose) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
+        this.threePiece = threePiece;
 
         this.cargo = isCargo;
-        this.driveTrain = driveTrain;
+        this.drivetrain = drivetrain;
         
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
@@ -50,6 +54,8 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_PARK_POSE = Autonomous.BLUE_PARK_POSE;
+            blue = true;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
@@ -58,40 +64,85 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_PARK_POSE = Autonomous.RED_PARK_POSE;
+            blue = false;
         }
-        this.StartPose = ALLIANCE_START_POSE[StartPose]; 
+
+        // this.StartPose = ALLIANCE_START_POSE[StartPose]; 
+        this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
-        trajediesDecider();
+        AutoDecider();
     }
 
     // TODO make method to get positions
-    // also TODO make method to get the trajectories to visualize
 
     //gets the cargoLocation based on what side the robot is on
 
-    public Pose2d getCargoLocation() {
+    private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
 
+    private Pose2d getSecondCargoLocation() {
+        return ALLIANCE_CARGO_POSE[RobotContainer.secondGamePieceChooser.getSelected()];
+    }
+
     // 2 getScoreLocation() methods for some reason?
-    public Pose2d getFirstScoreLocation() {
+    private Pose2d getFirstScoreLocation() {
         return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
     }
 
-    public Pose2d getSecondScoreLocation() {
+    private Pose2d getSecondScoreLocation() {
         return ALLIANCE_SCORE_POSE[RobotContainer.secondScorePositionChooser.getSelected()];
     }
 
-    public Pose2d getChargeLocation() {
+    private Pose2d getThirdScoreLocation() {
+        return ALLIANCE_SCORE_POSE[RobotContainer.thirdScorePositionChooser.getSelected()];
+    }
+
+    private Pose2d getChargeLocation() {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
 
+        // index 0 is the area outside the community zone
+        // index 1 is the area inside the community zone
+
         // in reality there are 2 possible places so we would just need to use the side of the field we are on
-        return chargePose;
+        if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
+            return chargePose[0];
+        } else if (blue) {
+            return chargePose[1];
+        }
+        // not blue
+        if (currentPose.getX() > Autonomous.RED_COMMUNITY_X) {
+            return chargePose[0];
+        }
+        return chargePose[1];
+        
     }
 
-    public Pose2d getLeaveCommunityPose(Pose2d currentPose) {
+    private Pose2d getChargeWaypointLocation() {
+        // should be stored as a constant then retrieved for this
+        // currently returning this random thing
+
+        // index 0 is the area outside the community zone
+        // index 1 is the area inside the community zone
+
+        // in reality there are 2 possible places so we would just need to use the side of the field we are on
+        if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
+        } else if (blue) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
+        }
+        // not blue
+        if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
+        }
+        return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
+        
+    }
+
+    private Pose2d getLeaveCommunityPose(Pose2d currentPose) {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
         // TODO fix this
@@ -102,12 +153,25 @@ public class GenerateTrajectories {
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
 
-    public void trajediesDecider() {
+    private Pose2d getParkPose() {
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            return ALLIANCE_PARK_POSE[0];
+        } 
+        return ALLIANCE_PARK_POSE[1];
+    }
+
+    private void AutoDecider() {
+        if (threePiece) {
+            threePieceAuto();
+            return;
+        }
+
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
         // Step 1
         if (firstScore) {
-            addFirstScoreTrajectory();
+            // addFirstScoreTrajectory();
+            addScoreHigh();
         }
 
         // then we either go for cargo or leave the tarmac to get points
@@ -115,6 +179,7 @@ public class GenerateTrajectories {
         if (cargo) {
             // going for cargo implies leaving community
             addCargoTrajectory();
+            addPiecePickup();
         } 
         else {
             addLeaveCommunityTrajectory();
@@ -123,11 +188,12 @@ public class GenerateTrajectories {
         // Step 3
         if (secondScore) {
             addSecondScoreTrajectory();
+            addScoreHigh();
             if (charge) {
                 addChargeTrajectory();
             }
             else {
-                // TODO: addParkTrajectory()
+                addParkTrajectory();
             }
         }
         // step 3 go for charge
@@ -135,50 +201,138 @@ public class GenerateTrajectories {
             addChargeTrajectory();
         }
         else {
-            // TODO: addParkTrajectory()
+            addParkTrajectory();
         }
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
            addLeaveCommunityTrajectory(); 
+           addParkTrajectory();
         }
 
         trajectoryList.add(getFullTrajectory());
 
     }
 
-    // step variables aren't random, they actually represent the order of the trajectories
-    public void addFirstScoreTrajectory() {
-        ToPosCommand step1 = new ToPosCommand(driveTrain, List.of(StartPose, getFirstScoreLocation()), true);
-        currentPose = getFirstScoreLocation();
-        trajectoryList.add(step1.getTrajectory());
-        command.addCommands(step1);
+    private void addScoreHigh() {
+        command.addCommands(new ScoreCommand());
     }
 
-    public void addSecondScoreTrajectory() {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
+    private void addPiecePickup() {
+        command.addCommands(new GetPieceCommand());
+    }
+
+    private void addToPosCommand(ToPosCommand command) {
+        this.command.addCommands(command);
+        trajectoryList.add(command.getTrajectory());
+    }
+
+    private void threePieceAuto() {
+        command = new SequentialCommandGroup();
+        this.StartPose = getFirstScoreLocation();
+        this.currentPose = this.StartPose;
+
+        addScoreHigh();
         
-        // TODO: fix this, doesn't really work
+        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain, getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
+        currentPose = getCargoLocation();
+        addToPosCommand(firstGoToCargo);
+
+        addPiecePickup();
+
+        addSecondScoreTrajectory();
+
+        addScoreHigh();
+
+        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain, getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
+        currentPose = getSecondCargoLocation();
+        addToPosCommand(secondGoToCargo);
+
+        addPiecePickup();
+
+        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), true);
+        currentPose = getThirdScoreLocation();
+        addToPosCommand(returnToScore2);
+
+        addScoreHigh();
+
+        trajectoryList.add(getFullTrajectory());
+    }
+
+    // step variables aren't random, they actually represent the order of the trajectories
+    private void addFirstScoreTrajectory() {
+        ToPosCommand step1 = new ToPosCommand(drivetrain, List.of(StartPose, getFirstScoreLocation()), true);
+        currentPose = getFirstScoreLocation();
+        addToPosCommand(step1);
+    }
+
+    private void addSecondScoreTrajectory() {
+        ToPosCommand returnToScore = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), true);
+        currentPose = getSecondScoreLocation();
+        addToPosCommand(returnToScore);
+    }
+
+    /* True if park is needed
+    False if already parked */
+    private boolean checkIfParkNecessary() {
+        if (blue)
+            return currentPose.getX() > Autonomous.BLUE_COMMUNITY_X;
+        return currentPose.getX() < Autonomous.RED_COMMUNITY_X;
+    }
+
+    private void addParkTrajectory() {
+        if (!checkIfParkNecessary()) {
+            return;
+        }
+        
+        ToPosCommand step4 = new ToPosCommand(drivetrain, List.of(currentPose, getParkWaypoint(), getParkPose()), true);
+        currentPose = getParkPose();
+        addToPosCommand(step4);
+    }
+
+    private List<Pose2d> getTrajPointsWaypoint(Pose2d start, Pose2d end) {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(start);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+        }
+        
+        trajPoints.add(end);
+        return trajPoints;
+    }
+
+    private List<Pose2d> getTrajPointsWaypointReverse(Pose2d start, Pose2d end) {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(start);
+
         // going around the charging station, if convenient
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-
         } else {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
         }
-
-        trajPoints.add(getSecondScoreLocation());
-        ToPosCommand step3 = new ToPosCommand(driveTrain, trajPoints, false);
-        currentPose = getSecondScoreLocation();
-        trajectoryList.add(step3.getTrajectory());
-        command.addCommands(step3);
+        
+        trajPoints.add(end);
+        return trajPoints;
     }
 
-    public void addCargoTrajectory() {
+    private Pose2d getParkWaypoint() {
+        // going around the charging station, if needed
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y)
+            return ALLIANCE_WAYPOINTS_POSE[1];
+        return ALLIANCE_WAYPOINTS_POSE[3];
+    }
+
+    private void addCargoTrajectory() {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
@@ -192,13 +346,12 @@ public class GenerateTrajectories {
         }
         
         trajPoints.add(getCargoLocation());
-        ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getCargoLocation();
-        trajectoryList.add(step2.getTrajectory());
-        command.addCommands(step2);
+        addToPosCommand(step2);
     }
 
-    public void addLeaveCommunityTrajectory() {
+    private void addLeaveCommunityTrajectory() {
         // this method and addCargoTrajectory are almost identical, different by one line
         // TODO: refactor further to avoid confusion
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
@@ -213,21 +366,19 @@ public class GenerateTrajectories {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
         trajPoints.add(getLeaveCommunityPose(currentPose));
-        ToPosCommand step2 = new ToPosCommand(driveTrain, trajPoints, false);
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getLeaveCommunityPose(currentPose);
-        trajectoryList.add(step2.getTrajectory());
-        command.addCommands(step2);
+        addToPosCommand(step2);
     }
 
-    public void addChargeTrajectory() {
-        ToPosCommand step3 = new ToPosCommand(driveTrain, List.of(currentPose, ALLIANCE_CHARGE_POSE_WAYPOINT, getChargeLocation()), false);
+    private void addChargeTrajectory() {
+        ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
         currentPose = getChargeLocation();
-        trajectoryList.add(step3.getTrajectory());
-        command.addCommands(step3);
+        addToPosCommand(step3);
     }
 
     public SequentialCommandGroup getCommand() {
-        trajediesDecider();
+        AutoDecider();
         return command;
     }
 
@@ -248,6 +399,7 @@ public class GenerateTrajectories {
         for (Trajectory traj : trajectoryList) {
             fullTrajectory = fullTrajectory.concatenate(traj);
         }
+        
         return fullTrajectory;
     }
 }

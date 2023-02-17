@@ -56,6 +56,8 @@ public class RobotContainer {
     public static SendableChooser<Integer> secondScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -63,7 +65,7 @@ public class RobotContainer {
     private boolean cargo;
     private boolean charge;
 
-    private boolean updateVisual = false;
+    private boolean threePiece;
 
     private GenerateTrajectories generateTrajectories;
 
@@ -92,6 +94,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", 0);
         SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("3 Ball Auto", false);
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
@@ -147,8 +150,8 @@ public class RobotContainer {
             firstScore,
             secondScore,
             cargo,
-            drivetrain,
-            0
+            0,
+            threePiece
         );
     }
 
@@ -173,6 +176,9 @@ public class RobotContainer {
         configureFirstScorePositionChooser();
         configureSecondScorePositionChooser();
         configureStartPositionChooser();
+        configureSecondGamePieceChooser();
+        configureThirdScorePositionChooser();
+
     }
 
     private int estimatedCurrentPose2d() {
@@ -193,8 +199,8 @@ public class RobotContainer {
             firstScore,
             secondScore,
             cargo,
-            drivetrain,
-            estimatedCurrentPose2d()
+            estimatedCurrentPose2d(),
+            threePiece
         );
         
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
@@ -255,8 +261,8 @@ public class RobotContainer {
                 firstScore,
                 secondScore,
                 cargo,
-                drivetrain,
-                estimatedCurrentPose2d()
+                estimatedCurrentPose2d(),
+                threePiece
             );
             resetDashboard();
         }
@@ -266,16 +272,25 @@ public class RobotContainer {
     //sendable chooser methods
 
     public void configureGamePieceChooser() {
-        gamePieceChooser.setDefaultOption("-1", 0);
+        gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
         gamePieceChooser.addOption("1st Position", 0);
         gamePieceChooser.addOption("2nd Position", 1);
         gamePieceChooser.addOption("3rd Position", 2);
         gamePieceChooser.addOption("4th Position", 3);
         SmartDashboard.putData(gamePieceChooser);
     }
+
+    public void configureSecondGamePieceChooser() {
+        secondGamePieceChooser.setDefaultOption("Second Cargo Chooser", 0);
+        secondGamePieceChooser.addOption("1st Position", 0);
+        secondGamePieceChooser.addOption("2nd Position", 1);
+        secondGamePieceChooser.addOption("3rd Position", 2);
+        secondGamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(secondGamePieceChooser);
+    }
     
     public void configureFirstScorePositionChooser() {
-        firstScorePositionChooser.setDefaultOption("-1", 0);
+        firstScorePositionChooser.setDefaultOption("Score Position Chooser", 0);
         firstScorePositionChooser.addOption("1st Position", 0);
         firstScorePositionChooser.addOption("2nd Position", 1);
         firstScorePositionChooser.addOption("3rd Position", 2);
@@ -289,7 +304,7 @@ public class RobotContainer {
     }
 
     public void configureSecondScorePositionChooser() {
-        secondScorePositionChooser.setDefaultOption("-1", 0);
+        secondScorePositionChooser.setDefaultOption("Second Score Position Chooser", 0);
         secondScorePositionChooser.addOption("1st Position", 0);
         secondScorePositionChooser.addOption("2nd Position", 1);
         secondScorePositionChooser.addOption("3rd Position", 2);
@@ -302,8 +317,23 @@ public class RobotContainer {
         SmartDashboard.putData(secondScorePositionChooser);
     }
 
+
+    public void configureThirdScorePositionChooser() {
+        thirdScorePositionChooser.setDefaultOption("Third Score Position Chooser", 0);
+        thirdScorePositionChooser.addOption("1st Position", 0);
+        thirdScorePositionChooser.addOption("2nd Position", 1);
+        thirdScorePositionChooser.addOption("3rd Position", 2);
+        thirdScorePositionChooser.addOption("4th Position", 3);
+        thirdScorePositionChooser.addOption("5th Position", 4);
+        thirdScorePositionChooser.addOption("6th Position", 5);
+        thirdScorePositionChooser.addOption("7th Position", 6);
+        thirdScorePositionChooser.addOption("8th Position", 7);
+        thirdScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(thirdScorePositionChooser);
+    }
+
     public void configureStartPositionChooser() {
-        startPositionChooser.setDefaultOption("Set me", 0);
+        startPositionChooser.setDefaultOption("Start Position", 0);
         startPositionChooser.addOption("1st Position", 0);
         startPositionChooser.addOption("2nd Position", 1);
         startPositionChooser.addOption("3rd Position", 2);
@@ -312,7 +342,7 @@ public class RobotContainer {
 
 
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false);
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false) || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
     }
 
     public void updateAutoChoosers() {
@@ -320,6 +350,7 @@ public class RobotContainer {
         secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", false);
         cargo = SmartDashboard.getBoolean("Auto Get Cargo", false);
         charge = SmartDashboard.getBoolean("Auto Goto Charge", false);
+        threePiece = SmartDashboard.getBoolean("3 Ball Auto", false);
     }
 
     public void resetDashboard() {
@@ -333,6 +364,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
         SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("3 Ball Auto", threePiece);
     }
 
 }
