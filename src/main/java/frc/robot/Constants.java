@@ -243,17 +243,17 @@ public final class Constants {
         };
         public static Pose2d[] RED_CHARGE_POSE_WAYPOINT = new Pose2d[] {
                 new Pose2d(11, 2.75, Rotation2d.fromDegrees(0)), 
-                new Pose2d(13.2, 2.75, Rotation2d.fromDegrees(180)),
+                new Pose2d(13.5, 2.75, Rotation2d.fromDegrees(180)),
         };
 
         public static Pose2d[] BLUE_LEAVE_COMMUNITY_POSE = new Pose2d[] {
-                new Pose2d(4.314, 4.775, Rotation2d.fromDegrees(0)),
-                new Pose2d(5.6, 0.646, Rotation2d.fromDegrees(0))
+                new Pose2d(5, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(5, 0.754, Rotation2d.fromDegrees(0))
         };
 
         public static Pose2d[] RED_LEAVE_COMMUNITY_POSE = new Pose2d[] {
-                new Pose2d(12.15, 4.775, Rotation2d.fromDegrees(180)),
-                new Pose2d(10.785, 0.646, Rotation2d.fromDegrees(180))
+                new Pose2d(11.4, 4.73, Rotation2d.fromDegrees(180)),
+                new Pose2d(11.4, 0.754, Rotation2d.fromDegrees(180))
         };
 
         // bottom to top (farthest from community to closest)

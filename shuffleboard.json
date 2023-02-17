@@ -603,6 +603,49 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "15,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Leave Tarmac",
+              "_title": "Leave Tarmac",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Trajectory Time",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -859,7 +902,7 @@
           "9,0": {
             "size": [
               10,
-              8
+              6
             ],
             "content": {
               "_type": "Field",
@@ -966,7 +1009,7 @@
           },
           "0,6": {
             "size": [
-              6,
+              4,
               2
             ],
             "content": {
@@ -981,9 +1024,9 @@
               "Visuals/Display value": true
             }
           },
-          "3,2": {
+          "4,2": {
             "size": [
-              3,
+              2,
               2
             ],
             "content": {
@@ -1037,13 +1080,55 @@
           },
           "0,2": {
             "size": [
-              3,
+              2,
               2
             ],
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Opt. 2nd Auto Score",
               "_title": "2nd Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Leave Tarmac",
+              "_title": "Leave Tarmac",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Drive Time",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 18.0,
+              "Visuals/Show value": true
+            }
+          },
+          "9,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "SmartDashboard/Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -1172,19 +1257,48 @@
           },
           "0,6": {
             "size": [
-              8,
+              4,
               2
             ],
             "content": {
               "_type": "Number Slider",
               "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
-              "_title": "SmartDashboard/View Trajectory Pos",
+              "_title": "View Trajectory Pos",
               "_glyph": 148,
               "_showGlyph": false,
               "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 6.0,
               "Slider Settings/Block increment": 0.0625,
               "Visuals/Display value": true
+            }
+          },
+          "6,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Drive Time",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 18.0,
+              "Visuals/Show value": true
             }
           }
         }

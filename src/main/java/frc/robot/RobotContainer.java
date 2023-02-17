@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -64,6 +65,9 @@ public class RobotContainer {
     private boolean secondScore;
     private boolean cargo;
     private boolean charge;
+    private boolean leaveTarmac = true;
+
+    private boolean isSimulation;
 
     private boolean threePiece;
 
@@ -78,26 +82,17 @@ public class RobotContainer {
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
         configureAutoChoosers();
+        configureShuffleboard();
         configureSubsystems();
         configureButtonBindings();
         
         outputCounter = 0;
         displayTrajCounter = 0;
 
-        // Field Side
-        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
-        SmartDashboard.putBoolean("Testing", true);
-        //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
-        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
-        SmartDashboard.putBoolean("Auto Goto Charge", charge);
-        SmartDashboard.putNumber("View Trajectory Pos", 0);
-        SmartDashboard.putBoolean("Update Visual", false);
-        SmartDashboard.putBoolean("3 Ball Auto", false);
-
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
+
+        isSimulation = RobotBase.isSimulation();
     }
 
     public void stopDisplayingTraj() {
@@ -151,8 +146,11 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece
+            threePiece,
+            leaveTarmac
         );
+
+        putTrajectoryTime();
     }
 
     /**
@@ -199,10 +197,12 @@ public class RobotContainer {
             firstScore,
             secondScore,
             cargo,
-            estimatedCurrentPose2d(),
-            threePiece
+            0,
+            threePiece,
+            leaveTarmac
         );
         
+        putTrajectoryTime();
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajectories.getCommand();
@@ -243,6 +243,10 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
+        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
+            updateTraj = true;
+            SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        }
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
@@ -262,14 +266,37 @@ public class RobotContainer {
                 secondScore,
                 cargo,
                 estimatedCurrentPose2d(),
-                threePiece
+                threePiece,
+                leaveTarmac
             );
+
+            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+
+            putTrajectoryTime();
             resetDashboard();
         }
     
     }
 
     //sendable chooser methods
+
+    public void configureShuffleboard() {
+        // Field Side
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+        SmartDashboard.putBoolean("Testing", true);
+        //getting the auto values for score, cargo, and charge
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("3 Ball Auto", false);
+        SmartDashboard.putBoolean("Leave Tarmac", true);
+
+        SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        
+    }
 
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
@@ -346,11 +373,16 @@ public class RobotContainer {
     }
 
     public void updateAutoChoosers() {
-        firstScore = SmartDashboard.getBoolean("1st Auto Score", false);
-        secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", false);
-        cargo = SmartDashboard.getBoolean("Auto Get Cargo", false);
-        charge = SmartDashboard.getBoolean("Auto Goto Charge", false);
-        threePiece = SmartDashboard.getBoolean("3 Ball Auto", false);
+        firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
+        secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", secondScore);
+        cargo = SmartDashboard.getBoolean("Auto Get Cargo", cargo);
+        charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
+        threePiece = SmartDashboard.getBoolean("3 Ball Auto", threePiece);
+        leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
+    }
+
+    public void putTrajectoryTime() {
+        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -365,6 +397,7 @@ public class RobotContainer {
         SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
         SmartDashboard.putBoolean("Update Visual", false);
         SmartDashboard.putBoolean("3 Ball Auto", threePiece);
+        SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
     }
 
 }

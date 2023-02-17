@@ -19,6 +19,7 @@ public class GenerateTrajectories {
     private boolean cargo;
     private boolean threePiece;
     private boolean blue;
+    private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
     
@@ -34,11 +35,12 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_PARK_POSE;
     private Pose2d[] chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
         this.threePiece = threePiece;
+        this.leaveTarmac = leaveTarmac;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
@@ -114,7 +116,7 @@ public class GenerateTrajectories {
             return chargePose[1];
         }
         // not blue
-        if (currentPose.getX() > Autonomous.RED_COMMUNITY_X) {
+        if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
             return chargePose[0];
         }
         return chargePose[1];
@@ -181,7 +183,7 @@ public class GenerateTrajectories {
             addCargoTrajectory();
             addPiecePickup();
         } 
-        else {
+        else if (leaveTarmac) {
             addLeaveCommunityTrajectory();
         }
 
@@ -378,7 +380,7 @@ public class GenerateTrajectories {
     }
 
     public SequentialCommandGroup getCommand() {
-        AutoDecider();
+        // AutoDecider();
         return command;
     }
 
@@ -402,4 +404,17 @@ public class GenerateTrajectories {
         
         return fullTrajectory;
     }
+
+    public double getTrajectoryTime() {
+        double time = 0;
+        for (Trajectory traj : trajectoryList) {
+            time += traj.getTotalTimeSeconds();
+        }
+        return time;
+    }
+
+    public int getLastTrajectoryIndex() {
+        return trajectoryList.size() - 1;
+    }
+
 }

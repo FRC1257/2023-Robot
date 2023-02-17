@@ -2,51 +2,16 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
-      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "/SmartDashboard/SendableChooser[2]": "String Chooser",
-      "/SmartDashboard/SendableChooser[3]": "String Chooser"
+      "/SmartDashboard/SendableChooser[3]": "String Chooser",
+      "/SmartDashboard/SendableChooser[4]": "String Chooser",
+      "/SmartDashboard/SendableChooser[5]": "String Chooser"
     },
     "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Field": {
-        "Robot": {
-          "style": "Line"
-        },
-        "image": "C:\\Users\\Chris\\Downloads\\fieldlayout2023.png",
-        "traj": {
-          "style": "Track"
-        },
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/SendableChooser[0]": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/SendableChooser[1]": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/SendableChooser[2]": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/SendableChooser[3]": {
         "window": {
           "visible": true
         }
@@ -55,29 +20,9 @@
   },
   "NetworkTables": {
     "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
       "SmartDashboard": {
-        "SendableChooser[3]": {
-          "open": true
-        },
         "open": true
       }
-    }
-  },
-  "NetworkTables Info": {
-    "Clients": {
-      "open": true
-    },
-    "Server": {
-      "Publishers": {
-        "open": true
-      },
-      "Subscribers": {
-        "open": true
-      },
-      "open": true
     }
   }
 }
