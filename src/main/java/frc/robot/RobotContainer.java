@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.ElevatorExtendCommand;
-import frc.robot.commands.ElevatorRetractCommand;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.elevator.ElevatorExtendCommand;
+import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.SnailController;
@@ -95,6 +95,8 @@ public class RobotContainer {
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
+        // Operator Bindings
         operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
         operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
     }
