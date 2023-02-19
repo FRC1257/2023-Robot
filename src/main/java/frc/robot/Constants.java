@@ -25,22 +25,33 @@ public final class Constants {
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
+
+        // Pivot Wrist    
+        public final static int PIVOT_WRIST_ID_LEFT = 1;
+        public final static int PIVOT_WRIST_ID_RIGHT = 2;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 1257;
     }
 
 
-    public static class PivotWristConstants{
-        public static int wristEnconderPCF = 1257;
-        public static double[] wristPID = new double[] {1257, 1257, 1257, 1257};
-        public static double wrist_PID_MAX_OUTPUT = 1257;
-        public static double wrist_PID_TOLERANCE = 1257;
-        public static int wrist_LIMIT_SWITCH_PORT_ID = 1257;
-        public static double wrist_MAX_VEL = 1257.0;
-        public static double wrist_MAX_ACC = 1257.0;
-        public static double Wrist_PID_TOLERANCE = 1257.0;
-        public static int Wrist_PID_SLOT_VEL = 0;
-        public static int Wrist_PID_SLOT_ACC = 0;
-        public static double Wrist_SETPOINT_TOP = 1257.0; // in encoder revs
-        public static double Wrist_SETPOINT_BOT = -1257.0; // in enc
+    public static class PivotWrist {
+        public static double WRIST_ENCODER_PCF = 1257;
+        public static double[] WRIST_PID = new double[] {1257, 1257, 1257, 1257};
+
+        public static double WRIST_PID_MAX_OUTPUT = 1257;
+        public static double WRIST_PID_TOLERANCE = 1257;
+
+        public static double WRIST_MAX_VEL = 1257.0;
+        public static double WRIST_MAX_ACC = 1257.0;
+        
+        public static int WRIST_PID_SLOT_VEL = 0;
+        public static int WRIST_PID_SLOT_ACC = 0;
+        public static double WRIST_SETPOINT_TOP = .1257; // in encoder revs
+        public static double WRIST_SETPOINT_BOT = -.1257; // in enc
+
+        // setpoints for the wrist
+        public static double WRIST_SETPOINT_INTAKE = 0.5;
+        public static double WRIST_SETPOINT_HIGH = 0.6;
+        public static double WRIST_SETPOINT_MID = 0.7;
     }
 
 
@@ -113,7 +124,6 @@ public final class Constants {
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
     public final static int NEO_CURRENT_LIMIT = 80; // amps
     public final static int ARM_MOTOR_ID = 0;
-    public final static int PIVOT_WRIST_ID1 = 1;
-    public final static int PIVOT_WRIST_ID2 = 2;
+
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
