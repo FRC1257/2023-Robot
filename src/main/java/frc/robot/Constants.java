@@ -90,9 +90,15 @@ public final class Constants {
     }
 
     public static class PivotArm {
-        public static double[] PIVOT_ARM_PID = new double[] {1257, 1257, 1257};
+        // PID constants
+        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1257;
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257;
+
+        // Setpoints between -1 and 1
+        public static double PIVOT_ARM_SETPOINT_UP = 1;
+        public static double PIVOT_ARM_SETPOINT_MID = 0.5;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
     }
 
     public static double PI = 3.14159265;

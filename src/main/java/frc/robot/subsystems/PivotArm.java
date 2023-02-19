@@ -23,7 +23,7 @@ public class PivotArm extends SnailSubsystem {
     private double speed;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
-    private DigitalInput bumpSwitch;
+    private DigitalInput limitSwitch;
 
 
     public enum State {
@@ -54,11 +54,18 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setD(PIVOT_ARM_PID[2]);
         armPIDController.setOutputRange(-PIVOT_ARM_PID_MAX_OUTPUT, PIVOT_ARM_PID_MAX_OUTPUT);
 
-        bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
+        limitSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
     }
 
     @Override
     public void update() {
+        if (limitSwitch.get()) {
+            leftArmEncoder.setPosition(0);
+            if (speed < 0) {
+                speed = 0;
+            }
+        }
+
         switch (state) {
             case MANUAL: {
                 leftArmMotor.set(speed);
@@ -87,17 +94,35 @@ public class PivotArm extends SnailSubsystem {
         SmartDashboard.putNumber("Motor Speed", leftArmEncoder.getVelocity());
         SmartDashboard.putNumber("Encoder Position", leftArmEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setPoint);
-        SmartDashboard.putBoolean("Limit Switch State", bumpSwitch.get());
+        SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
     }
 
     @Override
     public void tuningInit() {
-        
+        // TODO include PID tuning
+        SmartDashboard.putNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
+        SmartDashboard.putNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
+        SmartDashboard.putNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
+
+        SmartDashboard.putNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
+        SmartDashboard.putNumber("Pivot Arm Tolerance", PIVOT_ARM_PID_TOLERANCE);
     }
 
     @Override
     public void tuningPeriodic() {
+        PIVOT_ARM_PID[0] = SmartDashboard.getNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
+        PIVOT_ARM_PID[1] = SmartDashboard.getNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
+        PIVOT_ARM_PID[2] = SmartDashboard.getNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
         
+        if (PIVOT_ARM_PID[0] != armPIDController.getP()) {
+            armPIDController.setP(PIVOT_ARM_PID[0]);
+        }
+        if (PIVOT_ARM_PID[1] != armPIDController.getI()) {
+            armPIDController.setI(PIVOT_ARM_PID[1]);
+        }
+        if (PIVOT_ARM_PID[2] != armPIDController.getD()) {
+            armPIDController.setD(PIVOT_ARM_PID[2]);
+        }
     }
 
     public void manualControl(double newSpeed) {

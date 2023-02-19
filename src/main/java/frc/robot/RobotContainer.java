@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.pivotArmCommands.PivotArmManualCommand;
+import frc.robot.commands.pivotArm.PivotArmManualCommand;
+import frc.robot.commands.pivotArm.PivotArmPIDCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -77,6 +78,7 @@ public class RobotContainer {
 
         // Pivot arm
         pivotArm = new PivotArm();
+        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
@@ -96,7 +98,11 @@ public class RobotContainer {
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        operatorController.getButton(Button.kX.value).onTrue(new PivotArmManualCommand(pivotArm, 0));
+        
+        // Operator bindings
+        operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+        operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
     }
 
     /**
