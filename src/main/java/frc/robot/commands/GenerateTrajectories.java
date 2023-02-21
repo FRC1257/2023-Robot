@@ -407,8 +407,8 @@ public class GenerateTrajectories {
 
     public double getTrajectoryTime() {
         double time = 0;
-        for (Trajectory traj : trajectoryList) {
-            time += traj.getTotalTimeSeconds();
+        for (int i =0; i < trajectoryList.size() - 1; i++) {
+            time += trajectoryList.get(i).getTotalTimeSeconds();
         }
         return time;
     }

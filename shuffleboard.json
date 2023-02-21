@@ -1128,7 +1128,7 @@
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
-              "_title": "SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false
             }
