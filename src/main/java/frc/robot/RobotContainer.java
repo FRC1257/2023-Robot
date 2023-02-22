@@ -13,10 +13,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Delay;
 import frc.robot.commands.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.elevator.ElevatorExtendCommand;
+import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
+
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+    private Elevator elevator;
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -99,11 +102,14 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
+        
+        elevator = new Elevator();
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
+        subsystems.add(elevator);
     }
 
     /**
@@ -117,6 +123,16 @@ public class RobotContainer {
         //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
+        // Operator Bindings
+        operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
+        operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
+    }
+
+    /**
+     * Set up the choosers on shuffleboard for autonomous
+     */
+    public void configureAutoChoosers() {
         
     }
 
