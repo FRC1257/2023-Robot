@@ -27,9 +27,9 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 2;
 
         // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 1;
-        public final static int PIVOT_WRIST_ID_RIGHT = 2;
-        public static int WRIST_LIMIT_SWITCH_PORT_ID = 1257;
+        public final static int PIVOT_WRIST_ID_LEFT = 3;
+        public final static int PIVOT_WRIST_ID_RIGHT = 4;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     }
 
 

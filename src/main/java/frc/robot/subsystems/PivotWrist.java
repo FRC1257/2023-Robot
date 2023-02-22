@@ -44,12 +44,12 @@ public class PivotWrist extends SnailSubsystem {
 
     public PivotWrist() {
         // Set motor
-        pivotWristMotorRight = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
+        pivotWristMotorRight = new CANSparkMax(PIVOT_WRIST_ID_RIGHT, MotorType.kBrushless);
         pivotWristMotorRight.restoreFactoryDefaults();
         pivotWristMotorRight.setIdleMode(IdleMode.kBrake);
         pivotWristMotorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
-        pivotWristMotorLeft = new CANSparkMax(PIVOT_WRIST_ID_RIGHT, MotorType.kBrushless);
+        pivotWristMotorLeft = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
         pivotWristMotorLeft.restoreFactoryDefaults();
         pivotWristMotorLeft.setIdleMode(IdleMode.kBrake);
         pivotWristMotorLeft.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
