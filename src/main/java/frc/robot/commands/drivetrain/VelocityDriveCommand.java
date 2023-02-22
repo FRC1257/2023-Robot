@@ -6,7 +6,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.util.SnailVision;
+
 
 import static frc.robot.Constants.Drivetrain.*;
 
@@ -42,9 +42,7 @@ public class VelocityDriveCommand extends CommandBase {
     @Override
     public void execute() {
         double visionAdd = 0;
-        if (useVision && visionSupplier.getAsBoolean()) {
-            visionAdd = SnailVision.getVisionAdd();
-        }
+
         // limit acceleration of the linear speed (create separate one for turning speed if needed)
         drivetrain.velocityDrive(limiter.calculate(speedForwardSupplier.getAsDouble()), speedTurnSupplier.getAsDouble() + visionAdd);
     }
