@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
+import frc.robot.commands.IntakeEjectingCommand;
+import frc.robot.commands.IntakeIntakingCommand;
 import frc.robot.commands.IntakeNeutralCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -77,7 +79,7 @@ public class RobotContainer {
 
         // Intake
         intake = new Intake();
-        intake.setDefaultCommand(new IntakeNeutralCommand());
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
@@ -97,8 +99,8 @@ public class RobotContainer {
         driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand());
-        operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand());
+        operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
+        operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
     }
 
     /**

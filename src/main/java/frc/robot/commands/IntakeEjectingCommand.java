@@ -6,7 +6,7 @@ public class IntakeEjectingCommand extends CommandBase {
     
     private Intake intake;
 
-    IntakeEjectingCommand(Intake intake) {
+    public IntakeEjectingCommand(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }

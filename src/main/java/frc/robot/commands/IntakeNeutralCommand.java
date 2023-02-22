@@ -6,7 +6,7 @@ public class IntakeNeutralCommand extends CommandBase {
     
     private Intake intake;
 
-    IntakeNeutralCommand(Intake intake) {
+    public IntakeNeutralCommand(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }

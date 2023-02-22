@@ -100,7 +100,9 @@ public final class Constants {
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
-    public final static int NEO_CURRENT_LIMIT = 80; // amps
+    
+    /** Ambiguous with NEO_CURRENT_LIMIT in ElectricalLayout */
+    // public final static int NEO_CURRENT_LIMIT = 80; // amps
 
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
