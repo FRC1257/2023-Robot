@@ -1,12 +1,19 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.Delay;
+import frc.robot.commands.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.vision.AlignPosCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -17,6 +24,7 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
+import static frc.robot.Constants.Autonomous;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -26,16 +34,34 @@ import static frc.robot.Constants.UPDATE_PERIOD;
  */
 public class RobotContainer {
 
+    private static final String kDefaultAuto = "Default";
+    private static final String kCustomAuto = "My Auto";
+    private String m_autoSelected;
+
     private SnailController driveController;
     private SnailController operatorController;
     
     private ArrayList<SnailSubsystem> subsystems;
+
 
     private Drivetrain drivetrain;
     private Vision vision;
 
     private Notifier updateNotifier;
     private int outputCounter;
+    private int displayTrajCounter;
+
+    private boolean updateTraj = true;
+
+    // choosers
+    public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
+
+    //booleans regarding the score, cargo, and charge
+    private boolean score;
+    private boolean cargo;
+    private boolean charge;
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -45,21 +71,22 @@ public class RobotContainer {
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
         configureSubsystems();
-        configureAutoChoosers();
         configureButtonBindings();
         
         outputCounter = 0;
+        displayTrajCounter = 0;
 
-        SmartDashboard.putBoolean("Testing", false);
-
+        // Field Side
+        SmartDashboard.putBoolean("Testing", true);
+        
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
-
+   
     private Pose2d getStartingPos() {
         return new Pose2d(0, 0, new Rotation2d(0.0));
     }
-
+    
     /**
      * Declare all of our subsystems and their default bindings
      */
@@ -68,7 +95,7 @@ public class RobotContainer {
         drivetrain = new Drivetrain(getStartingPos());
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
-             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, true));
+             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
         // Vision
         vision = new Vision();
@@ -84,18 +111,12 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-    }
-
-    /**
-     * Set up the choosers on shuffleboard for autonomous
-     */
-    public void configureAutoChoosers() {
         
     }
 
@@ -103,7 +124,7 @@ public class RobotContainer {
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        return null;
+        return new Delay(2.0);
     }
 
     /**
@@ -141,4 +162,5 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
     }
+
 }
