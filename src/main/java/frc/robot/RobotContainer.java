@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.pivotWristCommands.PivotWristManualCommand;
+import frc.robot.commands.pivotWrist.PivotWristManualCommand;
+import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
@@ -75,8 +76,10 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
+
+        // Pivot Wrist
         pivotWrist = new PivotWrist();
-        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist));
+        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
@@ -97,6 +100,10 @@ public class RobotContainer {
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
+        // Operator bindings
+        operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
+        operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
+        operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
 
     }
 
