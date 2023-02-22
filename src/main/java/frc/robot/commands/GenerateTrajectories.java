@@ -56,7 +56,6 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
-            ALLIANCE_PARK_POSE = Autonomous.BLUE_PARK_POSE;
             blue = true;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
@@ -66,7 +65,6 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
-            ALLIANCE_PARK_POSE = Autonomous.RED_PARK_POSE;
             blue = false;
         }
 
@@ -155,13 +153,6 @@ public class GenerateTrajectories {
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
 
-    private Pose2d getParkPose() {
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            return ALLIANCE_PARK_POSE[0];
-        } 
-        return ALLIANCE_PARK_POSE[1];
-    }
-
     private void AutoDecider() {
         if (threePiece) {
             threePieceAuto();
@@ -195,7 +186,6 @@ public class GenerateTrajectories {
                 addChargeTrajectory();
             }
             else {
-                addParkTrajectory();
             }
         }
         // step 3 go for charge
@@ -203,14 +193,12 @@ public class GenerateTrajectories {
             addChargeTrajectory();
         }
         else {
-            addParkTrajectory();
         }
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
            addLeaveCommunityTrajectory(); 
-           addParkTrajectory();
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -273,24 +261,6 @@ public class GenerateTrajectories {
         ToPosCommand returnToScore = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), true);
         currentPose = getSecondScoreLocation();
         addToPosCommand(returnToScore);
-    }
-
-    /* True if park is needed
-    False if already parked */
-    private boolean checkIfParkNecessary() {
-        if (blue)
-            return currentPose.getX() > Autonomous.BLUE_COMMUNITY_X;
-        return currentPose.getX() < Autonomous.RED_COMMUNITY_X;
-    }
-
-    private void addParkTrajectory() {
-        if (!checkIfParkNecessary()) {
-            return;
-        }
-        
-        ToPosCommand step4 = new ToPosCommand(drivetrain, List.of(currentPose, getParkWaypoint(), getParkPose()), true);
-        currentPose = getParkPose();
-        addToPosCommand(step4);
     }
 
     private List<Pose2d> getTrajPointsWaypoint(Pose2d start, Pose2d end) {
