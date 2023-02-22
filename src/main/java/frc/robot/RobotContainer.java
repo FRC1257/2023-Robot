@@ -37,8 +37,6 @@ public class RobotContainer {
     private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;
-
-    private Claw claw;
     
     private Notifier updateNotifier;
     private int outputCounter;
@@ -75,7 +73,7 @@ public class RobotContainer {
         claw.setDefaultCommand(new ClawNeutralCommand(claw));
 
         // Vision
-        claw = new Claw();
+        
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
 
