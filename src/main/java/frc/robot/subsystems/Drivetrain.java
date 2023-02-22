@@ -159,7 +159,9 @@ public class Drivetrain extends SnailSubsystem {
         frontRightMotor.setIdleMode(IdleMode.kBrake);
         backLeftMotor.setIdleMode(IdleMode.kCoast);
         backRightMotor.setIdleMode(IdleMode.kCoast);
- 
+        
+
+        //TODO Is this electricallayoutcurrentlimit or just neocurrent limit
         frontLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         frontRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         backLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);

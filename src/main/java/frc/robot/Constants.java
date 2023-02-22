@@ -63,19 +63,15 @@ public final class Constants {
         public static double WRIST_SETPOINT_MID = 0.7;
     }
 
-        // Solenoids
-        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
-        public final static int EXTENDER_LEFT_REVERSE_ID = 1;
-        public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
-        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+       
     
-    };
-
-
-
-
-
     
+
+
+
+
+
+
     public static class Drivetrain {
         // drivetrain constants
         public static double DRIVE_TRACK_WIDTH_M = 0.66; // m
@@ -224,6 +220,11 @@ public final class Constants {
 
     };
 
+     // Solenoids
+     public final static int EXTENDER_LEFT_FORWARD_ID = 0;
+     public final static int EXTENDER_LEFT_REVERSE_ID = 1;
+     public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
+     public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
 
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
@@ -236,5 +237,5 @@ public final class Constants {
 }
 
     
-}
+
 
