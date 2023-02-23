@@ -150,6 +150,10 @@ public class GenerateTrajectories {
         // currently returning this random thing
         // TODO fix this
         // in reality there are 6 possible places so we would just need to use the varialbes we have
+        // also a jank fix
+        if (hitAndRun) {
+            return ALLIANCE_LEAVE_COMMUNITY[2];
+        }
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             return ALLIANCE_LEAVE_COMMUNITY[0];
         } 
@@ -161,8 +165,6 @@ public class GenerateTrajectories {
             threePieceAuto();
             return;
         }
-
-      
 
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
@@ -180,7 +182,6 @@ public class GenerateTrajectories {
             addPiecePickup();
         } 
         else if (leaveTarmac) {
-        
             addLeaveCommunityTrajectory();
             if (hitAndRun) {
                 addChargeTrajectory();
@@ -195,14 +196,10 @@ public class GenerateTrajectories {
             if (charge) {
                 addChargeTrajectory();
             }
-            else {
-            }
         }
         // step 3 go for charge
         else if (charge) {
             addChargeTrajectory();
-        }
-        else {
         }
 
         // if none of these have run something has gone wrong
@@ -357,10 +354,12 @@ public class GenerateTrajectories {
         trajPoints.add(currentPose);
 
         // going around the charging station, if convenient
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+        // jank fix
+        if (!hitAndRun && currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-        } else {
+        } 
+        else if (!hitAndRun) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
