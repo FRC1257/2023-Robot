@@ -22,6 +22,7 @@ public class GenerateTrajectories {
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
+    private boolean hitAndrun;
     
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
@@ -79,6 +80,7 @@ public class GenerateTrajectories {
 
     //gets the cargoLocation based on what side the robot is on
 
+    
     private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
@@ -159,6 +161,8 @@ public class GenerateTrajectories {
             return;
         }
 
+      
+
         command = new SequentialCommandGroup();
         // there are 3 possible steps we can take
         // Step 1
@@ -175,7 +179,12 @@ public class GenerateTrajectories {
             addPiecePickup();
         } 
         else if (leaveTarmac) {
+        
             addLeaveCommunityTrajectory();
+            if (hitAndrun) {
+                addChargeTrajectory();
+                return;
+            }
         }
 
         // Step 3
@@ -216,6 +225,12 @@ public class GenerateTrajectories {
     private void addToPosCommand(ToPosCommand command) {
         this.command.addCommands(command);
         trajectoryList.add(command.getTrajectory());
+    }
+
+    private void hitAndrunAuto(){
+        command = new SequentialCommandGroup();
+        this.StartPose = getFirstScoreLocation();
+        this.currentPose = this.StartPose;
     }
 
     private void threePieceAuto() {
@@ -352,6 +367,10 @@ public class GenerateTrajectories {
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getLeaveCommunityPose(currentPose);
         addToPosCommand(step2);
+    }
+
+    private void outThenIn(){
+    
     }
 
     private void addChargeTrajectory() {
