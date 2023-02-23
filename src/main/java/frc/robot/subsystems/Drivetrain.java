@@ -119,12 +119,12 @@ public class Drivetrain extends SnailSubsystem {
  
     Vision vision;
 
-    public Drivetrain(Pose2d initialPoseMeters) {
+    public Drivetrain(Pose2d initialPoseMeters, Vision vision) {
         configureMotors();
         configureEncoders();
         configurePID();
  
-        vision = new Vision();
+        this.vision = vision;
 
         ramseteController = new RamseteController(DRIVE_TRAJ_RAMSETE_B, DRIVE_TRAJ_RAMSETE_ZETA);
  
@@ -162,10 +162,10 @@ public class Drivetrain extends SnailSubsystem {
         
 
         //TODO Is this electricallayoutcurrentlimit or just neocurrent limit
-        frontLeftMotor.setSmartCurrentLimit(ElectricalLayoutNEO_CURRENT_LIMIT);
-        frontRightMotor.setSmartCurrentLimit(ElectricalLayoutNEO_CURRENT_LIMIT);
-        backLeftMotor.setSmartCurrentLimit(ElectricalLayoutNEO_CURRENT_LIMIT);
-        backRightMotor.setSmartCurrentLimit(ElectricalLayoutNEO_CURRENT_LIMIT);
+        frontLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        frontRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        backLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        backRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
  
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);

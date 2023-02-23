@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
+import frc.robot.Constants;
 import frc.robot.Constants.IntakeSpeed;
 
 public class Intake extends SnailSubsystem {
@@ -16,8 +17,8 @@ public class Intake extends SnailSubsystem {
         intakeMotor = new CANSparkMax(ElectricalLayout.INTAKE_MOTOR_ID, MotorType.kBrushless);
         intakeMotor.restoreFactoryDefaults();
         intakeMotor.setIdleMode(IdleMode.kBrake);
-        intakeMotor.setSmartCurrentLimit(ElectricalLayout.ElectricalLayoutNEO_CURRENT_LIMIT);
-        intakeMotor.setSmartCurrentLimit(ElectricalLayout.NEO_CURRENT_LIMIT);
+        intakeMotor.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        intakeMotor.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
     }
 
     public enum State {

@@ -102,9 +102,9 @@ public final class Constants {
         
 
     public static class ElectricalLayout {
+        // Controllers
         public final static int CONTROLLER_DRIVER_ID = 0;
         public final static int CONTROLLER_OPERATOR_ID = 1;
-
 
         // Drivetrain
         public final static int DRIVE_FRONT_LEFT = 17;
@@ -112,27 +112,33 @@ public final class Constants {
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
 
-
-
-
-        public final static int INTAKE_MOTOR_ID = 0;
-        public final static int NEO_CURRENT_LIMIT = 25;
-    
-
-        // Solenoids
-        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
-        public final static int EXTENDER_LEFT_REVERSE_ID = 1;
-        public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
-        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
-
-        public final static int ElectricalLayoutNEO_CURRENT_LIMIT = 25;
+        // Intakes
+        public final static int INTAKE_MOTOR_ID = 4;
 
         // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 3;
-        public final static int PIVOT_WRIST_ID_RIGHT = 4;
-        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+        public final static int PIVOT_WRIST_ID_LEFT = 6;
+        public final static int PIVOT_WRIST_ID_RIGHT = 7;
 
-        
+        // Claw
+        public static int CLAW_MOTOR_LEFT_ID = 8;
+        public static int CLAW_MOTOR_RIGHT_ID = 1;
+
+        // Intake Arm
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 10;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 11;
+
+        // Pneumatics
+        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
+        public final static int EXTENDER_LEFT_REVERSE_ID = 4;
+        public final static int EXTENDER_RIGHT_FORWARD_ID = 5;
+        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+
+        public static int CLAW_FORWARD_ID = 2;
+        public static int CLAW_REVERSE_ID = 1;
+
+        // Sensors
+        public static final int INTAKE_BUMP_SWITCH_ID = 4;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 
 
@@ -163,14 +169,6 @@ public final class Constants {
         public static final double INTAKE_INTAKING_SPEED = 0.85;
         public static final double INTAKE_EJECTING_SPEED = -0.85;
     }
-    
-
-
-
-
-
-
-
 
     public static class Drivetrain {
         // drivetrain constants
@@ -345,10 +343,6 @@ public final class Constants {
     };
 
     public static class Claw {
-        public static int CLAW_MOTOR_LEFT_ID = 8;
-        public static int CLAW_MOTOR_RIGHT_ID = 1;
-        public static int CLAW_FORWARD_ID = 2;
-        public static int CLAW_REVERSE_ID = 1;
         public static double ROLLER_NEUTRAL_SPEED = 0.05;
         public static double ROLLER_INTAKING_SPEED = 0.45;
         public static double ROLLER_EJECTING_SPEED = -0.45;
@@ -357,39 +351,24 @@ public final class Constants {
 
 
     public static class IntakeArm {
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = -1;
-        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = -2;
         public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
         public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
         public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
         public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
-        public static final int INTAKE_BUMP_SWITCH_ID = -3;
+        
         public static double INTAKE_SETPOINT_TOP = 1257; // lol
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
 
     };
    
-
-
-
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
-
-
-    
+ 
     /** Ambiguous with NEO_CURRENT_LIMIT in ElectricalLayout */
     // public final static int NEO_CURRENT_LIMIT = 80; // amps
 
-    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
-
-
     public final static int NEO_CURRENT_LIMIT = 80; // amps
-
-    public final static int ARM_MOTOR_ID = 0;
-
-
-    
 }
 
 

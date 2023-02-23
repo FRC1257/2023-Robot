@@ -145,13 +145,13 @@ public class RobotContainer {
         claw = new Claw();
         claw.setDefaultCommand(new ClawNeutralCommand(claw));
 
-        drivetrain = new Drivetrain(getStartingPos());
+        vision = new Vision();
+        drivetrain = new Drivetrain(getStartingPos(), vision);
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
         // Vision
-        vision = new Vision();
         intakearm = new IntakeArm();
         elevator = new Elevator();
         // Pivot Wrist

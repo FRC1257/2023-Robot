@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants.ElectricalLayout;
 
 public class Claw extends SnailSubsystem {
     private CANSparkMax motorLeft;
@@ -33,8 +34,8 @@ public class Claw extends SnailSubsystem {
     private ClawState clawState;
     
     public Claw() {
-        motorLeft = new CANSparkMax(CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
-        motorRight = new CANSparkMax(CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);        
+        motorLeft = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
+        motorRight = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);        
 
         motorInit(motorLeft);
         motorInit(motorLeft);
@@ -42,7 +43,7 @@ public class Claw extends SnailSubsystem {
         motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
         
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, CLAW_FORWARD_ID, CLAW_REVERSE_ID);
+        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
         clawState = ClawState.CUBEINTAKE;
     }
 

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.IntakeArm.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.ElectricalLayout;
 
 public class IntakeArm extends SnailSubsystem {
 
@@ -29,8 +30,8 @@ public class IntakeArm extends SnailSubsystem {
     private double speed;
     private boolean isPIDFinished;
   public IntakeArm() {
-      motorLeft = new CANSparkMax(INTAKE_ARM_MOTOR_LEFT_ID, MotorType.kBrushless);
-      motorRight = new CANSparkMax(INTAKE_ARM_MOTOR_RIGHT_ID, MotorType.kBrushless);
+      motorLeft = new CANSparkMax(ElectricalLayout.INTAKE_ARM_MOTOR_LEFT_ID, MotorType.kBrushless);
+      motorRight = new CANSparkMax(ElectricalLayout.INTAKE_ARM_MOTOR_RIGHT_ID, MotorType.kBrushless);
       motorInit(motorLeft);
       motorInit(motorRight);
       motorRight.follow(motorLeft);
@@ -49,7 +50,7 @@ public class IntakeArm extends SnailSubsystem {
       encoder.setPosition(0.0);
       
       state = State.MANUAL;
-      bumpSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
+      bumpSwitch = new DigitalInput(ElectricalLayout.INTAKE_BUMP_SWITCH_ID);
       isPIDFinished = false;
 }
     private void motorInit(CANSparkMax motor) {
