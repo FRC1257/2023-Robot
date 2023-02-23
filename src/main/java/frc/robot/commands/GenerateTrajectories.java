@@ -225,11 +225,7 @@ public class GenerateTrajectories {
         trajectoryList.add(command.getTrajectory());
     }
 
-    private void hitAndrunAuto(){
-        command = new SequentialCommandGroup();
-        this.StartPose = getFirstScoreLocation();
-        this.currentPose = this.StartPose;
-    }
+
 
     private void threePieceAuto() {
         command = new SequentialCommandGroup();
@@ -353,12 +349,12 @@ public class GenerateTrajectories {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
-        boolean isReverse = false;
+      
 
         // going around the charging station, if convenient
         // jank fix
-        if (hitAndRun) {
-           isReverse = true; 
+       if (hitAndRun) {
+     
         }
         else if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
@@ -369,7 +365,7 @@ public class GenerateTrajectories {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
         trajPoints.add(getLeaveCommunityPose(currentPose));
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, isReverse);
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getLeaveCommunityPose(currentPose);
         addToPosCommand(step2);
     }
@@ -379,9 +375,15 @@ public class GenerateTrajectories {
     }
 
     private void addChargeTrajectory() {
+        if(!hitAndRun){
         ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
         currentPose = getChargeLocation();
         addToPosCommand(step3);
+        } else {
+        ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeLocation()), true);
+        currentPose = getChargeLocation();
+        addToPosCommand(step3);
+        }
     }
 
     public SequentialCommandGroup getCommand() {

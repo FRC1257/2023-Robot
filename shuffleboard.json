@@ -1132,6 +1132,19 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "11,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Hit and Run",
+              "_title": "SmartDashboard/Hit and Run",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -1363,9 +1376,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 814.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 838.4000244140625
   }
 }
