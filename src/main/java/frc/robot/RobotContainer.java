@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Delay;
 import frc.robot.commands.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
@@ -33,6 +34,9 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
+import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_BOT;
+import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_TOP;
+
 import static frc.robot.Constants.Autonomous;
 
 /**
@@ -56,6 +60,7 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+    private IntakeArm intakearm;
 
 
     private Intake intake;
@@ -115,10 +120,8 @@ public class RobotContainer {
 
         // Vision
         vision = new Vision();
-        
+        intakearm = new IntakeArm();
         elevator = new Elevator();
-
-
         // Pivot Wrist
         pivotWrist = new PivotWrist();
         pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
@@ -132,13 +135,9 @@ public class RobotContainer {
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
-
-
+        subsystems.add(intakearm);
         subsystems.add(pivotWrist);
-
         subsystems.add(intake);
-
-
         subsystems.add(elevator);
 
     }
@@ -151,15 +150,16 @@ public class RobotContainer {
         driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        
         //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-
+        driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
+        driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
         operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
         operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
 
         
-
         // Operator bindings
         operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
         operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
