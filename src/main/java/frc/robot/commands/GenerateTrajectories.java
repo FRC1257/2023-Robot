@@ -297,11 +297,22 @@ public class GenerateTrajectories {
         return trajPoints;
     }
 
-    private Pose2d getParkWaypoint() {
-        // going around the charging station, if needed
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y)
-            return ALLIANCE_WAYPOINTS_POSE[1];
-        return ALLIANCE_WAYPOINTS_POSE[3];
+    private void addMobilityTrajectory() {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+        trajPoints.add(ALLIANCE_CHARGE_POSE_WAYPOINT[0]);
+
+        ToPosCommand MobilityBonusStep = new ToPosCommand(drivetrain, trajPoints, false);
+        currentPose = ALLIANCE_CHARGE_POSE_WAYPOINT[0];
+        addToPosCommand(MobilityBonusStep);
+    }
+
+    private void addReverseMobilityChargeTrajectory() {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+        trajPoints.add(getCargoLocation());
+
+        ToPosCommand MobilityReverseStep = new ToPosCommand(drivetrain, trajPoints, true);
     }
 
     private void addCargoTrajectory() {
