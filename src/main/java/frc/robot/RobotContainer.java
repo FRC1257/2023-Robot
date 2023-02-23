@@ -1,6 +1,22 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.*;
+import frc.robot.commands.ClawConeStateCommand;
+import frc.robot.commands.ClawCubeStateCommand;
+import frc.robot.commands.ClawEjectCommand;
+import frc.robot.commands.ClawIntakeCommand;
+import frc.robot.commands.ClawNeutralCommand;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.SnailSubsystem;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,6 +43,7 @@ import frc.robot.commands.IntakeEjectingCommand;
 import frc.robot.commands.IntakeIntakingCommand;
 import frc.robot.commands.IntakeNeutralCommand;
 import frc.robot.subsystems.*;
+
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
@@ -34,10 +51,12 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
+
 import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_BOT;
 import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_TOP;
 
 import static frc.robot.Constants.Autonomous;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,6 +73,12 @@ public class RobotContainer {
     private SnailController driveController;
     private SnailController operatorController;
 
+
+    private Claw claw;
+    
+    private ArrayList<SnailSubsystem> subsystems;
+    
+
     private PivotWrist pivotWrist;
     private ArrayList<SnailSubsystem> subsystems;
 
@@ -66,6 +91,7 @@ public class RobotContainer {
     private Intake intake;
 
     private Elevator elevator;
+
 
 
     private Notifier updateNotifier;
@@ -103,16 +129,22 @@ public class RobotContainer {
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
     }
+
    
     private Pose2d getStartingPos() {
         return new Pose2d(0, 0, new Rotation2d(0.0));
     }
     
+
     /**
      * Declare all of our subsystems and their default bindings
      */
     private void configureSubsystems() {
         // declare each of the subsystems here
+
+        claw = new Claw();
+        claw.setDefaultCommand(new ClawNeutralCommand(claw));
+
         drivetrain = new Drivetrain(getStartingPos());
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
@@ -131,14 +163,19 @@ public class RobotContainer {
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
 
 
-        subsystems = new ArrayList<>();
+
+        // Vision
+        
+        subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
+        subsystems.add(claw);
         subsystems.add(drivetrain);
         subsystems.add(vision);
         subsystems.add(intakearm);
         subsystems.add(pivotWrist);
         subsystems.add(intake);
         subsystems.add(elevator);
+
 
     }
 
@@ -147,6 +184,19 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
+
+        // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
+        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        driveController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
+        driveController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
+        driveController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
+        driveController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
+        driveController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
+
         driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
@@ -169,6 +219,7 @@ public class RobotContainer {
         // Operator Bindings
         operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
         operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
+
 
     }
 
