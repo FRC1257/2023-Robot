@@ -2,12 +2,18 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 
@@ -99,12 +105,76 @@ public final class Constants {
         public final static int CONTROLLER_DRIVER_ID = 0;
         public final static int CONTROLLER_OPERATOR_ID = 1;
 
+
         // Drivetrain
         public final static int DRIVE_FRONT_LEFT = 17;
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
+
+
+        // Drivetrain
+        public final static int DRIVE_FRONT_LEFT = 17;
+        public final static int DRIVE_FRONT_RIGHT = 13;
+        public final static int DRIVE_BACK_LEFT = 5;
+        public final static int DRIVE_BACK_RIGHT = 2;
+
+
+        public final static int INTAKE_MOTOR_ID = 0;
+        public final static int NEO_CURRENT_LIMIT = 25;
+    
+
+        // Solenoids
+        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
+        public final static int EXTENDER_LEFT_REVERSE_ID = 1;
+        public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
+        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+
+        public final static int ElectricalLayoutNEO_CURRENT_LIMIT = 25;
+
+        // Pivot Wrist    
+        public final static int PIVOT_WRIST_ID_LEFT = 3;
+        public final static int PIVOT_WRIST_ID_RIGHT = 4;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+
+        
     };
+
+
+    public static class PivotWrist {
+        public static double WRIST_ENCODER_PCF = 1257;
+        public static double[] WRIST_PID = new double[] {1257, 1257, 1257, 1257};
+
+        public static double WRIST_PID_MAX_OUTPUT = 1257;
+        public static double WRIST_PID_TOLERANCE = 1257;
+
+        public static double WRIST_MAX_VEL = 1257.0;
+        public static double WRIST_MAX_ACC = 1257.0;
+        
+        public static int WRIST_PID_SLOT_VEL = 0;
+        public static int WRIST_PID_SLOT_ACC = 0;
+        public static double WRIST_SETPOINT_TOP = .1257; // in encoder revs
+        public static double WRIST_SETPOINT_BOT = -.1257; // in enc
+
+        // setpoints for the wrist
+        public static double WRIST_SETPOINT_INTAKE = 0.5;
+        public static double WRIST_SETPOINT_HIGH = 0.6;
+        public static double WRIST_SETPOINT_MID = 0.7;
+    }
+
+       
+    public static class IntakeSpeed {
+        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
+        public static final double INTAKE_INTAKING_SPEED = 0.85;
+        public static final double INTAKE_EJECTING_SPEED = -0.85;
+    }
+    
+
+
+
+
+
+
 
 
     public static class Drivetrain {
@@ -128,6 +198,12 @@ public final class Constants {
         public static double DRIVE_TRAJ_MAX_ACC = 0.950; //.75;  // m/s^2
         public static double DRIVE_TRAJ_RAMSETE_B = 2.0;
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
+
+
+        // aligning
+        public static double DRIVE_ALIGN_MAX_VEL = 0.75; // m/s
+        public static double DRIVE_ALIGN_MAX_ACC = 0.350; //.75;  // m/s^2
+
 
         // linear position PID
         public static double[] DRIVE_DIST_PID = { 3.50, 0.0, 0.0 };
@@ -159,10 +235,13 @@ public final class Constants {
     };
 
 
-    public static class Vision {
+
+    public static class VisionConstants {
+
         public static double VISION_KP = 0.02;
         public static double VISION_FEEDFORWARD = 0.01;
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
+
 
         public static Transform3d CAMERA_TO_ROBOT = new Transform3d();
         
@@ -269,12 +348,129 @@ public final class Constants {
         public static double ROLLER_NEUTRAL_SPEED = 0.05;
         public static double ROLLER_INTAKING_SPEED = 0.45;
         public static double ROLLER_EJECTING_SPEED = -0.45;
-    }
+
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
+        
+        // public static AprilTagFieldLayout aprilTagFieldLayout = new
+        // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
+        public static String USB_CAMERA_NAME_FRONT = "Front Camera";
+        public static String USB_CAMERA_NAME_BACK = "Back Camera";
+    };
+
+
+    public static class IntakeArm {
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = -1;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = -2;
+        public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
+        public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
+        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
+        public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
+        public static final int INTAKE_BUMP_SWITCH_ID = -3;
+        public static double INTAKE_SETPOINT_TOP = 1257; // lol
+        public static double INTAKE_SETPOINT_BOT = -1257; // lol
+
+    };
+    public static class Autonomous {
+        // all of these positions have been estimated using PathWeaver
+        // TODO calculate true positions
+
+        public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
+                new Pose2d(1.425, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
+                new Pose2d(1.425, 1.044, Rotation2d.fromDegrees(0)), // score 2
+                new Pose2d(1.425, 1.579, Rotation2d.fromDegrees(0)), // 3
+                new Pose2d(1.425, 2.204, Rotation2d.fromDegrees(0)), // ...
+                new Pose2d(1.425, 2.773, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425, 3.273, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425, 3.831, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425, 4.433, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425, 5.082, Rotation2d.fromDegrees(0))
+        };
+
+        public static Pose2d[] RED_SCORE_POSE = new Pose2d[] {
+                new Pose2d(15.15, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
+                new Pose2d(15.15, 1.044, Rotation2d.fromDegrees(180)), // score 2
+                new Pose2d(15.15, 1.579, Rotation2d.fromDegrees(180)), // 3
+                new Pose2d(15.15, 2.204, Rotation2d.fromDegrees(180)), // ...
+                new Pose2d(15.15, 2.773, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15, 3.273, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15, 3.831, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15, 4.433, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15, 5.082, Rotation2d.fromDegrees(180))
+        };
+
+        public static Pose2d[] BLUE_CARGO_POSE = new Pose2d[] {
+                new Pose2d(7.066, 0.896, Rotation2d.fromDegrees(0)),
+                new Pose2d(7.066, 2.125, Rotation2d.fromDegrees(0)),
+                new Pose2d(7.066, 3.353, Rotation2d.fromDegrees(0)),
+                new Pose2d(7.066, 4.602, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d[] RED_CARGO_POSE = new Pose2d[] {
+                new Pose2d(9.5, 0.896, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 2.125, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 3.353, Rotation2d.fromDegrees(180)),
+                new Pose2d(9.5, 4.602, Rotation2d.fromDegrees(180)),
+        };
+
+        public static Pose2d[] BLUE_WAYPOINT_POSE = new Pose2d[] {
+                new Pose2d(2.87, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(4.8, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(2.87, 0.754, Rotation2d.fromDegrees(0)),
+                new Pose2d(4.8, 0.754, Rotation2d.fromDegrees(0)),
+        };
+        public static Pose2d[] RED_WAYPOINT_POSE = new Pose2d[] {
+                new Pose2d(11.6, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(13.5, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(11.6, 0.754, Rotation2d.fromDegrees(0)),
+                new Pose2d(13.5, 0.754, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0));
+        public static Pose2d RED_CHARGE_POSE = new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0));
+
+        // bottom to top (farthest from community to closest)
+        public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
+                new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(0)),
+                new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(0)),
+                new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d[] RED_START_POSE = new Pose2d[] {
+                new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(180)),
+                new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(180)),
+                new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
+        };
+        public static double CHARGE_STATION_LOWER_Y = 1.508506;
+        public static double CHARGE_STATION_UPPER_Y = 3.978656;
+
+        public static double CHARGE_CENTER_Y = 2.75;
+
+    };
+
+
+
+
 
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
+
+
+    
+    /** Ambiguous with NEO_CURRENT_LIMIT in ElectricalLayout */
+    // public final static int NEO_CURRENT_LIMIT = 80; // amps
+
+    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
+
+
     public final static int NEO_CURRENT_LIMIT = 80; // amps
+
+    public final static int ARM_MOTOR_ID = 0;
+
 
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
+
+
+
