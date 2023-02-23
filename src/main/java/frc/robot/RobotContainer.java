@@ -390,6 +390,7 @@ public class RobotContainer {
         charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
         threePiece = SmartDashboard.getBoolean("3 Ball Auto", threePiece);
         leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
+        hitAndRun = SmartDashboard.getBoolean("Hit and Run", hitAndRun);
     }
 
     public void putTrajectoryTime() {
@@ -409,6 +410,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Update Visual", false);
         SmartDashboard.putBoolean("3 Ball Auto", threePiece);
         SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
+        SmartDashboard.putBoolean("Hit and Run", hitAndRun);
     }
 
 }
