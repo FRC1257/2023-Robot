@@ -22,7 +22,7 @@ public class GenerateTrajectories {
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
-    private boolean hitAndrun;
+    private boolean hitAndRun;
     
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
@@ -36,13 +36,13 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_PARK_POSE;
     private Pose2d[] chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndrun ) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun ) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
         this.threePiece = threePiece;
         this.leaveTarmac = leaveTarmac;
-        this.hitAndrun = hitAndrun;
+        this.hitAndRun = hitAndRun;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
@@ -182,7 +182,7 @@ public class GenerateTrajectories {
         else if (leaveTarmac) {
         
             addLeaveCommunityTrajectory();
-            if (hitAndrun) {
+            if (hitAndRun) {
                 addChargeTrajectory();
                 return;
             }

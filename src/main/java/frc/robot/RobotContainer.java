@@ -59,6 +59,7 @@ public class RobotContainer {
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -66,6 +67,7 @@ public class RobotContainer {
     private boolean cargo;
     private boolean charge;
     private boolean leaveTarmac = true;
+    private boolean hitAndRun;
 
     private boolean isSimulation;
 
@@ -147,7 +149,8 @@ public class RobotContainer {
             cargo,
             0,
             threePiece,
-            leaveTarmac
+            leaveTarmac,
+            hitAndRun 
         );
 
         putTrajectoryTime();
@@ -176,7 +179,7 @@ public class RobotContainer {
         configureStartPositionChooser();
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
-
+        configureHitAndRunChooser();
     }
 
     private int estimatedCurrentPose2d() {
@@ -199,7 +202,8 @@ public class RobotContainer {
             cargo,
             0,
             threePiece,
-            leaveTarmac
+            leaveTarmac,
+            hitAndRun
         );
         
         putTrajectoryTime();
@@ -267,7 +271,8 @@ public class RobotContainer {
                 cargo,
                 estimatedCurrentPose2d(),
                 threePiece,
-                leaveTarmac
+                leaveTarmac,
+                hitAndRun
             );
 
             SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
@@ -293,6 +298,7 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Update Visual", false);
         SmartDashboard.putBoolean("3 Ball Auto", false);
         SmartDashboard.putBoolean("Leave Tarmac", true);
+        SmartDashboard.putBoolean("Hit and Run", false);
 
         SmartDashboard.putBoolean("Reset Auto Viewer", false);
         
@@ -367,6 +373,11 @@ public class RobotContainer {
         SmartDashboard.putData(startPositionChooser);
     }
 
+    public void configureHitAndRunChooser() {
+        hitAndRunChooser.setDefaultOption("Hit and Run", false);
+        hitAndRunChooser.addOption("Hit and Run", false);
+        hitAndRunChooser.addOption("Hit and Run", true);
+    }
 
     public boolean checkIfUpdate() {
         return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false) || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
