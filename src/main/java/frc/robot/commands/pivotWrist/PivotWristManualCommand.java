@@ -1,18 +1,21 @@
-package frc.robot.commands.pivotarm;
+// need to bind command
+package frc.robot.commands.pivotWrist;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PivotArm;
+import frc.robot.subsystems.PivotWrist;
 
-public class PivotArmManualCommand extends CommandBase {
-    private PivotArm pivotArm;
+public class PivotWristManualCommand extends CommandBase {
+
+    private PivotWrist pivotWrist;
     private DoubleSupplier speedSupplier;
 
-    public PivotArmManualCommand(PivotArm pivotArm, DoubleSupplier speedSupplier) {
-        this.pivotArm = pivotArm;
+    public PivotWristManualCommand(PivotWrist pivotWrist, DoubleSupplier speedSupplier) {
+        this.pivotWrist = pivotWrist;
         this.speedSupplier = speedSupplier;
-        addRequirements(pivotArm);
+
+        addRequirements(pivotWrist);
     }
 
     @Override
@@ -22,7 +25,7 @@ public class PivotArmManualCommand extends CommandBase {
 
     @Override
     public void execute() {
-        pivotArm.manualControl(speedSupplier.getAsDouble());
+        pivotWrist.manual(speedSupplier.getAsDouble());
     }
 
     @Override
