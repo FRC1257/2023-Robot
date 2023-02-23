@@ -85,12 +85,12 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
-        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
+        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         driveController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
         driveController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
         driveController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
