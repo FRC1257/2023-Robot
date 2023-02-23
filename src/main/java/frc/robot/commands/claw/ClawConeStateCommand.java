@@ -1,12 +1,12 @@
-package frc.robot.commands;
+package frc.robot.commands.claw;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
-public class ClawEjectCommand extends CommandBase {
+public class ClawConeStateCommand extends CommandBase {
 	private Claw claw;
 
-	public ClawEjectCommand(Claw claw) {
+	public ClawConeStateCommand (Claw claw) {
 		this.claw = claw;
 		addRequirements(claw);
 	}
@@ -18,7 +18,7 @@ public class ClawEjectCommand extends CommandBase {
 
 	@Override
 	public void execute() {
-		claw.eject();
+		claw.coneintake();
 	}
 
 	@Override 

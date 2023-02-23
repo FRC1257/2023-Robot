@@ -1,12 +1,12 @@
-package frc.robot.commands;
+package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeIntakingCommand extends CommandBase {
+public class IntakeNeutralCommand extends CommandBase {
     
     private Intake intake;
 
-    public IntakeIntakingCommand(Intake intake) {
+    public IntakeNeutralCommand(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }
@@ -18,7 +18,7 @@ public class IntakeIntakingCommand extends CommandBase {
 
     @Override
     public void execute() {
-        intake.intaking();
+        intake.neutral();
     }
 
     @Override
