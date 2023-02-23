@@ -136,6 +136,10 @@ public final class Constants {
         public static int CLAW_FORWARD_ID = 2;
         public static int CLAW_REVERSE_ID = 1;
 
+        // Pivot ARm
+        public static int PIVOT_ARM_LEFT_ID = 6;
+        public static int PIVOT_ARM_RIGHT_ID = 7;
+
         // Sensors
         public static final int INTAKE_BUMP_SWITCH_ID = 4;
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
@@ -364,6 +368,18 @@ public final class Constants {
         public static double INTAKE_SETPOINT_TOP = 1257; // lol
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
     };
+
+    public static class PivotArm {
+        // PID constants
+        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0};
+        public static double PIVOT_ARM_PID_TOLERANCE = 1257;
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257;
+
+        // Setpoints between -1 and 1
+        public static double PIVOT_ARM_SETPOINT_UP = 1;
+        public static double PIVOT_ARM_SETPOINT_MID = 0.5;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
+    }
    
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds

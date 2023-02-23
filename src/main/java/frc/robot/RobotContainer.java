@@ -5,29 +5,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.*;
-import frc.robot.commands.ClawConeStateCommand;
-import frc.robot.commands.ClawCubeStateCommand;
-import frc.robot.commands.ClawEjectCommand;
-import frc.robot.commands.ClawIntakeCommand;
-import frc.robot.commands.ClawNeutralCommand;
-import frc.robot.subsystems.Claw;
-import frc.robot.subsystems.SnailSubsystem;
-
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Delay;
-import frc.robot.commands.ToPosCommand;
+import frc.robot.commands.claw.*;
+import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 
@@ -38,10 +21,10 @@ import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
+import frc.robot.commands.pivotarm.PivotArmManualCommand;
+import frc.robot.commands.pivotarm.PivotArmPIDCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
-import frc.robot.commands.IntakeEjectingCommand;
-import frc.robot.commands.IntakeIntakingCommand;
-import frc.robot.commands.IntakeNeutralCommand;
+import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.Gyro;
@@ -87,6 +70,7 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+    private PivotArm pivotArm;
     private IntakeArm intakearm;
 
 
@@ -167,12 +151,17 @@ public class RobotContainer {
 
 
         // Vision
+
+        // Pivot arm
+        pivotArm = new PivotArm();
+        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
         subsystems.add(claw);
         subsystems.add(drivetrain);
         subsystems.add(vision);
+        subsystems.add(pivotArm);
         subsystems.add(intakearm);
         subsystems.add(pivotWrist);
         subsystems.add(intake);
@@ -200,6 +189,11 @@ public class RobotContainer {
         // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        
+        // Operator bindings
+        operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+        operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
         driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
         driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain));
 
