@@ -137,11 +137,12 @@ public final class Constants {
         public static int CLAW_REVERSE_ID = 1;
 
         // Pivot ARm
-        public static int PIVOT_ARM_LEFT_ID = 6;
-        public static int PIVOT_ARM_RIGHT_ID = 7;
+        public static int PIVOT_ARM_LEFT_ID = 12;
+        public static int PIVOT_ARM_RIGHT_ID = 14;
 
         // Sensors
-        public static final int INTAKE_BUMP_SWITCH_ID = 4;
+        public static final int INTAKE_BUMP_SWITCH_ID = 24;
+        public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 

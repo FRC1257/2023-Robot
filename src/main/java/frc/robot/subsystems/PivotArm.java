@@ -54,7 +54,7 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setD(PIVOT_ARM_PID[2]);
         armPIDController.setOutputRange(-PIVOT_ARM_PID_MAX_OUTPUT, PIVOT_ARM_PID_MAX_OUTPUT);
 
-        limitSwitch = new DigitalInput(INTAKE_BUMP_SWITCH_ID);
+        limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID);
     }
 
     @Override
