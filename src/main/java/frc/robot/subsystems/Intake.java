@@ -17,6 +17,7 @@ public class Intake extends SnailSubsystem {
         intakeMotor.restoreFactoryDefaults();
         intakeMotor.setIdleMode(IdleMode.kBrake);
         intakeMotor.setSmartCurrentLimit(ElectricalLayout.ElectricalLayoutNEO_CURRENT_LIMIT);
+        intakeMotor.setSmartCurrentLimit(ElectricalLayout.NEO_CURRENT_LIMIT);
     }
 
     public enum State {
@@ -77,4 +78,6 @@ public class Intake extends SnailSubsystem {
     
     }
 
+
 } 
+

@@ -22,6 +22,9 @@ import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.vision.TurnToAprilTagCommand;
+import frc.robot.commands.IntakeEjectingCommand;
+import frc.robot.commands.IntakeIntakingCommand;
+import frc.robot.commands.IntakeNeutralCommand;
 import frc.robot.subsystems.*;
 import frc.robot.util.SnailController;
 
@@ -53,6 +56,9 @@ public class RobotContainer {
 
     private Drivetrain drivetrain;
     private Vision vision;
+
+
+    private Intake intake;
 
     private Elevator elevator;
 
@@ -112,16 +118,26 @@ public class RobotContainer {
         
         elevator = new Elevator();
 
+
         // Pivot Wrist
         pivotWrist = new PivotWrist();
         pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
+
+        // Intake
+        intake = new Intake();
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
 
+
         subsystems.add(pivotWrist);
+
+        subsystems.add(intake);
+
 
         subsystems.add(elevator);
 
@@ -138,6 +154,10 @@ public class RobotContainer {
         //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+
+        operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
+        operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
+
         
 
         // Operator bindings

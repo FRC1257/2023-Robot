@@ -34,6 +34,11 @@ public final class Constants {
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
 
+
+        public final static int INTAKE_MOTOR_ID = 0;
+        public final static int NEO_CURRENT_LIMIT = 25;
+    
+
         // Solenoids
         public final static int EXTENDER_LEFT_FORWARD_ID = 0;
         public final static int EXTENDER_LEFT_REVERSE_ID = 1;
@@ -80,6 +85,7 @@ public final class Constants {
         public static final double INTAKE_EJECTING_SPEED = -0.85;
     }
     
+
 
 
 
@@ -236,9 +242,24 @@ public final class Constants {
 
 
 
+    public static class IntakeSpeed {
+        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
+        public static final double INTAKE_INTAKING_SPEED = 0.85;
+        public static final double INTAKE_EJECTING_SPEED = -0.85;
+    }
+
+
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
+
+    
+    /** Ambiguous with NEO_CURRENT_LIMIT in ElectricalLayout */
+    // public final static int NEO_CURRENT_LIMIT = 80; // amps
+
+    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
+
+
     public final static int NEO_CURRENT_LIMIT = 80; // amps
 
     public final static int ARM_MOTOR_ID = 0;
@@ -246,6 +267,5 @@ public final class Constants {
     public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
 
-    
 
 
