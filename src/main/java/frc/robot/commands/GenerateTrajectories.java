@@ -353,18 +353,23 @@ public class GenerateTrajectories {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
+        boolean isReverse = false;
+
         // going around the charging station, if convenient
         // jank fix
-        if (!hitAndRun && currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+        if (hitAndRun) {
+           isReverse = true; 
+        }
+        else if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
         } 
-        else if (!hitAndRun) {
+        else {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
         trajPoints.add(getLeaveCommunityPose(currentPose));
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, isReverse);
         currentPose = getLeaveCommunityPose(currentPose);
         addToPosCommand(step2);
     }
