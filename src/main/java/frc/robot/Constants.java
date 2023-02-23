@@ -113,11 +113,6 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 2;
 
 
-        // Drivetrain
-        public final static int DRIVE_FRONT_LEFT = 17;
-        public final static int DRIVE_FRONT_RIGHT = 13;
-        public final static int DRIVE_BACK_LEFT = 5;
-        public final static int DRIVE_BACK_RIGHT = 2;
 
 
         public final static int INTAKE_MOTOR_ID = 0;
@@ -244,6 +239,15 @@ public final class Constants {
 
 
         public static Transform3d CAMERA_TO_ROBOT = new Transform3d();
+
+        
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
+        
+        // public static AprilTagFieldLayout aprilTagFieldLayout = new
+        // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
+        public static String USB_CAMERA_NAME_FRONT = "Front Camera";
+        public static String USB_CAMERA_NAME_BACK = "Back Camera";
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
@@ -349,13 +353,6 @@ public final class Constants {
         public static double ROLLER_INTAKING_SPEED = 0.45;
         public static double ROLLER_EJECTING_SPEED = -0.45;
 
-        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
-        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
-        
-        // public static AprilTagFieldLayout aprilTagFieldLayout = new
-        // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
-        public static String USB_CAMERA_NAME_FRONT = "Front Camera";
-        public static String USB_CAMERA_NAME_BACK = "Back Camera";
     };
 
 
@@ -371,84 +368,7 @@ public final class Constants {
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
 
     };
-    public static class Autonomous {
-        // all of these positions have been estimated using PathWeaver
-        // TODO calculate true positions
-
-        public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
-                new Pose2d(1.425, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
-                new Pose2d(1.425, 1.044, Rotation2d.fromDegrees(0)), // score 2
-                new Pose2d(1.425, 1.579, Rotation2d.fromDegrees(0)), // 3
-                new Pose2d(1.425, 2.204, Rotation2d.fromDegrees(0)), // ...
-                new Pose2d(1.425, 2.773, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 3.273, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 3.831, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 4.433, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 5.082, Rotation2d.fromDegrees(0))
-        };
-
-        public static Pose2d[] RED_SCORE_POSE = new Pose2d[] {
-                new Pose2d(15.15, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
-                new Pose2d(15.15, 1.044, Rotation2d.fromDegrees(180)), // score 2
-                new Pose2d(15.15, 1.579, Rotation2d.fromDegrees(180)), // 3
-                new Pose2d(15.15, 2.204, Rotation2d.fromDegrees(180)), // ...
-                new Pose2d(15.15, 2.773, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 3.273, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 3.831, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 4.433, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 5.082, Rotation2d.fromDegrees(180))
-        };
-
-        public static Pose2d[] BLUE_CARGO_POSE = new Pose2d[] {
-                new Pose2d(7.066, 0.896, Rotation2d.fromDegrees(0)),
-                new Pose2d(7.066, 2.125, Rotation2d.fromDegrees(0)),
-                new Pose2d(7.066, 3.353, Rotation2d.fromDegrees(0)),
-                new Pose2d(7.066, 4.602, Rotation2d.fromDegrees(0)),
-        };
-
-        public static Pose2d[] RED_CARGO_POSE = new Pose2d[] {
-                new Pose2d(9.5, 0.896, Rotation2d.fromDegrees(180)),
-                new Pose2d(9.5, 2.125, Rotation2d.fromDegrees(180)),
-                new Pose2d(9.5, 3.353, Rotation2d.fromDegrees(180)),
-                new Pose2d(9.5, 4.602, Rotation2d.fromDegrees(180)),
-        };
-
-        public static Pose2d[] BLUE_WAYPOINT_POSE = new Pose2d[] {
-                new Pose2d(2.87, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(4.8, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(2.87, 0.754, Rotation2d.fromDegrees(0)),
-                new Pose2d(4.8, 0.754, Rotation2d.fromDegrees(0)),
-        };
-        public static Pose2d[] RED_WAYPOINT_POSE = new Pose2d[] {
-                new Pose2d(11.6, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(13.5, 4.73, Rotation2d.fromDegrees(0)),
-                new Pose2d(11.6, 0.754, Rotation2d.fromDegrees(0)),
-                new Pose2d(13.5, 0.754, Rotation2d.fromDegrees(0)),
-        };
-
-        public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0));
-        public static Pose2d RED_CHARGE_POSE = new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0));
-
-        // bottom to top (farthest from community to closest)
-        public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
-                new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(0)),
-                new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(0)),
-                new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(0)),
-        };
-
-        public static Pose2d[] RED_START_POSE = new Pose2d[] {
-                new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(180)),
-                new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(180)),
-                new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
-        };
-        public static double CHARGE_STATION_LOWER_Y = 1.508506;
-        public static double CHARGE_STATION_UPPER_Y = 3.978656;
-
-        public static double CHARGE_CENTER_Y = 2.75;
-
-    };
-
-
+   
 
 
 
@@ -469,7 +389,7 @@ public final class Constants {
     public final static int ARM_MOTOR_ID = 0;
 
 
-    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
+    
 }
 
 
