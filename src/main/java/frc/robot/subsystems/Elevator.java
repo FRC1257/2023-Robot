@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.Constants.ElectricalLayout;
+import static frc.robot.Constants.ElectricalLayout.*;
 
 public class Elevator extends SnailSubsystem{
 
@@ -10,8 +10,8 @@ public class Elevator extends SnailSubsystem{
     private DoubleSolenoid elevatorSolenoidLeft;
 
     public Elevator() {
-        elevatorSolenoidLeft = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.EXTENDER_LEFT_FORWARD_ID, ElectricalLayout.EXTENDER_LEFT_REVERSE_ID);
-        elevatorSolenoidRight = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.EXTENDER_RIGHT_FORWARD_ID, ElectricalLayout.EXTENDER_RIGHT_REVERSE_ID);
+        elevatorSolenoidLeft = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, EXTENDER_LEFT_FORWARD_ID, EXTENDER_LEFT_REVERSE_ID);
+        elevatorSolenoidRight = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, EXTENDER_RIGHT_FORWARD_ID, EXTENDER_RIGHT_REVERSE_ID);
     }
 
     public enum State {

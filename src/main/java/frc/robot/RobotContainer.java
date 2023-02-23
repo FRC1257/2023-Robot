@@ -13,6 +13,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Delay;
 import frc.robot.commands.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
+
+import frc.robot.commands.pivotWrist.PivotWristManualCommand;
+import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
+
 import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
@@ -45,12 +49,14 @@ public class RobotContainer {
 
     private SnailController driveController;
     private SnailController operatorController;
-    
+
+    private PivotWrist pivotWrist;
     private ArrayList<SnailSubsystem> subsystems;
 
 
     private Drivetrain drivetrain;
     private Vision vision;
+
 
     private Intake intake;
 
@@ -112,16 +118,26 @@ public class RobotContainer {
         
         elevator = new Elevator();
 
+
+        // Pivot Wrist
+        pivotWrist = new PivotWrist();
+        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
+
         // Intake
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+
 
         subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
         subsystems.add(drivetrain);
         subsystems.add(vision);
 
+
+        subsystems.add(pivotWrist);
+
         subsystems.add(intake);
+
 
         subsystems.add(elevator);
 
@@ -143,11 +159,19 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
 
         
+
+        // Operator bindings
+        operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
+        operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
+        operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
+
+
         // Operator Bindings
         operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
         operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
 
     }
+
 
     /**
      * Set up the choosers on shuffleboard for autonomous

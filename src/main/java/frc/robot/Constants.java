@@ -44,8 +44,51 @@ public final class Constants {
         public final static int EXTENDER_LEFT_REVERSE_ID = 1;
         public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
         public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+
+        public final static int ElectricalLayoutNEO_CURRENT_LIMIT = 25;
+
+        // Pivot Wrist    
+        public final static int PIVOT_WRIST_ID_LEFT = 3;
+        public final static int PIVOT_WRIST_ID_RIGHT = 4;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+
+        
+    }
+
+
+    public static class PivotWrist {
+        public static double WRIST_ENCODER_PCF = 1257;
+        public static double[] WRIST_PID = new double[] {1257, 1257, 1257, 1257};
+
+        public static double WRIST_PID_MAX_OUTPUT = 1257;
+        public static double WRIST_PID_TOLERANCE = 1257;
+
+        public static double WRIST_MAX_VEL = 1257.0;
+        public static double WRIST_MAX_ACC = 1257.0;
+        
+        public static int WRIST_PID_SLOT_VEL = 0;
+        public static int WRIST_PID_SLOT_ACC = 0;
+        public static double WRIST_SETPOINT_TOP = .1257; // in encoder revs
+        public static double WRIST_SETPOINT_BOT = -.1257; // in enc
+
+        // setpoints for the wrist
+        public static double WRIST_SETPOINT_INTAKE = 0.5;
+        public static double WRIST_SETPOINT_HIGH = 0.6;
+        public static double WRIST_SETPOINT_MID = 0.7;
+    }
+
+       
+    public static class IntakeSpeed {
+        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
+        public static final double INTAKE_INTAKING_SPEED = 0.85;
+        public static final double INTAKE_EJECTING_SPEED = -0.85;
+    }
     
-    };
+
+
+
+
+
 
 
     public static class Drivetrain {
@@ -197,11 +240,8 @@ public final class Constants {
     };
 
 
-    public static class IntakeSpeed {
-        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
-        public static final double INTAKE_INTAKING_SPEED = 0.85;
-        public static final double INTAKE_EJECTING_SPEED = -0.85;
-    }
+
+
 
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
@@ -215,6 +255,10 @@ public final class Constants {
 
 
     public final static int NEO_CURRENT_LIMIT = 80; // amps
-    
+
+    public final static int ARM_MOTOR_ID = 0;
+
 }
+
+
 
