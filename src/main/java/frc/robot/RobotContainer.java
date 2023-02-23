@@ -80,7 +80,7 @@ public class RobotContainer {
     
 
     private PivotWrist pivotWrist;
-    private ArrayList<SnailSubsystem> subsystems;
+    
 
 
     private Drivetrain drivetrain;
