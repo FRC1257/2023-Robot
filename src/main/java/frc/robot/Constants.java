@@ -250,13 +250,13 @@ public final class Constants {
                 new Pose2d(5, 4.73, Rotation2d.fromDegrees(0)),
                 new Pose2d(5, 0.754, Rotation2d.fromDegrees(0)),
                 // this y coord is aligned correctly i think, it's a little jank
-                new Pose2d(5, BLUE_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(0)),
+                new Pose2d(5.5, BLUE_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(0)),
         };
 
         public static Pose2d[] RED_LEAVE_COMMUNITY_POSE = new Pose2d[] {
                 new Pose2d(11.4, 4.73, Rotation2d.fromDegrees(180)),
                 new Pose2d(11.4, 0.754, Rotation2d.fromDegrees(180)),
-                new Pose2d(11.4, RED_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(180)),
+                new Pose2d(10.7, RED_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(180)),
         };
 
         // bottom to top (farthest from community to closest)

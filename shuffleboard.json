@@ -1145,6 +1145,19 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "13,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
+              "_title": "SmartDashboard/3 Ball Auto",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
