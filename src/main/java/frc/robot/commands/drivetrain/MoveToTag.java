@@ -37,21 +37,13 @@ public class MoveToTag extends CommandBase {
         ArrayList<Translation2d> interiorWaypoints = new ArrayList<Translation2d>();
 
         TrajectoryConfig config = new TrajectoryConfig(Units.feetToMeters(12), Units.feetToMeters(12));
-        config.setReversed(true);
-        Pair<Pose2d, Double> currentPose = vision.getEstimatedGlobalPose();
-
-        trajectory = TrajectoryGenerator.generateTrajectory(
-        currentPose.getFirst(),
-        interiorWaypoints,
-        finalPose,
-        config);
         
         
     }
 
     @Override
     public void execute() {
-        drivetrain.driveTrajectory(trajectory);
+        // drivetrain.driveTrajectory(trajectory);
     }
 
     @Override
