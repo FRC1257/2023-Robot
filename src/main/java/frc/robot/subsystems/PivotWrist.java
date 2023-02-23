@@ -2,7 +2,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants;
 import static frc.robot.Constants.PivotWrist.*;
 import static frc.robot.Constants.ElectricalLayout.*;
 import com.revrobotics.CANSparkMax;

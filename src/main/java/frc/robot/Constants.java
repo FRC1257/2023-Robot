@@ -34,11 +34,21 @@ public final class Constants {
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
 
+        // Solenoids
+        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
+        public final static int EXTENDER_LEFT_REVERSE_ID = 1;
+        public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
+        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+
+        public final static int ElectricalLayoutNEO_CURRENT_LIMIT = 25;
 
         // Pivot Wrist    
         public final static int PIVOT_WRIST_ID_LEFT = 3;
         public final static int PIVOT_WRIST_ID_RIGHT = 4;
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+
+        
+        public final static int INTAKE_MOTOR_ID = 0;
     }
 
 
@@ -64,7 +74,11 @@ public final class Constants {
     }
 
        
-    
+    public static class IntakeSpeed {
+        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
+        public static final double INTAKE_INTAKING_SPEED = 0.85;
+        public static final double INTAKE_EJECTING_SPEED = -0.85;
+    }
     
 
 
@@ -220,11 +234,7 @@ public final class Constants {
 
     };
 
-     // Solenoids
-     public final static int EXTENDER_LEFT_FORWARD_ID = 0;
-     public final static int EXTENDER_LEFT_REVERSE_ID = 1;
-     public final static int EXTENDER_RIGHT_FORWARD_ID = 2;
-     public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+
 
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
