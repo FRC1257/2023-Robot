@@ -42,6 +42,7 @@ public class GenerateTrajectories {
         this.secondScore = isSecondScore;
         this.threePiece = threePiece;
         this.leaveTarmac = leaveTarmac;
+        this.hitAndrun = hitAndrun;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
