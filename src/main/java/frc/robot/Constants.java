@@ -53,7 +53,6 @@ public final class Constants {
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
 
         
-        public final static int INTAKE_MOTOR_ID = 0;
     }
 
 
@@ -242,11 +241,6 @@ public final class Constants {
 
 
 
-    public static class IntakeSpeed {
-        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
-        public static final double INTAKE_INTAKING_SPEED = 0.85;
-        public static final double INTAKE_EJECTING_SPEED = -0.85;
-    }
 
 
     public static double PI = 3.14159265;
@@ -264,7 +258,6 @@ public final class Constants {
 
     public final static int ARM_MOTOR_ID = 0;
 
-    public static String USB_CAMERA_NAME = "Microsoft_LifeCam_HD-3000";
 }
 
 
