@@ -1,4 +1,4 @@
-package frc.robot.commands.pivotArm;
+package frc.robot.commands.pivotarm;
 
 import java.util.function.DoubleSupplier;
 
