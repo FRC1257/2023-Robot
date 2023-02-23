@@ -43,6 +43,8 @@ import frc.robot.commands.IntakeEjectingCommand;
 import frc.robot.commands.IntakeIntakingCommand;
 import frc.robot.commands.IntakeNeutralCommand;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
 
@@ -191,21 +193,25 @@ public class RobotContainer {
         // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        driveController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
-        driveController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
-        driveController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
-        driveController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
-        driveController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
+        
+        // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
+        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
+        driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain));
 
         driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         
-        //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
-        driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
+        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+        // driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
+        // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
         operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
         operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
 
@@ -214,12 +220,16 @@ public class RobotContainer {
         operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
         operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-
+   
+        operatorController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
+        operatorController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
+        operatorController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
+        operatorController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
+        operatorController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
 
         // Operator Bindings
         operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
         operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
-
 
     }
 
@@ -258,6 +268,8 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).displayShuffleboard();
         }
+
+        Gyro.getInstance().outputValues();
 
         outputCounter = (outputCounter + 1) % (subsystems.size() * 3);
     }

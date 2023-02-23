@@ -255,6 +255,11 @@ public final class Constants {
     public static class Autonomous {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
+        public static double BALANCE_KP = 0.05;
+        public static double BALANCE_KD = 0.01;
+        public static double BALANCE_SETPOINT_ANGLE = 0;
+        public static double BALANCE_THRESHOLD_DEGREES = 3;
+        public static int BALANCE_STEPS_THRESHOLD = 25;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
                 new Pose2d(1.425, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
@@ -358,7 +363,6 @@ public final class Constants {
         
         public static double INTAKE_SETPOINT_TOP = 1257; // lol
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
-
     };
    
     public static double PI = 3.14159265;
