@@ -40,7 +40,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        robotContainer.stopDisplayingTraj();
         autoCommand = robotContainer.getAutoCommand();
 
         if(autoCommand != null) {
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        robotContainer.stopDisplayingTraj();
         if(autoCommand != null) {
             autoCommand.cancel();
         }
