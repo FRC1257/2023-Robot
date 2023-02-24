@@ -7,12 +7,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
-<<<<<<< HEAD
 
-=======
- 
-import java.util.Optional;
->>>>>>> master
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -28,7 +23,6 @@ import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -45,10 +39,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
-<<<<<<< HEAD
-=======
-import org.photonvision.EstimatedRobotPose;
->>>>>>> master
 
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.ElectricalLayout.*;
@@ -74,7 +64,6 @@ public class Drivetrain extends SnailSubsystem {
     private RamseteController ramseteController;
     private Trajectory trajectory;
     private Timer pathTimer; // measures how far along we are on our current profile / trajectory
-<<<<<<< HEAD
 
     private final Field2d m_field = new Field2d();
 
@@ -92,18 +81,6 @@ public class Drivetrain extends SnailSubsystem {
 
     // private DifferentialDrive drivetrain;
 
-=======
-    
-    private final Field2d m_field = new Field2d();
-    
-    private DifferentialDriveKinematics driveKinematics;
-    // private DifferentialDriveOdometry driveOdometry;
-    private final DifferentialDrivePoseEstimator poseEstimator;
- 
-    
-    // private DifferentialDrive drivetrain;
-    
->>>>>>> master
     /**
      * MANUAL_DRIVE - uses joystick inputs as direct inputs into an arcade drive
      * setup
@@ -146,7 +123,6 @@ public class Drivetrain extends SnailSubsystem {
     // if enabled, switches the front and back of the robot from the driving
     // perspective
     private boolean reverseEnabled;
-<<<<<<< HEAD
 
     // if enabled, makes turning much slower to make the robot more precise
     private boolean slowModeEnabled;
@@ -158,37 +134,14 @@ public class Drivetrain extends SnailSubsystem {
         configureMotors();
         configureEncoders();
         configurePID();
-=======
-    
-    // if enabled, makes turning much slower to make the robot more precise
-    private boolean slowModeEnabled;
-    
-    private double testingTargetLeftSpeed;
-    private double testingTargetRightSpeed;
- 
-    Vision vision;
-
-    public Drivetrain(Pose2d initialPoseMeters, Vision vision) {
-        configureMotors();
-        configureEncoders();
-        configurePID();
- 
-        this.vision = vision;
->>>>>>> master
 
         ramseteController = new RamseteController(DRIVE_TRAJ_RAMSETE_B, DRIVE_TRAJ_RAMSETE_ZETA);
 
         driveKinematics = new DifferentialDriveKinematics(DRIVE_TRACK_WIDTH_M);
         // - to make + be ccw
-<<<<<<< HEAD
         driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()),
                 leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(),
                 initialPoseMeters);
-=======
-        // driveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), initialPoseMeters);
-
-        poseEstimator = new DifferentialDrivePoseEstimator(driveKinematics, Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), leftEncoder.getPositionConversionFactor(), initialPoseMeters);
->>>>>>> master
 
         pathTimer = new Timer();
 
@@ -239,13 +192,7 @@ public class Drivetrain extends SnailSubsystem {
         frontRightMotor.setIdleMode(IdleMode.kBrake);
         backLeftMotor.setIdleMode(IdleMode.kCoast);
         backRightMotor.setIdleMode(IdleMode.kCoast);
-<<<<<<< HEAD
 
-=======
-        
-
-        //TODO Is this electricallayoutcurrentlimit or just neocurrent limit
->>>>>>> master
         frontLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         frontRightMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         backLeftMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
@@ -452,7 +399,6 @@ public class Drivetrain extends SnailSubsystem {
                 }
 
                 Trajectory.State currentState = trajectory.sample(pathTimer.get());
-<<<<<<< HEAD
                 ChassisSpeeds chassisSpeeds;
                 if (simulation) {
                     //m_field.setRobotPose(currentState.poseMeters);
@@ -463,10 +409,6 @@ public class Drivetrain extends SnailSubsystem {
                     chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
                 }
                 
-=======
-                // ChassisSpeeds chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
-                ChassisSpeeds chassisSpeeds = ramseteController.calculate(poseEstimator.getEstimatedPosition(), currentState); 
->>>>>>> master
                 DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
                 updateSimulation(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
                 leftPIDController.setReference(wheelSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
@@ -478,7 +420,6 @@ public class Drivetrain extends SnailSubsystem {
                 break;
             }
         }
-<<<<<<< HEAD
 
         driveOdometry.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(),
                 rightEncoder.getPosition());
@@ -486,26 +427,6 @@ public class Drivetrain extends SnailSubsystem {
 
     // speeds should be between -1.0 and 1.0 and should NOT be squared before being
     // passed in
-=======
- 
-        updateOdometry();
-    }
-
-    public void updateOdometry() {
-        poseEstimator.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), leftEncoder.getPosition());
-
-        Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
-        if (result == null) 
-            return;
-
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-        }
-    }
-
-    // speeds should be between -1.0 and 1.0 and should NOT be squared before being passed in
->>>>>>> master
     // speedForward: -1 = backward, +1 = forward
     // speedTurn: -1 = ccw, +1 = cw
     public void manualDrive(double speedForward, double speedTurn) {
@@ -589,12 +510,8 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     private void setRobotPose(Pose2d pose) {
-<<<<<<< HEAD
         driveOdometry.resetPosition(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()),
                 leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), pose);
-=======
-        poseEstimator.resetPosition(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), pose);
->>>>>>> master
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
         if (simulation) {
@@ -682,13 +599,8 @@ public class Drivetrain extends SnailSubsystem {
                     Gyro.getInstance().getRobotAngleVelocity()
             });
             SmartDashboard.putNumberArray("Drive Odometry (x, y)", new double[] {
-<<<<<<< HEAD
                     driveOdometry.getPoseMeters().getX(),
                     driveOdometry.getPoseMeters().getY()
-=======
-                poseEstimator.getEstimatedPosition().getX(),
-                poseEstimator.getEstimatedPosition().getY()
->>>>>>> master
             });
             if (simulation) {
                 SmartDashboard.putNumberArray("Drive Simulation (x, y)", new double[] {
@@ -797,7 +709,6 @@ public class Drivetrain extends SnailSubsystem {
 
         DRIVE_PROFILE_LEFT_P = SmartDashboard.getNumber("Drive Profile Left kP", DRIVE_PROFILE_LEFT_P);
         DRIVE_PROFILE_RIGHT_P = SmartDashboard.getNumber("Drive Profile Right kP", DRIVE_PROFILE_RIGHT_P);
-<<<<<<< HEAD
 
         
         if (simulation) {
@@ -806,10 +717,6 @@ public class Drivetrain extends SnailSubsystem {
         } else {
             m_field.setRobotPose(driveOdometry.getPoseMeters());
         }
-=======
- 
-        m_field.setRobotPose(poseEstimator.getEstimatedPosition());
->>>>>>> master
     }
 
     @Override
@@ -839,12 +746,4 @@ public class Drivetrain extends SnailSubsystem {
     public void drawTrajectory(Trajectory trajectory) {
         m_field.getObject("traj").setTrajectory(trajectory);
     }
-
-    public Pose2d getPosition() {
-        return poseEstimator.getEstimatedPosition();
-    }
 }
-<<<<<<< HEAD
-=======
- 
->>>>>>> master

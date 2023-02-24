@@ -6,32 +6,16 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.GenerateTrajectories;
-import frc.robot.commands.Delay;
-import frc.robot.commands.claw.*;
-import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.intakearm.IntakeArmPIDCommand;
-
-import frc.robot.commands.pivotWrist.PivotWristManualCommand;
-import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
-
-import frc.robot.commands.elevator.ElevatorExtendCommand;
-import frc.robot.commands.elevator.ElevatorRetractCommand;
-import frc.robot.commands.vision.AlignPosCommand;
-
-import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
-import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.SnailSubsystem;
-import frc.robot.util.Gyro;
-
 import frc.robot.util.SnailController;
 
 import java.util.ArrayList;
@@ -39,12 +23,7 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
-
-import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_BOT;
-import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_TOP;
-
 import static frc.robot.Constants.Autonomous;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,28 +39,12 @@ public class RobotContainer {
 
     private SnailController driveController;
     private SnailController operatorController;
-
-
-    private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;
-    
-
-    private PivotWrist pivotWrist;
-    
 
 
     private Drivetrain drivetrain;
     private Vision vision;
-    private PivotArm pivotArm;
-    private IntakeArm intakearm;
-
-
-    private Intake intake;
-
-    private Elevator elevator;
-
-
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -128,66 +91,54 @@ public class RobotContainer {
         outputCounter = 0;
         displayTrajCounter = 0;
 
-        // Field Side
-        SmartDashboard.putBoolean("Testing", true);
-        
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
 
         isSimulation = RobotBase.isSimulation();
     }
 
-   
+    public void stopDisplayingTraj() {
+        updateTraj = false;
+    }
+
+    private boolean getAllianceColor() {
+        return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
+    }
+
     private Pose2d getStartingPos() {
         return new Pose2d(0, 0, new Rotation2d(0.0));
+        /* Pose2d[] ALLIANCE_START_POSE;
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
+        } else {
+            ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
+        }
+        return ALLIANCE_START_POSE[startPositionChooser.getSelected()]; 
+         */
     }
-    
 
+    /**
+     * Set up the choosers on shuffleboard for getting score positions
+     */
+
+   
     /**
      * Declare all of our subsystems and their default bindings
      */
     private void configureSubsystems() {
         // declare each of the subsystems here
-
-        claw = new Claw();
-        claw.setDefaultCommand(new ClawNeutralCommand(claw));
-
-        vision = new Vision();
-        drivetrain = new Drivetrain(getStartingPos(), vision);
+        drivetrain = new Drivetrain(getStartingPos());
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
         // Vision
-        intakearm = new IntakeArm();
-        elevator = new Elevator();
-        // Pivot Wrist
-        pivotWrist = new PivotWrist();
-        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
+        vision = new Vision();
 
-        // Intake
-        intake = new Intake();
-        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
-
-
-
-        // Vision
-
-        // Pivot arm
-        pivotArm = new PivotArm();
-        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
-        
-        subsystems = new ArrayList<SnailSubsystem>();
+        subsystems = new ArrayList<>();
         // add each of the subsystems to the arraylist here
-        subsystems.add(claw);
         subsystems.add(drivetrain);
         subsystems.add(vision);
-        subsystems.add(pivotArm);
-        subsystems.add(intakearm);
-        subsystems.add(pivotWrist);
-        subsystems.add(intake);
-        subsystems.add(elevator);
-
 
         // generate auto
         generateTrajectories = new GenerateTrajectories(
@@ -210,58 +161,13 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
-
-        // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
-        // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        
-        // driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
-        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        
-        // Operator bindings
-        operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-        operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-        operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-        driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
-        driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain));
-
-        driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
+        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
-        
-        // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        // driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
-        // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
-        operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
-        operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
-
-        
-        // Operator bindings
-        operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
-        operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
-        operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-   
-        operatorController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
-        operatorController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
-        operatorController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
-        operatorController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
-        operatorController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
-
-        // Operator Bindings
-        operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
-        operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
-
+        //driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
     }
-
 
     /**
      * Set up the choosers on shuffleboard for autonomous
@@ -280,7 +186,6 @@ public class RobotContainer {
         // TODO: Implement this with PhotonVision
         // return new Pose2d(0, 0, new Rotation2d(0.0));
         return startPositionChooser.getSelected();
-        
     }
 
     /**
@@ -305,7 +210,6 @@ public class RobotContainer {
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajectories.getCommand();
-        return new Delay(2.0);
     }
 
     /**
@@ -328,8 +232,6 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).displayShuffleboard();
         }
-
-        Gyro.getInstance().outputValues();
 
         outputCounter = (outputCounter + 1) % (subsystems.size() * 3);
     }
@@ -509,9 +411,6 @@ public class RobotContainer {
         SmartDashboard.putBoolean("3 Ball Auto", threePiece);
         SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
         SmartDashboard.putBoolean("Hit and Run", hitAndRun);
-    }
-
-}
     }
 
 }

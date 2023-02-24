@@ -1,4 +1,4 @@
-package frc.robot.commands.vision;
+package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -7,34 +7,27 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.Drivetrain.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
-public class AlignPosCommand extends CommandBase { 
+public class ToPosCommand extends CommandBase { 
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
-    private Pose2d target;
 
+    // save the points for debugging
+    private List<Pose2d> points;
 
-    public AlignPosCommand(Drivetrain drivetrain, Pose2d target) { 
+    public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse) { 
         this.drivetrain = drivetrain;
-        this.target = target;
+        points = trajPoints;
         
+        TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC).setReversed(reverse);
+        this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+
         addRequirements(drivetrain);
     }
 
     @Override
     public void initialize() {
-        TrajectoryConfig config = new TrajectoryConfig(DRIVE_ALIGN_MAX_VEL, DRIVE_ALIGN_MAX_ACC).setReversed(true);
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-
-        trajPoints.add(drivetrain.getPosition());
-        trajPoints.add(target);
-
-
-        this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
-
         drivetrain.driveTrajectory(trajectory);
     }
 
