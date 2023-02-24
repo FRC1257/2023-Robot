@@ -1,5 +1,5 @@
 // robot commands package
-package frc.robot.commands.drivetrain;
+package frc.robot.commands;
 
 // iterable collections (java builtins)
 import java.util.ArrayList;
