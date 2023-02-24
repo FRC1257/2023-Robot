@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -13,12 +13,8 @@ public class ToPosCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
 
-    // save the points for debugging
-    private List<Pose2d> points;
-
     public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse) { 
         this.drivetrain = drivetrain;
-        points = trajPoints;
         
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC).setReversed(reverse);
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
