@@ -109,9 +109,6 @@ public class GenerateTrajectories {
 
         // index 0 is the area outside the community zone
         // index 1 is the area inside the community zone
-        if(hitAndRun){
-            return chargePose[1];
-        } 
 
         // in reality there are 2 possible places so we would just need to use the side of the field we are on
         if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
@@ -122,7 +119,7 @@ public class GenerateTrajectories {
         // not blue
         if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
             return chargePose[0];
-        } 
+        }
         return chargePose[1];
         
     }

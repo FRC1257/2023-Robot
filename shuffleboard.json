@@ -462,189 +462,17 @@
               "_children": {}
             }
           },
-          "5,6": {
+          "18,3": {
             "size": [
-              4,
-              2
+              1,
+              1
             ],
             "content": {
-              "_type": "Number Slider",
+              "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
-              "_title": "SmartDashboard/View Trajectory Pos",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Slider Settings/Min": 0.0,
-              "Slider Settings/Max": 5.0,
-              "Slider Settings/Block increment": 0.0625,
-              "Visuals/Display value": true
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive State",
-              "_title": "Drive State",
+              "_title": "View Trajectory Pos",
               "_glyph": 148,
               "_showGlyph": false
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pitch Angle",
-              "_title": "Pitch Angle",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,2": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Update Visual",
-              "_title": "Update Visual",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[3]",
-              "_title": "SendableChooser[3]",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "10,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[4]",
-              "_title": "SendableChooser[4]",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[5]",
-              "_title": "SendableChooser[5]",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "11,4": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/1st Auto Score",
-              "_title": "1st Auto Score",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "0,6": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Opt. 2nd Auto Score",
-              "_title": "Opt. 2nd Auto Score",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,6": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
-              "_title": "3 Ball Auto",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "15,6": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Leave Tarmac",
-              "_title": "Leave Tarmac",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "7,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Trajectory Time",
-              "_title": "Trajectory Time",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "17,6": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
-              "_title": "Reset Auto Viewer",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -889,7 +717,7 @@
       }
     },
     {
-      "title": "Normal Auto",
+      "title": "Tab 4",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -899,6 +727,27 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
+          "0,0": {
+            "size": [
+              9,
+              6
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://photonvision_Port_1184_MJPEG_Server",
+              "_title": "photonvision_Port_1184_MJPEG_Server",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": 7.581699031630372,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
           "9,0": {
             "size": [
               10,
@@ -907,6 +756,9 @@
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
+<<<<<<< HEAD
+              "_title": "SmartDashboard/Field",
+=======
               "_title": "Field",
               "_glyph": 148,
               "_showGlyph": false,
@@ -1145,19 +997,6 @@
               "_glyph": 148,
               "_showGlyph": false
             }
-          },
-          "13,6": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
-              "_title": "SmartDashboard/3 Ball Auto",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
           }
         }
       }
@@ -1376,6 +1215,7 @@
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
               "_title": "Field",
+>>>>>>> parent of 0b0b30f (Programming done)
               "_glyph": 148,
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
