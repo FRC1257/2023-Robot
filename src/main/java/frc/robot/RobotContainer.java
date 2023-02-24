@@ -21,8 +21,7 @@ import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
-import frc.robot.commands.pivotarm.PivotArmManualCommand;
-import frc.robot.commands.pivotarm.PivotArmPIDCommand;
+import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
