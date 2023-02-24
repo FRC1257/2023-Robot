@@ -1,17 +1,39 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [8]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/ADXRS450_Gyro[0]": "Gyro",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
-      "/SmartDashboard/SendableChooser[2]": "String Chooser",
-      "/SmartDashboard/SendableChooser[3]": "String Chooser",
-      "/SmartDashboard/SendableChooser[4]": "String Chooser",
-      "/SmartDashboard/SendableChooser[5]": "String Chooser"
+      "/SmartDashboard/SendableChooser[2]": "String Chooser"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Robot": {
+          "style": "Line"
+        },
+        "traj": {
+          "style": "Track"
+        },
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/SendableChooser[1]": {
         "window": {
           "visible": true
         }
@@ -19,6 +41,9 @@
     }
   },
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "transitory": {
       "SmartDashboard": {
         "open": true
