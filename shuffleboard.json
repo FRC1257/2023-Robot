@@ -11,10 +11,10 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "9,2": {
+          "11,2": {
             "size": [
               4,
-              3
+              2
             ],
             "content": {
               "_type": "ComboBox Chooser",
@@ -24,9 +24,9 @@
               "_showGlyph": false
             }
           },
-          "6,1": {
+          "13,4": {
             "size": [
-              2,
+              4,
               2
             ],
             "content": {
@@ -37,7 +37,7 @@
               "_showGlyph": false
             }
           },
-          "13,2": {
+          "11,6": {
             "size": [
               2,
               2
@@ -50,7 +50,7 @@
               "_showGlyph": false
             }
           },
-          "17,6": {
+          "13,6": {
             "size": [
               2,
               2
@@ -93,22 +93,9 @@
               "_showGlyph": false
             }
           },
-          "5,0": {
+          "7,4": {
             "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive State",
-              "_title": "Drive State",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "10,5": {
-            "size": [
-              3,
+              4,
               2
             ],
             "content": {
@@ -128,32 +115,6 @@
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/isAllianceBlue",
               "_title": "SmartDashboard/isAllianceBlue",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Slow Turn Mult",
-              "_title": "Drive Slow Turn Mult",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Closed Max Vel",
-              "_title": "Drive Closed Max Vel",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -366,7 +327,7 @@
               "_showGlyph": false
             }
           },
-          "8,2": {
+          "7,1": {
             "size": [
               1,
               1
@@ -392,7 +353,7 @@
               "_showGlyph": false
             }
           },
-          "15,6": {
+          "9,6": {
             "size": [
               2,
               2
@@ -418,7 +379,7 @@
               "_showGlyph": false
             }
           },
-          "6,3": {
+          "6,2": {
             "size": [
               1,
               1
@@ -431,7 +392,7 @@
               "_showGlyph": false
             }
           },
-          "7,3": {
+          "7,2": {
             "size": [
               1,
               1
@@ -440,19 +401,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Roll Angle",
               "_title": "Roll Angle",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pitch Angle",
-              "_title": "Pitch Angle",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -514,17 +462,189 @@
               "_children": {}
             }
           },
-          "18,3": {
+          "5,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "SmartDashboard/View Trajectory Pos",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 5.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "6,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
-              "_title": "View Trajectory Pos",
+              "_source0": "network_table:///SmartDashboard/Drive State",
+              "_title": "Drive State",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pitch Angle",
+              "_title": "Pitch Angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_title": "Update Visual",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[3]",
+              "_title": "SendableChooser[3]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[4]",
+              "_title": "SendableChooser[4]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[5]",
+              "_title": "SendableChooser[5]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_title": "1st Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Opt. 2nd Auto Score",
+              "_title": "Opt. 2nd Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
+              "_title": "3 Ball Auto",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "15,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Leave Tarmac",
+              "_title": "Leave Tarmac",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Trajectory Time",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -769,7 +889,281 @@
       }
     },
     {
-      "title": "Tab 4",
+      "title": "Normal Auto",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "9,0": {
+            "size": [
+              10,
+              6
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "A2023_Charged_Up",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false,
+              "Colors/traj": "#FFFFFFFF"
+            }
+          },
+          "6,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "1st Score Location",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
+              "_title": "2nd Score Pose",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
+              "_title": "Start",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Get Cargo",
+              "_title": "Auto Get Cargo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Goto Charge",
+              "_title": "Auto Charge",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/isAllianceBlue",
+              "_title": "Blue?",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Testing",
+              "_title": "Testing",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "Change View of Trajectory",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 7.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "4,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_title": "Update Visual",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_title": "Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,6": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
+              "_title": "Cargo Piece",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,4": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
+              "_title": "3 Ball Auto?",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Opt. 2nd Auto Score",
+              "_title": "2nd Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Leave Tarmac",
+              "_title": "Leave Tarmac",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Drive Time",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 18.0,
+              "Visuals/Show value": true
+            }
+          },
+          "9,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Hit and Run",
+              "_title": "SmartDashboard/Hit and Run",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
+              "_title": "SmartDashboard/3 Ball Auto",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "3 Ball Auto",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -781,34 +1175,207 @@
         "tiles": {
           "0,0": {
             "size": [
-              9,
+              2,
               6
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://photonvision_Port_1184_MJPEG_Server",
-              "_title": "photonvision_Port_1184_MJPEG_Server",
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
+              "_title": "3 Ball Auto?",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": 7.581699031630372,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_showGlyph": false
             }
           },
-          "9,0": {
+          "2,0": {
             "size": [
-              10,
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
+              "_title": "1st Score Pose / Start",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[1]",
+              "_title": "2nd Score Pose",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
+              "_title": "1st Cargo Piece",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,2": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[4]",
+              "_title": "2nd Cargo Piece",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[5]",
+              "_title": "3rd Score Pose",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,0": {
+            "size": [
+              11,
+              8
+            ],
+            "content": {
+              "_type": "Field",
+              "_source0": "network_table:///SmartDashboard/Field",
+              "_title": "Field",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Game/Game": "A2023_Charged_Up",
+              "Visuals/Robot Icon Size": 50.0,
+              "Visuals/Show Outside Circles": false,
+              "Colors/traj": "#FFFFFFFF"
+            }
+          },
+          "5,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_title": "SmartDashboard/Update Visual",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,6": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Number Slider",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "View Trajectory Pos",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Slider Settings/Min": 0.0,
+              "Slider Settings/Max": 6.0,
+              "Slider Settings/Block increment": 0.0625,
+              "Visuals/Display value": true
+            }
+          },
+          "6,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_title": "Drive Time",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Range/Min": 0.0,
+              "Range/Max": 18.0,
+              "Visuals/Show value": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Teleop",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Basic FMS Info",
+              "_source0": "network_table:///FMSInfo",
+              "_title": "FMSInfo",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Testing",
+              "_title": "Testing",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,0": {
+            "size": [
+              9,
               6
             ],
             "content": {
               "_type": "Field",
               "_source0": "network_table:///SmartDashboard/Field",
-              "_title": "SmartDashboard/Field",
+              "_title": "Field",
               "_glyph": 148,
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
@@ -825,6 +1392,6 @@
     "x": -7.199999809265137,
     "y": -7.199999809265137,
     "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "height": 838.4000244140625
   }
 }
