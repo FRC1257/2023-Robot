@@ -193,4 +193,8 @@ public class Gyro {
         }
         return instance;
     }
+
+    public ADXRS450_Gyro getGyro() {
+        return gyro;
+    }
 }

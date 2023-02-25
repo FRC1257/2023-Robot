@@ -12,7 +12,11 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;import edu.wpi.first.math.geometry.Translation3d;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -177,7 +181,7 @@ public final class Constants {
 
     public static class Drivetrain {
         // drivetrain constants
-        public static double DRIVE_TRACK_WIDTH_M = 0.66; // m
+        public static double DRIVE_TRACK_WIDTH_M = 0.86;// 0.66; // m
         public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
         public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
@@ -192,10 +196,10 @@ public final class Constants {
         public static double DRIVE_CLOSED_MAX_ACC = 1.5; // m/s^2
 
         // trajectory following
-        public static double DRIVE_TRAJ_MAX_VEL = 1.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 0.950; //.75;  // m/s^2
-        public static double DRIVE_TRAJ_RAMSETE_B = 2.0;
-        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
+        public static double DRIVE_TRAJ_MAX_VEL = 9.0; // m/s
+        public static double DRIVE_TRAJ_MAX_ACC = 1.150; //.75;  // m/s^2
+        public static double DRIVE_TRAJ_RAMSETE_B = 2.1;
+        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.8;
 
 
         // aligning
@@ -260,6 +264,8 @@ public final class Constants {
     public static class Autonomous {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
+
+        static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
         public static double BALANCE_KP = 0.05;
         public static double BALANCE_KD = 0.01;
         public static double BALANCE_SETPOINT_ANGLE = 0;
@@ -267,27 +273,27 @@ public final class Constants {
         public static int BALANCE_STEPS_THRESHOLD = 25;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
-                new Pose2d(1.425, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
-                new Pose2d(1.425, 1.044, Rotation2d.fromDegrees(0)), // score 2
-                new Pose2d(1.425, 1.579, Rotation2d.fromDegrees(0)), // 3
-                new Pose2d(1.425, 2.204, Rotation2d.fromDegrees(0)), // ...
-                new Pose2d(1.425, 2.773, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 3.273, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 3.831, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 4.433, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425, 5.082, Rotation2d.fromDegrees(0))
+                new Pose2d(1.425 + trackWidthAdded, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
+                new Pose2d(1.425 + trackWidthAdded, 1.044, Rotation2d.fromDegrees(0)), // score 2
+                new Pose2d(1.425 + trackWidthAdded, 1.579, Rotation2d.fromDegrees(0)), // 3
+                new Pose2d(1.425 + trackWidthAdded, 2.204, Rotation2d.fromDegrees(0)), // ...
+                new Pose2d(1.425 + trackWidthAdded, 2.773, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425 + trackWidthAdded, 3.273, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425 + trackWidthAdded, 3.831, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425 + trackWidthAdded, 4.433, Rotation2d.fromDegrees(0)),
+                new Pose2d(1.425 + trackWidthAdded, 5.082, Rotation2d.fromDegrees(0))
         };
 
         public static Pose2d[] RED_SCORE_POSE = new Pose2d[] {
-                new Pose2d(15.15, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
-                new Pose2d(15.15, 1.044, Rotation2d.fromDegrees(180)), // score 2
-                new Pose2d(15.15, 1.579, Rotation2d.fromDegrees(180)), // 3
-                new Pose2d(15.15, 2.204, Rotation2d.fromDegrees(180)), // ...
-                new Pose2d(15.15, 2.773, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 3.273, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 3.831, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 4.433, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15, 5.082, Rotation2d.fromDegrees(180))
+                new Pose2d(15.15 - trackWidthAdded, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
+                new Pose2d(15.15 - trackWidthAdded, 1.044, Rotation2d.fromDegrees(180)), // score 2
+                new Pose2d(15.15 - trackWidthAdded, 1.579, Rotation2d.fromDegrees(180)), // 3
+                new Pose2d(15.15 - trackWidthAdded, 2.204, Rotation2d.fromDegrees(180)), // ...
+                new Pose2d(15.15 - trackWidthAdded, 2.773, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15 - trackWidthAdded, 3.273, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15 - trackWidthAdded, 3.831, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15 - trackWidthAdded, 4.433, Rotation2d.fromDegrees(180)),
+                new Pose2d(15.15 - trackWidthAdded, 5.082, Rotation2d.fromDegrees(180))
         };
 
         public static Pose2d[] BLUE_CARGO_POSE = new Pose2d[] {
@@ -317,20 +323,35 @@ public final class Constants {
                 new Pose2d(11.6, 0.754, Rotation2d.fromDegrees(180)),
         };
 
-        public static Pose2d BLUE_CHARGE_POSE = new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(180));
-        public static Pose2d RED_CHARGE_POSE = new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0));
+        public static Pose2d BLUE_CHARGE_POSE[] = new Pose2d[] {
+                new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(180)),
+                new Pose2d(3.89, 2.75, Rotation2d.fromDegrees(0)),
+        };
+        public static Pose2d[] RED_CHARGE_POSE = new Pose2d[] {
+                new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(0)),
+                new Pose2d(12.58, 2.75, Rotation2d.fromDegrees(180)),
+        };
 
-        public static Pose2d BLUE_CHARGE_POSE_WAYPOINT = new Pose2d(5.4, 2.75, Rotation2d.fromDegrees(180));
-        public static Pose2d RED_CHARGE_POSE_WAYPOINT = new Pose2d(11, 2.75, Rotation2d.fromDegrees(0));
+        public static Pose2d[] BLUE_CHARGE_POSE_WAYPOINT =new Pose2d[] {
+                new Pose2d(5.4, 2.75, Rotation2d.fromDegrees(180)),
+                new Pose2d(3.2, 2.75, Rotation2d.fromDegrees(0)),
+        };
+        public static Pose2d[] RED_CHARGE_POSE_WAYPOINT = new Pose2d[] {
+                new Pose2d(11, 2.75, Rotation2d.fromDegrees(0)), 
+                new Pose2d(13.5, 2.75, Rotation2d.fromDegrees(180)),
+        };
 
         public static Pose2d[] BLUE_LEAVE_COMMUNITY_POSE = new Pose2d[] {
-                new Pose2d(4.314, 4.775, Rotation2d.fromDegrees(0)),
-                new Pose2d(5.6, 0.646, Rotation2d.fromDegrees(0))
+                new Pose2d(5, 4.73, Rotation2d.fromDegrees(0)),
+                new Pose2d(5, 0.754, Rotation2d.fromDegrees(0)),
+                // this y coord is aligned correctly i think, it's a little jank
+                new Pose2d(5.5, BLUE_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(0)),
         };
 
         public static Pose2d[] RED_LEAVE_COMMUNITY_POSE = new Pose2d[] {
-                new Pose2d(12.15, 4.775, Rotation2d.fromDegrees(180)),
-                new Pose2d(10.785, 0.646, Rotation2d.fromDegrees(180))
+                new Pose2d(11.4, 4.73, Rotation2d.fromDegrees(180)),
+                new Pose2d(11.4, 0.754, Rotation2d.fromDegrees(180)),
+                new Pose2d(10.7, RED_SCORE_POSE[4].getY(), Rotation2d.fromDegrees(180)),
         };
 
         // bottom to top (farthest from community to closest)
@@ -345,8 +366,22 @@ public final class Constants {
                 new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(180)),
                 new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
         };
+
+        public static Pose2d[] BLUE_PARK_POSE = new Pose2d[] {
+                new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(0)),
+                new Pose2d(4, 0.716, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d[] RED_PARK_POSE = new Pose2d[] {
+                new Pose2d(13.847, 4.593, Rotation2d.fromDegrees(180)),
+                new Pose2d(12.57, 0.716, Rotation2d.fromDegrees(180)),
+        };
+
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;
+
+        public static final double BLUE_COMMUNITY_X = 3.34;
+        public static final double RED_COMMUNITY_X = 13.2;
 
         public static double CHARGE_CENTER_Y = 2.75;
 
