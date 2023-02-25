@@ -51,7 +51,7 @@ public class MoveToTag extends CommandBase {
 
     @Override
     public void execute() {
-        drivetrain.driveTrajectory(trajectory);
+        // drivetrain.driveTrajectory(trajectory);
     }
 
     @Override
