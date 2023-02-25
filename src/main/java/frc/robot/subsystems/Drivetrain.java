@@ -11,9 +11,11 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import java.util.Optional;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
@@ -67,7 +69,16 @@ public class Drivetrain extends SnailSubsystem {
     private Timer pathTimer; // measures how far along we are on our current profile / trajectory
     
     private final Field2d m_field = new Field2d();
-    
+
+    // These classes help us simulate our drivetrain
+    public DifferentialDrivetrainSim m_drivetrainSimulator;
+    private final EncoderSim m_leftEncoderSim;
+    private final EncoderSim m_rightEncoderSim;
+    // The Field2d class shows the field in the sim GUI
+    private final ADXRS450_GyroSim m_gyroSim;
+
+    private boolean simulation = false;
+   
     private DifferentialDriveKinematics driveKinematics;
     // private DifferentialDriveOdometry driveOdometry;
     private final DifferentialDrivePoseEstimator poseEstimator;
@@ -92,6 +103,7 @@ public class Drivetrain extends SnailSubsystem {
         DRIVE_DIST_PROFILED,
         TRAJECTORY
     }
+
     private State defaultState = State.VELOCITY_DRIVE;
     private State state = defaultState; // stores the current driving mode of the drivetrain
  
@@ -137,7 +149,31 @@ public class Drivetrain extends SnailSubsystem {
         pathTimer = new Timer();
  
         SmartDashboard.putData("Field", m_field);
- 
+
+        if (RobotBase.isSimulation()) { // If our robot is simulated
+            simulation = true;
+            // This class simulates our drivetrain's motion around the field.
+            m_drivetrainSimulator = new DifferentialDrivetrainSim(
+                DriveConstants.kDrivetrainPlant,
+                DriveConstants.kDriveGearbox,
+                DriveConstants.kDriveGearing,
+                DriveConstants.kTrackwidthMeters,
+                DriveConstants.kWheelDiameterMeters / 2.0,
+                VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005));
+
+            // The encoder and gyro angle sims let us set simulated sensor readings
+            m_leftEncoderSim = new EncoderSim(new Encoder(0, 1)); // makes the simulated verisions of the encoders
+            m_rightEncoderSim = new EncoderSim(new Encoder(2, 3));
+            m_gyroSim = new ADXRS450_GyroSim(Gyro.getInstance().getGyro());
+            // this group of lines right here was why I was getting returned the
+            // pinsAlreadyUsed error
+            // because those pins were already used in this file to create these encoders
+        } else {
+            m_leftEncoderSim = null;
+            m_rightEncoderSim = null;
+            m_gyroSim = null;
+        }
+
         // drivetrain = new DifferentialDrive(frontLeftMotor, frontRightMotor);
         
         reset();
@@ -347,6 +383,9 @@ public class Drivetrain extends SnailSubsystem {
                     pathTimer.reset();
                     trajectory = null;
                     state = defaultState;
+                    // stop the bot
+                    frontLeftMotor.set(0);
+                    frontRightMotor.set(0);
                     break;
                 }
  
@@ -379,6 +418,9 @@ public class Drivetrain extends SnailSubsystem {
             poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
         }
     }
+
+    // speeds should be between -1.0 and 1.0 and should NOT be squared before being
+    // passed in
 
     // speeds should be between -1.0 and 1.0 and should NOT be squared before being passed in
     // speedForward: -1 = backward, +1 = forward
@@ -468,6 +510,9 @@ public class Drivetrain extends SnailSubsystem {
         poseEstimator.resetPosition(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPositionConversionFactor(), rightEncoder.getPositionConversionFactor(), pose);
         leftEncoder.setPosition(0);
         rightEncoder.setPosition(0);
+        if (simulation) {
+            m_drivetrainSimulator.setPose(pose);
+        }
     }
  
     public void endPID() {

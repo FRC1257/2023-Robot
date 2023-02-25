@@ -1,8 +1,12 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
-
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,6 +29,7 @@ import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
+import frc.robot.commands.GenerateTrajectories;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.Gyro;
 
@@ -86,14 +91,28 @@ public class RobotContainer {
     private boolean updateTraj = true;
 
     // choosers
-    public static SendableChooser<Integer> scorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> firstScorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> secondScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
+    public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
-    private boolean score;
+    private boolean firstScore;
+    private boolean secondScore;
     private boolean cargo;
     private boolean charge;
+    private boolean leaveTarmac = true;
+    private boolean hitAndRun;
+
+    private boolean isSimulation;
+
+    private boolean threePiece;
+
+    private GenerateTrajectories generateTrajectories;
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -102,20 +121,28 @@ public class RobotContainer {
         driveController = new SnailController(CONTROLLER_DRIVER_ID);
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
+        configureAutoChoosers();
+        configureShuffleboard();
         configureSubsystems();
         configureButtonBindings();
         
         outputCounter = 0;
         displayTrajCounter = 0;
 
-        // Field Side
-        SmartDashboard.putBoolean("Testing", true);
-        
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
+
+        isSimulation = RobotBase.isSimulation();
     }
 
-   
+    public void stopDisplayingTraj() {
+        updateTraj = false;
+    }
+
+    private boolean getAllianceColor() {
+        return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
+    }
+
     private Pose2d getStartingPos() {
         return new Pose2d(0, 0, new Rotation2d(0.0));
     }
@@ -167,6 +194,20 @@ public class RobotContainer {
         subsystems.add(elevator);
 
 
+        // generate auto
+        generateTrajectories = new GenerateTrajectories(
+            drivetrain,
+            charge,
+            firstScore,
+            secondScore,
+            cargo,
+            0,
+            threePiece,
+            leaveTarmac,
+            hitAndRun 
+        );
+
+        putTrajectoryTime();
     }
 
     /**
@@ -231,14 +272,43 @@ public class RobotContainer {
      * Set up the choosers on shuffleboard for autonomous
      */
     public void configureAutoChoosers() {
-        
+        configureGamePieceChooser();
+        configureFirstScorePositionChooser();
+        configureSecondScorePositionChooser();
+        configureStartPositionChooser();
+        configureSecondGamePieceChooser();
+        configureThirdScorePositionChooser();
+        configureHitAndRunChooser();
+    }
+
+    private int estimatedCurrentPose2d() {
+        // TODO: Implement this with PhotonVision
+        // return new Pose2d(0, 0, new Rotation2d(0.0));
+        return startPositionChooser.getSelected();
     }
 
     /**
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        return new Delay(2.0);
+        updateAutoChoosers();
+
+        generateTrajectories = new GenerateTrajectories(
+            drivetrain,
+            charge,
+            firstScore,
+            secondScore,
+            cargo,
+            0,
+            threePiece,
+            leaveTarmac,
+            hitAndRun
+        );
+        
+        putTrajectoryTime();
+        // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
+        // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
+        return generateTrajectories.getCommand();
     }
 
     /**
@@ -277,6 +347,171 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
+
+        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
+            updateTraj = true;
+            SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        }
+
+        if (updateTraj) { // change the trajectory drawn
+            // generateTrajedies.incrementOutputCounter();
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            if (traj != null)
+                drivetrain.drawTrajectory(traj);
+        }
+
+        if (updateTraj && checkIfUpdate()) {
+            DriverStation.reportWarning("Updating Auto", cargo);
+            updateAutoChoosers();
+
+            generateTrajectories = new GenerateTrajectories(
+                drivetrain,
+                charge,
+                firstScore,
+                secondScore,
+                cargo,
+                estimatedCurrentPose2d(),
+                threePiece,
+                leaveTarmac,
+                hitAndRun
+            );
+
+            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+
+            putTrajectoryTime();
+            resetDashboard();
+        }
+    
+    }
+
+    //sendable chooser methods
+
+    public void configureShuffleboard() {
+        // Field Side
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+        SmartDashboard.putBoolean("Testing", true);
+        //getting the auto values for score, cargo, and charge
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("3 Ball Auto", false);
+        SmartDashboard.putBoolean("Leave Tarmac", true);
+        SmartDashboard.putBoolean("Hit and Run", false);
+
+        SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        
+    }
+
+    public void configureGamePieceChooser() {
+        gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
+        gamePieceChooser.addOption("1st Position", 0);
+        gamePieceChooser.addOption("2nd Position", 1);
+        gamePieceChooser.addOption("3rd Position", 2);
+        gamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(gamePieceChooser);
+    }
+
+    public void configureSecondGamePieceChooser() {
+        secondGamePieceChooser.setDefaultOption("Second Cargo Chooser", 0);
+        secondGamePieceChooser.addOption("1st Position", 0);
+        secondGamePieceChooser.addOption("2nd Position", 1);
+        secondGamePieceChooser.addOption("3rd Position", 2);
+        secondGamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(secondGamePieceChooser);
+    }
+    
+    public void configureFirstScorePositionChooser() {
+        firstScorePositionChooser.setDefaultOption("Score Position Chooser", 0);
+        firstScorePositionChooser.addOption("1st Position", 0);
+        firstScorePositionChooser.addOption("2nd Position", 1);
+        firstScorePositionChooser.addOption("3rd Position", 2);
+        firstScorePositionChooser.addOption("4th Position", 3);
+        firstScorePositionChooser.addOption("5th Position", 4);
+        firstScorePositionChooser.addOption("6th Position", 5);
+        firstScorePositionChooser.addOption("7th Position", 6);
+        firstScorePositionChooser.addOption("8th Position", 7);
+        firstScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(firstScorePositionChooser);
+    }
+
+    public void configureSecondScorePositionChooser() {
+        secondScorePositionChooser.setDefaultOption("Second Score Position Chooser", 0);
+        secondScorePositionChooser.addOption("1st Position", 0);
+        secondScorePositionChooser.addOption("2nd Position", 1);
+        secondScorePositionChooser.addOption("3rd Position", 2);
+        secondScorePositionChooser.addOption("4th Position", 3);
+        secondScorePositionChooser.addOption("5th Position", 4);
+        secondScorePositionChooser.addOption("6th Position", 5);
+        secondScorePositionChooser.addOption("7th Position", 6);
+        secondScorePositionChooser.addOption("8th Position", 7);
+        secondScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(secondScorePositionChooser);
+    }
+
+
+    public void configureThirdScorePositionChooser() {
+        thirdScorePositionChooser.setDefaultOption("Third Score Position Chooser", 0);
+        thirdScorePositionChooser.addOption("1st Position", 0);
+        thirdScorePositionChooser.addOption("2nd Position", 1);
+        thirdScorePositionChooser.addOption("3rd Position", 2);
+        thirdScorePositionChooser.addOption("4th Position", 3);
+        thirdScorePositionChooser.addOption("5th Position", 4);
+        thirdScorePositionChooser.addOption("6th Position", 5);
+        thirdScorePositionChooser.addOption("7th Position", 6);
+        thirdScorePositionChooser.addOption("8th Position", 7);
+        thirdScorePositionChooser.addOption("9th Position", 8);
+        SmartDashboard.putData(thirdScorePositionChooser);
+    }
+
+    public void configureStartPositionChooser() {
+        startPositionChooser.setDefaultOption("Start Position", 0);
+        startPositionChooser.addOption("1st Position", 0);
+        startPositionChooser.addOption("2nd Position", 1);
+        startPositionChooser.addOption("3rd Position", 2);
+        SmartDashboard.putData(startPositionChooser);
+    }
+
+    public void configureHitAndRunChooser() {
+        hitAndRunChooser.setDefaultOption("Hit and Run", false);
+        hitAndRunChooser.addOption("Hit and Run", false);
+        hitAndRunChooser.addOption("Hit and Run", true);
+    }
+
+    public boolean checkIfUpdate() {
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false) || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
+    }
+
+    public void updateAutoChoosers() {
+        firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
+        secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", secondScore);
+        cargo = SmartDashboard.getBoolean("Auto Get Cargo", cargo);
+        charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
+        threePiece = SmartDashboard.getBoolean("3 Ball Auto", threePiece);
+        leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
+        hitAndRun = SmartDashboard.getBoolean("Hit and Run", hitAndRun);
+    }
+
+    public void putTrajectoryTime() {
+        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+    }
+
+    public void resetDashboard() {
+        // Field Side
+        SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
+        
+        //getting the auto values for score, cargo, and charge
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("3 Ball Auto", threePiece);
+        SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
+        SmartDashboard.putBoolean("Hit and Run", hitAndRun);
     }
 
 }
