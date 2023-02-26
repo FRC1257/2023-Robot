@@ -8,7 +8,11 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import static frc.robot.Constants.PivotArm.*;
 
@@ -25,6 +29,7 @@ public class PivotArm extends SnailSubsystem {
     private double setPoint;
     private DigitalInput limitSwitch;
 
+    private MechanismLigament2d armMechanism;
 
     public enum State {
         MANUAL,
@@ -82,6 +87,8 @@ public class PivotArm extends SnailSubsystem {
                 break;
             }
         }
+
+        armMechanism.setAngle(leftArmEncoder.getPosition());
     }
 
     public void setPosition(double setpoint) {
@@ -131,4 +138,16 @@ public class PivotArm extends SnailSubsystem {
     }
 
     public State getState() { return state; }
+
+    public MechanismLigament2d getArmMechanism() {
+        return new MechanismLigament2d("Pivot Arm", ARM_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
+    }
+
+    public void setMechanism(MechanismLigament2d mechanism) {
+        armMechanism = mechanism;
+    }
+
+    public MechanismLigament2d append(MechanismLigament2d mechanism) {
+        return armMechanism.append(mechanism);
+    }
 }

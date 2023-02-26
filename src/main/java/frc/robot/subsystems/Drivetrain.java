@@ -39,6 +39,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import frc.robot.Constants;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
 import org.photonvision.EstimatedRobotPose;
@@ -393,7 +394,9 @@ public class Drivetrain extends SnailSubsystem {
                 // ChassisSpeeds chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
                 ChassisSpeeds chassisSpeeds = ramseteController.calculate(poseEstimator.getEstimatedPosition(), currentState); 
                 DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
- 
+                if (simulation) {
+                    m_field.setRobotPose(currentState.poseMeters);
+                }
                 leftPIDController.setReference(wheelSpeeds.leftMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
                 rightPIDController.setReference(wheelSpeeds.rightMetersPerSecond, ControlType.kVelocity, DRIVE_VEL_SLOT);
                 break;
@@ -696,6 +699,8 @@ public class Drivetrain extends SnailSubsystem {
         DRIVE_PROFILE_LEFT_P = SmartDashboard.getNumber("Drive Profile Left kP", DRIVE_PROFILE_LEFT_P);
         DRIVE_PROFILE_RIGHT_P = SmartDashboard.getNumber("Drive Profile Right kP", DRIVE_PROFILE_RIGHT_P);
  
+        if (simulation) 
+            return;
         m_field.setRobotPose(poseEstimator.getEstimatedPosition());
     }
  

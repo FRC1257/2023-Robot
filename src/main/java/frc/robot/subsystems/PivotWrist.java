@@ -11,7 +11,11 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
+
 // need to add constants: import static frc.robot.Constants.IntakeArm(actually pivot wrist).*; 
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
@@ -33,6 +37,8 @@ public class PivotWrist extends SnailSubsystem {
     // private DigitalInput limitSwitch;
     private DigitalInput limitSwitch;
     public double speed;
+
+    private MechanismLigament2d pivotWristMechanism;
 
     public enum State {
         MANUAL,
@@ -94,6 +100,8 @@ public class PivotWrist extends SnailSubsystem {
                 }
                 break;
         }
+
+        pivotWristMechanism.setAngle(primaryEncoder.getPosition());
 
         // if (getlimitSwitch() && state == State.PID) {
         // resetEncoder();
@@ -194,4 +202,12 @@ public class PivotWrist extends SnailSubsystem {
         return state;
     }
 
+    
+    public MechanismLigament2d getWristMechanism() {
+        return new MechanismLigament2d("Pivot Wrist", WRIST_LENGTH, 0.0, 5, new Color8Bit(Color.kRed));
+    }
+
+    public void setMechanism(MechanismLigament2d mechanism) {
+        pivotWristMechanism = mechanism;
+    }
 }

@@ -4,6 +4,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
@@ -76,13 +78,10 @@ public class RobotContainer {
     private Vision vision;
     private PivotArm pivotArm;
     private IntakeArm intakearm;
-
-
     private Intake intake;
-
     private Elevator elevator;
 
-
+    private Mechanism2d mech = new Mechanism2d(3, 3);
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -111,8 +110,7 @@ public class RobotContainer {
 
     private boolean threePiece;
 
-    private GenerateTrajectories generateTrajectories;
-
+    private GenerateTrajectories generateTrajectories; 
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -163,24 +161,27 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
-        // Vision
-        intakearm = new IntakeArm();
+        
+        MechanismRoot2d root = mech.getRoot("elevator", 2, 0);
         elevator = new Elevator();
-        // Pivot Wrist
-        pivotWrist = new PivotWrist();
-        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
-
-        // Intake
-        intake = new Intake();
-        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
-
-
-
-        // Vision
+        elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
 
         // Pivot arm
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
+        pivotArm.setMechanism(elevator.append(pivotArm.getArmMechanism()));
+
+        // Pivot Wrist
+        pivotWrist = new PivotWrist();
+        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
+        pivotWrist.setMechanism(pivotArm.append(pivotWrist.getWristMechanism()));
+
+        intakearm = new IntakeArm();
+        
+        
+        // Intake
+        intake = new Intake();
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -208,6 +209,7 @@ public class RobotContainer {
         );
 
         putTrajectoryTime();
+        SmartDashboard.putData("Arm Mechanism", mech);
     }
 
     /**
@@ -257,7 +259,7 @@ public class RobotContainer {
    
         operatorController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
         operatorController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
-        operatorController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
+        // operatorController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
         operatorController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
 

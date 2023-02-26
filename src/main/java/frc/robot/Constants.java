@@ -150,6 +150,12 @@ public final class Constants {
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 
+    public static class Elevator {
+        public static double EXTEND_LENGTH = 0.7;
+        public static double RETRACT_LENGTH = 0.5;
+        public static double ANGLE = 45;
+    }
+
 
     public static class PivotWrist {
         public static double WRIST_ENCODER_PCF = 1257;
@@ -170,6 +176,8 @@ public final class Constants {
         public static double WRIST_SETPOINT_INTAKE = 0.5;
         public static double WRIST_SETPOINT_HIGH = 0.6;
         public static double WRIST_SETPOINT_MID = 0.7;
+
+        public static double WRIST_LENGTH = 0.8;
     }
 
        
@@ -403,6 +411,8 @@ public final class Constants {
         
         public static double INTAKE_SETPOINT_TOP = 1257; // lol
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
+
+        public static double ARM_LENGTH = 0.8;
     };
 
     public static class PivotArm {

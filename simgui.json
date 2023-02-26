@@ -11,6 +11,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Arm Mechanism": "Mechanism2d",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
@@ -20,6 +21,11 @@
       "/SmartDashboard/SendableChooser[5]": "String Chooser"
     },
     "windows": {
+      "/SmartDashboard/Arm Mechanism": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "window": {
           "visible": true
