@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,6 +31,7 @@ public class PivotArm extends SnailSubsystem {
     private DigitalInput limitSwitch;
 
     private MechanismLigament2d armMechanism;
+    private double simulationPos = 0;
 
     public enum State {
         MANUAL,
@@ -64,12 +66,12 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void update() {
-        if (limitSwitch.get()) {
+        /* if (limitSwitch.get()) {
             leftArmEncoder.setPosition(0);
             if (speed < 0) {
                 speed = 0;
             }
-        }
+        } */
 
         switch (state) {
             case MANUAL: {
@@ -88,7 +90,15 @@ public class PivotArm extends SnailSubsystem {
             }
         }
 
-        armMechanism.setAngle(leftArmEncoder.getPosition());
+        simulationPos += speed * 5;
+
+        if (RobotBase.isSimulation()) {
+            // update the mechanism ligament
+            armMechanism.setAngle(simulationPos);
+        } else {
+            // update the mechanism ligament
+            armMechanism.setAngle(leftArmEncoder.getPosition());
+        }
     }
 
     public void setPosition(double setpoint) {

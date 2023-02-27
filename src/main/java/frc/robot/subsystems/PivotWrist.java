@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -37,6 +38,7 @@ public class PivotWrist extends SnailSubsystem {
     // private DigitalInput limitSwitch;
     private DigitalInput limitSwitch;
     public double speed;
+    private double simulationPos = 0;
 
     private MechanismLigament2d pivotWristMechanism;
 
@@ -101,7 +103,16 @@ public class PivotWrist extends SnailSubsystem {
                 break;
         }
 
-        pivotWristMechanism.setAngle(primaryEncoder.getPosition());
+        simulationPos += speed * 5;
+
+        if (RobotBase.isSimulation()) {
+            // update the mechanism ligament
+            pivotWristMechanism.setAngle(simulationPos);
+        } else {
+            pivotWristMechanism.setAngle(primaryEncoder.getPosition());
+        }
+
+        // pivotWristMechanism.setAngle(primaryEncoder.getPosition());
 
         // if (getlimitSwitch() && state == State.PID) {
         // resetEncoder();

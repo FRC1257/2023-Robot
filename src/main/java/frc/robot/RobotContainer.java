@@ -162,7 +162,7 @@ public class RobotContainer {
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
         
-        MechanismRoot2d root = mech.getRoot("elevator", 2, 0);
+        MechanismRoot2d root = mech.getRoot("elevator", 1, 0.5);
         elevator = new Elevator();
         elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
 

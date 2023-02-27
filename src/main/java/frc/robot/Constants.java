@@ -151,9 +151,9 @@ public final class Constants {
     };
 
     public static class Elevator {
-        public static double EXTEND_LENGTH = 0.7;
-        public static double RETRACT_LENGTH = 0.5;
-        public static double ANGLE = 45;
+        public static double EXTEND_LENGTH = 0.05;
+        public static double RETRACT_LENGTH = 1.2192;
+        public static double ANGLE = 37;
     }
 
 
@@ -177,7 +177,7 @@ public final class Constants {
         public static double WRIST_SETPOINT_HIGH = 0.6;
         public static double WRIST_SETPOINT_MID = 0.7;
 
-        public static double WRIST_LENGTH = 0.8;
+        public static double WRIST_LENGTH = 0.1524;
     }
 
        
@@ -412,7 +412,7 @@ public final class Constants {
         public static double INTAKE_SETPOINT_TOP = 1257; // lol
         public static double INTAKE_SETPOINT_BOT = -1257; // lol
 
-        public static double ARM_LENGTH = 0.8;
+        
     };
 
     public static class PivotArm {
@@ -425,6 +425,8 @@ public final class Constants {
         public static double PIVOT_ARM_SETPOINT_UP = 1;
         public static double PIVOT_ARM_SETPOINT_MID = 0.5;
         public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
+
+        public static double ARM_LENGTH = 0.508;
     }
    
     public static double PI = 3.14159265;
