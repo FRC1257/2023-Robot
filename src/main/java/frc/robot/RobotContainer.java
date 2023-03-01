@@ -181,7 +181,7 @@ public class RobotContainer {
         
         }
         
-
+        
 
         // Vision
 
@@ -214,6 +214,10 @@ public class RobotContainer {
             leaveTarmac,
             hitAndRun 
         );
+
+        if (SmartDashboard.getBoolean("Testing", false)) {
+            tuningInit();
+        }
 
         putTrajectoryTime();
     }
@@ -277,7 +281,8 @@ public class RobotContainer {
         // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
         
 
-        
+        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getButton(Button.kRightBumper.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         
 
     }
@@ -348,6 +353,7 @@ public class RobotContainer {
         }
 
         Gyro.getInstance().outputValues();
+        tuningPeriodic();
 
         outputCounter = (outputCounter + 1) % (subsystems.size() * 3);
     }
@@ -362,6 +368,8 @@ public class RobotContainer {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
+
+        drivetrain.tuningPeriodic();
 
         if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
             updateTraj = true;

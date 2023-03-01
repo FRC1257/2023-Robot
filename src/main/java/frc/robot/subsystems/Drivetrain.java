@@ -600,6 +600,10 @@ public class Drivetrain extends SnailSubsystem {
             });
  
         }
+
+        if (SmartDashboard.getBoolean("Testing", false)) {
+            tuningPeriodic();
+        }
     }
  
     @Override
