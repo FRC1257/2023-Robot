@@ -136,8 +136,8 @@ public final class Constants {
         public static double DRIVE_DIST_MAX_OUTPUT = 0.6;
 
         // angular position PID
-        public static double[] DRIVE_ANGLE_PID = { 0.1, 0.0, 0.01 };
-        public static double DRIVE_ANGLE_TOLERANCE = 0.075;
+        public static double[] DRIVE_ANGLE_PID = { 0.2, 0.005, 0.01 };
+        public static double DRIVE_ANGLE_TOLERANCE = 0.5;
         public static double DRIVE_ANGLE_MAX_OUTPUT = 0.5;
 
         // velocity PID (for closed loop, profiling, and trajectory)
