@@ -18,7 +18,7 @@ import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.intakearm.IntakeArmPIDCommand;
-
+import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
@@ -263,7 +263,9 @@ public class RobotContainer {
     
             operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawIntakeCommand(claw));
             operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawEjectCommand(claw));
-            operatorController.getButton(Button.kB.value).onTrue(new ClawItemToggleCommand(claw));
+
+            operatorController.getButton(Button.kLeftStick.value).onTrue(new ClawConeStateCommand(claw));
+            operatorController.getButton(Button.kRightStick.value).onTrue(new ClawCubeStateCommand(claw));
 
             // Operator Bindings
             operatorController.getButton(Button.kA.value).onTrue(new ElevatorToggleCommand(elevator));
@@ -273,6 +275,8 @@ public class RobotContainer {
 
             operatorController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
             operatorController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
+
+            operatorController.getButton(Button.kB.value).onTrue(new LEDToggleCommand(led));
         }
         
         driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
