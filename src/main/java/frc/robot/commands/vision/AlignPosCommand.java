@@ -4,9 +4,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.Drivetrain.*;
+import static frc.robot.Constants.Autonomous.BLUE_SCORE_POSE;
+import static frc.robot.Constants.Autonomous.RED_SCORE_POSE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +19,22 @@ public class AlignPosCommand extends CommandBase {
     private Trajectory trajectory;
     private Pose2d target;
 
-
     public AlignPosCommand(Drivetrain drivetrain, Pose2d target) { 
         this.drivetrain = drivetrain;
         this.target = target;
         
+        addRequirements(drivetrain);
+    }
+
+    public AlignPosCommand(Drivetrain drivetrain, int scoreLocation) {
+        this.drivetrain = drivetrain;
+        
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            this.target = BLUE_SCORE_POSE[scoreLocation];
+        } else {
+            this.target = RED_SCORE_POSE[scoreLocation];
+        }
+
         addRequirements(drivetrain);
     }
 
