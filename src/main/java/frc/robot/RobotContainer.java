@@ -83,6 +83,7 @@ public class RobotContainer {
     private Intake intake;
 
     private Elevator elevator;
+    private LED led;
 
 
 
@@ -178,8 +179,12 @@ public class RobotContainer {
             intake = new Intake();
             intake.setDefaultCommand(new IntakeNeutralCommand(intake));  
             
+            // Pivot Arm
             pivotArm = new PivotArm();
             pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
+
+            // LED
+            led = new LED();
         
         }
         
@@ -202,6 +207,7 @@ public class RobotContainer {
             subsystems.add(pivotWrist);
             subsystems.add(intake);
             subsystems.add(elevator);
+            subsystems.add(led);
         }
 
         // generate auto

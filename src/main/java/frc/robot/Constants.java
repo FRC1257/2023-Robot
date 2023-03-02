@@ -416,6 +416,11 @@ public final class Constants {
         public static double PIVOT_ARM_SETPOINT_MID = 0.5;
         public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
     }
+
+    public static class LED {
+        public static int LED_PORT_NUMBER = 1257;
+        public static int LED_COUNT = 1257;
+    }
    
     public static double PI = 3.14159265;
     public static double UPDATE_PERIOD = 0.010; // seconds
