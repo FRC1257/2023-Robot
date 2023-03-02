@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import static frc.robot.Constants.LED.*;
 
 public class LED extends SnailSubsystem {
 	private AddressableLED led;
