@@ -13,7 +13,7 @@ public class IntakeObjectClaw extends SequentialCommandGroup{
             //new ElevatorExtendCommand(elevator),
             new ParallelCommandGroup(
                 new IntakeIntakingCommand(intake), // run intake entire time
-                new ElevatorExtendCommand(elevator)
+                new ElevatorExtendCommand(elevator),
                 new SequentialCommandGroup(
                     new IntakeArmPIDCommand(intakeArm, Constants.IntakeArm.INTAKE_SETPOINT_BOT)
                 )
