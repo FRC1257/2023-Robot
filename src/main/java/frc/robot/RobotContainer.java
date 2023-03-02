@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
@@ -23,6 +24,7 @@ import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
 import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
+import frc.robot.commands.elevator.ElevatorToggleCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -244,27 +246,27 @@ public class RobotContainer {
         
         // Operator bindings
         if (!isTestBot) {
-            operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-            operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-            operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+            // operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+            // operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+            // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
 
-            // Operator bindings
-            operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
-            operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
-            operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
+            // // Operator bindings
+            // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
+            // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
+            // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
     
-            operatorController.getDPad(SnailController.DPad.LEFT).onTrue(new ClawConeStateCommand(claw));
-            operatorController.getDPad(SnailController.DPad.RIGHT).onTrue(new ClawCubeStateCommand(claw));
-            operatorController.getButton(Button.kY.value).onTrue(new ClawIntakeCommand(claw));
-            operatorController.getButton(Button.kX.value).onTrue(new ClawEjectCommand(claw));
-            operatorController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
+            operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawIntakeCommand(claw));
+            operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawEjectCommand(claw));
+            operatorController.getButton(Button.kB.value).onTrue(new ClawItemToggleCommand(claw));
 
             // Operator Bindings
-            operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
-            operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
+            operatorController.getButton(Button.kA.value).onTrue(new ElevatorToggleCommand(elevator));
 
-            operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
-            operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
+            operatorController.getTrigger(false).whileTrue(new IntakeEjectingCommand(intake));
+            operatorController.getTrigger(true).whileTrue(new IntakeIntakingCommand(intake));
+
+            operatorController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
+            operatorController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
         }
         
         driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));

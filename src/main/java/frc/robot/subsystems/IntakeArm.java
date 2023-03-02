@@ -106,4 +106,8 @@ public class IntakeArm extends SnailSubsystem {
     public State getState() {
         return state;
     }
+
+    public double getPosition() {
+        return encoder.getPosition();
+    }
 }
