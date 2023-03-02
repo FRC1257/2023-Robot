@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.Autonomous;
@@ -32,19 +33,21 @@ public class AlignToClosest extends CommandBase {
             }
         }
 
+        DriverStation.reportWarning("Desired Pose " + desiredPoseIndex, false);
         return ALLIANCE_SCORE_POSE[desiredPoseIndex];
     }
 
-    public AlignToClosest(Drivetrain drivetrain, Pose2d currentPose) {
+    public AlignToClosest(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        this.currentPose = currentPose;
-        if (SmartDashboard.getBoolean("isAllianceBlye", false)) {
+        this.currentPose = drivetrain.getPosition();
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
         }
         else {
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
         }
         desiredPose = poseSearch(currentPose.getY());
+        
 
         addRequirements(drivetrain);
     }
