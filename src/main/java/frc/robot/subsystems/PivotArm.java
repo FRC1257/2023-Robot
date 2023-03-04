@@ -94,7 +94,8 @@ public class PivotArm extends SnailSubsystem {
 
         if (RobotBase.isSimulation()) {
             // update the mechanism ligament
-            armMechanism.setAngle(simulationPos);
+            armMechanism.setAngle(simulationPos + 180);
+            simulationPos %= 360;
         } else {
             // update the mechanism ligament
             armMechanism.setAngle(leftArmEncoder.getPosition());
@@ -112,6 +113,7 @@ public class PivotArm extends SnailSubsystem {
         SmartDashboard.putNumber("Encoder Position", leftArmEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setPoint);
         SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
+        SmartDashboard.putNumber("SimPosArm", (int)simulationPos);
     }
 
     @Override

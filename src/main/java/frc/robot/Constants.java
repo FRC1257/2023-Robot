@@ -9,7 +9,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -151,7 +151,7 @@ public final class Constants {
     };
 
     public static class Elevator {
-        public static double EXTEND_LENGTH = 0.05;
+        public static double EXTEND_LENGTH = Units.inchesToMeters(12);
         public static double RETRACT_LENGTH = 1.2192;
         public static double ANGLE = 37;
     }

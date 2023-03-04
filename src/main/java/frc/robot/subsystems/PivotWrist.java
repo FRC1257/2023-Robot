@@ -107,7 +107,8 @@ public class PivotWrist extends SnailSubsystem {
 
         if (RobotBase.isSimulation()) {
             // update the mechanism ligament
-            pivotWristMechanism.setAngle(simulationPos);
+            pivotWristMechanism.setAngle(simulationPos - 90);
+            simulationPos %= 360;
         } else {
             pivotWristMechanism.setAngle(primaryEncoder.getPosition());
         }
@@ -157,6 +158,7 @@ public class PivotWrist extends SnailSubsystem {
         SmartDashboard.putNumber("Motor Speed", primaryEncoder.getVelocity());
         SmartDashboard.putNumber("Encoder position", primaryEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setpoint);
+        SmartDashboard.putNumber("SimPosWrist", (int)simulationPos);
     }
 
     @Override
