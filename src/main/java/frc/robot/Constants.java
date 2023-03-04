@@ -265,7 +265,7 @@ public final class Constants {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
 
-        static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
+        static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2.5;
         public static double BALANCE_KP = 0.05;
         public static double BALANCE_KD = 0.01;
         public static double BALANCE_SETPOINT_ANGLE = 0;
