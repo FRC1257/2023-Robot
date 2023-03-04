@@ -247,8 +247,8 @@ public final class Constants {
 
 
         
-        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.145, 0.38, 0.05), new Rotation3d(0, 0, 0));
-        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.20, -0.38 , 0.06), new Rotation3d(0.0, 180.0, 0.0));
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.38, 0.145, 0.05), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(-0.38, 0.20 , 0.06), new Rotation3d(0.0, 180.0, 0.0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
@@ -264,7 +264,7 @@ public final class Constants {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
 
-        static double trackWidthAdded = 0.36;
+        static double trackWidthAdded = 0.33;
         public static double BALANCE_KP = 0.05;
         public static double BALANCE_KD = 0.01;
         public static double BALANCE_SETPOINT_ANGLE = 0;

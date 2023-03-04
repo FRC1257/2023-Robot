@@ -44,6 +44,7 @@ import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
 import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
+import frc.robot.commands.vision.AlignPosClosestCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
@@ -308,7 +309,7 @@ public class RobotContainer {
         driveController.getButton(Button.kRightBumper.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         
         operatorController.getButton(Button.kRightBumper.value).onTrue(new AlignPosCommand(drivetrain, 1));
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new AlignPosCommand(drivetrain));
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new AlignPosClosestCommand(drivetrain));
     }
 
 

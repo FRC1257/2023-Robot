@@ -15,35 +15,46 @@ import static frc.robot.Constants.Autonomous.RED_SCORE_POSE;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlignPosCommand extends CommandBase { 
+public class AlignPosClosestCommand extends CommandBase { 
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
     private int scoreLocation;
     private Pose2d target;
     private Pose2d[] ALLIANCE_SCORE_POSE;
 
-    public AlignPosCommand(Drivetrain drivetrain, Pose2d target) { 
+    private Pose2d poseSearch() {
+        double currentPoseY = drivetrain.getPosition().getY();
+        double closestPoseYDiff = Integer.MAX_VALUE;
+        int desiredPoseIndex = -1;
+        for (int i = 0; i < ALLIANCE_SCORE_POSE.length; i++) {
+            double distanceFromScorePose = Math.abs(currentPoseY-ALLIANCE_SCORE_POSE[i].getY()); 
+            if (distanceFromScorePose < closestPoseYDiff) {
+                desiredPoseIndex = i;
+                closestPoseYDiff = distanceFromScorePose;
+            }
+        }
+        
+        SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
+        SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
+        DriverStation.reportError("Desired Pose " + desiredPoseIndex, false);
+        return ALLIANCE_SCORE_POSE[desiredPoseIndex];
+    }
+
+    public AlignPosClosestCommand(Drivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        this.target = target;
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_SCORE_POSE = BLUE_SCORE_POSE;
+        }
+        else {
+            ALLIANCE_SCORE_POSE = RED_SCORE_POSE;
+        }
         
         addRequirements(drivetrain);
     }
-
-    public AlignPosCommand(Drivetrain drivetrain, int scoreLocation) {
-        this.drivetrain = drivetrain;
-        this.scoreLocation = scoreLocation;
-
-        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            this.target = BLUE_SCORE_POSE[scoreLocation];
-        } else {
-            this.target = RED_SCORE_POSE[scoreLocation];
-        }
-
-        addRequirements(drivetrain);
-    }
-
+    
     @Override
     public void initialize() {
+        target = poseSearch();
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_ALIGN_MAX_VEL, DRIVE_ALIGN_MAX_ACC).setReversed(true);
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
 
@@ -54,8 +65,6 @@ public class AlignPosCommand extends CommandBase {
 
         drivetrain.driveTrajectory(trajectory);
         SmartDashboard.putNumber("Ye mother: Trajectory Length", this.trajectory.getTotalTimeSeconds());
-
-        scoreLocation = (int) SmartDashboard.getNumber("Score Position Chooser", 0);
     }
 
     @Override

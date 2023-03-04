@@ -494,11 +494,11 @@ public class Drivetrain extends SnailSubsystem {
  
     public void driveTrajectory(Trajectory trajectory) {
         zero();
-        setRobotPose(trajectory.getInitialPose());
+        // setRobotPose(trajectory.getInitialPose());
  
         this.trajectory = trajectory;
 
-        m_field.getObject("traj").setTrajectory(trajectory);       
+        drawTrajectory(trajectory);       
  
         pathTimer.reset();
         pathTimer.start();
