@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.PivotArm;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -8,12 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
 
 import static frc.robot.Constants.PivotArm.*;
 
@@ -21,7 +16,7 @@ import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
-public class PivotArm extends SnailSubsystem {
+public class PivotArmIOSparkMax implements PivotArmIO {
     private CANSparkMax leftArmMotor, rightArmMotor;
     private RelativeEncoder leftArmEncoder;
     private State state = State.MANUAL;
@@ -30,15 +25,7 @@ public class PivotArm extends SnailSubsystem {
     private double setPoint;
     private DigitalInput limitSwitch;
 
-    private MechanismLigament2d armMechanism;
-    private double simulationPos = 0;
-
-    public enum State {
-        MANUAL,
-        PID
-    }
-
-    public PivotArm() {
+    public PivotArmIOSparkMax() {
         leftArmMotor = new CANSparkMax(PIVOT_ARM_LEFT_ID, MotorType.kBrushless);
         leftArmMotor.restoreFactoryDefaults();
         leftArmMotor.setIdleMode(IdleMode.kBrake);
@@ -64,61 +51,37 @@ public class PivotArm extends SnailSubsystem {
         limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID);
     }
 
-    @Override
-    public void update() {
-        /* if (limitSwitch.get()) {
-            leftArmEncoder.setPosition(0);
-            if (speed < 0) {
-                speed = 0;
-            }
-        } */
-
-        switch (state) {
-            case MANUAL: {
-                leftArmMotor.set(speed);
-                break;
-            }
-            case PID: {
-                // send the desired setpoint to the PID controller and specify we want to use position control
-                armPIDController.setReference(setPoint, ControlType.kPosition);
-
-                // check our error and update the state if we finish
-                if(Math.abs(leftArmEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
-                    state = State.MANUAL;
-                }
-                break;
-            }
-        }
-
-        simulationPos += speed * 5;
-
-        if (RobotBase.isSimulation()) {
-            // update the mechanism ligament
-            armMechanism.setAngle(simulationPos + 180);
-            simulationPos %= 360;
-        } else {
-            // update the mechanism ligament
-            armMechanism.setAngle(leftArmEncoder.getPosition());
-        }
-    }
-
     public void setPosition(double setpoint) {
         state = State.PID;
-        this.setPoint = setpoint;
+        setPoint = setpoint;
     }
 
-    @Override
-    public void displayShuffleboard() {
-        SmartDashboard.putNumber("Motor Speed", leftArmEncoder.getVelocity());
-        SmartDashboard.putNumber("Encoder Position", leftArmEncoder.getPosition());
+    public void manualControl(double newSpeed) {
+        state = State.MANUAL;
+        speed = newSpeed;
+    }
+
+    public void updateIO() {
+        switch (state) {
+            case MANUAL:
+                leftArmMotor.set(speed);
+                break;
+            case PID:
+                armPIDController.setReference(setPoint, ControlType.kPosition);
+                break;
+        }
+    }
+
+    public void displayShuffleboardIO() {
+        SmartDashboard.putNumber("Pivot Arm Position", getPosition());
+        SmartDashboard.putNumber("Pivot Arm Velocity", getVelocity());
+        SmartDashboard.putNumber("Pivot Arm Current", getCurrent());
         SmartDashboard.putNumber("Setpoint", setPoint);
-        SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
-        SmartDashboard.putNumber("SimPosArm", (int)simulationPos);
+        SmartDashboard.putBoolean("Pivot Arm Limit Switch", getLimitSwitch());
     }
 
-    @Override
-    public void tuningInit() {
-        // TODO include PID tuning
+
+    public void tuningInitIO() {
         SmartDashboard.putNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
         SmartDashboard.putNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
         SmartDashboard.putNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
@@ -127,8 +90,7 @@ public class PivotArm extends SnailSubsystem {
         SmartDashboard.putNumber("Pivot Arm Tolerance", PIVOT_ARM_PID_TOLERANCE);
     }
 
-    @Override
-    public void tuningPeriodic() {
+    public void tuningPeriodicIO() {
         PIVOT_ARM_PID[0] = SmartDashboard.getNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
         PIVOT_ARM_PID[1] = SmartDashboard.getNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
         PIVOT_ARM_PID[2] = SmartDashboard.getNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
@@ -144,22 +106,28 @@ public class PivotArm extends SnailSubsystem {
         }
     }
 
-    public void manualControl(double newSpeed) {
-        speed = newSpeed;
-        state = State.MANUAL;
+    public double getPosition() {
+        return leftArmEncoder.getPosition();
     }
 
-    public State getState() { return state; }
-
-    public MechanismLigament2d getArmMechanism() {
-        return new MechanismLigament2d("Pivot Arm", ARM_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
+    public double getVelocity() {
+        return leftArmEncoder.getVelocity();
     }
 
-    public void setMechanism(MechanismLigament2d mechanism) {
-        armMechanism = mechanism;
+    public State getState() {
+        return state;
     }
 
-    public MechanismLigament2d append(MechanismLigament2d mechanism) {
-        return armMechanism.append(mechanism);
+    public double getCurrent() {
+        return leftArmMotor.getOutputCurrent();
     }
+
+    public boolean getLimitSwitch() {
+        return limitSwitch.get();
+    }
+
+    public double getArmAngle() {
+        return leftArmEncoder.getPosition();
+    }
+    
 }

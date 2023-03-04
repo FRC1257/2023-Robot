@@ -1,7 +1,8 @@
 package frc.robot.commands.pivotArm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PivotArm;
+import frc.robot.subsystems.PivotArm.PivotArm;
+import frc.robot.subsystems.PivotArm.PivotArmIO;
 
 public class PivotArmPIDCommand extends CommandBase {
     private PivotArm pivotArm;
@@ -29,6 +30,6 @@ public class PivotArmPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return pivotArm.getState() != PivotArm.State.PID;
+        return pivotArm.getState() != PivotArmIO.State.PID;
     }
 }

@@ -3,7 +3,7 @@ package frc.robot.commands.pivotArm;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PivotArm;
+import frc.robot.subsystems.PivotArm.PivotArm;
 
 public class PivotArmManualCommand extends CommandBase {
     private PivotArm pivotArm;

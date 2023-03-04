@@ -33,6 +33,9 @@ import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.subsystems.PivotArm.PivotArm;
+import frc.robot.subsystems.PivotArm.PivotArmIOSim;
+import frc.robot.subsystems.PivotArm.PivotArmIOSparkMax;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
@@ -167,7 +170,12 @@ public class RobotContainer {
         elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
 
         // Pivot arm
-        pivotArm = new PivotArm();
+        if (isSimulation) {
+            pivotArm = new PivotArm(new PivotArmIOSim());
+        } else {
+            pivotArm = new PivotArm(new PivotArmIOSparkMax());
+        }
+        
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
         pivotArm.setMechanism(elevator.append(pivotArm.getArmMechanism()));
 
