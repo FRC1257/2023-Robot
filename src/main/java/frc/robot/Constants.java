@@ -186,8 +186,8 @@ public final class Constants {
         public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
         // driving modifiers
-        public static double DRIVE_SLOW_TURN_MULT = 0.25;
-        public static double DRIVE_SLOW_FORWARD_MULT = 0.25;
+        public static double DRIVE_SLOW_TURN_MULT = 0.1;
+        public static double DRIVE_SLOW_FORWARD_MULT = 0.1;
 
         // closed loop driving
         public static double DRIVE_CLOSED_MAX_VEL = 4.0; // m/s
