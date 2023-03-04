@@ -22,7 +22,27 @@ public class AlignPosClosestCommand extends CommandBase {
     private Pose2d target;
     private Pose2d[] ALLIANCE_SCORE_POSE;
 
-    private Pose2d poseSearch() {
+    // find closest pose by distance
+    private Pose2d poseSearchDist() {
+        double currentPoseX = drivetrain.getPosition().getX();
+        double currentPoseY = drivetrain.getPosition().getY();
+        double closestDistDiff = Integer.MAX_VALUE;
+        int desiredPoseIndex = -1;
+
+        for (int i = 0; i < ALLIANCE_SCORE_POSE.length; i++) {
+            double distanceFromScorePose = Math.hypot(currentPoseX, currentPoseY);
+            if (distanceFromScorePose < closestDistDiff) {
+                desiredPoseIndex = i;
+                closestDistDiff = distanceFromScorePose;
+            }
+        }
+        
+        SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
+        return ALLIANCE_SCORE_POSE[desiredPoseIndex]; 
+    }
+
+    // find closest pose by y coordinate
+    private Pose2d poseSearchY() {
         double currentPoseY = drivetrain.getPosition().getY();
         double closestPoseYDiff = Integer.MAX_VALUE;
         int desiredPoseIndex = -1;
@@ -35,8 +55,6 @@ public class AlignPosClosestCommand extends CommandBase {
         }
         
         SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
-        SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
-        DriverStation.reportError("Desired Pose " + desiredPoseIndex, false);
         return ALLIANCE_SCORE_POSE[desiredPoseIndex];
     }
 
@@ -54,7 +72,7 @@ public class AlignPosClosestCommand extends CommandBase {
     
     @Override
     public void initialize() {
-        target = poseSearch();
+        target = poseSearchDist();
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_ALIGN_MAX_VEL, DRIVE_ALIGN_MAX_ACC).setReversed(true);
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
 
