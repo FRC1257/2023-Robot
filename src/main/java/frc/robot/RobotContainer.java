@@ -1,5 +1,11 @@
 package frc.robot;
 
+import static frc.robot.Constants.UPDATE_PERIOD;
+import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
+import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
+
+import java.util.ArrayList;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -7,30 +13,47 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Delay;
-import frc.robot.commands.claw.*;
-import frc.robot.commands.drivetrain.ToPosCommand;
-import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.intakearm.IntakeArmPIDCommand;
-
+import frc.robot.commands.GenerateTrajectories;
+import frc.robot.commands.claw.ClawConeStateCommand;
+import frc.robot.commands.claw.ClawCubeStateCommand;
+import frc.robot.commands.claw.ClawEjectCommand;
+import frc.robot.commands.claw.ClawIntakeCommand;
+import frc.robot.commands.claw.ClawNeutralCommand;
+import frc.robot.commands.drivetrain.BalanceCommand;
+import frc.robot.commands.drivetrain.PDBalanceCommand;
+import frc.robot.commands.drivetrain.ResetDriveCommand;
+import frc.robot.commands.drivetrain.ToggleSlowModeCommand;
+import frc.robot.commands.drivetrain.TurnAngleCommand;
+import frc.robot.commands.drivetrain.VelocityDriveCommand;
+import frc.robot.commands.elevator.ElevatorExtendCommand;
+import frc.robot.commands.elevator.ElevatorRetractCommand;
+import frc.robot.commands.intake.IntakeEjectingCommand;
+import frc.robot.commands.intake.IntakeIntakingCommand;
+import frc.robot.commands.intake.IntakeNeutralCommand;
+import frc.robot.commands.pivotArm.PivotArmManualCommand;
+import frc.robot.commands.pivotArm.PivotArmPIDCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
 import frc.robot.commands.elevator.ElevatorExtendCommand;
 import frc.robot.commands.elevator.ElevatorRetractCommand;
 import frc.robot.commands.vision.AlignPosCommand;
-import frc.robot.commands.vision.AlignToClosest;
-import frc.robot.commands.pivotArm.*;
-import frc.robot.commands.vision.TurnToAprilTagCommand;
-import frc.robot.commands.intake.*;
-import frc.robot.subsystems.*;
-import frc.robot.commands.GenerateTrajectories;
+import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeArm;
+import frc.robot.subsystems.PivotArm;
+import frc.robot.subsystems.PivotWrist;
 import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.subsystems.Vision;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
@@ -284,8 +307,8 @@ public class RobotContainer {
         driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getButton(Button.kRightBumper.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new AlignToClosest(drivetrain));
         operatorController.getButton(Button.kRightBumper.value).onTrue(new AlignPosCommand(drivetrain, 1));
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new AlignPosCommand(drivetrain));
     }
 
 
