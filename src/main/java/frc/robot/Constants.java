@@ -181,7 +181,7 @@ public final class Constants {
 
     public static class Drivetrain {
         // drivetrain constants
-        public static double DRIVE_TRACK_WIDTH_M = 0.86;// 0.66; // m
+        public static double DRIVE_TRACK_WIDTH_M = 0.71;// 0.66; // m
         public static double DRIVE_WHEEL_DIAM_M = 0.1524; // m
         public static double DRIVE_GEARBOX_REDUCTION = 10.71;
 
@@ -245,11 +245,10 @@ public final class Constants {
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
 
 
-        public static Transform3d CAMERA_TO_ROBOT = new Transform3d();
 
         
-        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
-        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.145, 0.38, 0.05), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.20, -0.38 , 0.06), new Rotation3d(0.0, 180.0, 0.0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
@@ -265,7 +264,7 @@ public final class Constants {
         // all of these positions have been estimated using PathWeaver
         // TODO calculate true positions
 
-        static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2.5;
+        static double trackWidthAdded = 0.36;
         public static double BALANCE_KP = 0.05;
         public static double BALANCE_KD = 0.01;
         public static double BALANCE_SETPOINT_ANGLE = 0;

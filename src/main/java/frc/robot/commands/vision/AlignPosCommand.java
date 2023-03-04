@@ -82,9 +82,9 @@ public class AlignPosCommand extends CommandBase {
 
         
 
-        this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+        trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
 
-        drivetrain.driveTrajectory(this.trajectory);
+        drivetrain.driveTrajectory(trajectory);
         SmartDashboard.putNumber("Ye mother: Trajectory Length", this.trajectory.getTotalTimeSeconds());
 
         scoreLocation = (int) SmartDashboard.getNumber("Score Position Chooser", 0);
