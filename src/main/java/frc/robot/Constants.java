@@ -198,13 +198,13 @@ public final class Constants {
         // trajectory following
         public static double DRIVE_TRAJ_MAX_VEL = 9.0; // m/s
         public static double DRIVE_TRAJ_MAX_ACC = 1.150; //.75;  // m/s^2
-        public static double DRIVE_TRAJ_RAMSETE_B = 2.1;
-        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.8;
+        public static double DRIVE_TRAJ_RAMSETE_B = 2.0;
+        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
 
         // aligning
         public static double DRIVE_ALIGN_MAX_VEL = 0.75; // m/s
-        public static double DRIVE_ALIGN_MAX_ACC = 0.350; //.75;  // m/s^2
+        public static double DRIVE_ALIGN_MAX_ACC = 0.250; //.75;  // m/s^2
 
 
         // linear position PID
