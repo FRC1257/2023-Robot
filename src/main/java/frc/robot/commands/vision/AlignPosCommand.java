@@ -18,6 +18,7 @@ import java.util.List;
 public class AlignPosCommand extends CommandBase { 
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
+    private int scoreLocation;
     private Pose2d target;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     
@@ -46,7 +47,8 @@ public class AlignPosCommand extends CommandBase {
 
     public AlignPosCommand(Drivetrain drivetrain, int scoreLocation) {
         this.drivetrain = drivetrain;
-        
+        this.scoreLocation = scoreLocation;
+
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
             this.target = BLUE_SCORE_POSE[scoreLocation];
         } else {
@@ -67,7 +69,6 @@ public class AlignPosCommand extends CommandBase {
         
         target = poseSearch();
         
-
         addRequirements(drivetrain);
     }
 
@@ -83,6 +84,8 @@ public class AlignPosCommand extends CommandBase {
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
 
         drivetrain.driveTrajectory(trajectory);
+
+        scoreLocation = (int) SmartDashboard.getNumber("Score Position Chooser", 0);
     }
 
     @Override
