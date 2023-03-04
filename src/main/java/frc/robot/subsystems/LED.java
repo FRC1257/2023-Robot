@@ -47,6 +47,10 @@ public class LED extends SnailSubsystem {
 		}
 	}
 
+	public LEDState getState() {
+		return ledState;
+	}
+
 	@Override
 	public void displayShuffleboard() {
 		// TODO Auto-generated method stub
