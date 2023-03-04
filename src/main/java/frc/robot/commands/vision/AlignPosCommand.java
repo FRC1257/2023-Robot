@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -18,6 +19,23 @@ public class AlignPosCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
     private Pose2d target;
+    private Pose2d[] ALLIANCE_SCORE_POSE;
+    
+    private Pose2d poseSearch() {
+        double currentPoseY = drivetrain.getPosition().getY();
+        double closestPoseY = Integer.MAX_VALUE;
+        int desiredPoseIndex = -1;
+        for (int i = 0; i < ALLIANCE_SCORE_POSE.length; i++) {
+            double distanceFromScorePose = Math.abs(currentPoseY-ALLIANCE_SCORE_POSE[i].getY()); 
+            if (distanceFromScorePose < closestPoseY) {
+                desiredPoseIndex = i;
+                closestPoseY = distanceFromScorePose;
+            }
+        }
+
+        DriverStation.reportWarning("Desired Pose " + desiredPoseIndex, false);
+        return ALLIANCE_SCORE_POSE[desiredPoseIndex];
+    }
 
     public AlignPosCommand(Drivetrain drivetrain, Pose2d target) { 
         this.drivetrain = drivetrain;
@@ -34,6 +52,21 @@ public class AlignPosCommand extends CommandBase {
         } else {
             this.target = RED_SCORE_POSE[scoreLocation];
         }
+
+        addRequirements(drivetrain);
+    }
+
+    public AlignPosCommand(Drivetrain drivetrain) {
+        this.drivetrain = drivetrain;
+        if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
+            ALLIANCE_SCORE_POSE = BLUE_SCORE_POSE;
+        }
+        else {
+            ALLIANCE_SCORE_POSE = RED_SCORE_POSE;
+        }
+        
+        target = poseSearch();
+        
 
         addRequirements(drivetrain);
     }
