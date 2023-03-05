@@ -1,22 +1,25 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import static frc.robot.Constants.ElectricalLayout.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
+import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_EXTEND_SPEED;
+import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_IDLE_SPEED;
+import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_RETRACT_SPEED;
 
 public class Elevator extends SnailSubsystem{
 
-    private DoubleSolenoid elevatorSolenoidRight;
-    private DoubleSolenoid elevatorSolenoidLeft;
+    private CANSparkMax elevatorMotor;
 
     public Elevator() {
-        elevatorSolenoidLeft = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, EXTENDER_LEFT_FORWARD_ID, EXTENDER_LEFT_REVERSE_ID);
-        elevatorSolenoidRight = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, EXTENDER_RIGHT_FORWARD_ID, EXTENDER_RIGHT_REVERSE_ID);
+        elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
     }
 
     public enum State {
         EXTENDED,
-        RETRACTED;
+        RETRACTED,
+        IDLE;
     }
 
     private State elevatorState = State.RETRACTED; 
@@ -25,12 +28,13 @@ public class Elevator extends SnailSubsystem{
     public void update() {
         switch(elevatorState) {
             case RETRACTED:
-                elevatorSolenoidLeft.set(Value.kReverse);
-                elevatorSolenoidRight.set(Value.kReverse);
+                elevatorMotor.set(ELEVATOR_RETRACT_SPEED);
                 break;
             case EXTENDED:
-                elevatorSolenoidLeft.set(Value.kForward);
-                elevatorSolenoidRight.set(Value.kForward);
+                elevatorMotor.set(ELEVATOR_EXTEND_SPEED);
+                break;
+            case IDLE:
+                elevatorMotor.set(ELEVATOR_IDLE_SPEED);
                 break;
         }
     }
@@ -43,14 +47,17 @@ public class Elevator extends SnailSubsystem{
         elevatorState = State.RETRACTED;
     }
 
+    public void idle() {
+        elevatorState = State.IDLE;
+    }
+
     public State getState() {
         return elevatorState;
     }
 
     @Override
     public void displayShuffleboard() {
-        // TODO Auto-generated method stub
-        
+        SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
     }
 
     @Override

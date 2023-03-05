@@ -3,11 +3,10 @@ package frc.robot.commands.elevator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorToggleCommand extends CommandBase {
-
+public class ElevatorIdleCommand extends CommandBase{
     private Elevator elevator;
 
-    public ElevatorToggleCommand(Elevator elevator) {
+    public ElevatorIdleCommand(Elevator elevator) {
         this.elevator = elevator;
 
         addRequirements(elevator);
@@ -20,13 +19,7 @@ public class ElevatorToggleCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(elevator.getState() == Elevator.State.IDLE) {
-            elevator.idle();
-        } else if(elevator.getState() == Elevator.State.EXTENDED) {
-            elevator.extended();
-        } else {
-            elevator.retract();
-        }
+        elevator.idle();
     }
 
 

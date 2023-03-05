@@ -131,11 +131,8 @@ public final class Constants {
         public static final int INTAKE_ARM_MOTOR_LEFT_ID = 10;
         public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 11;
 
-        // Pneumatics
-        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
-        public final static int EXTENDER_LEFT_REVERSE_ID = 4;
-        public final static int EXTENDER_RIGHT_FORWARD_ID = 5;
-        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+        // New Elevator Motor Design
+        public final static int ELEVATOR_MOTOR_ID = 0;
 
         public static int CLAW_FORWARD_ID = 2;
         public static int CLAW_REVERSE_ID = 1;
@@ -170,6 +167,12 @@ public final class Constants {
         public static double WRIST_SETPOINT_INTAKE = 0.5;
         public static double WRIST_SETPOINT_HIGH = 0.6;
         public static double WRIST_SETPOINT_MID = 0.7;
+    }
+
+    public static class ElevatorSpeed {
+        public static final double ELEVATOR_IDLE_SPEED = 0;
+        public static final double ELEVATOR_EXTEND_SPEED = 0.85;
+        public static final double ELEVATOR_RETRACT_SPEED = -0.85;
     }
 
        
