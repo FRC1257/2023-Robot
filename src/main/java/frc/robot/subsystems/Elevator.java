@@ -1,58 +1,89 @@
 package frc.robot.subsystems;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID;
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_MAX_OUTPUT;
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_REV_TO_POS_FACTOR;
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_TOLERANCE;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
-import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_EXTEND_SPEED;
-import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_IDLE_SPEED;
-import static frc.robot.Constants.ElevatorSpeed.ELEVATOR_RETRACT_SPEED;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends SnailSubsystem{
 
     private CANSparkMax elevatorMotor;
+    private SparkMaxPIDController pidController;
+    private RelativeEncoder encoder;
+    private DigitalInput limitSwitch;
+    private double speed;
+    private double setpoint;
+    private boolean isPIDFinished;
+
+    public enum State {
+        MANUAL,
+        PID;
+    }
+
+    private State elevatorState = State.MANUAL; 
 
     public Elevator() {
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+        pidController = elevatorMotor.getPIDController();
+
+        pidController.setP(ELEVATOR_PID[0]);
+        pidController.setI(ELEVATOR_PID[1]);
+        pidController.setD(ELEVATOR_PID[2]);
+        pidController.setFF(ELEVATOR_PID[3]);
+        pidController.setOutputRange(-ELEVATOR_PID_MAX_OUTPUT, ELEVATOR_PID_MAX_OUTPUT);
+
+        encoder = elevatorMotor.getEncoder();
+        encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
+        encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
+        encoder.setPosition(0.0);
+
+        limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID);
     }
 
-    public enum State {
-        EXTENDED,
-        RETRACTED,
-        IDLE;
-    }
-
-    private State elevatorState = State.RETRACTED; 
 
     @Override
     public void update() {
         switch(elevatorState) {
-            case RETRACTED:
-                elevatorMotor.set(ELEVATOR_RETRACT_SPEED);
+            case MANUAL:
+                elevatorMotor.set(speed);
                 break;
-            case EXTENDED:
-                elevatorMotor.set(ELEVATOR_EXTEND_SPEED);
-                break;
-            case IDLE:
-                elevatorMotor.set(ELEVATOR_IDLE_SPEED);
+            case PID:
+                pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
+                if (Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE ) {
+                    endPID();
+                }
                 break;
         }
     }
 
-    public void extended() {
-        elevatorState = State.EXTENDED;
+    public void endPID() {
+        elevatorState = State.MANUAL;
     }
 
-    public void retract() {
-        elevatorState = State.RETRACTED;
+    public void manual(double speed){
+        this.speed = speed;
+        elevatorState = State.MANUAL;
     }
 
-    public void idle() {
-        elevatorState = State.IDLE;
-    }
+    public void setPosition(double setpoint) {
+        elevatorState = State.PID;
+        if (!isPIDFinished) this.setpoint = setpoint;
+   }
 
     public State getState() {
         return elevatorState;
+    }
+
+    public double getPosition() {
+        return encoder.getPosition();
     }
 
     @Override

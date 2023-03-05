@@ -169,10 +169,16 @@ public final class Constants {
         public static double WRIST_SETPOINT_MID = 0.7;
     }
 
-    public static class ElevatorSpeed {
-        public static final double ELEVATOR_IDLE_SPEED = 0;
-        public static final double ELEVATOR_EXTEND_SPEED = 0.85;
-        public static final double ELEVATOR_RETRACT_SPEED = -0.85;
+    public static class ElevatorConstants {
+
+        public static final double[] ELEVATOR_PID = new double[] {1257, 1257, 1257};
+
+        public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
+        public static double ELEVATOR_REV_TO_POS_FACTOR = 1257; 
+        public static double ELEVATOR_PID_TOLERANCE = 1257;
+
+        public static final double ELEVATOR_SETPOINT_RETRACT = 0;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
     }
 
        
