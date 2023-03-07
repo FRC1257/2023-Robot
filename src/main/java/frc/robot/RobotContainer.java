@@ -164,7 +164,7 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
-        
+       // root --> elevagtor --> arm --> wrist 
         MechanismRoot2d root = mech.getRoot("elevator", 1, 0.5);
         elevator = new Elevator();
         elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
