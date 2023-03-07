@@ -15,7 +15,7 @@ import static frc.robot.Constants.Autonomous.RED_SCORE_POSE;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlignPosClosestCommand extends CommandBase { 
+public class AlignPosClosestCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
     private int scoreLocation;
@@ -30,15 +30,16 @@ public class AlignPosClosestCommand extends CommandBase {
         int desiredPoseIndex = -1;
 
         for (int i = 0; i < ALLIANCE_SCORE_POSE.length; i++) {
-            double distanceFromScorePose = Math.hypot(currentPoseX, currentPoseY);
+            double distanceFromScorePose = Math.sqrt(Math.pow(currentPoseX - ALLIANCE_SCORE_POSE[i].getX(), 2)
+                    + Math.pow(currentPoseY - ALLIANCE_SCORE_POSE[i].getY(), 2));
             if (distanceFromScorePose < closestDistDiff) {
                 desiredPoseIndex = i;
                 closestDistDiff = distanceFromScorePose;
             }
         }
-        
+
         SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
-        return ALLIANCE_SCORE_POSE[desiredPoseIndex]; 
+        return ALLIANCE_SCORE_POSE[desiredPoseIndex];
     }
 
     // find closest pose by y coordinate
@@ -47,13 +48,13 @@ public class AlignPosClosestCommand extends CommandBase {
         double closestPoseYDiff = Integer.MAX_VALUE;
         int desiredPoseIndex = -1;
         for (int i = 0; i < ALLIANCE_SCORE_POSE.length; i++) {
-            double distanceFromScorePose = Math.abs(currentPoseY-ALLIANCE_SCORE_POSE[i].getY()); 
+            double distanceFromScorePose = Math.abs(currentPoseY - ALLIANCE_SCORE_POSE[i].getY());
             if (distanceFromScorePose < closestPoseYDiff) {
                 desiredPoseIndex = i;
                 closestPoseYDiff = distanceFromScorePose;
             }
         }
-        
+
         SmartDashboard.putNumber("Closest Pose Command", desiredPoseIndex);
         return ALLIANCE_SCORE_POSE[desiredPoseIndex];
     }
@@ -62,14 +63,14 @@ public class AlignPosClosestCommand extends CommandBase {
         this.drivetrain = drivetrain;
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
             ALLIANCE_SCORE_POSE = BLUE_SCORE_POSE;
-        }
+        } 
         else {
             ALLIANCE_SCORE_POSE = RED_SCORE_POSE;
         }
-        
+
         addRequirements(drivetrain);
     }
-    
+
     @Override
     public void initialize() {
         target = poseSearchDist();
@@ -87,7 +88,7 @@ public class AlignPosClosestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        
+
     }
 
     @Override
@@ -103,4 +104,4 @@ public class AlignPosClosestCommand extends CommandBase {
     public Trajectory getTrajectory() {
         return trajectory;
     }
-} 
+}
