@@ -179,6 +179,7 @@ public final class Constants {
 
         public static final double ELEVATOR_SETPOINT_RETRACT = 0;
         public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
+        public static final double ELEVATOR_MANUAL_SPEED = 1257;
     }
 
        
