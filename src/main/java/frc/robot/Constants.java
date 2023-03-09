@@ -266,11 +266,11 @@ public final class Constants {
         // TODO calculate true positions
 
         static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
-        public static double BALANCE_KP = 0.05;
-        public static double BALANCE_KD = 0.01;
+        public static double BALANCE_KP = 0.07;
+        public static double BALANCE_KD = 0.03;
         public static double BALANCE_SETPOINT_ANGLE = 0;
         public static double BALANCE_THRESHOLD_DEGREES = 3;
-        public static int BALANCE_STEPS_THRESHOLD = 25;
+        public static int BALANCE_STEPS_THRESHOLD = 100;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
                 new Pose2d(1.425 + trackWidthAdded, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
