@@ -121,7 +121,8 @@ public class RobotContainer {
     public RobotContainer() {
         driveController = new SnailController(CONTROLLER_DRIVER_ID);
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
-
+        
+        isSimulation = RobotBase.isSimulation();
         configureAutoChoosers();
         configureShuffleboard();
         configureSubsystems();
@@ -133,7 +134,6 @@ public class RobotContainer {
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
 
-        isSimulation = RobotBase.isSimulation();
     }
 
     public void stopDisplayingTraj() {

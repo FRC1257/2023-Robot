@@ -126,6 +126,7 @@ public class PivotArmIOSparkMax implements PivotArmIO {
         return limitSwitch.get();
     }
 
+    @Override
     public double getArmAngle() {
         return leftArmEncoder.getPosition();
     }
