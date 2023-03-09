@@ -13,7 +13,7 @@ import frc.robot.Constants.Autonomous;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.RobotContainer;
 
-public class GenerateTrajectories {
+public class GenerateTrajedies {
     private boolean charge;
     private boolean firstScore;
     private boolean secondScore;
@@ -37,7 +37,7 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_PARK_POSE;
     private Pose2d[] chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun ) {
+    public GenerateTrajedies(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun ) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;

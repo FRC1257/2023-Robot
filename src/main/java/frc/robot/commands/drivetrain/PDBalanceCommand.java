@@ -12,7 +12,9 @@ public class PDBalanceCommand extends CommandBase {
 	private final PIDController controller;
 	private final Gyro gyro;
 	private double error;
-	public PDBalanceCommand(Drivetrain drivetrain) {
+	private boolean stopAlone;
+
+	public PDBalanceCommand(Drivetrain drivetrain, boolean stopAlone) {
 		
 		this.drivetrain = drivetrain;
 		this.controller = new PIDController(Autonomous.BALANCE_KP, 0, Autonomous.BALANCE_KD);
@@ -40,6 +42,8 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES;
+		if (stopAlone)
+			return Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES;
+		return false;
 	}
 }

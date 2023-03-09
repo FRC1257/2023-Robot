@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
@@ -30,7 +32,7 @@ import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
-import frc.robot.commands.GenerateTrajectories;
+import frc.robot.commands.GenerateTrajedies;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.Gyro;
 
@@ -113,7 +115,7 @@ public class RobotContainer {
 
     private boolean threePiece;
 
-    private GenerateTrajectories generateTrajectories;
+    private GenerateTrajedies generateTrajectories;
 
 
     /**
@@ -210,7 +212,7 @@ public class RobotContainer {
         }
 
         // generate auto
-        generateTrajectories = new GenerateTrajectories(
+        generateTrajectories = new GenerateTrajedies(
             drivetrain,
             charge,
             firstScore,
@@ -278,8 +280,11 @@ public class RobotContainer {
             operatorController.getButton(Button.kB.value).onTrue(new LEDToggleCommand(led));
         }
         
-        driveController.getButton(Button.kY.value).onTrue(new BalanceCommand(drivetrain));
-        driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain));
+        driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
+        driveController.getButton(Button.kB.value).onTrue(new ParallelDeadlineGroup(
+            new Delay(8),
+            new PDBalanceCommand(drivetrain, false)
+        ));
 
         driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
@@ -324,7 +329,7 @@ public class RobotContainer {
     public Command getAutoCommand() {
         updateAutoChoosers();
 
-        generateTrajectories = new GenerateTrajectories(
+        generateTrajectories = new GenerateTrajedies(
             drivetrain,
             charge,
             firstScore,
@@ -398,7 +403,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", cargo);
             updateAutoChoosers();
 
-            generateTrajectories = new GenerateTrajectories(
+            generateTrajectories = new GenerateTrajedies(
                 drivetrain,
                 charge,
                 firstScore,
