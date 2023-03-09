@@ -17,7 +17,6 @@ import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
@@ -28,7 +27,6 @@ import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
-import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.subsystems.SnailSubsystem;
@@ -76,10 +74,8 @@ public class RobotContainer {
     private Drivetrain drivetrain;
     private Vision vision;
     private PivotArm pivotArm;
-    private IntakeArm intakearm;
 
 
-    private Intake intake;
 
     private Elevator elevator;
     private LED led;
@@ -168,15 +164,11 @@ public class RobotContainer {
             claw.setDefaultCommand(new ClawNeutralCommand(claw));
          
             // Vision
-            intakearm = new IntakeArm();
             elevator = new Elevator();
             // Pivot Wrist
             pivotWrist = new PivotWrist();
             pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
     
-            // Intake
-            intake = new Intake();
-            intake.setDefaultCommand(new IntakeNeutralCommand(intake));  
             
             // Pivot Arm
             pivotArm = new PivotArm();
@@ -202,9 +194,7 @@ public class RobotContainer {
         if (!isTestBot) {
             subsystems.add(claw);
             subsystems.add(pivotArm);
-            subsystems.add(intakearm);
             subsystems.add(pivotWrist);
-            subsystems.add(intake);
             subsystems.add(elevator);
             subsystems.add(led);
         }
@@ -268,12 +258,6 @@ public class RobotContainer {
 
             // Operator Bindings
             operatorController.getButton(Button.kA.value).onTrue(new ElevatorManualCommand(elevator, Constants.ElevatorConstants.ELEVATOR_MANUAL_SPEED));
-
-            operatorController.getTrigger(false).whileTrue(new IntakeEjectingCommand(intake));
-            operatorController.getTrigger(true).whileTrue(new IntakeIntakingCommand(intake));
-
-            operatorController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
-            operatorController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
 
             operatorController.getButton(Button.kB.value).onTrue(new LEDToggleCommand(led));
         }

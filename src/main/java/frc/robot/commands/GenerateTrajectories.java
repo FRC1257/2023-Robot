@@ -1,16 +1,18 @@
 package frc.robot.commands;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
-import frc.robot.commands.drivetrain.ToPosCommand;
+import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
 public class GenerateTrajectories {
@@ -24,9 +26,9 @@ public class GenerateTrajectories {
     private Drivetrain drivetrain;
     private Pose2d StartPose;
     private boolean hitAndRun;
-    
+
     private SequentialCommandGroup command;
-    private Pose2d currentPose; 
+    private Pose2d currentPose;
     private List<Trajectory> trajectoryList = new ArrayList<Trajectory>();
     private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
@@ -37,7 +39,8 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_PARK_POSE;
     private Pose2d[] chargePose;
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore, boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun ) {
+    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
+            boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
@@ -47,7 +50,7 @@ public class GenerateTrajectories {
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
-        
+
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
         // trajectoryList.add(new Trajectory());
@@ -71,7 +74,7 @@ public class GenerateTrajectories {
             blue = false;
         }
 
-        // this.StartPose = ALLIANCE_START_POSE[StartPose]; 
+        // this.StartPose = ALLIANCE_START_POSE[StartPose];
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
@@ -80,9 +83,8 @@ public class GenerateTrajectories {
 
     // TODO make method to get positions
 
-    //gets the cargoLocation based on what side the robot is on
+    // gets the cargoLocation based on what side the robot is on
 
-    
     private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
@@ -110,11 +112,12 @@ public class GenerateTrajectories {
 
         // index 0 is the area outside the community zone
         // index 1 is the area inside the community zone
-        if(hitAndRun){
+        if (hitAndRun) {
             return chargePose[1];
-        } 
+        }
 
-        // in reality there are 2 possible places so we would just need to use the side of the field we are on
+        // in reality there are 2 possible places so we would just need to use the side
+        // of the field we are on
         if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
             return chargePose[0];
         } else if (blue) {
@@ -123,9 +126,9 @@ public class GenerateTrajectories {
         // not blue
         if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
             return chargePose[0];
-        } 
+        }
         return chargePose[1];
-        
+
     }
 
     private Pose2d getChargeWaypointLocation() {
@@ -135,7 +138,8 @@ public class GenerateTrajectories {
         // index 0 is the area outside the community zone
         // index 1 is the area inside the community zone
 
-        // in reality there are 2 possible places so we would just need to use the side of the field we are on
+        // in reality there are 2 possible places so we would just need to use the side
+        // of the field we are on
         if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
             return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
         } else if (blue) {
@@ -146,21 +150,22 @@ public class GenerateTrajectories {
             return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
         }
         return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
-        
+
     }
 
     private Pose2d getLeaveCommunityPose(Pose2d currentPose) {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
         // TODO fix this
-        // in reality there are 6 possible places so we would just need to use the varialbes we have
+        // in reality there are 6 possible places so we would just need to use the
+        // varialbes we have
         // also a jank fix
         if (hitAndRun) {
             return ALLIANCE_LEAVE_COMMUNITY[2];
         }
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             return ALLIANCE_LEAVE_COMMUNITY[0];
-        } 
+        }
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
 
@@ -184,8 +189,8 @@ public class GenerateTrajectories {
             // going for cargo implies leaving community
             addCargoTrajectory();
             addPiecePickup();
-        } 
-        else if (leaveTarmac) {
+            turn180();
+        } else if (leaveTarmac) {
             addLeaveCommunityTrajectory();
             if (hitAndRun) {
                 addChargeTrajectory();
@@ -209,7 +214,7 @@ public class GenerateTrajectories {
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
-           addLeaveCommunityTrajectory(); 
+            addLeaveCommunityTrajectory();
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -229,7 +234,36 @@ public class GenerateTrajectories {
         trajectoryList.add(command.getTrajectory());
     }
 
+    private Pose2d shiftedPose(Pose2d pose) {
+        double SHIFT_X = -0.2;
+        if (blue) {
+            SHIFT_X *= -1;
+        }
+        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
+    }
 
+    private Pose2d flipPose(Pose2d pose) {
+        return new Pose2d(pose.getX(), pose.getY(), pose.getRotation().plus(Rotation2d.fromDegrees(180)));
+    }
+
+    private void backUpAndTurn() {
+        ToPosCommand firstTurnAround = new ToPosCommand(drivetrain, List.of(currentPose, shiftedPose(currentPose)),
+                true);
+        currentPose = shiftedPose(currentPose);
+        addToPosCommand(firstTurnAround);
+
+        turn180();
+    }
+
+    private void turn180() {
+        // 
+        if (RobotBase.isSimulation()) {
+            this.command.addCommands(new Delay(0.5));
+        } else {
+            this.command.addCommands(new TurnAngleCommand(drivetrain, 180));
+        }
+        currentPose = flipPose(currentPose);
+    }
 
     private void threePieceAuto() {
         command = new SequentialCommandGroup();
@@ -237,24 +271,38 @@ public class GenerateTrajectories {
         this.currentPose = this.StartPose;
 
         addScoreHigh();
-        
-        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain, getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
+
+        backUpAndTurn();
+
+        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
         currentPose = getCargoLocation();
         addToPosCommand(firstGoToCargo);
 
         addPiecePickup();
 
-        addSecondScoreTrajectory();
+        turn180();
+
+        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
+                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
+        currentPose = getSecondScoreLocation();
+        addToPosCommand(returnToScore);
 
         addScoreHigh();
 
-        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain, getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
+        backUpAndTurn();
+
+        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
         currentPose = getSecondCargoLocation();
         addToPosCommand(secondGoToCargo);
 
         addPiecePickup();
 
-        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), true);
+        turn180();
+
+        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain,
+                getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), false);
         currentPose = getThirdScoreLocation();
         addToPosCommand(returnToScore2);
 
@@ -263,7 +311,8 @@ public class GenerateTrajectories {
         trajectoryList.add(getFullTrajectory());
     }
 
-    // step variables aren't random, they actually represent the order of the trajectories
+    // step variables aren't random, they actually represent the order of the
+    // trajectories
     private void addFirstScoreTrajectory() {
         ToPosCommand step1 = new ToPosCommand(drivetrain, List.of(StartPose, getFirstScoreLocation()), true);
         currentPose = getFirstScoreLocation();
@@ -271,7 +320,8 @@ public class GenerateTrajectories {
     }
 
     private void addSecondScoreTrajectory() {
-        ToPosCommand returnToScore = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), true);
+        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
+                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
         currentPose = getSecondScoreLocation();
         addToPosCommand(returnToScore);
     }
@@ -288,7 +338,7 @@ public class GenerateTrajectories {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
-        
+
         trajPoints.add(end);
         return trajPoints;
     }
@@ -299,13 +349,13 @@ public class GenerateTrajectories {
 
         // going around the charging station, if convenient
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
         } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
         }
-        
+
         trajPoints.add(end);
         return trajPoints;
     }
@@ -329,6 +379,7 @@ public class GenerateTrajectories {
     }
 
     private void addCargoTrajectory() {
+        backUpAndTurn();
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
@@ -340,7 +391,7 @@ public class GenerateTrajectories {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
-        
+
         trajPoints.add(getCargoLocation());
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getCargoLocation();
@@ -348,23 +399,21 @@ public class GenerateTrajectories {
     }
 
     private void addLeaveCommunityTrajectory() {
-        // this method and addCargoTrajectory are almost identical, different by one line
+        // this method and addCargoTrajectory are almost identical, different by one
+        // line
         // TODO: refactor further to avoid confusion
+        backUpAndTurn();
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
-      
-
         // going around the charging station, if convenient
         // jank fix
-       if (hitAndRun) {
-     
-        }
-        else if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+        if (hitAndRun) {
+
+        } else if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-        } 
-        else {
+        } else {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
         }
@@ -374,19 +423,20 @@ public class GenerateTrajectories {
         addToPosCommand(step2);
     }
 
-    private void outThenIn(){
-    
+    private void outThenIn() {
+
     }
 
     private void addChargeTrajectory() {
-        if(!hitAndRun){
-        ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
-        currentPose = getChargeLocation();
-        addToPosCommand(step3);
+        if (!hitAndRun) {
+            ToPosCommand step3 = new ToPosCommand(drivetrain,
+                    List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
+            currentPose = getChargeLocation();
+            addToPosCommand(step3);
         } else {
-        ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeLocation()), true);
-        currentPose = getChargeLocation();
-        addToPosCommand(step3);
+            ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeLocation()), true);
+            currentPose = getChargeLocation();
+            addToPosCommand(step3);
         }
     }
 
@@ -412,13 +462,13 @@ public class GenerateTrajectories {
         for (Trajectory traj : trajectoryList) {
             fullTrajectory = fullTrajectory.concatenate(traj);
         }
-        
+
         return fullTrajectory;
     }
 
     public double getTrajectoryTime() {
         double time = 0;
-        for (int i =0; i < trajectoryList.size() - 1; i++) {
+        for (int i = 0; i < trajectoryList.size() - 1; i++) {
             time += trajectoryList.get(i).getTotalTimeSeconds();
         }
         return time;
