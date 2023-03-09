@@ -22,9 +22,8 @@ import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
-import frc.robot.commands.elevator.ElevatorExtendCommand;
-import frc.robot.commands.elevator.ElevatorRetractCommand;
-import frc.robot.commands.elevator.ElevatorToggleCommand;
+
+import frc.robot.commands.elevator.ElevatorManualCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -268,7 +267,7 @@ public class RobotContainer {
             operatorController.getButton(Button.kRightStick.value).onTrue(new ClawCubeStateCommand(claw));
 
             // Operator Bindings
-            operatorController.getButton(Button.kA.value).onTrue(new ElevatorToggleCommand(elevator));
+            operatorController.getButton(Button.kA.value).onTrue(new ElevatorManualCommand(elevator, Constants.ElevatorConstants.ELEVATOR_MANUAL_SPEED));
 
             operatorController.getTrigger(false).whileTrue(new IntakeEjectingCommand(intake));
             operatorController.getTrigger(true).whileTrue(new IntakeIntakingCommand(intake));
