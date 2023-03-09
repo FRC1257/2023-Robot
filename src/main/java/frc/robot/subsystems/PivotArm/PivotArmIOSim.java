@@ -29,8 +29,8 @@ import static frc.robot.Constants.PivotArm.*;
 public class PivotArmIOSim implements PivotArmIO {
     public static class Constants {
         public static final int kMotorPort = 0;
-        public static final int kEncoderAChannel = 0;
-        public static final int kEncoderBChannel = 1;
+        public static final int kEncoderAChannel = 5; //these channels used to be used by drivetrain
+        public static final int kEncoderBChannel = 6;
       
         // The P gain for the PID controller that drives this arm.
         public static final double kDefaultArmKp = 50.0;
@@ -114,6 +114,7 @@ public class PivotArmIOSim implements PivotArmIO {
 
     }
 
+    @Override
     public double getArmAngle() {
         return Units.radiansToDegrees(m_armSim.getAngleRads());
     }
