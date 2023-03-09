@@ -1,6 +1,6 @@
-package frc.robot.subsystems.PivotArm;
+package frc.robot.subsystems.Elevator;
 
-public interface PivotArmIO {
+public interface ElevatorIO {
     public enum State {
         MANUAL,
         PID
@@ -8,7 +8,7 @@ public interface PivotArmIO {
 
     public default void setPosition(double setpoint) {}
 
-    public default void manualControl(double newSpeed) {}
+    public default void manual(double newSpeed) {}
 
     public default void updateIO() {}
 
@@ -20,6 +20,6 @@ public interface PivotArmIO {
 
     public default State getState() { return State.MANUAL; }
 
-    public default double getArmAngle() { return 0; }
+    public default double getPosition() { return 0; }
 
 }

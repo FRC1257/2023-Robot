@@ -2,24 +2,14 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.numbers.N2;
-import edu.wpi.first.math.system.LinearSystem;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;import edu.wpi.first.math.geometry.Translation3d;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -132,10 +122,7 @@ public final class Constants {
         public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 11;
 
         // Pneumatics
-        public final static int EXTENDER_LEFT_FORWARD_ID = 0;
-        public final static int EXTENDER_LEFT_REVERSE_ID = 4;
-        public final static int EXTENDER_RIGHT_FORWARD_ID = 5;
-        public final static int EXTENDER_RIGHT_REVERSE_ID = 3;
+        public final static int ELEVATOR_MOTOR_ID = 0;
 
         public static int CLAW_FORWARD_ID = 2;
         public static int CLAW_REVERSE_ID = 1;
@@ -150,10 +137,19 @@ public final class Constants {
         public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 
-    public static class Elevator {
-        public static double EXTEND_LENGTH = Units.inchesToMeters(12);
-        public static double RETRACT_LENGTH = 1.2192;
-        public static double ANGLE = 37;
+    public static class ElevatorConstants {
+         public static final double[] ELEVATOR_PID = new double[] {1257, 1257, 1257};
+
+        public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
+        public static double ELEVATOR_REV_TO_POS_FACTOR = 1257; 
+        public static double ELEVATOR_PID_TOLERANCE = 1257;
+
+        public static final double ELEVATOR_SETPOINT_RETRACT = 0;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
+        public static final double ELEVATOR_MANUAL_SPEED = 1257;
+
+        public static final double ELEVATOR_ARM_LENGTH = 0;
+        public static final double ELEVATOR_MAX_ARM_LENGTH = 48;
     }
 
 
