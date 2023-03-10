@@ -61,6 +61,12 @@ public class PivotArmIOSparkMax implements PivotArmIO {
         speed = newSpeed;
     }
 
+       // End PID
+       public void endPID() {
+        state = State.MANUAL;
+        // setpoint = -1257;
+    }
+
     public void updateIO() {
         switch (state) {
             case MANUAL:
@@ -68,6 +74,9 @@ public class PivotArmIOSparkMax implements PivotArmIO {
                 break;
             case PID:
                 armPIDController.setReference(setPoint, ControlType.kPosition);
+                if (Math.abs(leftArmEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
+                    endPID();
+                }
                 break;
         }
     }
@@ -126,7 +135,6 @@ public class PivotArmIOSparkMax implements PivotArmIO {
         return limitSwitch.get();
     }
 
-    @Override
     public double getArmAngle() {
         return leftArmEncoder.getPosition();
     }

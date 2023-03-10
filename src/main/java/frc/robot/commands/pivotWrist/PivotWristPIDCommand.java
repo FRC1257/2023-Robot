@@ -2,7 +2,7 @@
 package frc.robot.commands.pivotWrist;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PivotWrist;
+import frc.robot.subsystems.PivotWrist.PivotWrist;
 
 public class PivotWristPIDCommand extends CommandBase {
     private PivotWrist pivotWrist;
