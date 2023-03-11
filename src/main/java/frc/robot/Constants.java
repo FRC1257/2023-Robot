@@ -10,6 +10,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -138,7 +139,7 @@ public final class Constants {
     };
 
     public static class ElevatorConstants {
-         public static final double[] ELEVATOR_PID = new double[] {1257, 1257, 1257};
+        public static final double[] ELEVATOR_PID = new double[] {1257, 1257, 1257};
 
         public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
         public static double ELEVATOR_REV_TO_POS_FACTOR = 1257; 
@@ -150,6 +151,36 @@ public final class Constants {
 
         public static final double ELEVATOR_ARM_LENGTH = 0;
         public static final double ELEVATOR_MAX_ARM_LENGTH = 48;
+    }
+
+    public static class ElevatorSimConstants {
+        public static final int kMotorPort = 0;
+        public static final int kEncoderAChannel = 0;
+        public static final int kEncoderBChannel = 1;
+        public static final int kJoystickPort = 0;
+      
+        public static final double kElevatorKp = 5;
+        public static final double kElevatorKi = 0;
+        public static final double kElevatorKd = 0;
+      
+        public static final double kElevatorkS = 0.0; // volts (V)
+        public static final double kElevatorkG = 0.762; // volts (V)
+        public static final double kElevatorkV = 0.762; // volt per velocity (V/(m/s))
+        public static final double kElevatorkA = 0.0; // volt per acceleration (V/(m/s²))
+      
+        public static final double kElevatorGearing = 10.0;
+        public static final double kElevatorDrumRadius = Units.inchesToMeters(2.0);
+        public static final double kCarriageMass = 4.0; // kg
+      
+        public static final double kSetpointMeters = 0.75;
+        // Encoder is reset to measure 0 at the bottom, so minimum height is 0.
+        public static final double kMinElevatorHeightMeters = 0.0;
+        public static final double kMaxElevatorHeightMeters = 1.25;
+      
+        // distance per pulse = (distance per revolution) / (pulses per revolution)
+        //  = (Pi * D) / ppr
+        public static final double kElevatorEncoderDistPerPulse =
+            2.0 * Math.PI * kElevatorDrumRadius / 4096;
     }
 
 
