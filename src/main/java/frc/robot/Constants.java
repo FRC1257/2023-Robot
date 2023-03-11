@@ -149,7 +149,7 @@ public final class Constants {
         public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
         public static final double ELEVATOR_MANUAL_SPEED = 1257;
 
-        public static final double ELEVATOR_ARM_LENGTH = 0;
+        public static final double ELEVATOR_ARM_LENGTH = 0.1;
         public static final double ELEVATOR_MAX_ARM_LENGTH = 48;
     }
 

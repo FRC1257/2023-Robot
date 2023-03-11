@@ -18,4 +18,9 @@ public class XboxTrigger extends Trigger {
         if (leftHand) return controller.getLeftTriggerAxis() > 0.5; 
         else return controller.getRightTriggerAxis() > 0.5;
     }
+
+    public double getDouble() {
+        if (leftHand) return controller.getLeftTriggerAxis();
+        else return controller.getRightTriggerAxis();
+    }
 }

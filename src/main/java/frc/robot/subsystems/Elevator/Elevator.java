@@ -54,7 +54,7 @@ public class Elevator extends SnailSubsystem{
     }
 
     public MechanismLigament2d getElevatorMechanism() {
-        return new MechanismLigament2d("Elevator", ELEVATOR_ARM_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
+        return new MechanismLigament2d("Elevator", ELEVATOR_ARM_LENGTH, 0, 5, new Color8Bit(Color.kOrange));
     }
     
 }

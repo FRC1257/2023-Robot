@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -190,9 +191,9 @@ public class RobotContainer {
             pivotWrist = new PivotWrist(new PivotWristIOSparkMax());
             elevator = new Elevator(new ElevatorIOSparkMax());
         }
-        
+
         // Elevator
-        elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getLeftX));
+        elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController.getLeftTriggerAxis()));
         elevator.setMechanism(root.append(elevator.getElevatorMechanism()));
 
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));

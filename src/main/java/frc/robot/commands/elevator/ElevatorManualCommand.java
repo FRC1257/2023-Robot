@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ElevatorManualCommand extends CommandBase{
     private Elevator elevator;
-    private DoubleSupplier speedSupplier;
-	public ElevatorManualCommand(Elevator elevator, DoubleSupplier speedSupplier) {
+    private double speed;
+	public ElevatorManualCommand(Elevator elevator, double speed) {
         this.elevator = elevator;
-        this.speedSupplier = speedSupplier;
+        this.speed = speed;
         addRequirements(elevator);
     }
 
@@ -22,7 +22,7 @@ public class ElevatorManualCommand extends CommandBase{
 
     @Override
     public void execute() {
-        elevator.manualControl(speedSupplier.getAsDouble());
+        elevator.manualControl(speed*1000);
     }
 
     @Override
