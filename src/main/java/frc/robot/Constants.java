@@ -207,7 +207,7 @@ public final class Constants {
 
         // trajectory following
         public static double DRIVE_TRAJ_MAX_VEL = 9.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 1.150; //.75;  // m/s^2
+        public static double DRIVE_TRAJ_MAX_ACC = 1.50; //.75;  // m/s^2
         public static double DRIVE_TRAJ_RAMSETE_B = 2.1;
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.8;
 
@@ -276,10 +276,10 @@ public final class Constants {
         // TODO calculate true positions
 
         static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
-        public static double BALANCE_KP = 0.07;
-        public static double BALANCE_KD = 0.03;
+        public static double BALANCE_KP = 0.03;
+        public static double BALANCE_KD = 0.5;
         public static double BALANCE_SETPOINT_ANGLE = 0;
-        public static double BALANCE_THRESHOLD_DEGREES = 3;
+        public static double BALANCE_THRESHOLD_DEGREES = 9;
         public static int BALANCE_STEPS_THRESHOLD = 100;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {

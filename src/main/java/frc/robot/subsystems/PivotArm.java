@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.TunableNumber;
 
 import static frc.robot.Constants.PivotArm.*;
 
@@ -25,6 +26,11 @@ public class PivotArm extends SnailSubsystem {
     private double setPoint;
     private DigitalInput limitSwitch;
 
+    private TunableNumber p = new TunableNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
+    private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
+    private TunableNumber d = new TunableNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
+    private TunableNumber ff = new TunableNumber("Pivot Arm FF", PIVOT_ARM_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("Pivot Arm IZ", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -49,10 +55,11 @@ public class PivotArm extends SnailSubsystem {
         leftArmEncoder.setVelocityConversionFactor(48.0 * Math.PI * 6 / 60);
 
         armPIDController = leftArmMotor.getPIDController();
-        armPIDController.setP(PIVOT_ARM_PID[0]);
-        armPIDController.setI(PIVOT_ARM_PID[1]);
-        armPIDController.setD(PIVOT_ARM_PID[2]);
-        armPIDController.setOutputRange(-PIVOT_ARM_PID_MAX_OUTPUT, PIVOT_ARM_PID_MAX_OUTPUT);
+        armPIDController.setP(p.get());
+        armPIDController.setI(i.get());
+        armPIDController.setD(d.get());
+        armPIDController.setFF(ff.get());
+        armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
         limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID);
     }
@@ -110,19 +117,11 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void tuningPeriodic() {
-        PIVOT_ARM_PID[0] = SmartDashboard.getNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-        PIVOT_ARM_PID[1] = SmartDashboard.getNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-        PIVOT_ARM_PID[2] = SmartDashboard.getNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-        
-        if (PIVOT_ARM_PID[0] != armPIDController.getP()) {
-            armPIDController.setP(PIVOT_ARM_PID[0]);
-        }
-        if (PIVOT_ARM_PID[1] != armPIDController.getI()) {
-            armPIDController.setI(PIVOT_ARM_PID[1]);
-        }
-        if (PIVOT_ARM_PID[2] != armPIDController.getD()) {
-            armPIDController.setD(PIVOT_ARM_PID[2]);
-        }
+        p.updateFunction(() -> armPIDController.setP(p.get()));
+        i.updateFunction(() -> armPIDController.setI(i.get()));
+        d.updateFunction(() -> armPIDController.setD(d.get()));
+        ff.updateFunction(() -> armPIDController.setFF(ff.get()));
+        maxOutput.updateFunction(() -> armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
     }
 
     public void manualControl(double newSpeed) {

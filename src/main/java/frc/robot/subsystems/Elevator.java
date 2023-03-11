@@ -12,6 +12,7 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.TunableNumber;
 
 public class Elevator extends SnailSubsystem{
 
@@ -22,6 +23,13 @@ public class Elevator extends SnailSubsystem{
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
+
+    private TunableNumber p = new TunableNumber("Pivot Arm P", ELEVATOR_PID[0]);
+    private TunableNumber i = new TunableNumber("Pivot Arm I", ELEVATOR_PID[1]);
+    private TunableNumber d = new TunableNumber("Pivot Arm D", ELEVATOR_PID[2]);
+    private TunableNumber ff = new TunableNumber("Pivot Arm FF", ELEVATOR_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("Pivot Arm IZ", ELEVATOR_PID_MAX_OUTPUT);
+
 
     public enum State {
         MANUAL,
@@ -34,11 +42,11 @@ public class Elevator extends SnailSubsystem{
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         pidController = elevatorMotor.getPIDController();
 
-        pidController.setP(ELEVATOR_PID[0]);
-        pidController.setI(ELEVATOR_PID[1]);
-        pidController.setD(ELEVATOR_PID[2]);
-        pidController.setFF(ELEVATOR_PID[3]);
-        pidController.setOutputRange(-ELEVATOR_PID_MAX_OUTPUT, ELEVATOR_PID_MAX_OUTPUT);
+        pidController.setP(p.get());
+        pidController.setI(i.get());
+        pidController.setD(d.get());
+        pidController.setFF(ff.get());
+        pidController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
         encoder = elevatorMotor.getEncoder();
         encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
@@ -100,7 +108,11 @@ public class Elevator extends SnailSubsystem{
     @Override
     public void tuningPeriodic() {
         // TODO Auto-generated method stub
-        
+        p.updateFunction(() -> pidController.setP(p.get()));
+        i.updateFunction(() -> pidController.setI(i.get()));
+        d.updateFunction(() -> pidController.setD(d.get()));
+        ff.updateFunction(() -> pidController.setFF(ff.get()));
+        maxOutput.updateFunction(() -> pidController.setOutputRange(-maxOutput.get(), maxOutput.get()));
     }
     
 }

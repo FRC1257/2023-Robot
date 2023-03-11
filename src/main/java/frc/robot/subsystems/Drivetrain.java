@@ -391,6 +391,9 @@ public class Drivetrain extends SnailSubsystem {
  
                 Trajectory.State currentState = trajectory.sample(pathTimer.get());
                 // ChassisSpeeds chassisSpeeds = ramseteController.calculate(driveOdometry.getPoseMeters(), currentState);
+                if (RobotBase.isSimulation()) {
+                    setRobotPose(currentState.poseMeters);
+                }
                 ChassisSpeeds chassisSpeeds = ramseteController.calculate(poseEstimator.getEstimatedPosition(), currentState); 
                 DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(chassisSpeeds);
  
