@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
+import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
@@ -36,7 +37,6 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private Pose2d[] ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
-    private Pose2d[] ALLIANCE_PARK_POSE;
     private Pose2d[] chargePose;
 
     public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
@@ -153,6 +153,10 @@ public class GenerateTrajectories {
 
     }
 
+    private Pose2d getHitAndRunPose2d() {
+        return flipPose(ALLIANCE_CHARGE_POSE_WAYPOINT[0]);
+    }
+
     private Pose2d getLeaveCommunityPose(Pose2d currentPose) {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
@@ -191,10 +195,12 @@ public class GenerateTrajectories {
             addPiecePickup();
             turn180();
         } else if (leaveTarmac) {
-            addLeaveCommunityTrajectory();
             if (hitAndRun) {
-                addChargeTrajectory();
+                addOverChargeTrajectory();
+                this.command.addCommands(new PDBalanceCommand(drivetrain, false).withTimeout(8));
                 return;
+            } else {
+                addLeaveCommunityTrajectory();
             }
         }
 
@@ -209,6 +215,7 @@ public class GenerateTrajectories {
         // step 3 go for charge
         else if (charge) {
             addChargeTrajectory();
+            this.command.addCommands(new PDBalanceCommand(drivetrain, false).withTimeout(8));
         }
 
         // if none of these have run something has gone wrong
@@ -360,24 +367,6 @@ public class GenerateTrajectories {
         return trajPoints;
     }
 
-    private void addMobilityTrajectory() {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
-        trajPoints.add(ALLIANCE_CHARGE_POSE_WAYPOINT[0]);
-
-        ToPosCommand MobilityBonusStep = new ToPosCommand(drivetrain, trajPoints, false);
-        currentPose = ALLIANCE_CHARGE_POSE_WAYPOINT[0];
-        addToPosCommand(MobilityBonusStep);
-    }
-
-    private void addReverseMobilityChargeTrajectory() {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
-        trajPoints.add(getCargoLocation());
-
-        ToPosCommand MobilityReverseStep = new ToPosCommand(drivetrain, trajPoints, true);
-    }
-
     private void addCargoTrajectory() {
         backUpAndTurn();
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
@@ -428,16 +417,21 @@ public class GenerateTrajectories {
     }
 
     private void addChargeTrajectory() {
-        if (!hitAndRun) {
-            ToPosCommand step3 = new ToPosCommand(drivetrain,
-                    List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
-            currentPose = getChargeLocation();
-            addToPosCommand(step3);
-        } else {
-            ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeLocation()), true);
-            currentPose = getChargeLocation();
-            addToPosCommand(step3);
-        }
+        ToPosCommand step3 = new ToPosCommand(drivetrain,
+                List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
+        currentPose = getChargeLocation();
+        addToPosCommand(step3);
+    }
+
+    private void addOverChargeTrajectory() {
+        ToPosCommand step3 = new ToPosCommand(drivetrain,
+                List.of(currentPose, getHitAndRunPose2d()), false);
+        currentPose = getHitAndRunPose2d();
+        addToPosCommand(step3);
+
+        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[1]), true);
+        currentPose = getChargeLocation();
+        addToPosCommand(step2);
     }
 
     public SequentialCommandGroup getCommand() {

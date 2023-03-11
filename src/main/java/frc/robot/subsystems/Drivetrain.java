@@ -717,5 +717,13 @@ public class Drivetrain extends SnailSubsystem {
     public Pose2d getPosition() {
         return poseEstimator.getEstimatedPosition();
     }
+
+    public boolean getSlowMode() {
+        return slowModeEnabled;
+    }
+
+    public void setSlowMode(boolean slowMode) {
+        slowModeEnabled = slowMode;
+    }
 }
  
