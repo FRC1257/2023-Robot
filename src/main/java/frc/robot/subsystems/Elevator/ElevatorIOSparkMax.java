@@ -12,6 +12,7 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorIOSparkMax implements ElevatorIO {
     
@@ -22,11 +23,6 @@ public class ElevatorIOSparkMax implements ElevatorIO {
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
-    
-    public enum State {
-        MANUAL,
-        PID
-    }
 
     private State elevatorState = State.MANUAL; 
 
@@ -87,19 +83,23 @@ public class ElevatorIOSparkMax implements ElevatorIO {
         return encoder.getPosition();
     }
 
+    public boolean getLimitSwitch() {
+        return limitSwitch.get();
+    }
+
     @Override
-    public void displayShuffleboard() {
+    public void displayShuffleboardIO() {
         SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
     }
 
     @Override
-    public void tuningInit() {
+    public void tuningInitIO() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void tuningPeriodic() {
+    public void tuningPeriodicIO() {
         // TODO Auto-generated method stub
         
     }

@@ -1,107 +1,60 @@
 package frc.robot.subsystems.Elevator;
-import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_MAX_OUTPUT;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_TOLERANCE;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_REV_TO_POS_FACTOR;
+import static frc.robot.Constants.ElevatorConstants.*;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import frc.robot.subsystems.SnailSubsystem;
 
 public class Elevator extends SnailSubsystem{
 
-    private CANSparkMax elevatorMotor;
-    private SparkMaxPIDController pidController;
-    private RelativeEncoder encoder;
-    private DigitalInput limitSwitch;
-    private double speed;
-    private double setpoint;
-    private boolean isPIDFinished;
+    private ElevatorIO io;
+    private MechanismLigament2d ElevatorMechanism;
 
-    public enum State {
-        MANUAL,
-        PID;
+    public Elevator(ElevatorIO io){
+       this.io = io;
     }
-
-    private State elevatorState = State.MANUAL; 
-
-    public Elevator() {
-        elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
-        pidController = elevatorMotor.getPIDController();
-
-        pidController.setP(ELEVATOR_PID[0]);
-        pidController.setI(ELEVATOR_PID[1]);
-        pidController.setD(ELEVATOR_PID[2]);
-        pidController.setFF(ELEVATOR_PID[3]);
-        pidController.setOutputRange(-ELEVATOR_PID_MAX_OUTPUT, ELEVATOR_PID_MAX_OUTPUT);
-
-        encoder = elevatorMotor.getEncoder();
-        encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
-        encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
-        encoder.setPosition(0.0);
-
-        limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID);
-    }
-
 
     @Override
     public void update() {
-        switch(elevatorState) {
-            case MANUAL:
-                elevatorMotor.set(speed);
-                break;
-            case PID:
-                pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
-                if (Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE ) {
-                    endPID();
-                }
-                break;
-        }
-    }
-
-    public void endPID() {
-        elevatorState = State.MANUAL;
-    }
-
-    public void manual(double speed){
-        this.speed = speed;
-        elevatorState = State.MANUAL;
+        io.updateIO();
     }
 
     public void setPosition(double setpoint) {
-        elevatorState = State.PID;
-        if (!isPIDFinished) this.setpoint = setpoint;
-   }
-
-    public State getState() {
-        return elevatorState;
-    }
-
-    public double getPosition() {
-        return encoder.getPosition();
+        io.setPosition(setpoint);
     }
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
+        io.displayShuffleboardIO();
     }
 
     @Override
     public void tuningInit() {
-        // TODO Auto-generated method stub
-        
+        io.tuningInitIO();
     }
 
     @Override
     public void tuningPeriodic() {
-        // TODO Auto-generated method stub
-        
+        io.tuningPeriodicIO();
+    }
+
+    public void manualControl(double newSpeed) {
+        io.manual(newSpeed);
+    }
+
+    public ElevatorIO.State getState() { return io.getState(); }
+
+    public void setMechanism(MechanismLigament2d mechanism) {
+        ElevatorMechanism = mechanism;
+    }
+
+    public MechanismLigament2d append(MechanismLigament2d mechanism) {
+        return ElevatorMechanism.append(mechanism);
+    }
+
+    public MechanismLigament2d getArmMechanism() {
+        return new MechanismLigament2d("Elevator", ELEVATOR_ARM_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
     }
     
 }
