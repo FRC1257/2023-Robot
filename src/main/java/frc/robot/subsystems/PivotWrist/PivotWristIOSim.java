@@ -16,9 +16,9 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 
 public class PivotWristIOSim implements PivotWristIO{
     public static class Constants {
-        public static final int kMotorPort = 0;
-        public static final int kEncoderAChannel = 5; //these channels used to be used by drivetrain
-        public static final int kEncoderBChannel = 6;
+        public static final int kMotorPort = 10; // random channel to use
+        public static final int kEncoderAChannel = 7; //these channels used to be used by drivetrain
+        public static final int kEncoderBChannel = 8; // these are random to fix dio/pwm error
       
         // The P gain for the PID controller that drives this arm.
         public static final double kDefaultArmKp = 50.0;

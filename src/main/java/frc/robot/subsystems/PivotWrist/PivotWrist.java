@@ -79,8 +79,6 @@ public class PivotWrist extends SnailSubsystem {
         return new MechanismLigament2d("Pivot Arm", WRIST_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
     }
 
-   
-    
     public MechanismLigament2d getWristMechanism() {
         return new MechanismLigament2d("Pivot Wrist", WRIST_LENGTH, 0.0, 5, new Color8Bit(Color.kRed));
     }
