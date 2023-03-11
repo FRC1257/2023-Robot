@@ -191,6 +191,10 @@ public class RobotContainer {
             elevator = new Elevator(new ElevatorIOSparkMax());
         }
         
+        // Elevator
+        elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getLeftX));
+        elevator.setMechanism(root.append(elevator.getElevatorMechanism()));
+
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
         pivotArm.setMechanism(elevator.append(pivotArm.getArmMechanism()));
 
@@ -216,7 +220,6 @@ public class RobotContainer {
         subsystems.add(pivotWrist);
         subsystems.add(intake);
         subsystems.add(elevator);
-
 
         // generate auto
         generateTrajectories = new GenerateTrajectories(

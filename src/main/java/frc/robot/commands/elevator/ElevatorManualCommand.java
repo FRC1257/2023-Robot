@@ -1,14 +1,17 @@
 package frc.robot.commands.elevator;
 
 import frc.robot.subsystems.Elevator.Elevator;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ElevatorManualCommand extends CommandBase{
     private Elevator elevator;
-    private double speed;
-	public ElevatorManualCommand(Elevator elevator, double speed) {
+    private DoubleSupplier speedSupplier;
+	public ElevatorManualCommand(Elevator elevator, DoubleSupplier speedSupplier) {
         this.elevator = elevator;
-        this.speed = speed;
+        this.speedSupplier = speedSupplier;
         addRequirements(elevator);
     }
 
@@ -19,7 +22,7 @@ public class ElevatorManualCommand extends CommandBase{
 
     @Override
     public void execute() {
-        elevator.manualControl(speed);
+        elevator.manualControl(speedSupplier.getAsDouble());
     }
 
     @Override

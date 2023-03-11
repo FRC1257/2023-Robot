@@ -53,7 +53,7 @@ public class Elevator extends SnailSubsystem{
         return ElevatorMechanism.append(mechanism);
     }
 
-    public MechanismLigament2d getArmMechanism() {
+    public MechanismLigament2d getElevatorMechanism() {
         return new MechanismLigament2d("Elevator", ELEVATOR_ARM_LENGTH, 0, 5, new Color8Bit(Color.kAqua));
     }
     
