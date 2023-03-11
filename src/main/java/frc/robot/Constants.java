@@ -154,10 +154,10 @@ public final class Constants {
     }
 
     public static class ElevatorSimConstants {
-        public static final int kMotorPort = 0;
-        public static final int kEncoderAChannel = 9;
-        public static final int kEncoderBChannel = 10;
-        public static final int kJoystickPort = 0;
+        public static final int kMotorPort = 16;
+        public static final int kEncoderAChannel = 23;
+        public static final int kEncoderBChannel = 24;
+        public static final int kJoystickPort = 51;
       
         public static final double kElevatorKp = 5;
         public static final double kElevatorKi = 0;

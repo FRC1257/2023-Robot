@@ -18,7 +18,7 @@ import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.intakearm.IntakeArmPIDCommand;
+// import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
@@ -33,7 +33,7 @@ import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
-import frc.robot.commands.intake.*;
+// import frc.robot.commands.intake.*;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.subsystems.SnailSubsystem;
@@ -91,8 +91,8 @@ public class RobotContainer {
     private Drivetrain drivetrain;
     private Vision vision;
     private PivotArm pivotArm;
-    private IntakeArm intakearm;
-    private Intake intake;
+    // private IntakeArm intakearm;
+    // private Intake intake;
     private Elevator elevator;
 
     private Mechanism2d mech = new Mechanism2d(3, 3);
@@ -203,12 +203,12 @@ public class RobotContainer {
         pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
         pivotWrist.setMechanism(pivotArm.append(pivotWrist.getWristMechanism()));
 
-        intakearm = new IntakeArm();
+        // intakearm = new IntakeArm();
         
         
         // Intake
-        intake = new Intake();
-        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+        // intake = new Intake();
+        // intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -216,9 +216,9 @@ public class RobotContainer {
         subsystems.add(drivetrain);
         subsystems.add(vision);
         subsystems.add(pivotArm);
-        subsystems.add(intakearm);
+        // subsystems.add(intakearm);
         subsystems.add(pivotWrist);
-        subsystems.add(intake);
+        // subsystems.add(intake);
         subsystems.add(elevator);
 
         // generate auto
@@ -274,8 +274,9 @@ public class RobotContainer {
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         // driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
         // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
-        operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
-        operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
+
+        // operatorController.getButton(Button.kA.value).whileTrue(new IntakeEjectingCommand(intake));
+        // operatorController.getButton(Button.kB.value).whileTrue(new IntakeIntakingCommand(intake));
 
         
         // Operator bindings
