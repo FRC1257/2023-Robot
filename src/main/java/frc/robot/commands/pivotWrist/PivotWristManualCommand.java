@@ -4,7 +4,7 @@ package frc.robot.commands.pivotWrist;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.PivotWrist;
+import frc.robot.subsystems.PivotWrist.PivotWrist;
 
 public class PivotWristManualCommand extends CommandBase {
 
