@@ -12,6 +12,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.TunableNumber;
+
 // need to add constants: import static frc.robot.Constants.IntakeArm(actually pivot wrist).*; 
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
@@ -38,6 +40,12 @@ public class PivotWrist extends SnailSubsystem {
         MANUAL,
         PID;
     }
+
+    private TunableNumber p = new TunableNumber("Pivot Wrist P", WRIST_PID[0]);
+    private TunableNumber i = new TunableNumber("Pivot Wrist I", WRIST_PID[1]);
+    private TunableNumber d = new TunableNumber("Pivot Wrist D", WRIST_PID[2]);
+    private TunableNumber ff = new TunableNumber("Pivot Wrist FF", WRIST_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("Pivot Wrist Max Output", WRIST_PID_MAX_OUTPUT);
 
     State state = State.MANUAL;
 
@@ -142,13 +150,13 @@ public class PivotWrist extends SnailSubsystem {
 
     @Override
     public void tuningInit() {
-        SmartDashboard.putNumber("Pivot Wrist PID P", WRIST_PID[0]);
-        SmartDashboard.putNumber("Pivot Wrist PID I", WRIST_PID[1]);
-        SmartDashboard.putNumber("Pivot Wrist PID D", WRIST_PID[2]);
-        SmartDashboard.putNumber("Pivot Wrist PID FF", WRIST_PID[3]);
+        p.reset();
+        i.reset();
+        d.reset();
+        ff.reset();
+        maxOutput.reset();
 
         SmartDashboard.putNumber("Pivot Wrist PID Tolerance", WRIST_PID_TOLERANCE);
-        SmartDashboard.putNumber("Pivot Wrist PID Max Output", WRIST_PID_MAX_OUTPUT);
         SmartDashboard.putNumber("Pivot Wrist Prof Max Vel", WRIST_MAX_VEL);
         SmartDashboard.putNumber("Pivot Wrist Prof Max Accel", WRIST_MAX_ACC);
 
@@ -159,28 +167,18 @@ public class PivotWrist extends SnailSubsystem {
     @Override
     public void tuningPeriodic() {
         // Change the P, I, and D values
-        WRIST_PID[0] = SmartDashboard.getNumber("Pivot Wrist P", WRIST_PID[0]);
-        WRIST_PID[1] = SmartDashboard.getNumber("Pivot Wrist PID I", WRIST_PID[1]);
-        WRIST_PID[2] = SmartDashboard.getNumber("Pivot Wrist PID D", WRIST_PID[2]);
-        WRIST_PID[3] = SmartDashboard.getNumber("Pivot Wrist PID FF", WRIST_PID[3]);
+        p.updateFunction(() -> wristPID.setP(p.get()));
+        i.updateFunction(() -> wristPID.setI(i.get()));
+        d.updateFunction(() -> wristPID.setD(d.get()));
+        ff.updateFunction(() -> wristPID.setFF(ff.get()));
+        maxOutput.updateFunction(() -> wristPID.setOutputRange(-maxOutput.get(), maxOutput.get()));
 
         WRIST_PID_TOLERANCE = SmartDashboard.getNumber("Pivot Wrist PID Tolerance", WRIST_PID_TOLERANCE);
-        WRIST_PID_MAX_OUTPUT = SmartDashboard.getNumber("Pivot Wrist PID Max Output", WRIST_PID_MAX_OUTPUT);
 
         WRIST_MAX_VEL = SmartDashboard.getNumber("Pivot Wrist Prof Max Vel", WRIST_MAX_VEL);
         WRIST_MAX_ACC = SmartDashboard.getNumber("Pivot Wrist Prof Max Accel", WRIST_MAX_ACC);
 
         // Set PID
-        if (wristPID.getP() != WRIST_PID[0])
-            wristPID.setP(WRIST_PID[0]);
-        if (wristPID.getI() != WRIST_PID[1])
-            wristPID.setI(WRIST_PID[1]);
-        if (wristPID.getD() != WRIST_PID[2])
-            wristPID.setD(WRIST_PID[2]);
-        if (wristPID.getFF() != WRIST_PID[3])
-            wristPID.setFF(WRIST_PID[3]);
-        if (wristPID.getOutputMin() != -WRIST_PID_MAX_OUTPUT)
-            wristPID.setOutputRange(-WRIST_PID_MAX_OUTPUT, WRIST_PID_MAX_OUTPUT);
         if (wristPID.getSmartMotionMaxVelocity(WRIST_PID_SLOT_VEL) != WRIST_MAX_VEL)
             wristPID.setSmartMotionMaxVelocity(WRIST_MAX_VEL, WRIST_PID_SLOT_VEL);
         if (wristPID.getSmartMotionMaxAccel(WRIST_PID_SLOT_ACC) != WRIST_MAX_ACC)

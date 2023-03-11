@@ -5,7 +5,6 @@ import edu.wpi.first.math.controller.PIDController;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
 import frc.robot.util.Gyro;
-import frc.robot.util.TunableNumber;
 import edu.wpi.first.math.MathUtil;
 
 public class PDBalanceCommand extends CommandBase {
@@ -15,12 +14,10 @@ public class PDBalanceCommand extends CommandBase {
 	private double error;
 	private boolean stopAlone;
 
-	private TunableNumber p = new TunableNumber("PDBalanceCommand P", Autonomous.BALANCE_KP);
-	private TunableNumber d = new TunableNumber("PDBalanceCommand D", Autonomous.BALANCE_KD);
-
 	public PDBalanceCommand(Drivetrain drivetrain, boolean stopAlone) {
+		
 		this.drivetrain = drivetrain;
-		this.controller = new PIDController(p.get(), 0, d.get());
+		this.controller = new PIDController(Autonomous.BALANCE_KP, 0, Autonomous.BALANCE_KD);
 		this.controller.setTolerance(Autonomous.BALANCE_THRESHOLD_DEGREES);
 
 		gyro = Gyro.getInstance();
@@ -33,13 +30,6 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public void execute() {
-		if (p.checkUpdate()) {
-			controller.setP(p.get());
-		}
-		if (d.checkUpdate()) {
-			controller.setD(d.get());
-		}
-		
 		double velocity = controller.calculate(gyro.getRollAngle(), Autonomous.BALANCE_SETPOINT_ANGLE);
 		error = gyro.getRollAngle();
 		drivetrain.velocityDrive(-MathUtil.clamp(velocity, -1.0, 1.0), 0);
@@ -52,6 +42,8 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES;
+		if (stopAlone)
+			return Math.abs(error) < Autonomous.BALANCE_THRESHOLD_DEGREES;
+		return false;
 	}
 }

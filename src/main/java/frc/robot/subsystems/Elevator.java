@@ -30,7 +30,6 @@ public class Elevator extends SnailSubsystem{
     private TunableNumber ff = new TunableNumber("Pivot Arm FF", ELEVATOR_PID[3]);
     private TunableNumber maxOutput = new TunableNumber("Pivot Arm IZ", ELEVATOR_PID_MAX_OUTPUT);
 
-
     public enum State {
         MANUAL,
         PID;
@@ -101,13 +100,15 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void tuningInit() {
-        // TODO Auto-generated method stub
-        
+        p.reset();
+        i.reset();
+        d.reset();
+        ff.reset();
+        maxOutput.reset();
     }
 
     @Override
     public void tuningPeriodic() {
-        // TODO Auto-generated method stub
         p.updateFunction(() -> pidController.setP(p.get()));
         i.updateFunction(() -> pidController.setI(i.get()));
         d.updateFunction(() -> pidController.setD(d.get()));

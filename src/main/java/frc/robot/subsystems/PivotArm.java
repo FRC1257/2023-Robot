@@ -107,12 +107,11 @@ public class PivotArm extends SnailSubsystem {
     @Override
     public void tuningInit() {
         // TODO include PID tuning
-        SmartDashboard.putNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-        SmartDashboard.putNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-        SmartDashboard.putNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-
-        SmartDashboard.putNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
-        SmartDashboard.putNumber("Pivot Arm Tolerance", PIVOT_ARM_PID_TOLERANCE);
+        p.reset();
+        i.reset();
+        d.reset();
+        ff.reset();
+        maxOutput.reset();
     }
 
     @Override
