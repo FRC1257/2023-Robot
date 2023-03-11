@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ElevatorIOSim implements AutoCloseable {
+public class ElevatorIOSim implements ElevatorIO {
   // This gearbox represents a gearbox containing 4 Vex 775pro motors.
   private final DCMotor m_elevatorGearbox = DCMotor.getVex775Pro(4);
 
@@ -112,7 +112,6 @@ public class ElevatorIOSim implements AutoCloseable {
     m_elevatorMech2d.setLength(m_encoder.getDistance());
   }
 
-  @Override
   public void close() {
     m_encoder.close();
     m_motor.close();

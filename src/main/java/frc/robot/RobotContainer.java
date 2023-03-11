@@ -23,8 +23,12 @@ import frc.robot.commands.intakearm.IntakeArmPIDCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
-import frc.robot.commands.elevator.ElevatorExtendCommand;
-import frc.robot.commands.elevator.ElevatorRetractCommand;
+// doesn't exist since no longer use pneumatics
+// import frc.robot.commands.elevator.ElevatorExtendCommand;
+// import frc.robot.commands.elevator.ElevatorRetractCommand;
+import frc.robot.commands.elevator.ElevatorManualCommand;
+import frc.robot.commands.elevator.ElevatorPIDCommand;
+
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -40,6 +44,9 @@ import frc.robot.subsystems.PivotWrist.PivotWrist;
 import frc.robot.subsystems.PivotWrist.PivotWristIO;
 import frc.robot.subsystems.PivotWrist.PivotWristIOSim;
 import frc.robot.subsystems.PivotWrist.PivotWristIOSparkMax;
+import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorIOSim;
+import frc.robot.subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
@@ -170,16 +177,18 @@ public class RobotContainer {
 
        // root --> elevagtor --> arm --> wrist 
         MechanismRoot2d root = mech.getRoot("elevator", 1, 0.5);
-        elevator = new Elevator();
-        elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
+        // elevator = new Elevator();
+        // elevator.setElevatorMechanism(root.append(elevator.getElevatorMechanism()));
 
         // Pivot arm
         if (isSimulation) {
             pivotArm = new PivotArm(new PivotArmIOSim());
             pivotWrist = new PivotWrist(new PivotWristIOSim());
+            elevator = new Elevator(new ElevatorIOSim());
         } else {
             pivotArm = new PivotArm(new PivotArmIOSparkMax());
             pivotWrist = new PivotWrist(new PivotWristIOSparkMax());
+            elevator = new Elevator(new ElevatorIOSparkMax());
         }
         
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
@@ -278,8 +287,9 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).onTrue(new ClawNeutralCommand(claw));
 
         // Operator Bindings
-        operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
-        operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
+        // not using since no longer using pneumatics
+        // operatorController.getButton(Button.kX.value).onTrue(new ElevatorExtendCommand(elevator));
+        // operatorController.getButton(Button.kY.value).onTrue(new ElevatorRetractCommand(elevator));
 
     }
 
