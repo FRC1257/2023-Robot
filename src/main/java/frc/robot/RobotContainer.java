@@ -34,6 +34,7 @@ import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
+import frc.robot.util.SnailController.DPad;
 
 import java.util.ArrayList;
 
@@ -280,8 +281,8 @@ public class RobotContainer {
         // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
         
 
-        driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnAngleCommand(drivetrain, 90));
-        driveController.getButton(Button.kRightBumper.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
+        driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
         
 
     }
