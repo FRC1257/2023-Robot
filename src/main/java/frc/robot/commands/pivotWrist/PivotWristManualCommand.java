@@ -25,7 +25,7 @@ public class PivotWristManualCommand extends CommandBase {
 
     @Override
     public void execute() {
-        pivotWrist.manual(speedSupplier.getAsDouble());
+        pivotWrist.manualControl(speedSupplier.getAsDouble());
     }
 
     @Override

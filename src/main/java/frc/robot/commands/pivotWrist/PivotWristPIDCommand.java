@@ -3,6 +3,7 @@ package frc.robot.commands.pivotWrist;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PivotWrist.PivotWrist;
+import frc.robot.subsystems.PivotWrist.PivotWristIO;
 
 public class PivotWristPIDCommand extends CommandBase {
     private PivotWrist pivotWrist;
@@ -25,11 +26,11 @@ public class PivotWristPIDCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        pivotWrist.endPID();
+        pivotWrist.manualControl(0);
     }
 
     @Override
     public boolean isFinished() {
-        return pivotWrist.getState() != PivotWrist.State.PID;
+        return pivotWrist.getState() != PivotWristIO.State.PID;
     }
 }
