@@ -19,7 +19,7 @@ public class ElevatorManualCommand extends CommandBase{
 
     @Override
     public void execute() {
-        elevator.manual(speed);
+        elevator.manualControl(speed);
     }
 
     @Override

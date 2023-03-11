@@ -2,6 +2,7 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorIO;
 
 public class ElevatorPIDCommand extends CommandBase{
     private Elevator elevator;
@@ -23,11 +24,11 @@ public class ElevatorPIDCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        elevator.endPID();
+        elevator.manualControl(0);
     }
 
     @Override
     public boolean isFinished() {
-        return elevator.getState() != Elevator.State.PID;
+        return elevator.getState() != ElevatorIO.State.PID;
     }
 }
