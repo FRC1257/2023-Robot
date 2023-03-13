@@ -283,27 +283,27 @@ public final class Constants {
         public static int BALANCE_STEPS_THRESHOLD = 100;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {
-                new Pose2d(1.425 + trackWidthAdded, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
-                new Pose2d(1.425 + trackWidthAdded, 1.044, Rotation2d.fromDegrees(0)), // score 2
-                new Pose2d(1.425 + trackWidthAdded, 1.579, Rotation2d.fromDegrees(0)), // 3
-                new Pose2d(1.425 + trackWidthAdded, 2.204, Rotation2d.fromDegrees(0)), // ...
-                new Pose2d(1.425 + trackWidthAdded, 2.773, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425 + trackWidthAdded, 3.273, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425 + trackWidthAdded, 3.831, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425 + trackWidthAdded, 4.433, Rotation2d.fromDegrees(0)),
-                new Pose2d(1.425 + trackWidthAdded, 5.082, Rotation2d.fromDegrees(0))
+                new Pose2d(1.425 + trackWidthAdded, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
+                new Pose2d(1.425 + trackWidthAdded, 1.044, Rotation2d.fromDegrees(180)), // score 2
+                new Pose2d(1.425 + trackWidthAdded, 1.579, Rotation2d.fromDegrees(180)), // 3
+                new Pose2d(1.425 + trackWidthAdded, 2.204, Rotation2d.fromDegrees(180)), // ...
+                new Pose2d(1.425 + trackWidthAdded, 2.773, Rotation2d.fromDegrees(180)),
+                new Pose2d(1.425 + trackWidthAdded, 3.273, Rotation2d.fromDegrees(180)),
+                new Pose2d(1.425 + trackWidthAdded, 3.831, Rotation2d.fromDegrees(180)), // todo change
+                new Pose2d(1.425 + trackWidthAdded, 4.433, Rotation2d.fromDegrees(180)),
+                new Pose2d(1.425 + trackWidthAdded, 5.082, Rotation2d.fromDegrees(180))
         };
 
         public static Pose2d[] RED_SCORE_POSE = new Pose2d[] {
-                new Pose2d(15.15 - trackWidthAdded, 0.453, Rotation2d.fromDegrees(180)), // Score location 1 on blue side
-                new Pose2d(15.15 - trackWidthAdded, 1.044, Rotation2d.fromDegrees(180)), // score 2
-                new Pose2d(15.15 - trackWidthAdded, 1.579, Rotation2d.fromDegrees(180)), // 3
-                new Pose2d(15.15 - trackWidthAdded, 2.204, Rotation2d.fromDegrees(180)), // ...
-                new Pose2d(15.15 - trackWidthAdded, 2.773, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15 - trackWidthAdded, 3.273, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15 - trackWidthAdded, 3.831, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15 - trackWidthAdded, 4.433, Rotation2d.fromDegrees(180)),
-                new Pose2d(15.15 - trackWidthAdded, 5.082, Rotation2d.fromDegrees(180))
+                new Pose2d(15.15 - trackWidthAdded, 0.453, Rotation2d.fromDegrees(0)), // Score location 1 on blue side
+                new Pose2d(15.15 - trackWidthAdded, 1.044, Rotation2d.fromDegrees(0)), // score 2
+                new Pose2d(15.15 - trackWidthAdded, 1.579, Rotation2d.fromDegrees(0)), // 3
+                new Pose2d(15.15 - trackWidthAdded, 2.204, Rotation2d.fromDegrees(0)), // ...
+                new Pose2d(15.15 - trackWidthAdded, 2.773, Rotation2d.fromDegrees(0)),
+                new Pose2d(15.15 - trackWidthAdded, 3.273, Rotation2d.fromDegrees(0)),
+                new Pose2d(15.15 - trackWidthAdded, 3.831, Rotation2d.fromDegrees(0)),
+                new Pose2d(15.15 - trackWidthAdded, 4.433, Rotation2d.fromDegrees(0)),
+                new Pose2d(15.15 - trackWidthAdded, 5.082, Rotation2d.fromDegrees(0))
         };
 
         public static Pose2d[] BLUE_CARGO_POSE = new Pose2d[] {
