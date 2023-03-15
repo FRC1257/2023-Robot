@@ -405,7 +405,7 @@ public final class Constants {
         // Setpoints between -1 and 1
         public static double PIVOT_ARM_SETPOINT_UP = 216.6;
         public static double PIVOT_ARM_SETPOINT_MID = 216.6;
-        public static double PIVOT_ARM_SETPOINT_INTAKE = 260;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 260; // also used for low score
         public static double PIVOT_ARM_SETPOINT_HOLD = 0;
     }
 

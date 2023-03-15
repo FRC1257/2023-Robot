@@ -8,18 +8,17 @@ import frc.robot.commands.pivotArm.PivotArmPIDCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT;
 
 public class IntakeCommand extends SequentialCommandGroup{
-    public IntakeCommand(PivotArm pivotarm, PivotWrist pivotwrist, Elevator elevator, Claw claw) {
+    public IntakeCommand(Elevator elevator, PivotArm pivotarm, PivotWrist pivotwrist) {
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
             new ParallelCommandGroup( // run intake entire time
-                new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND),
+                new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_RETRACT),
                 new SequentialCommandGroup(
                     new PivotArmPIDCommand(pivotarm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE),
-                    new PivotWristPIDCommand(pivotwrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE),
-                    new ClawIntakeCommand(claw)
+                    new PivotWristPIDCommand(pivotwrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE)
                 )   
             )
         );

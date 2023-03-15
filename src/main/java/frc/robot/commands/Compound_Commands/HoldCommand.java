@@ -11,15 +11,14 @@ import frc.robot.subsystems.*;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
 public class HoldCommand extends SequentialCommandGroup{
-    public HoldCommand(PivotArm pivotarm, PivotWrist pivotwrist, Elevator elevator, Claw claw) {
+    public HoldCommand(Elevator elevator, PivotArm pivotarm, PivotWrist pivotwrist) {
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
             new ParallelCommandGroup( // run intake entire time
                 new ElevatorPIDCommand(elevator, 0),
                 new SequentialCommandGroup(
                     new PivotArmPIDCommand(pivotarm, 0),
-                    new PivotWristPIDCommand(pivotwrist, 0),
-                    new ClawIntakeCommand(claw)
+                    new PivotWristPIDCommand(pivotwrist, 0)
                 )   
             )
         );
