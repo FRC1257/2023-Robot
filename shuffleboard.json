@@ -1166,19 +1166,6 @@
               "_showGlyph": false
             }
           },
-          "6,4": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[2]",
-              "_title": "Start",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "2,0": {
             "size": [
               2,
@@ -1387,7 +1374,7 @@
       }
     },
     {
-      "title": "3 Ball Auto",
+      "title": "3 Piece Auto",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -1733,9 +1720,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "x": 0.800000011920929,
+    "y": 0.800000011920929,
+    "width": 1534.4000244140625,
+    "height": 814.4000244140625
   }
 }

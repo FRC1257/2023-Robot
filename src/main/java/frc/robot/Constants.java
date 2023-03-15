@@ -34,24 +34,24 @@ public final class Constants {
                 public static final int kLeftMotor2Port = 1;
                 public static final int kRightMotor1Port = 2;
                 public static final int kRightMotor2Port = 3;
-            
+                
                 public static final int[] kLeftEncoderPorts = new int[] {0, 1};
                 public static final int[] kRightEncoderPorts = new int[] {2, 3};
                 public static final boolean kLeftEncoderReversed = false;
                 public static final boolean kRightEncoderReversed = true;
-            
+                
                 public static final double kTrackwidthMeters = 0.69;
                 public static final DifferentialDriveKinematics kDriveKinematics =
-                    new DifferentialDriveKinematics(kTrackwidthMeters);
-            
+                        new DifferentialDriveKinematics(kTrackwidthMeters);
+                
                 public static final int kEncoderCPR = 1024;
                 public static final double kWheelDiameterMeters = 0.15;
                 public static final double kEncoderDistancePerPulse =
-                    // Assumes the encoders are directly mounted on the wheel shafts
-                    (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-            
+                        // Assumes the encoders are directly mounted on the wheel shafts
+                        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+                
                 public static final boolean kGyroReversed = true;
-            
+                
                 // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
                 // These characterization values MUST be determined either experimentally or theoretically
                 // for *your* robot's drive.
@@ -60,25 +60,25 @@ public final class Constants {
                 public static final double ksVolts = 0.22;
                 public static final double kvVoltSecondsPerMeter = 1.98;
                 public static final double kaVoltSecondsSquaredPerMeter = 0.2;
-            
+                
                 // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
                 // These characterization values MUST be determined either experimentally or theoretically
                 // for *your* robot's drive.
                 // These two values are "angular" kV and kA
                 public static final double kvVoltSecondsPerRadian = 1.5;
                 public static final double kaVoltSecondsSquaredPerRadian = 0.3;
-            
+                
                 public static final LinearSystem<N2, N2, N2> kDrivetrainPlant =
-                    LinearSystemId.identifyDrivetrainSystem(
+                        LinearSystemId.identifyDrivetrainSystem(
                         kvVoltSecondsPerMeter,
                         kaVoltSecondsSquaredPerMeter,
                         kvVoltSecondsPerRadian,
                         kaVoltSecondsSquaredPerRadian);
-            
+                
                 // Example values only -- use what's on your physical robot!
                 public static final DCMotor kDriveGearbox = DCMotor.getCIM(2);
                 public static final double kDriveGearing = 8;
-            
+                
                 // Example value only - as above, this must be tuned for your drive!
                 public static final double kPDriveVel = 8.5;
               }
@@ -86,7 +86,7 @@ public final class Constants {
         public static final class OIConstants {
                 public static final int kDriverControllerPort = 0;
         }
-        
+
         public static final class AutoConstants {
                 public static final double kMaxSpeedMetersPerSecond = 3;
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3;
@@ -157,9 +157,10 @@ public final class Constants {
         public static double WRIST_SETPOINT_BOT = -.1257; // in enc
 
         // setpoints for the wrist
-        public static double WRIST_SETPOINT_INTAKE = 0.5;
-        public static double WRIST_SETPOINT_HIGH = 0.6;
-        public static double WRIST_SETPOINT_MID = 0.7;
+        public static double WRIST_SETPOINT_INTAKE = -133.4;
+        public static double WRIST_SETPOINT_HIGH = -90;
+        public static double WRIST_SETPOINT_MID = -90;
+        public static double WRIST_SETPOINT_HOLD = 0;
     }
 
     public static class ElevatorConstants {
@@ -260,7 +261,6 @@ public final class Constants {
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
     };
-
 
     public static class Autonomous {
         // all of these positions have been estimated using PathWeaver
@@ -392,6 +392,7 @@ public final class Constants {
         public static double ROLLER_NEUTRAL_SPEED = 0.05;
         public static double ROLLER_INTAKING_SPEED = 0.45;
         public static double ROLLER_EJECTING_SPEED = -0.45;
+        public static double ROLLER_SHOOTING_SPEED = 0.8;
 
     };
 
@@ -402,9 +403,10 @@ public final class Constants {
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
 
         // Setpoints between -1 and 1
-        public static double PIVOT_ARM_SETPOINT_UP = 1;
-        public static double PIVOT_ARM_SETPOINT_MID = 0.5;
-        public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
+        public static double PIVOT_ARM_SETPOINT_UP = 216.6;
+        public static double PIVOT_ARM_SETPOINT_MID = 216.6;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 260;
+        public static double PIVOT_ARM_SETPOINT_HOLD = 0;
     }
 
     public static double PI = 3.141592653589793238462643;

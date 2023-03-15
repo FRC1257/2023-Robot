@@ -114,7 +114,7 @@ public class PivotArm extends SnailSubsystem {
         maxOutput.reset();
     }
 
-    @Override
+    @Override 
     public void tuningPeriodic() {
         p.updateFunction(() -> armPIDController.setP(p.get()));
         i.updateFunction(() -> armPIDController.setI(i.get()));

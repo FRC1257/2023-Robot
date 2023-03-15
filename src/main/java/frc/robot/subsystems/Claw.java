@@ -21,6 +21,7 @@ public class Claw extends SnailSubsystem {
     public enum RollerState {
       INTAKING,
       EJECTING,
+      SHOOTING,
       NEUTRAL
     }
     
@@ -61,6 +62,9 @@ public class Claw extends SnailSubsystem {
                 break;
             case INTAKING:
                 motorLeft.set(ROLLER_INTAKING_SPEED);
+                break;
+            case SHOOTING:
+                motorLeft.set(ROLLER_SHOOTING_SPEED);
                 break;
             case EJECTING:
                 motorLeft.set(ROLLER_EJECTING_SPEED);
