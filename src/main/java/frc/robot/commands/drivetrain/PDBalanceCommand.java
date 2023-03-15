@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
 import frc.robot.util.Gyro;
+import frc.robot.util.TunableNumber;
 import edu.wpi.first.math.MathUtil;
 
 public class PDBalanceCommand extends CommandBase {
@@ -16,7 +17,6 @@ public class PDBalanceCommand extends CommandBase {
 	private double error;
 	private boolean stop;
 	private int levelCounter = 0;
-
 
 	public PDBalanceCommand(Drivetrain drivetrain, boolean stop) {
 		this.stop = stop;
@@ -48,7 +48,7 @@ public class PDBalanceCommand extends CommandBase {
 			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.75, 0.75), 0);
 		}
 		
-		SmartDashboard.putNumber("Align error", error);
+		// SmartDashboard.putNumber("Align error", error);
 	}
 
 	@Override

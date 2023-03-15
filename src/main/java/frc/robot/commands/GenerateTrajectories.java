@@ -242,7 +242,7 @@ public class GenerateTrajectories {
     }
 
     private Pose2d shiftedPose(Pose2d pose) {
-        double SHIFT_X = -0.2;
+        double SHIFT_X = -0.4;
         if (blue) {
             SHIFT_X *= -1;
         }

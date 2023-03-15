@@ -11,15 +11,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.numbers.N2;
-import edu.wpi.first.math.system.LinearSystem;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.system.plant.LinearSystemId;import edu.wpi.first.math.geometry.Translation3d;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Translation3d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -110,11 +102,17 @@ public final class Constants {
         public final static int CONTROLLER_DRIVER_ID = 0;
         public final static int CONTROLLER_OPERATOR_ID = 1;
 
-        // Drivetrain
+        // Drivetrain Test Bot
         public final static int DRIVE_FRONT_LEFT = 17;
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
         public final static int DRIVE_BACK_RIGHT = 2;
+
+        // Drivetrain Main
+        /* public final static int DRIVE_FRONT_LEFT = 15;
+        public final static int DRIVE_FRONT_RIGHT = 12;
+        public final static int DRIVE_BACK_LEFT = 10;
+        public final static int DRIVE_BACK_RIGHT = 8; */
 
         // Intakes
         public final static int INTAKE_MOTOR_ID = 4;
@@ -206,10 +204,10 @@ public final class Constants {
         public static double DRIVE_CLOSED_MAX_ACC = 1.5; // m/s^2
 
         // trajectory following
-        public static double DRIVE_TRAJ_MAX_VEL = 9.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 1.50; //.75;  // m/s^2
-        public static double DRIVE_TRAJ_RAMSETE_B = 2.1;
-        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.8;
+        public static double DRIVE_TRAJ_MAX_VEL = 3.0; // m/s
+        public static double DRIVE_TRAJ_MAX_ACC = 0.50; //.75;  // m/s^2
+        public static double DRIVE_TRAJ_RAMSETE_B = 2.0; // don't change
+        public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
 
         // aligning
@@ -224,7 +222,7 @@ public final class Constants {
         public static double DRIVE_DIST_MAX_OUTPUT = 0.6;
 
         // angular position PID works for test bot
-        public static double[] DRIVE_ANGLE_PID = { 0.2, 0.005, 0.01 };
+        public static double[] DRIVE_ANGLE_PID = { 0.075, 0.005, 0.005 };
         public static double DRIVE_ANGLE_TOLERANCE = 0.5;
         public static double DRIVE_ANGLE_MAX_OUTPUT = 0.5;
 
@@ -245,8 +243,6 @@ public final class Constants {
         public static final double TRACKED_TAG_AREA_DRIVE_KP = 0.2; // P (Proportional) constant of a PID loop
         public static final double APRILTAG_POWER_CAP = 0.75;
     };
-
-
 
     public static class VisionConstants {
 
@@ -404,17 +400,6 @@ public final class Constants {
 
     };
 
-
-    public static class IntakeArm {
-        public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
-        public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
-        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
-        public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
-        
-        public static double INTAKE_SETPOINT_TOP = 1257; // lol
-        public static double INTAKE_SETPOINT_BOT = -1257; // lol
-    };
-
     public static class PivotArm {
         // PID constants
         public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0};
@@ -427,12 +412,7 @@ public final class Constants {
         public static double PIVOT_ARM_SETPOINT_INTAKE = 0;
     }
 
-    public static class LED {
-        public static int LED_PORT_NUMBER = 1257;
-        public static int LED_COUNT = 1257;
-    }
-   
-    public static double PI = 3.14159265;
+    public static double PI = 3.141592653589793238462643;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps
  

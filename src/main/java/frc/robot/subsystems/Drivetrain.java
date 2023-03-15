@@ -332,9 +332,19 @@ public class Drivetrain extends SnailSubsystem {
                 }
  
                 // comment this out while initially tuning
-                if(anglePIDController.atSetpoint()) {
+                if(anglePIDController.atSetpoint() && anglePIDController.getVelocityError() < 20) {
                     state = defaultState;
                     angleSetpoint = defaultSetpoint;
+                    frontLeftMotor.set(0);
+                    frontRightMotor.set(0);
+                    break;
+                }
+
+                if (pathTimer.get() > 3) {
+                    state = defaultState;
+                    angleSetpoint = defaultSetpoint;
+                    frontLeftMotor.set(0);
+                    frontRightMotor.set(0);
                     break;
                 }
  
@@ -474,6 +484,9 @@ public class Drivetrain extends SnailSubsystem {
  
         angleSetpoint = angle;
         anglePIDController.reset();
+
+        pathTimer.reset();
+        pathTimer.start();
  
         state = State.TURN_ANGLE;
     }
@@ -540,6 +553,8 @@ public class Drivetrain extends SnailSubsystem {
         SmartDashboard.putData("Field", m_field);
         SmartDashboard.putBooleanArray("Drive Toggles", new boolean[] {reverseEnabled, slowModeEnabled});
         SmartDashboard.putString("Drive State", state.name());
+        SmartDashboard.putNumber("Angle Velocity Error", anglePIDController.getVelocityError());
+
  
         SmartDashboard.putNumberArray("Drive Angle PID (pos, set)", new double[] {
             Gyro.getInstance().getRobotAngle(), angleSetpoint

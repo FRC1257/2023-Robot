@@ -18,7 +18,6 @@ import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.pivotWrist.PivotWristManualCommand;
 import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
@@ -41,9 +40,6 @@ import java.util.ArrayList;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
-
-import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_BOT;
-import static frc.robot.Constants.IntakeArm.INTAKE_SETPOINT_TOP;
 
 import static frc.robot.Constants.Autonomous;
 
@@ -80,9 +76,6 @@ public class RobotContainer {
 
 
     private Elevator elevator;
-    private LED led;
-
-
 
     private Notifier updateNotifier;
     private int outputCounter;
@@ -175,17 +168,7 @@ public class RobotContainer {
             // Pivot Arm
             pivotArm = new PivotArm();
             pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
-
-            // LED
-            led = new LED();
-        
         }
-        
-        
-
-        // Vision
-
-        // Pivot arm
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -198,7 +181,6 @@ public class RobotContainer {
             subsystems.add(pivotArm);
             subsystems.add(pivotWrist);
             subsystems.add(elevator);
-            subsystems.add(led);
         }
 
         // generate auto
@@ -261,11 +243,10 @@ public class RobotContainer {
             // Operator Bindings
             operatorController.getButton(Button.kA.value).onTrue(new ElevatorManualCommand(elevator, Constants.ElevatorConstants.ELEVATOR_MANUAL_SPEED));
 
-            operatorController.getButton(Button.kB.value).onTrue(new LEDToggleCommand(led));
         }
         
         driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
-        driveController.getButton(Button.kB.value).onTrue(new PDBalanceCommand(drivetrain, false).withTimeout(8));
+        driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
         
 
         // driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
@@ -281,6 +262,7 @@ public class RobotContainer {
 
         driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
+        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
         
 
     }
