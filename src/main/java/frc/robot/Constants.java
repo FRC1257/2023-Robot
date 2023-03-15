@@ -125,10 +125,6 @@ public final class Constants {
         public static int CLAW_MOTOR_LEFT_ID = 8;
         public static int CLAW_MOTOR_RIGHT_ID = 1;
 
-        // Intake Arm
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 10;
-        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 11;
-
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 0;
 
@@ -136,8 +132,7 @@ public final class Constants {
         public static int CLAW_REVERSE_ID = 1;
 
         // Pivot ARm
-        public static int PIVOT_ARM_LEFT_ID = 12;
-        public static int PIVOT_ARM_RIGHT_ID = 14;
+        public static int PIVOT_ARM_ID = 14;
 
         // Sensors
         public static final int INTAKE_BUMP_SWITCH_ID = 24;
