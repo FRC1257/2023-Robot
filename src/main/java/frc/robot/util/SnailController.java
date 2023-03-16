@@ -18,6 +18,10 @@ public class SnailController extends XboxController {
         return new XboxTrigger(this, leftHand);
     }
 
+    public double getElevatorSpeed() {
+        return getLeftTriggerAxis() - getRightTriggerAxis();
+    }
+
     public enum DPad {
         UP,
         RIGHT,

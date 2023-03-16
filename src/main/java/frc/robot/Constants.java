@@ -378,6 +378,12 @@ public final class Constants {
                 new Pose2d(12.57, 0.716, Rotation2d.fromDegrees(180)),
         };
 
+        public static Pose2d[] Straightline = new Pose2d[] {
+                new Pose2d(23.034, 17.493, Rotation2d.fromDegrees(0)),
+                new Pose2d(41.914, 17.493, Rotation2d.fromDegrees(0)),
+        };
+        
+
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;
 

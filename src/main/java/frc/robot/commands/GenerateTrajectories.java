@@ -85,6 +85,15 @@ public class GenerateTrajectories {
 
     // gets the cargoLocation based on what side the robot is on
 
+    // private Pose2d goForward(){
+
+
+    //     trajectoryList.add(getFullTrajectory());
+    // }
+
+
+
+
     private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
@@ -211,6 +220,7 @@ public class GenerateTrajectories {
             if (charge) {
                 addChargeTrajectory();
             }
+    
         }
         // step 3 go for charge
         else if (charge) {

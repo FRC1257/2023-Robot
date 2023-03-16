@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Delay;
@@ -29,6 +30,7 @@ import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
+import frc.robot.commands.ResetPIDCommand;
 import frc.robot.commands.Compound_Commands.HighScoreCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
@@ -164,15 +166,15 @@ public class RobotContainer {
          
             // Vision
             elevator = new Elevator();
-            elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getRightX));
+            elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getElevatorSpeed));
 
             // Pivot Wrist
             pivotWrist = new PivotWrist();
-            pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getRightY));
+            pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getLeftY));
             
             // Pivot Arm
             pivotArm = new PivotArm();
-            pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getLeftY));
+            pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
         }
         
         subsystems = new ArrayList<SnailSubsystem>();
@@ -231,30 +233,37 @@ public class RobotContainer {
             // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
             // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
     
-            operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawIntakeCommand(claw));
-            operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawEjectCommand(claw));
+            operatorController.getButton(Button.kB.value).onTrue(new ClawIntakeCommand(claw));
+            operatorController.getButton(Button.kA.value).onTrue(new ClawEjectCommand(claw));
 
-            operatorController.getButton(Button.kLeftStick.value).onTrue(new ClawConeStateCommand(claw));
-            operatorController.getButton(Button.kRightStick.value).onTrue(new ClawCubeStateCommand(claw));
-
+            operatorController.getButton(Button.kY.value).onTrue(new ClawItemToggleCommand(claw));
             // Operator Bindings
             // operatorController.getButton(Button.kA.value).onTrue();
 
             // compound commands
-            operatorController.getDPad(DPad.UP).onTrue(new HighScoreCommand(elevator, pivotArm, pivotWrist));
+            // operatorController.getDPad(DPad.UP).onTrue(new HighScoreCommand(elevator, pivotArm, pivotWrist));
             // intake and low score are same
-            operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
+            /* operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
             operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
             operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));
 
+            operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
+
+            operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+            operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+            operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
+            operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+
+            operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
+
         }
         
-        driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
-        driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
+        // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
+        // driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
         
         // driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        //driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
+        // driveController.getButton(Button.kA.value).onTrue(new TurnAngleCommand(drivetrain, -90));
         
         // driveController.getButton(Button.kB.value).onTrue(new TurnAngleCommand(drivetrain, 90));
         // driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
@@ -306,9 +315,11 @@ public class RobotContainer {
         );
         
         putTrajectoryTime();
+
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajectories.getCommand();
+        //return new DriveDistanceCommand(drivetrain, 10);
     }
 
     /**
@@ -484,7 +495,13 @@ public class RobotContainer {
     }
 
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) || SmartDashboard.getBoolean("Update Visual", false) || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
+            || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
+            || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) 
+            || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
+            || SmartDashboard.getBoolean("Update Visual", false) 
+            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false
+        );
     }
 
     public void updateAutoChoosers() {
