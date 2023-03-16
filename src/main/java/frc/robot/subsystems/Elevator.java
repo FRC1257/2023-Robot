@@ -18,8 +18,8 @@ public class Elevator extends SnailSubsystem{
 
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
-    private RelativeEncoder encoder;
-    private DigitalInput limitSwitch;
+    private RelativeEncoder encoder;/* 
+    private DigitalInput limitSwitch; */
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
@@ -50,9 +50,9 @@ public class Elevator extends SnailSubsystem{
         encoder = elevatorMotor.getEncoder();
         encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
-        encoder.setPosition(0.0);
+        encoder.setPosition(0.0);/* 
 
-        limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID);
+        limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID); */
     }
 
 
@@ -96,6 +96,7 @@ public class Elevator extends SnailSubsystem{
     @Override
     public void displayShuffleboard() {
         SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
+        SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
     }
 
     @Override

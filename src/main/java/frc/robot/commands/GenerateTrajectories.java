@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
+import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
@@ -206,7 +207,7 @@ public class GenerateTrajectories {
         } else if (leaveTarmac) {
             if (hitAndRun) {
                 addOverChargeTrajectory();
-                this.command.addCommands(new PDBalanceCommand(drivetrain, false).withTimeout(8));
+                this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
                 return;
             } else {
                 addLeaveCommunityTrajectory();
@@ -225,7 +226,7 @@ public class GenerateTrajectories {
         // step 3 go for charge
         else if (charge) {
             addChargeTrajectory();
-            this.command.addCommands(new PDBalanceCommand(drivetrain, false).withTimeout(8));
+            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
         }
 
         // if none of these have run something has gone wrong

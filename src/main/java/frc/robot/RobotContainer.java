@@ -65,7 +65,7 @@ public class RobotContainer {
     private SnailController driveController;
     private SnailController operatorController;
 
-    private boolean isTestBot = true;
+    private boolean isTestBot = false;
     private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;

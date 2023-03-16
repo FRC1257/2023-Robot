@@ -12,11 +12,18 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
+import frc.robot.util.TunableNumber;
 
 public class Claw extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
     private DoubleSolenoid solenoid;
+
+    private TunableNumber neutralSpeed = new TunableNumber("Claw Neutral Speed", ROLLER_NEUTRAL_SPEED);
+    private TunableNumber intakeSpeed = new TunableNumber("Claw Intake Speed", ROLLER_INTAKING_SPEED);
+    private TunableNumber shootingSpeed = new TunableNumber("Claw Shooting Speed", ROLLER_SHOOTING_SPEED);
+    private TunableNumber ejectSpeed = new TunableNumber("Claw Eject Speed", ROLLER_EJECTING_SPEED);
+    
     
     public enum RollerState {
       INTAKING,
@@ -30,7 +37,7 @@ public class Claw extends SnailSubsystem {
       CONEINTAKE
     }
     
-    //cube and cone states?
+    //cube and cone states
     private RollerState rollerState;
     private ClawState clawState;
     
@@ -58,16 +65,16 @@ public class Claw extends SnailSubsystem {
     public void update() {
         switch(rollerState) {
             case NEUTRAL:
-                motorLeft.set(ROLLER_NEUTRAL_SPEED);
+                motorLeft.set(neutralSpeed.get());
                 break;
             case INTAKING:
-                motorLeft.set(ROLLER_INTAKING_SPEED);
+                motorLeft.set(intakeSpeed.get());
                 break;
             case SHOOTING:
-                motorLeft.set(ROLLER_SHOOTING_SPEED);
+                motorLeft.set(shootingSpeed.get());
                 break;
             case EJECTING:
-                motorLeft.set(ROLLER_EJECTING_SPEED);
+                motorLeft.set(ejectSpeed.get());
                 break;
         }
         

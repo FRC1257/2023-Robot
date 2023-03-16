@@ -103,16 +103,16 @@ public final class Constants {
         public final static int CONTROLLER_OPERATOR_ID = 1;
 
         // Drivetrain Test Bot
-        public final static int DRIVE_FRONT_LEFT = 17;
+        /* public final static int DRIVE_FRONT_LEFT = 17;
         public final static int DRIVE_FRONT_RIGHT = 13;
         public final static int DRIVE_BACK_LEFT = 5;
-        public final static int DRIVE_BACK_RIGHT = 2;
+        public final static int DRIVE_BACK_RIGHT = 2; */
 
         // Drivetrain Main
-        /* public final static int DRIVE_FRONT_LEFT = 15;
+        public final static int DRIVE_FRONT_LEFT = 15;
         public final static int DRIVE_FRONT_RIGHT = 12;
         public final static int DRIVE_BACK_LEFT = 10;
-        public final static int DRIVE_BACK_RIGHT = 8; */
+        public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
         public final static int INTAKE_MOTOR_ID = 4;
@@ -142,17 +142,17 @@ public final class Constants {
 
 
     public static class PivotWrist {
-        public static double WRIST_ENCODER_PCF = 1257;
-        public static double[] WRIST_PID = new double[] {1257, 1257, 1257, 1257};
+        public static double WRIST_ENCODER_PCF = 1; // TODO set
+        public static double[] WRIST_PID = new double[] {0, 0, 0, 0}; // TODO Tune
 
         public static double WRIST_PID_MAX_OUTPUT = 1257;
-        public static double WRIST_PID_TOLERANCE = 1257;
+        public static double WRIST_PID_TOLERANCE = 1;
 
-        public static double WRIST_MAX_VEL = 1257.0;
-        public static double WRIST_MAX_ACC = 1257.0;
+        public static double WRIST_MAX_VEL = 10;
+        public static double WRIST_MAX_ACC = 0.50;
         
         public static int WRIST_PID_SLOT_VEL = 0;
-        public static int WRIST_PID_SLOT_ACC = 0;
+        public static int WRIST_PID_SLOT_ACC = 1;
         public static double WRIST_SETPOINT_TOP = .1257; // in encoder revs
         public static double WRIST_SETPOINT_BOT = -.1257; // in enc
 
@@ -165,15 +165,16 @@ public final class Constants {
 
     public static class ElevatorConstants {
 
-        public static final double[] ELEVATOR_PID = new double[] {1257, 1257, 1257};
+        public static final double[] ELEVATOR_PID = new double[] {0, 0, 0}; // TODO Tune
 
+        // TODO Tune
         public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
-        public static double ELEVATOR_REV_TO_POS_FACTOR = 1257; 
-        public static double ELEVATOR_PID_TOLERANCE = 1257;
+        public static double ELEVATOR_REV_TO_POS_FACTOR = 1; 
+        public static double ELEVATOR_PID_TOLERANCE = 3;
 
+        // TODO Tune
         public static final double ELEVATOR_SETPOINT_RETRACT = 0;
         public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
-        public static final double ELEVATOR_MANUAL_SPEED = 1257;
     }
 
        
@@ -382,7 +383,7 @@ public final class Constants {
                 new Pose2d(23.034, 17.493, Rotation2d.fromDegrees(0)),
                 new Pose2d(41.914, 17.493, Rotation2d.fromDegrees(0)),
         };
-        
+
 
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;
@@ -405,7 +406,7 @@ public final class Constants {
     public static class PivotArm {
         // PID constants
         public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0};
-        public static double PIVOT_ARM_PID_TOLERANCE = 1257; // lol
+        public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
 
         // Setpoints between -1 and 1

@@ -24,7 +24,7 @@ public class PivotArm extends SnailSubsystem {
     private double speed;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
-    private DigitalInput limitSwitch;
+    /* private DigitalInput limitSwitch; */
 
     private TunableNumber p = new TunableNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
     private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
@@ -59,17 +59,17 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setFF(ff.get());
         armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
-        limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID);
+        /* limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID); */
     }
 
     @Override
     public void update() {
-        if (limitSwitch.get()) {
+/*         if (limitSwitch.get()) {
             armEncoder.setPosition(0);
             if (speed < 0) {
                 speed = 0;
             }
-        }
+        } */
 
         switch (state) {
             case MANUAL: {
@@ -105,7 +105,7 @@ public class PivotArm extends SnailSubsystem {
         SmartDashboard.putNumber("Motor Speed", armEncoder.getVelocity());
         SmartDashboard.putNumber("Encoder Position", armEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setPoint);
-        SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
+        /* SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get()); */
     }
 
     @Override
