@@ -108,6 +108,10 @@ public class Claw extends SnailSubsystem {
     public void intake() {
         rollerState = RollerState.INTAKING;
     }
+
+    public void shoot() {
+        rollerState = RollerState.SHOOTING;
+    }
     
     public void cubeintake() {
         clawState = ClawState.CUBEINTAKE;

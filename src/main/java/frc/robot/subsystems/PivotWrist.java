@@ -97,9 +97,9 @@ public class PivotWrist extends SnailSubsystem {
                 wristPID.setReference(setpoint, CANSparkMax.ControlType.kPosition);
 
                 // check our error and update the state if we finish
-                if (Math.abs(primaryEncoder.getPosition() - setpoint) < WRIST_PID_TOLERANCE) {
+                /* if (Math.abs(primaryEncoder.getPosition() - setpoint) < WRIST_PID_TOLERANCE) {
                     endPID();
-                }
+                } */
                 break;
         }
 
@@ -192,4 +192,7 @@ public class PivotWrist extends SnailSubsystem {
         return state;
     }
 
+    public boolean atSetpoint() {
+        return Math.abs(primaryEncoder.getPosition() - setpoint) < WRIST_PID_TOLERANCE;
+    }
 }

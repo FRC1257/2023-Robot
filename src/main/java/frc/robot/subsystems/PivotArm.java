@@ -18,8 +18,8 @@ import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 public class PivotArm extends SnailSubsystem {
-    private CANSparkMax ArmMotor;
-    private RelativeEncoder ArmEncoder;
+    private CANSparkMax armMotor;
+    private RelativeEncoder armEncoder;
     private State state = State.MANUAL;
     private double speed;
     private SparkMaxPIDController armPIDController;
@@ -30,7 +30,7 @@ public class PivotArm extends SnailSubsystem {
     private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
     private TunableNumber d = new TunableNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
     private TunableNumber ff = new TunableNumber("Pivot Arm FF", PIVOT_ARM_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Pivot Arm IZ", PIVOT_ARM_PID_MAX_OUTPUT);
+    private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -43,18 +43,16 @@ public class PivotArm extends SnailSubsystem {
         // leftArmMotor.setIdleMode(IdleMode.kBrake);
         // leftArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        ArmMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
-        ArmMotor.restoreFactoryDefaults();
-        ArmMotor.setIdleMode(IdleMode.kBrake);
-        ArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
+        armMotor.restoreFactoryDefaults();
+        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-       
+        armEncoder = armMotor.getEncoder();
+        armEncoder.setPositionConversionFactor(48.0 * Math.PI * 6);
+        armEncoder.setVelocityConversionFactor(48.0 * Math.PI * 6 / 60);
 
-        ArmEncoder = ArmMotor.getEncoder();
-        ArmEncoder.setPositionConversionFactor(48.0 * Math.PI * 6);
-        ArmEncoder.setVelocityConversionFactor(48.0 * Math.PI * 6 / 60);
-
-        armPIDController = ArmMotor.getPIDController();
+        armPIDController = armMotor.getPIDController();
         armPIDController.setP(p.get());
         armPIDController.setI(i.get());
         armPIDController.setD(d.get());
@@ -67,7 +65,7 @@ public class PivotArm extends SnailSubsystem {
     @Override
     public void update() {
         if (limitSwitch.get()) {
-            ArmEncoder.setPosition(0);
+            armEncoder.setPosition(0);
             if (speed < 0) {
                 speed = 0;
             }
@@ -75,7 +73,7 @@ public class PivotArm extends SnailSubsystem {
 
         switch (state) {
             case MANUAL: {
-                ArmMotor.set(speed);
+                armMotor.set(speed);
                 break;
             }
             case PID: {
@@ -83,9 +81,9 @@ public class PivotArm extends SnailSubsystem {
                 armPIDController.setReference(setPoint, ControlType.kPosition);
 
                 // check our error and update the state if we finish
-                if(Math.abs(ArmEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
+                /* if(Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
                     state = State.MANUAL;
-                }
+                } */
                 break;
             }
         }
@@ -96,17 +94,22 @@ public class PivotArm extends SnailSubsystem {
         this.setPoint = setpoint;
     }
 
+    // End PID
+    public void endPID() {
+        state = State.MANUAL;
+    }
+    
+
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Motor Speed", ArmEncoder.getVelocity());
-        SmartDashboard.putNumber("Encoder Position", ArmEncoder.getPosition());
+        SmartDashboard.putNumber("Motor Speed", armEncoder.getVelocity());
+        SmartDashboard.putNumber("Encoder Position", armEncoder.getPosition());
         SmartDashboard.putNumber("Setpoint", setPoint);
         SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
     }
 
     @Override
     public void tuningInit() {
-        // TODO include PID tuning
         p.reset();
         i.reset();
         d.reset();
@@ -129,4 +132,8 @@ public class PivotArm extends SnailSubsystem {
     }
 
     public State getState() { return state; }
+
+    public boolean atSetpoint() {
+        return Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE;
+    }
 }

@@ -155,16 +155,10 @@ public class Vision extends SnailSubsystem {
     }
 
     @Override
-    public void tuningInit() {
-        // TODO Auto-generated method stub
-
-    }
+    public void tuningInit() {}
 
     @Override
-    public void tuningPeriodic() {
-        // TODO Auto-generated method stub
-
-    }
+    public void tuningPeriodic() {}
 
     public void setPipeline(int i) {
         frontCamera.setPipelineIndex(i);

@@ -29,6 +29,6 @@ public class PivotArmPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return pivotArm.getState() != PivotArm.State.PID;
+        return pivotArm.atSetpoint();
     }
 }

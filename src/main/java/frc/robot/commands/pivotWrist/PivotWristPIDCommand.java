@@ -30,6 +30,6 @@ public class PivotWristPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return pivotWrist.getState() != PivotWrist.State.PID;
+        return pivotWrist.atSetpoint();
     }
 }

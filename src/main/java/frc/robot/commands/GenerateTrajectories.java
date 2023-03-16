@@ -228,6 +228,7 @@ public class GenerateTrajectories {
 
     }
 
+    // TODO Fix these methods
     private void addScoreHigh() {
         command.addCommands(new ScoreCommand());
     }
