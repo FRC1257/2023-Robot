@@ -24,11 +24,11 @@ public class Elevator extends SnailSubsystem{
     private double setpoint;
     private boolean isPIDFinished;
 
-    private TunableNumber p = new TunableNumber("Pivot Arm P", ELEVATOR_PID[0]);
-    private TunableNumber i = new TunableNumber("Pivot Arm I", ELEVATOR_PID[1]);
-    private TunableNumber d = new TunableNumber("Pivot Arm D", ELEVATOR_PID[2]);
-    private TunableNumber ff = new TunableNumber("Pivot Arm FF", ELEVATOR_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Pivot Arm IZ", ELEVATOR_PID_MAX_OUTPUT);
+    private TunableNumber p = new TunableNumber("Elevator P", ELEVATOR_PID[0]);
+    private TunableNumber i = new TunableNumber("Elevator I", ELEVATOR_PID[1]);
+    private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
+    private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("Elevator Max Output", ELEVATOR_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,

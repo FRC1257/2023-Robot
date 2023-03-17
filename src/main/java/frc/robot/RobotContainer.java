@@ -184,7 +184,7 @@ public class RobotContainer {
         subsystems.add(vision);
 
         if (!isTestBot) {
-            subsystems.add(claw);
+            subsystems.add(claw); 
             subsystems.add(pivotArm);
             subsystems.add(pivotWrist);
             subsystems.add(elevator);
@@ -254,7 +254,7 @@ public class RobotContainer {
             operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
             operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
 
-            operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
+            /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
 
         }
         

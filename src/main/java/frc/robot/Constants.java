@@ -117,22 +117,22 @@ public final class Constants {
         // Intakes
         public final static int INTAKE_MOTOR_ID = 4;
 
+
         // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 6;
-        public final static int PIVOT_WRIST_ID_RIGHT = 7;
+        public final static int PIVOT_WRIST_ID_LEFT = 11;
 
         // Claw
-        public static int CLAW_MOTOR_LEFT_ID = 8;
-        public static int CLAW_MOTOR_RIGHT_ID = 1;
+        public static int CLAW_MOTOR_LEFT_ID = 7;
+        public static int CLAW_MOTOR_RIGHT_ID = 3;
 
         // New Elevator Motor Design
-        public final static int ELEVATOR_MOTOR_ID = 0;
+        public final static int ELEVATOR_MOTOR_ID = 4;
 
-        public static int CLAW_FORWARD_ID = 2;
+        public static int CLAW_FORWARD_ID = 0;
         public static int CLAW_REVERSE_ID = 1;
 
         // Pivot ARm
-        public static int PIVOT_ARM_ID = 14;
+        public static int PIVOT_ARM_ID = 13;
 
         // Sensors
         public static final int INTAKE_BUMP_SWITCH_ID = 24;
@@ -165,7 +165,7 @@ public final class Constants {
 
     public static class ElevatorConstants {
 
-        public static final double[] ELEVATOR_PID = new double[] {0, 0, 0}; // TODO Tune
+        public static final double[] ELEVATOR_PID = new double[] {0, 0, 0, 0}; // TODO Tune
 
         // TODO Tune
         public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
@@ -405,7 +405,7 @@ public final class Constants {
 
     public static class PivotArm {
         // PID constants
-        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0};
+        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
 

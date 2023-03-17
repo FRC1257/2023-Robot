@@ -765,6 +765,318 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "4,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm P",
+              "_title": "Pivot Arm P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm I",
+              "_title": "Pivot Arm I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm D",
+              "_title": "Pivot Arm D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm FF",
+              "_title": "Pivot Arm FF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Max Output",
+              "_title": "Pivot Arm Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Motor Speed",
+              "_title": "Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Encoder Position",
+              "_title": "Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Setpoint",
+              "_title": "Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Neutral Speed",
+              "_title": "Claw Neutral Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Intake Speed",
+              "_title": "Claw Intake Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Shooting Speed",
+              "_title": "Claw Shooting Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Eject Speed",
+              "_title": "Claw Eject Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator P",
+              "_title": "Elevator P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator I",
+              "_title": "Elevator I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,8": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator D",
+              "_title": "Elevator D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator FF",
+              "_title": "Elevator FF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Max Output",
+              "_title": "Elevator Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist P",
+              "_title": "Pivot Wrist P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist I",
+              "_title": "Pivot Wrist I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist D",
+              "_title": "Pivot Wrist D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist FF",
+              "_title": "Pivot Wrist FF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Max Output",
+              "_title": "Pivot Wrist Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Motor",
+              "_title": "Left Motor",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right Motor",
+              "_title": "Right Motor",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -1711,6 +2023,46 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Robot Angle",
               "_title": "SmartDashboard/Robot Angle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 8",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "8,1": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Motor Speed",
+              "_title": "SmartDashboard/Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left Motor",
+              "_title": "SmartDashboard/Left Motor",
               "_glyph": 148,
               "_showGlyph": false
             }

@@ -27,7 +27,6 @@ import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 public class PivotWrist extends SnailSubsystem {
 
     private final CANSparkMax pivotWristMotorRight;
-    private final CANSparkMax pivotWristMotorLeft;
     private double setpoint;
 
     private RelativeEncoder primaryEncoder;
@@ -51,18 +50,18 @@ public class PivotWrist extends SnailSubsystem {
 
     public PivotWrist() {
         // Set motor
-        pivotWristMotorRight = new CANSparkMax(PIVOT_WRIST_ID_RIGHT, MotorType.kBrushless);
+        pivotWristMotorRight = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
         pivotWristMotorRight.restoreFactoryDefaults();
         pivotWristMotorRight.setIdleMode(IdleMode.kBrake);
         pivotWristMotorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
-        pivotWristMotorLeft = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
+        /* pivotWristMotorLeft = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
         pivotWristMotorLeft.restoreFactoryDefaults();
         pivotWristMotorLeft.setIdleMode(IdleMode.kBrake);
         pivotWristMotorLeft.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
         pivotWristMotorLeft.follow(pivotWristMotorRight);
-
+ */
         pivotWristMotorRight.setInverted(true);
 
         // Get Encoder
