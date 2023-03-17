@@ -115,15 +115,15 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
-        public final static int INTAKE_MOTOR_ID = 4;
+        // public final static int INTAKE_MOTOR_ID = 4;
 
 
         // Pivot Wrist    
         public final static int PIVOT_WRIST_ID_LEFT = 2;
 
         // Claw
-        public static int CLAW_MOTOR_LEFT_ID = 7;
-        public static int CLAW_MOTOR_RIGHT_ID = 3;
+        public static int CLAW_MOTOR_LEFT_ID = 3;
+        public static int CLAW_MOTOR_RIGHT_ID = 7;
 
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 4;
