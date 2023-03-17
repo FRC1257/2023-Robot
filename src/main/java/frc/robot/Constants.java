@@ -135,9 +135,9 @@ public final class Constants {
         public static int PIVOT_ARM_ID = 13;
 
         // Sensors
-        public static final int INTAKE_BUMP_SWITCH_ID = 24;
+        /* public static final int INTAKE_BUMP_SWITCH_ID = 24;
         public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
-        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30; */
     };
 
 
@@ -153,8 +153,6 @@ public final class Constants {
         
         public static int WRIST_PID_SLOT_VEL = 0;
         public static int WRIST_PID_SLOT_ACC = 1;
-        public static double WRIST_SETPOINT_TOP = .1257; // in encoder revs
-        public static double WRIST_SETPOINT_BOT = -.1257; // in enc
 
         // setpoints for the wrist
         public static double WRIST_SETPOINT_INTAKE = -133.4;
@@ -177,13 +175,6 @@ public final class Constants {
         public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
 
         public static final double ELEVATOR_STOP_BUFFER = 5;
-    }
-
-       
-    public static class IntakeSpeed {
-        public static final double INTAKE_NEUTRAL_SPEED = 0.0;
-        public static final double INTAKE_INTAKING_SPEED = 0.85;
-        public static final double INTAKE_EJECTING_SPEED = -0.85;
     }
 
     public static class Drivetrain {
@@ -244,15 +235,13 @@ public final class Constants {
     };
 
     public static class VisionConstants {
-
         public static double VISION_KP = 0.02;
         public static double VISION_FEEDFORWARD = 0.01;
         public static double TRACKED_TAG_ROTATION_KP = 0.0175;
 
-
-        public static Transform3d CAMERA_TO_ROBOT = new Transform3d();
-
+        /* public static Transform3d CAMERA_TO_ROBOT = new Transform3d(); */
         
+        // TODO Ask Build Team
         public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
         public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
         
@@ -260,9 +249,6 @@ public final class Constants {
         // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
         public static String USB_CAMERA_NAME_FRONT = "Front Camera";
         public static String USB_CAMERA_NAME_BACK = "Back Camera";
-        
-        // public static AprilTagFieldLayout aprilTagFieldLayout = new
-        // AprilTagFieldLayout(AprilTagFields.kDefaultField.m_resourceFile);
     };
 
     public static class Autonomous {
@@ -402,7 +388,6 @@ public final class Constants {
         public static double ROLLER_INTAKING_SPEED = 0.45;
         public static double ROLLER_EJECTING_SPEED = -0.45;
         public static double ROLLER_SHOOTING_SPEED = 0.8;
-
     };
 
     public static class PivotArm {

@@ -45,7 +45,12 @@ public class PivotArm extends SnailSubsystem {
 
         armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
         armMotor.restoreFactoryDefaults();
+<<<<<<< HEAD
         armMotor.setIdleMode(IdleMode.kBrake);
+=======
+        // armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setIdleMode(IdleMode.kCoast);
+>>>>>>> 06d2ec5134ee47fb32c423bbe19d2fd0c89520cb
         armMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
         armEncoder = armMotor.getEncoder();
@@ -102,9 +107,10 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Arm Motor Speed", armEncoder.getVelocity());
-        SmartDashboard.putNumber("Arm Encoder Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("Arm Setpoint", setPoint);
+        SmartDashboard.putNumber("Pivot Arm Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("Pivot Arm Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("Pivot Arm Setpoint", setPoint);
+        SmartDashboard.putString("Pivot Arm State", state.name());
         /* SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get()); */
     }
 
