@@ -119,7 +119,7 @@ public final class Constants {
 
 
         // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 11;
+        public final static int PIVOT_WRIST_ID_LEFT = 2;
 
         // Claw
         public static int CLAW_MOTOR_LEFT_ID = 7;
