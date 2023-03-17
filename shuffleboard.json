@@ -1378,6 +1378,136 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "0,12": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/PivotWrist",
+              "_title": "PivotWrist",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,12": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Elevator",
+              "_title": "Elevator",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Left Motor Speed",
+              "_title": "Claw Left Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Right Motor Speed",
+              "_title": "Claw Right Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Motor Speed",
+              "_title": "Pivot Arm Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Setpoint",
+              "_title": "Pivot Arm Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm State",
+              "_title": "Pivot Arm State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw State",
+              "_title": "Claw State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Roller State",
+              "_title": "Claw Roller State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2350,7 +2480,7 @@
             "content": {
               "_type": "Basic Subsystem",
               "_source0": "network_table:///SmartDashboard/Claw",
-              "_title": "SmartDashboard/Claw",
+              "_title": "/SmartDashboard/Claw",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2363,7 +2493,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Eject Speed",
-              "_title": "SmartDashboard/Claw Eject Speed",
+              "_title": "/SmartDashboard/Claw Eject Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2376,7 +2506,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Intake Speed",
-              "_title": "SmartDashboard/Claw Intake Speed",
+              "_title": "/SmartDashboard/Claw Intake Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2389,7 +2519,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Neutral Speed",
-              "_title": "SmartDashboard/Claw Neutral Speed",
+              "_title": "/SmartDashboard/Claw Neutral Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2402,7 +2532,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Shooting Speed",
-              "_title": "SmartDashboard/Claw Shooting Speed",
+              "_title": "/SmartDashboard/Claw Shooting Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2415,7 +2545,7 @@
             "content": {
               "_type": "Basic Subsystem",
               "_source0": "network_table:///SmartDashboard/Elevator",
-              "_title": "SmartDashboard/Elevator",
+              "_title": "/SmartDashboard/Elevator",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2428,7 +2558,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Motor Speed",
-              "_title": "SmartDashboard/Elevator Motor Speed",
+              "_title": "/SmartDashboard/Elevator Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2441,7 +2571,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Encoder",
-              "_title": "SmartDashboard/Elevator Encoder",
+              "_title": "/SmartDashboard/Elevator Encoder",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2454,7 +2584,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator State",
-              "_title": "SmartDashboard/Elevator State",
+              "_title": "/SmartDashboard/Elevator State",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2467,7 +2597,7 @@
             "content": {
               "_type": "Basic Subsystem",
               "_source0": "network_table:///SmartDashboard/PivotArm",
-              "_title": "SmartDashboard/PivotArm",
+              "_title": "/SmartDashboard/PivotArm",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2480,7 +2610,7 @@
             "content": {
               "_type": "Basic Subsystem",
               "_source0": "network_table:///SmartDashboard/PivotWrist",
-              "_title": "SmartDashboard/PivotWrist",
+              "_title": "/SmartDashboard/PivotWrist",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2493,7 +2623,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm P",
-              "_title": "SmartDashboard/Pivot Arm P",
+              "_title": "/SmartDashboard/Pivot Arm P",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2506,7 +2636,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm I",
-              "_title": "SmartDashboard/Pivot Arm I",
+              "_title": "/SmartDashboard/Pivot Arm I",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2519,7 +2649,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm D",
-              "_title": "SmartDashboard/Pivot Arm D",
+              "_title": "/SmartDashboard/Pivot Arm D",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2532,7 +2662,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm FF",
-              "_title": "SmartDashboard/Pivot Arm FF",
+              "_title": "/SmartDashboard/Pivot Arm FF",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2545,7 +2675,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm Max Output",
-              "_title": "SmartDashboard/Pivot Arm Max Output",
+              "_title": "/SmartDashboard/Pivot Arm Max Output",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2558,7 +2688,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist PID Tolerance",
-              "_title": "SmartDashboard/Pivot Wrist PID Tolerance",
+              "_title": "/SmartDashboard/Pivot Wrist PID Tolerance",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2571,7 +2701,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist P",
-              "_title": "SmartDashboard/Pivot Wrist P",
+              "_title": "/SmartDashboard/Pivot Wrist P",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2584,7 +2714,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist I",
-              "_title": "SmartDashboard/Pivot Wrist I",
+              "_title": "/SmartDashboard/Pivot Wrist I",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2597,7 +2727,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist D",
-              "_title": "SmartDashboard/Pivot Wrist D",
+              "_title": "/SmartDashboard/Pivot Wrist D",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2610,7 +2740,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist FF",
-              "_title": "SmartDashboard/Pivot Wrist FF",
+              "_title": "/SmartDashboard/Pivot Wrist FF",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2623,7 +2753,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist Max Output",
-              "_title": "SmartDashboard/Pivot Wrist Max Output",
+              "_title": "/SmartDashboard/Pivot Wrist Max Output",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2636,7 +2766,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Accel",
-              "_title": "SmartDashboard/Pivot Wrist Prof Max Accel",
+              "_title": "/SmartDashboard/Pivot Wrist Prof Max Accel",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2649,7 +2779,111 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Vel",
-              "_title": "SmartDashboard/Pivot Wrist Prof Max Vel",
+              "_title": "/SmartDashboard/Pivot Wrist Prof Max Vel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Motor Position",
+              "_title": "/SmartDashboard/Pivot Wrist Motor Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Motor Speed",
+              "_title": "/SmartDashboard/Pivot Wrist Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist State",
+              "_title": "/SmartDashboard/Pivot Wrist State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Motor Speed",
+              "_title": "/SmartDashboard/Pivot Arm Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm State",
+              "_title": "/SmartDashboard/Pivot Arm State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,7": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Right Motor Speed",
+              "_title": "SmartDashboard/Claw Right Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw State",
+              "_title": "SmartDashboard/Claw State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Left Motor Speed",
+              "_title": "SmartDashboard/Claw Left Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }

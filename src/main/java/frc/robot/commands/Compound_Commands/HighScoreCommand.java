@@ -2,7 +2,7 @@ package frc.robot.commands.Compound_Commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import static frc.robot.Constants.PivotWrist.WRIST_SETPOINT_TOP;
+import static frc.robot.Constants.PivotWrist.WRIST_SETPOINT_HIGH;
 import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_UP;
 
 import frc.robot.commands.elevator.ElevatorPIDCommand;
@@ -20,7 +20,7 @@ public class HighScoreCommand extends SequentialCommandGroup{
         addCommands(
             new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND),
             new ParallelCommandGroup(
-                new PivotWristPIDCommand(pivotwrist, WRIST_SETPOINT_TOP),
+                new PivotWristPIDCommand(pivotwrist, WRIST_SETPOINT_HIGH),
                 new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP)
             )
         );

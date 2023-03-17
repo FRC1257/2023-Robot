@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import static frc.robot.Constants.Claw.*;
-import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -45,10 +45,17 @@ public class Claw extends SnailSubsystem {
         motorLeft = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
         motorRight = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);        
 
-        motorInit(motorLeft);
-        motorInit(motorLeft);
+        motorLeft.restoreFactoryDefaults();
+        motorLeft.setIdleMode(IdleMode.kBrake);
+        motorLeft.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        motorRight.follow(motorLeft, true);
+        motorRight.restoreFactoryDefaults();
+        motorRight.setIdleMode(IdleMode.kBrake);
+        motorRight.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        // motorInit(motorLeft);
+        // motorInit(motorLeft);
+
+        // motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
         
         solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
@@ -56,25 +63,27 @@ public class Claw extends SnailSubsystem {
     }
 
     private void motorInit(CANSparkMax motor) {
-        motor.restoreFactoryDefaults();
-        motor.setIdleMode(IdleMode.kBrake);
-        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        
     }
     
     @Override
     public void update() {
         switch(rollerState) {
             case NEUTRAL:
-                motorLeft.set(neutralSpeed.get());
+                motorLeft.set(0.05);
+                motorRight.set(-0.05);
                 break;
             case INTAKING:
-                motorLeft.set(intakeSpeed.get());
+                motorLeft.set(0.85);
+                motorRight.set(-0.85);
                 break;
             case SHOOTING:
                 motorLeft.set(shootingSpeed.get());
+                motorRight.set(-shootingSpeed.get());
                 break;
             case EJECTING:
                 motorLeft.set(ejectSpeed.get());
+                motorRight.set(-ejectSpeed.get());
                 break;
         }
         
@@ -92,6 +101,8 @@ public class Claw extends SnailSubsystem {
     public void displayShuffleboard() {
         SmartDashboard.putNumber("Claw Left Motor Speed", motorLeft.get());
         SmartDashboard.putNumber("Claw Right Motor Speed", motorRight.get());
+        SmartDashboard.putString("Claw State", clawState.toString());
+        SmartDashboard.putString("Claw Roller State", rollerState.toString());
     }
 
     @Override

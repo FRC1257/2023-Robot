@@ -26,7 +26,7 @@ import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 public class PivotWrist extends SnailSubsystem {
 
-    private final CANSparkMax pivotWristMotorRight;
+    private final CANSparkMax pivotWristMotor;
     private double setpoint;
 
     private RelativeEncoder primaryEncoder;
@@ -49,28 +49,29 @@ public class PivotWrist extends SnailSubsystem {
 
     public PivotWrist() {
         // Set motor
-        pivotWristMotorRight = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
-        pivotWristMotorRight.restoreFactoryDefaults();
-        pivotWristMotorRight.setIdleMode(IdleMode.kBrake);
-        pivotWristMotorRight.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        pivotWristMotor = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
+        pivotWristMotor.restoreFactoryDefaults();
+        // pivotWristMotor.setIdleMode(IdleMode.kBrake);
+        pivotWristMotor.setIdleMode(IdleMode.kCoast);
+        pivotWristMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
         /* pivotWristMotorLeft = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
         pivotWristMotorLeft.restoreFactoryDefaults();
         pivotWristMotorLeft.setIdleMode(IdleMode.kBrake);
         pivotWristMotorLeft.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
-        pivotWristMotorLeft.follow(pivotWristMotorRight);
+        pivotWristMotorLeft.follow(pivotWristMotor);
  */
-        pivotWristMotorRight.setInverted(true);
+        pivotWristMotor.setInverted(true);
 
         // Get Encoder
-        primaryEncoder = pivotWristMotorRight.getEncoder();
+        primaryEncoder = pivotWristMotor.getEncoder();
         primaryEncoder.setPositionConversionFactor(WRIST_ENCODER_PCF); // verify with build
         primaryEncoder.setVelocityConversionFactor(WRIST_ENCODER_PCF / 60);
         resetEncoder();
 
         // Get PID Controller and set
-        wristPID = pivotWristMotorRight.getPIDController();
+        wristPID = pivotWristMotor.getPIDController();
         wristPID.setP(WRIST_PID[0]);
         wristPID.setI(WRIST_PID[1]);
         wristPID.setD(WRIST_PID[2]);
@@ -85,7 +86,7 @@ public class PivotWrist extends SnailSubsystem {
     public void update() {
         switch (state) {
             case MANUAL:
-                pivotWristMotorRight.set(speed);
+                pivotWristMotor.set(speed);
                 break;
             case PID:
                 // send the desired setpoint to the PID controller and specify we want to use
@@ -102,7 +103,7 @@ public class PivotWrist extends SnailSubsystem {
         // if (getlimitSwitch() && state == State.PID) {
         // resetEncoder();
         // } else if (getlimitSwitch() && state == State.MANUAL) {
-        // pivotWristMotorRight.set(0);
+        // pivotWristMotor.set(0);
         // }
     }
 
@@ -133,8 +134,8 @@ public class PivotWrist extends SnailSubsystem {
         SmartDashboard.putNumberArray("Pivot Wrist Dist PID (pos, setpt)",
                 new double[] { primaryEncoder.getPosition(), setpoint });
         SmartDashboard.putString("Pivot Wrist State", state.name());
-        SmartDashboard.putNumber("Pivot Wrist Current", pivotWristMotorRight.getOutputCurrent());
-        SmartDashboard.putNumber("Pivot Wrist Motor Speed", primaryEncoder.getVelocity());
+        SmartDashboard.putNumber("Pivot Wrist Current", pivotWristMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Pivot Wrist Motor Speed", pivotWristMotor.get());
         SmartDashboard.putNumber("Pivot Wrist Motor Position", primaryEncoder.getPosition());
         SmartDashboard.putNumber("Pivot Wrist Motor Setpoint", setpoint);
     }
@@ -150,9 +151,6 @@ public class PivotWrist extends SnailSubsystem {
         SmartDashboard.putNumber("Pivot Wrist PID Tolerance", WRIST_PID_TOLERANCE);
         SmartDashboard.putNumber("Pivot Wrist Prof Max Vel", WRIST_MAX_VEL);
         SmartDashboard.putNumber("Pivot Wrist Prof Max Accel", WRIST_MAX_ACC);
-
-        SmartDashboard.putNumber("Pivot Wrist Setpoint Top", WRIST_SETPOINT_TOP);
-        SmartDashboard.putNumber("Pivot Wrist Setpoint Bottom", WRIST_SETPOINT_BOT);
     }
 
     @Override

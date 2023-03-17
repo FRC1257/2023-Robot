@@ -5,11 +5,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
+import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 public class Elevator extends SnailSubsystem{
 
@@ -36,6 +38,11 @@ public class Elevator extends SnailSubsystem{
 
     public Elevator() {
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+        elevatorMotor.restoreFactoryDefaults();
+        // pivotWristMotor.setIdleMode(IdleMode.kBrake);
+        elevatorMotor.setIdleMode(IdleMode.kCoast);
+        elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+
         pidController = elevatorMotor.getPIDController();
 
         pidController.setP(p.get());
