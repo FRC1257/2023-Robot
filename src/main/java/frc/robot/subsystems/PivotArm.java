@@ -102,9 +102,9 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Motor Speed", armEncoder.getVelocity());
-        SmartDashboard.putNumber("Encoder Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("Setpoint", setPoint);
+        SmartDashboard.putNumber("Arm Motor Speed", armEncoder.getVelocity());
+        SmartDashboard.putNumber("Arm Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("Arm Setpoint", setPoint);
         /* SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get()); */
     }
 

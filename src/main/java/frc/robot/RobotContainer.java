@@ -65,7 +65,6 @@ public class RobotContainer {
     private SnailController driveController;
     private SnailController operatorController;
 
-    private boolean isTestBot = false;
     private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;
@@ -160,36 +159,32 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
-        if (!isTestBot) {
-            claw = new Claw();
-            claw.setDefaultCommand(new ClawNeutralCommand(claw));
-         
-            // Vision
-            elevator = new Elevator();
-            elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getElevatorSpeed));
+        claw = new Claw();
+        claw.setDefaultCommand(new ClawNeutralCommand(claw));
+        
+        // Vision
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getElevatorSpeed));
 
-            // Pivot Wrist
-            pivotWrist = new PivotWrist();
-            pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getLeftY));
-            
-            // Pivot Arm
-            pivotArm = new PivotArm();
-            pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
-        }
+        // Pivot Wrist
+        pivotWrist = new PivotWrist();
+        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getLeftY));
+        
+        // Pivot Arm
+        pivotArm = new PivotArm();
+        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
+        
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
         
         subsystems.add(drivetrain);
         subsystems.add(vision);
-
-        if (!isTestBot) {
-            subsystems.add(claw); 
-            subsystems.add(pivotArm);
-            subsystems.add(pivotWrist);
-            subsystems.add(elevator);
-        }
-
+        subsystems.add(claw); 
+        subsystems.add(pivotArm);
+        subsystems.add(pivotWrist);
+        subsystems.add(elevator);
+        
         // generate auto
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
@@ -223,40 +218,39 @@ public class RobotContainer {
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
         // Operator bindings
-        if (!isTestBot) {
-            // operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-            // operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-            // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+        // operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        // operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+        // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
 
-            // // Operator bindings
-            // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
-            // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
-            // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-    
-            operatorController.getButton(Button.kB.value).onTrue(new ClawIntakeCommand(claw));
-            operatorController.getButton(Button.kA.value).onTrue(new ClawEjectCommand(claw));
+        // // Operator bindings
+        // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
+        // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
+        // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
 
-            operatorController.getButton(Button.kY.value).onTrue(new ClawItemToggleCommand(claw));
-            // Operator Bindings
-            // operatorController.getButton(Button.kA.value).onTrue();
+        operatorController.getButton(Button.kB.value).onTrue(new ClawIntakeCommand(claw));
+        operatorController.getButton(Button.kA.value).onTrue(new ClawEjectCommand(claw));
 
-            // compound commands
-            // operatorController.getDPad(DPad.UP).onTrue(new HighScoreCommand(elevator, pivotArm, pivotWrist));
-            // intake and low score are same
-            /* operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
-            operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
-            operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));
+        operatorController.getButton(Button.kY.value).onTrue(new ClawItemToggleCommand(claw));
+        // Operator Bindings
+        // operatorController.getButton(Button.kA.value).onTrue();
 
-            operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
+        // compound commands
+        // operatorController.getDPad(DPad.UP).onTrue(new HighScoreCommand(elevator, pivotArm, pivotWrist));
+        // intake and low score are same
+        /* operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
+        operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));
 
-            operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-            operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-            operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
-            operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
 
-            /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
+        operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+        operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
+        operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
 
-        }
+        /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
+
+        
         
         // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
         // driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
@@ -352,6 +346,7 @@ public class RobotContainer {
     public void tuningInit() {
         for(SnailSubsystem subsystem : subsystems) {
             subsystem.tuningInit();
+            SmartDashboard.putData(subsystem);
         }
     }
 

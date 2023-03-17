@@ -175,6 +175,8 @@ public final class Constants {
         // TODO Tune
         public static final double ELEVATOR_SETPOINT_RETRACT = 0;
         public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
+
+        public static final double ELEVATOR_STOP_BUFFER = 5;
     }
 
        

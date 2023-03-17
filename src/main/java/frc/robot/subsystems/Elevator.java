@@ -1,9 +1,5 @@
 package frc.robot.subsystems;
 import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_MAX_OUTPUT;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_REV_TO_POS_FACTOR;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_PID_TOLERANCE;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,6 +9,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
+import static frc.robot.Constants.ElevatorConstants.*;
 
 public class Elevator extends SnailSubsystem{
 
@@ -32,7 +29,7 @@ public class Elevator extends SnailSubsystem{
 
     public enum State {
         MANUAL,
-        PID;
+        PID
     }
 
     private State elevatorState = State.MANUAL; 
@@ -58,6 +55,14 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
+        if (encoder.getPosition() < ELEVATOR_SETPOINT_RETRACT + ELEVATOR_STOP_BUFFER && speed < 0.0) {
+            elevatorMotor.set(0);
+            return;
+        } else if (encoder.getPosition() > ELEVATOR_SETPOINT_EXTEND - ELEVATOR_STOP_BUFFER && speed > 0.0) {
+            elevatorMotor.set(0);
+            return;
+        }
+
         switch(elevatorState) {
             case MANUAL:
                 elevatorMotor.set(speed);
@@ -97,6 +102,8 @@ public class Elevator extends SnailSubsystem{
     public void displayShuffleboard() {
         SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
         SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
+        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+        SmartDashboard.putString("Elevator State", elevatorState.toString());
     }
 
     @Override

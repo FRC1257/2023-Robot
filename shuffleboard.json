@@ -1077,6 +1077,307 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "11,9": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Drivetrain",
+              "_title": "Drivetrain",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,9": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Vision",
+              "_title": "Vision",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,10": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Claw",
+              "_title": "Claw",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,10": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/PivotArm",
+              "_title": "PivotArm",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist PID Tolerance",
+              "_title": "Pivot Wrist PID Tolerance",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,9": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Vel",
+              "_title": "Pivot Wrist Prof Max Vel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,10": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Accel",
+              "_title": "Pivot Wrist Prof Max Accel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,10": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Setpoint Top",
+              "_title": "Pivot Wrist Setpoint Top",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,10": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Setpoint Bottom",
+              "_title": "Pivot Wrist Setpoint Bottom",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,10": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist State",
+              "_title": "Pivot Wrist State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,10": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Current",
+              "_title": "Pivot Wrist Current",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,10": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Limit Switch",
+              "_title": "Pivot Wrist Limit Switch",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Encoder position",
+              "_title": "Encoder position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Motor Speed",
+              "_title": "Elevator Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_title": "Elevator Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Setpoint",
+              "_title": "Elevator Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator State",
+              "_title": "Elevator State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Arm Motor Speed",
+              "_title": "Arm Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Arm Encoder Position",
+              "_title": "Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Arm Setpoint",
+              "_title": "Arm Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Motor Speed",
+              "_title": "Pivot Wrist Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Motor Position",
+              "_title": "Pivot Wrist Motor Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,11": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Motor Setpoint",
+              "_title": "Pivot Wrist Motor Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2031,7 +2332,7 @@
       }
     },
     {
-      "title": "Tab 8",
+      "title": "Subsystems",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -2041,28 +2342,314 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "8,1": {
+          "0,4": {
             "size": [
-              3,
+              5,
               2
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Motor Speed",
-              "_title": "SmartDashboard/Motor Speed",
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Claw",
+              "_title": "SmartDashboard/Claw",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "7,4": {
+          "0,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Eject Speed",
+              "_title": "SmartDashboard/Claw Eject Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Intake Speed",
+              "_title": "SmartDashboard/Claw Intake Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Neutral Speed",
+              "_title": "SmartDashboard/Claw Neutral Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Shooting Speed",
+              "_title": "SmartDashboard/Claw Shooting Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              5,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/Elevator",
+              "_title": "SmartDashboard/Elevator",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,3": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Motor Speed",
+              "_title": "SmartDashboard/Elevator Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_title": "SmartDashboard/Elevator Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator State",
+              "_title": "SmartDashboard/Elevator State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,0": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/PivotArm",
+              "_title": "SmartDashboard/PivotArm",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,0": {
+            "size": [
+              4,
+              2
+            ],
+            "content": {
+              "_type": "Basic Subsystem",
+              "_source0": "network_table:///SmartDashboard/PivotWrist",
+              "_title": "SmartDashboard/PivotWrist",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,2": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Motor",
-              "_title": "SmartDashboard/Left Motor",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm P",
+              "_title": "SmartDashboard/Pivot Arm P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm I",
+              "_title": "SmartDashboard/Pivot Arm I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm D",
+              "_title": "SmartDashboard/Pivot Arm D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm FF",
+              "_title": "SmartDashboard/Pivot Arm FF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Max Output",
+              "_title": "SmartDashboard/Pivot Arm Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist PID Tolerance",
+              "_title": "SmartDashboard/Pivot Wrist PID Tolerance",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist P",
+              "_title": "SmartDashboard/Pivot Wrist P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist I",
+              "_title": "SmartDashboard/Pivot Wrist I",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist D",
+              "_title": "SmartDashboard/Pivot Wrist D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist FF",
+              "_title": "SmartDashboard/Pivot Wrist FF",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Max Output",
+              "_title": "SmartDashboard/Pivot Wrist Max Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Accel",
+              "_title": "SmartDashboard/Pivot Wrist Prof Max Accel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Wrist Prof Max Vel",
+              "_title": "SmartDashboard/Pivot Wrist Prof Max Vel",
               "_glyph": 148,
               "_showGlyph": false
             }

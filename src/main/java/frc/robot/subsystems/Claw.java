@@ -90,8 +90,8 @@ public class Claw extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Left Motor", motorLeft.get());
-        SmartDashboard.putNumber("Right Motor", motorRight.get());
+        SmartDashboard.putNumber("Claw Left Motor Speed", motorLeft.get());
+        SmartDashboard.putNumber("Claw Right Motor Speed", motorRight.get());
     }
 
     @Override

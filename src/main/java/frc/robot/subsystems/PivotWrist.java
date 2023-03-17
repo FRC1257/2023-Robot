@@ -32,7 +32,6 @@ public class PivotWrist extends SnailSubsystem {
     private RelativeEncoder primaryEncoder;
     private SparkMaxPIDController wristPID;
     // private DigitalInput limitSwitch;
-    private DigitalInput limitSwitch;
     public double speed;
 
     public enum State {
@@ -77,8 +76,6 @@ public class PivotWrist extends SnailSubsystem {
         wristPID.setD(WRIST_PID[2]);
         wristPID.setFF(WRIST_PID[3]);
         wristPID.setOutputRange(-WRIST_PID_MAX_OUTPUT, WRIST_PID_MAX_OUTPUT);
-
-        limitSwitch = new DigitalInput(WRIST_LIMIT_SWITCH_PORT_ID); // have to get ID later for constant
     }
 
     /**
@@ -130,10 +127,6 @@ public class PivotWrist extends SnailSubsystem {
         this.setpoint = setpoint;
     }
 
-    private boolean getlimitSwitch() {
-        return limitSwitch.get();
-    }
-
     @Override
     public void displayShuffleboard() {
         // Display Encoder position and setpoint
@@ -141,10 +134,9 @@ public class PivotWrist extends SnailSubsystem {
                 new double[] { primaryEncoder.getPosition(), setpoint });
         SmartDashboard.putString("Pivot Wrist State", state.name());
         SmartDashboard.putNumber("Pivot Wrist Current", pivotWristMotorRight.getOutputCurrent());
-        SmartDashboard.putBoolean("Pivot Wrist Limit Switch", limitSwitch.get());
-        SmartDashboard.putNumber("Motor Speed", primaryEncoder.getVelocity());
-        SmartDashboard.putNumber("Encoder position", primaryEncoder.getPosition());
-        SmartDashboard.putNumber("Setpoint", setpoint);
+        SmartDashboard.putNumber("Pivot Wrist Motor Speed", primaryEncoder.getVelocity());
+        SmartDashboard.putNumber("Pivot Wrist Motor Position", primaryEncoder.getPosition());
+        SmartDashboard.putNumber("Pivot Wrist Motor Setpoint", setpoint);
     }
 
     @Override
