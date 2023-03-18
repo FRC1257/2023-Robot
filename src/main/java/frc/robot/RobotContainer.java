@@ -120,7 +120,7 @@ public class RobotContainer {
         operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
 
         configureAutoChoosers();
-        configureShuffleboard();
+        /* configureShuffleboard(); */
         configureSubsystems();
         configureButtonBindings();
         
@@ -153,7 +153,7 @@ public class RobotContainer {
         // declare each of the subsystems here
 
         
-        vision = new Vision();
+        /* vision = new Vision();
         drivetrain = new Drivetrain(getStartingPos(), vision);
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
@@ -173,7 +173,7 @@ public class RobotContainer {
         // Pivot Arm
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
-        
+         */
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -212,10 +212,10 @@ public class RobotContainer {
         // Drivetrain bindings
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
+        /* driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
+         */// driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
         // Operator bindings
         // operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
@@ -226,12 +226,12 @@ public class RobotContainer {
         // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
         // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-
+/* 
         operatorController.getButton(Button.kB.value).onTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kA.value).onTrue(new ClawEjectCommand(claw));
 
         operatorController.getButton(Button.kY.value).onTrue(new ClawItemToggleCommand(claw));
-        // Operator Bindings
+         */// Operator Bindings
         // operatorController.getButton(Button.kA.value).onTrue();
 
         // compound commands
@@ -240,14 +240,14 @@ public class RobotContainer {
         /* operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
         operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));*/
-
+/* 
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
 
         operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
         operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
         operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
         operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-
+ */
         /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
 
         
@@ -264,10 +264,10 @@ public class RobotContainer {
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         // driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
         // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
-
+/* 
         driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
+        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180)); */
     }
 
 
@@ -275,13 +275,13 @@ public class RobotContainer {
      * Set up the choosers on shuffleboard for autonomous
      */
     public void configureAutoChoosers() {
-        configureGamePieceChooser();
+        /* configureGamePieceChooser();
         configureFirstScorePositionChooser();
         configureSecondScorePositionChooser();
         configureStartPositionChooser();
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
-        configureHitAndRunChooser();
+        configureHitAndRunChooser(); */
     }
 
     private int estimatedCurrentPose2d() {
@@ -294,7 +294,7 @@ public class RobotContainer {
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        updateAutoChoosers();
+        /* updateAutoChoosers(); */
 
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
@@ -353,7 +353,7 @@ public class RobotContainer {
     public void tuningPeriodic() {
         if(outputCounter % 3 == 0) {
             subsystems.get(outputCounter / 3).tuningPeriodic();
-        }
+        }/* 
 
         drivetrain.tuningPeriodic();
 
@@ -389,9 +389,9 @@ public class RobotContainer {
 
             putTrajectoryTime();
             resetDashboard();
-        }
+        } */
     
-    }
+    }/* 
 
     //sendable chooser methods
 
@@ -508,10 +508,11 @@ public class RobotContainer {
         leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
         hitAndRun = SmartDashboard.getBoolean("Hit and Run", hitAndRun);
     }
-
+    */
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("Trajectory Time", 0);
     }
+    /* 
 
     public void resetDashboard() {
         // Field Side
@@ -527,6 +528,6 @@ public class RobotContainer {
         SmartDashboard.putBoolean("3 Ball Auto", threePiece);
         SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
         SmartDashboard.putBoolean("Hit and Run", hitAndRun);
-    }
+    } */
 
 }

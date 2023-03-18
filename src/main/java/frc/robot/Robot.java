@@ -1,71 +1,81 @@
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
+
 package frc.robot;
 
-import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.util.SnailController;
+import frc.robot.util.TunableNumber;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+/**
+ * This sample program shows how to read basic bus measurements from the
+ * SparkMax
+ */
 public class Robot extends TimedRobot {
-    
-    private RobotContainer robotContainer;
-    private Command autoCommand;
-    
+    /**
+     * Parameters for the SparkMax are defined below. Be sure to change the deviceID
+     * and motor type to match your setup.
+     */
+    private static final int deviceID = 1;
+    private static TunableNumber device = new TunableNumber("Device ID", deviceID);
+    private static final MotorType motorType = MotorType.kBrushless;
+    private CANSparkMax m_motor;
+    private RelativeEncoder m_encoder;
+
+    /**
+     * A single joystick will be used to control motor outputs when the robot is
+     * enabled.
+     */
+    private SnailController m_controller;
+
     @Override
     public void robotInit() {
-        robotContainer = new RobotContainer();
+        m_motor = new CANSparkMax(deviceID, motorType);
+        m_encoder = m_motor.getEncoder();
 
-        PortForwarder.add(5800, "photonvision.local", 5800);
-
-        if (isSimulation()) {
-            System.out.println("Running in simulation");
-        } else {
-            System.out.println("Running on robot");
-        }
-    
-        /* var instance = NetworkTableInstance.getDefault();
-        PhotonCamera camera = new PhotonCamera(instance, "Microsoft-LifeCam-3000");
-         */
+        m_controller = new SnailController(0);
     }
 
     @Override
     public void robotPeriodic() {
-        CommandScheduler.getInstance().run();
-        robotContainer.displayShuffleboard();
-        if(SmartDashboard.getBoolean("Testing", false)) {
-            robotContainer.tuningPeriodic();
+        if (device.checkUpdate()) {
+            DriverStation.reportError("Changing Motor to " + (int) device.get(), false);
+            m_motor = new CANSparkMax((int) device.get(), motorType);
+            m_encoder = m_motor.getEncoder();
         }
+
+        /**
+         * There are several useful bus measurements you can get from the SparkMax.
+         * This includes bus voltage (V), output current (A), Applied Output
+         * (duty cycle), and motor temperature (C)
+         */
+        double busVoltage = m_motor.getBusVoltage();
+        double current = m_motor.getOutputCurrent();
+        double appliedOut = m_motor.getAppliedOutput();
+        double temperature = m_motor.getMotorTemperature();
+        double position = m_encoder.getPosition();
+
+        // Open SmartDashboard when your program is running to see the values
+        SmartDashboard.putNumber("A Motor Bus Voltage", busVoltage);
+        SmartDashboard.putNumber("A Motor Current", current);
+        SmartDashboard.putNumber("A Motor Applied Output", appliedOut);
+        SmartDashboard.putNumber("A Motor Motor Temperature", temperature);
+        SmartDashboard.putNumber("A Motor Position", position);
     }
 
     @Override
-    public void autonomousInit() {
-        autoCommand = robotContainer.getAutoCommand();
-
-        if(autoCommand != null) {
-            autoCommand.schedule();
-        }
-    }
-
-    @Override
-    public void teleopInit() {
-        if(autoCommand != null) {
-            autoCommand.cancel();
-        }
-    }
-
-    @Override
-    public void testInit() {
-        robotContainer.tuningInit();
-    }
-
-    @Override
-    public void disabledPeriodic() {
-        // stop all motors
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
+    public void teleopPeriodic() {
+        m_motor.set(m_controller.getLeftY());
     }
 }
