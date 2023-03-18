@@ -355,8 +355,6 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
-        drivetrain.tuningPeriodic();
-
         if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
             updateTraj = true;
             SmartDashboard.putBoolean("Reset Auto Viewer", false);
@@ -398,7 +396,7 @@ public class RobotContainer {
     public void configureShuffleboard() {
         // Field Side
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
-        SmartDashboard.putBoolean("Testing", true);
+        SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("1st Auto Score", firstScore);
         SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
