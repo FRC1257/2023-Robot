@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import static frc.robot.Constants.Claw.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -18,6 +19,7 @@ public class Claw extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
     private DoubleSolenoid solenoid;
+    private Compressor compressor;
 
     private TunableNumber neutralSpeed = new TunableNumber("Claw Neutral Speed", ROLLER_NEUTRAL_SPEED);
     private TunableNumber intakeSpeed = new TunableNumber("Claw Intake Speed", ROLLER_INTAKING_SPEED);
@@ -60,6 +62,9 @@ public class Claw extends SnailSubsystem {
         
         solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
         clawState = ClawState.CUBEINTAKE;
+
+        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+        compressor.enableDigital();
     }
 
     private void motorInit(CANSparkMax motor) {
