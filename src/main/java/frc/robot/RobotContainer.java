@@ -36,12 +36,14 @@ import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
 import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
@@ -227,10 +229,10 @@ public class RobotContainer {
         // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
 
-        operatorController.getButton(Button.kB.value).onTrue(new ClawIntakeCommand(claw));
-        operatorController.getButton(Button.kA.value).onTrue(new ClawEjectCommand(claw));
+        operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
+        operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
 
-        operatorController.getButton(Button.kY.value).onTrue(new ClawItemToggleCommand(claw));
+        operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         // Operator Bindings
         // operatorController.getButton(Button.kA.value).onTrue();
 
@@ -243,10 +245,10 @@ public class RobotContainer {
 
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
 
-        operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-        operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-        operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
-        operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        // operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
+        // operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+        // operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
+        // operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
 
         /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
 
@@ -290,10 +292,27 @@ public class RobotContainer {
         return startPositionChooser.getSelected();
     }
 
+    public Pose2d shiftedPose(Pose2d pose) {
+        double SHIFT_X = -3.75;
+        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
+    }
+
     /**
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+        trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        
+        drivetrain.drawTrajectory(new ToPosCommand(drivetrain, trajPoints, true).getTrajectory());
+
+        return new ToPosCommand(drivetrain, trajPoints, true);
+
+        
+        
+/*         
+
         updateAutoChoosers();
 
         generateTrajectories = new GenerateTrajectories(
@@ -313,7 +332,7 @@ public class RobotContainer {
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajectories.getCommand();
-        //return new DriveDistanceCommand(drivetrain, 10);
+ */        //return new DriveDistanceCommand(drivetrain, 10);
     }
 
     /**

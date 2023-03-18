@@ -109,9 +109,9 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 2; */
 
         // Drivetrain Main
-        public final static int DRIVE_FRONT_LEFT = 15;
+        public final static int DRIVE_FRONT_LEFT = 14;
         public final static int DRIVE_FRONT_RIGHT = 12;
-        public final static int DRIVE_BACK_LEFT = 10;
+        public final static int DRIVE_BACK_LEFT = 15;
         public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
@@ -171,8 +171,8 @@ public final class Constants {
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
         // TODO Tune
-        public static final double ELEVATOR_SETPOINT_RETRACT = 0;
-        public static final double ELEVATOR_SETPOINT_EXTEND = 1257;
+        public static final double ELEVATOR_SETPOINT_RETRACT = -0.5;
+        public static final double ELEVATOR_SETPOINT_EXTEND = -36.5;
 
         public static final double ELEVATOR_STOP_BUFFER = 5;
     }
@@ -384,9 +384,9 @@ public final class Constants {
     };
 
     public static class Claw {
-        public static double ROLLER_NEUTRAL_SPEED = 0.05;
-        public static double ROLLER_INTAKING_SPEED = 0.45;
-        public static double ROLLER_EJECTING_SPEED = -0.45;
+        public static double ROLLER_NEUTRAL_SPEED = 0;
+        public static double ROLLER_INTAKING_SPEED = -0.45;
+        public static double ROLLER_EJECTING_SPEED = 0.45;
         public static double ROLLER_SHOOTING_SPEED = 0.8;
     };
 
@@ -401,6 +401,8 @@ public final class Constants {
         public static double PIVOT_ARM_SETPOINT_MID = 216.6;
         public static double PIVOT_ARM_SETPOINT_INTAKE = 260; // also used for low score
         public static double PIVOT_ARM_SETPOINT_HOLD = 0;
+        public static final double PIVOT_ARM_SETPOINT_BOTTOM = -0.3;
+        public static final double PIVOT_ARM_SETPOINT_TOP = -30;
     }
 
     public static double PI = 3.141592653589793238462643;

@@ -23,7 +23,7 @@ public class ClawEjectCommand extends CommandBase {
 
 	@Override 
 	public void end(boolean interrupted) {
-
+		claw.neutral();
 	}
 
 	@Override

@@ -13,16 +13,16 @@ public class ClawItemToggleCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
-
-	}
-
-	@Override
-	public void execute() {
 		if(claw.getClawState() == Claw.ClawState.CUBEINTAKE) {
 			claw.coneintake();
 		} else {
 			claw.cubeintake();
 		}
+	}
+
+	@Override
+	public void execute() {
+		
 	}
 
 	@Override 

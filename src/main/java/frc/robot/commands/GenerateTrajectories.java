@@ -253,7 +253,7 @@ public class GenerateTrajectories {
         trajectoryList.add(command.getTrajectory());
     }
 
-    private Pose2d shiftedPose(Pose2d pose) {
+    public Pose2d shiftedPose(Pose2d pose) {
         double SHIFT_X = -0.4;
         if (blue) {
             SHIFT_X *= -1;

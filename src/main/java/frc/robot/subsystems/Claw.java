@@ -75,12 +75,12 @@ public class Claw extends SnailSubsystem {
     public void update() {
         switch(rollerState) {
             case NEUTRAL:
-                motorLeft.set(0.05);
-                motorRight.set(-0.05);
+                motorLeft.set(neutralSpeed.get());
+                motorRight.set(-(neutralSpeed.get()));
                 break;
             case INTAKING:
-                motorLeft.set(0.85);
-                motorRight.set(-0.85);
+                motorLeft.set(intakeSpeed.get());
+                motorRight.set(-(intakeSpeed.get()));
                 break;
             case SHOOTING:
                 motorLeft.set(shootingSpeed.get());
@@ -94,10 +94,10 @@ public class Claw extends SnailSubsystem {
         
         switch(clawState) {
             case CUBEINTAKE:
-                solenoid.set(Value.kReverse);
+                solenoid.set(Value.kForward);
                 break;
             case CONEINTAKE:
-                solenoid.set(Value.kForward);
+                solenoid.set(Value.kReverse);
                 break;
         }
     }

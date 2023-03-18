@@ -40,7 +40,7 @@ public class Elevator extends SnailSubsystem{
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         elevatorMotor.restoreFactoryDefaults();
         // pivotWristMotor.setIdleMode(IdleMode.kBrake);
-        elevatorMotor.setIdleMode(IdleMode.kCoast);
+        elevatorMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
         pidController = elevatorMotor.getPIDController();
@@ -62,13 +62,16 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
-        if (encoder.getPosition() < ELEVATOR_SETPOINT_RETRACT + ELEVATOR_STOP_BUFFER && speed < 0.0) {
+        /* if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
             elevatorMotor.set(0);
             return;
-        } else if (encoder.getPosition() > ELEVATOR_SETPOINT_EXTEND - ELEVATOR_STOP_BUFFER && speed > 0.0) {
+        } else if (encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND && speed > 0.0) {
             elevatorMotor.set(0);
             return;
-        }
+        } */
+
+        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT/*  && speed < 0.0*/);
+        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND /*&& speed > 0.0*/);
 
         switch(elevatorState) {
             case MANUAL:
