@@ -23,11 +23,11 @@ public class ElevatorPIDCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        elevator.endPID();
+        // elevator.endPID();
     }
 
     @Override
     public boolean isFinished() {
-        return elevator.atSetpoint();
+        return false;
     }
 }

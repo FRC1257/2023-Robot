@@ -25,6 +25,7 @@ import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
 
 import frc.robot.commands.elevator.ElevatorManualCommand;
+import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -245,13 +246,19 @@ public class RobotContainer {
         operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));*/
 
-        // operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
+        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
 
         // operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-        // operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-        // operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
-        // operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+        
+        // Pivot Arm PID works
+        /* operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
+        operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
+ */
 
+        // Elevator PID
+        operatorController.getDPad(DPad.LEFT).onTrue(new ElevatorPIDCommand(elevator, Constants.ElevatorConstants.ELEVATOR_ONE_FORTH));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new ElevatorPIDCommand(elevator, Constants.ElevatorConstants.ELEVATOR_THREE_FORTHS));
         /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
 
         

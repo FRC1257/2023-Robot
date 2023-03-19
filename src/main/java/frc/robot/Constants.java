@@ -172,7 +172,10 @@ public final class Constants {
 
         // TODO Tune
         public static final float ELEVATOR_SETPOINT_RETRACT = 0.5f;
-        public static final float ELEVATOR_SETPOINT_EXTEND = 36.6f;
+        public static final float ELEVATOR_SETPOINT_EXTEND = 25.6f;
+
+        public static final double ELEVATOR_THREE_FORTHS = 18;
+        public static final double ELEVATOR_ONE_FORTH = 9;
 
         public static final double ELEVATOR_STOP_BUFFER = 5;
     }
@@ -392,19 +395,27 @@ public final class Constants {
 
     public static class PivotArm {
         // PID constants
-        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0, 0};
-        public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
+        public static double[] PIVOT_ARM_PID = new double[] {0.1, 0, 0, 0.0019};
+        public static double PIVOT_ARM_PID_TOLERANCE = 0.5; // lol
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 
         // Setpoints between -1 and 1
-        public static double PIVOT_ARM_SETPOINT_UP = 216.6;
-        public static double PIVOT_ARM_SETPOINT_MID = 216.6;
-        public static double PIVOT_ARM_SETPOINT_INTAKE = 260; // also used for low score
-        public static double PIVOT_ARM_SETPOINT_HOLD = 0;
-        public static final double PIVOT_ARM_SETPOINT_BOTTOM = -0.3;
-        public static final double PIVOT_ARM_SETPOINT_TOP = -30;
+        public static double PIVOT_ARM_SETPOINT_UP = 120;
+        public static double PIVOT_ARM_SETPOINT_MID = 156;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 200; // also used for low score
+        public static double PIVOT_ARM_SETPOINT_HOLD = 30;
+        public static final double PIVOT_ARM_SETPOINT_BOTTOM = 1;
+        public static final double PIVOT_ARM_SETPOINT_TOP = 220;
+
+        // 220 bottom
+        // 200 intake
+        // 156 parallel to ground
+        // 120 parallel to elevator
+        // 30 is parallel to the ground holding
+        // 0 limit
+
     }
 
     public static double PI = 3.141592653589793238462643;

@@ -32,7 +32,7 @@ public class PivotArm extends SnailSubsystem {
     private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
     private TunableNumber d = new TunableNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
     private TunableNumber ff = new TunableNumber("Pivot Arm FF", PIVOT_ARM_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
+    // private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -60,7 +60,7 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setI(i.get());
         armPIDController.setD(d.get());
         armPIDController.setFF(ff.get());
-        armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
+        armPIDController.setOutputRange(-0.4, 0.4);
 
         /* limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID); */
     }
@@ -122,7 +122,6 @@ public class PivotArm extends SnailSubsystem {
         i.reset();
         d.reset();
         ff.reset();
-        maxOutput.reset();
     }
 
     @Override 
@@ -131,7 +130,6 @@ public class PivotArm extends SnailSubsystem {
         i.updateFunction(() -> armPIDController.setI(i.get()));
         d.updateFunction(() -> armPIDController.setD(d.get()));
         ff.updateFunction(() -> armPIDController.setFF(ff.get()));
-        maxOutput.updateFunction(() -> armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
     }
 
     public void manualControl(double newSpeed) {

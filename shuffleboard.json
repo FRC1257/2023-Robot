@@ -2466,41 +2466,93 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "18,0": {
+          "0,0": {
             "size": [
-              1,
+              2,
               2
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PDBalanceCommand D",
-              "_title": "SmartDashboard/PDBalanceCommand D",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm P",
+              "_title": "SmartDashboard/Pivot Arm P",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "17,0": {
+          "2,0": {
             "size": [
               1,
-              2
+              1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/PDBalanceCommand P",
-              "_title": "SmartDashboard/PDBalanceCommand P",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm FF",
+              "_title": "SmartDashboard/Pivot Arm FF",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "15,3": {
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm D",
+              "_title": "SmartDashboard/Pivot Arm D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Setpoint",
+              "_title": "SmartDashboard/Pivot Arm Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm State",
+              "_title": "SmartDashboard/Pivot Arm State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,3": {
             "size": [
               4,
               4
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Roll Angle",
-              "_title": "SmartDashboard/Roll Angle",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Motor Speed",
+              "_title": "SmartDashboard/Pivot Arm Motor Speed",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
@@ -2509,44 +2561,97 @@
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Roll Angle": true
+              "Visible data/SmartDashboard/Pivot Arm Motor Speed": true
             }
           },
-          "11,5": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Robot Angle",
-              "_title": "SmartDashboard/Robot Angle",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "7,5": {
+          "10,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Align error",
-              "_title": "SmartDashboard/Align error",
+              "_source0": "network_table:///SmartDashboard/Elevator Setpoint",
+              "_title": "/SmartDashboard/Elevator Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator State",
+              "_title": "/SmartDashboard/Elevator State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator FF",
+              "_title": "/SmartDashboard/Elevator FF",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
           "6,0": {
             "size": [
-              4,
-              4
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator D",
+              "_title": "/SmartDashboard/Elevator D",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator P",
+              "_title": "/SmartDashboard/Elevator P",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_title": "/SmartDashboard/Elevator Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Drive Angle PID (pos, set)",
-              "_title": "SmartDashboard/Drive Angle PID (pos, set)",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_source1": "network_table:///SmartDashboard/Elevator Setpoint",
+              "_title": "SmartDashboard/Elevator Encoder",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
@@ -2555,36 +2660,8 @@
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Drive Angle PID (pos, set)[0]": true,
-              "Visible data/SmartDashboard/Drive Angle PID (pos, set)[1]": true
-            }
-          },
-          "8,5": {
-            "size": [
-              3,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Robot Angle",
-              "_title": "SmartDashboard/Robot Angle",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "12,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Elevator Bottom",
-              "_title": "/SmartDashboard/Elevator Bottom",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "Visible data/SmartDashboard/Elevator Encoder": true,
+              "Visible data/SmartDashboard/Elevator Setpoint": true
             }
           }
         }
@@ -3015,6 +3092,26 @@
               "_title": "SmartDashboard/Claw Left Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          },
+          "13,0": {
+            "size": [
+              5,
+              4
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 30.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/Pivot Arm Encoder Position": true
             }
           }
         }

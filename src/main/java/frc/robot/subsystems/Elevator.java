@@ -65,7 +65,7 @@ public class Elevator extends SnailSubsystem{
         encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
         // encoder.setInverted(true);
-        encoder.setPosition(0.6);/* 
+        encoder.setPosition(0);/* 
 
         limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID); */
     }
@@ -73,13 +73,15 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
-        if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
+        if (encoder.getPosition() <=  -ELEVATOR_SETPOINT_EXTEND && speed < 0.0) {
             elevatorMotor.set(0);
             return;
-        } else if (encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND && speed > 0.0) {
+        } else if (encoder.getPosition() >=  ELEVATOR_SETPOINT_RETRACT&& speed > 0.0) {
             elevatorMotor.set(0);
             return;
         } 
+        //positive motor turning brings the elevator down
+        //Encoder position decreases as we go up
 
         SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT/*  && speed < 0.0*/);
         SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND /*&& speed > 0.0*/);

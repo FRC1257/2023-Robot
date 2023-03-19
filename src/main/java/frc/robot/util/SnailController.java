@@ -18,6 +18,8 @@ public class SnailController extends XboxController {
         return new XboxTrigger(this, leftHand);
     }
 
+    // LEFT BRINGS IT DOWN
+    // RIGHT IS UP
     public double getElevatorSpeed() {
         return getLeftTriggerAxis() - getRightTriggerAxis();
     }
@@ -29,6 +31,8 @@ public class SnailController extends XboxController {
         LEFT
     }
 
+    /*
+     */
     public Trigger getDPad(DPad dpad) {
         int angle;
         switch(dpad) {
