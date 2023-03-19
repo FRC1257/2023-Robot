@@ -17,6 +17,8 @@ import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
+import com.revrobotics.SparkMaxRelativeEncoder;
+
 public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;
     private RelativeEncoder armEncoder;
@@ -49,9 +51,9 @@ public class PivotArm extends SnailSubsystem {
         armMotor.setIdleMode(IdleMode.kBrake);
         armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        armEncoder = armMotor.getEncoder();
-        armEncoder.setPositionConversionFactor(48.0 * Math.PI * 6);
-        armEncoder.setVelocityConversionFactor(48.0 * Math.PI * 6 / 60);
+        armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
+        armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
+        armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
         armPIDController = armMotor.getPIDController();
         armPIDController.setP(p.get());

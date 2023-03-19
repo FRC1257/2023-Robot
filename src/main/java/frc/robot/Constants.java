@@ -171,8 +171,8 @@ public final class Constants {
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
         // TODO Tune
-        public static final double ELEVATOR_SETPOINT_RETRACT = -0.5;
-        public static final double ELEVATOR_SETPOINT_EXTEND = -36.5;
+        public static final double ELEVATOR_SETPOINT_RETRACT = 0.5;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 36.5;
 
         public static final double ELEVATOR_STOP_BUFFER = 5;
     }
@@ -395,6 +395,8 @@ public final class Constants {
         public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
         public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
+
+        public static double POSITION_CONVERSION_FACTOR = 1;
 
         // Setpoints between -1 and 1
         public static double PIVOT_ARM_SETPOINT_UP = 216.6;

@@ -9,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxRelativeEncoder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,7 +66,7 @@ public class PivotWrist extends SnailSubsystem {
         pivotWristMotor.setInverted(true);
 
         // Get Encoder
-        primaryEncoder = pivotWristMotor.getEncoder();
+        primaryEncoder = pivotWristMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
         primaryEncoder.setPositionConversionFactor(WRIST_ENCODER_PCF); // verify with build
         primaryEncoder.setVelocityConversionFactor(WRIST_ENCODER_PCF / 60);
         resetEncoder();
@@ -76,7 +77,7 @@ public class PivotWrist extends SnailSubsystem {
         wristPID.setI(WRIST_PID[1]);
         wristPID.setD(WRIST_PID[2]);
         wristPID.setFF(WRIST_PID[3]);
-        wristPID.setOutputRange(-WRIST_PID_MAX_OUTPUT, WRIST_PID_MAX_OUTPUT);
+        wristPID.setOutputRange(-1, 1);
     }
 
     /**

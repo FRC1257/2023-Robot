@@ -13,12 +13,15 @@ import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
+import com.revrobotics.SparkMaxRelativeEncoder;
+
+
 public class Elevator extends SnailSubsystem{
 
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
-    private RelativeEncoder encoder;/* 
-    private DigitalInput limitSwitch; */
+    private RelativeEncoder encoder;
+    /* private DigitalInput limitSwitch; */
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
@@ -27,7 +30,6 @@ public class Elevator extends SnailSubsystem{
     private TunableNumber i = new TunableNumber("Elevator I", ELEVATOR_PID[1]);
     private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
     private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Elevator Max Output", ELEVATOR_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -49,11 +51,12 @@ public class Elevator extends SnailSubsystem{
         pidController.setI(i.get());
         pidController.setD(d.get());
         pidController.setFF(ff.get());
-        pidController.setOutputRange(-maxOutput.get(), maxOutput.get());
+        pidController.setOutputRange(-1, 1);
 
-        encoder = elevatorMotor.getEncoder();
+        encoder = elevatorMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
         encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
+        encoder.setInverted(true);
         encoder.setPosition(0.0);/* 
 
         limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID); */
@@ -122,7 +125,6 @@ public class Elevator extends SnailSubsystem{
         i.reset();
         d.reset();
         ff.reset();
-        maxOutput.reset();
     }
 
     @Override
@@ -131,7 +133,6 @@ public class Elevator extends SnailSubsystem{
         i.updateFunction(() -> pidController.setI(i.get()));
         d.updateFunction(() -> pidController.setD(d.get()));
         ff.updateFunction(() -> pidController.setFF(ff.get()));
-        maxOutput.updateFunction(() -> pidController.setOutputRange(-maxOutput.get(), maxOutput.get()));
     }
     
     public boolean atSetpoint() {
