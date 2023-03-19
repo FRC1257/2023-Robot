@@ -66,7 +66,7 @@ public class PivotWrist extends SnailSubsystem {
         pivotWristMotor.setInverted(true);
 
         // Get Encoder
-        primaryEncoder = pivotWristMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
+        primaryEncoder = pivotWristMotor.getEncoder(); // SparkMaxRelativeEncoder.Type.kQuadrature, 8192
         primaryEncoder.setPositionConversionFactor(WRIST_ENCODER_PCF); // verify with build
         primaryEncoder.setVelocityConversionFactor(WRIST_ENCODER_PCF / 60);
         resetEncoder();

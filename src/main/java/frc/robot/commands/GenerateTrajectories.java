@@ -241,7 +241,8 @@ public class GenerateTrajectories {
 
     // TODO Fix these methods
     private void addScoreHigh() {
-        command.addCommands(new ScoreCommand());
+        // TODO add this
+        // command.addCommands(new ScoreCommand());
     }
 
     private void addPiecePickup() {

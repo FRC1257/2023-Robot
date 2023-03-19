@@ -51,7 +51,7 @@ public class PivotArm extends SnailSubsystem {
         armMotor.setIdleMode(IdleMode.kBrake);
         armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
+        armEncoder = armMotor.getEncoder();
         armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 

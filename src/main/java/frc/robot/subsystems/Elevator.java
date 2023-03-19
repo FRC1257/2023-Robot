@@ -53,10 +53,10 @@ public class Elevator extends SnailSubsystem{
         pidController.setFF(ff.get());
         pidController.setOutputRange(-1, 1);
 
-        encoder = elevatorMotor.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
-        encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
-        encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
-        encoder.setInverted(true);
+        encoder = elevatorMotor.getEncoder();
+        encoder.setPositionConversionFactor(-ELEVATOR_REV_TO_POS_FACTOR);
+        encoder.setVelocityConversionFactor(-ELEVATOR_REV_TO_POS_FACTOR / 60);
+        // encoder.setInverted(true);
         encoder.setPosition(0.0);/* 
 
         limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID); */

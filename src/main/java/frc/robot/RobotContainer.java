@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
@@ -31,6 +32,7 @@ import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
+import frc.robot.commands.ScoreCommand;
 import frc.robot.commands.Compound_Commands.HighScoreCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
@@ -305,9 +307,14 @@ public class RobotContainer {
         trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
         trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
         
-        drivetrain.drawTrajectory(new ToPosCommand(drivetrain, trajPoints, true).getTrajectory());
+        // drivetrain.drawTrajectory(new ToPosCommand(drivetrain, trajPoints, true).getTrajectory());
 
-        return new ToPosCommand(drivetrain, trajPoints, true);
+        SequentialCommandGroup commandGroup = new SequentialCommandGroup();
+
+        // commandGroup.addCommands(new ScoreCommand(elevator, pivotArm, pivotWrist, claw));
+        commandGroup.addCommands(new ToPosCommand(drivetrain, trajPoints, true));
+
+        return commandGroup;
 
         
         
