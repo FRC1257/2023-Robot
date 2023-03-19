@@ -52,7 +52,7 @@ public class PivotWrist extends SnailSubsystem {
         // Set motor
         pivotWristMotor = new CANSparkMax(PIVOT_WRIST_ID_LEFT, MotorType.kBrushless);
         pivotWristMotor.restoreFactoryDefaults();
-        // pivotWristMotor.setIdleMode(IdleMode.kBrake);
+        //pivotWristMotor.setIdleMode(IdleMode.kBrake);
         pivotWristMotor.setIdleMode(IdleMode.kBrake);
         pivotWristMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
 
@@ -87,7 +87,7 @@ public class PivotWrist extends SnailSubsystem {
     public void update() {
         switch (state) {
             case MANUAL:
-                pivotWristMotor.set(speed);
+                //pivotWristMotor.set(speed);
                 break;
             case PID:
                 // send the desired setpoint to the PID controller and specify we want to use

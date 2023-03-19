@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,7 +45,14 @@ public class Elevator extends SnailSubsystem{
         // pivotWristMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
+        /* elevatorMotor.setInverted(true);
 
+        //in the forward direction, it will stop at 0.5 inches
+        elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, ELEVATOR_SETPOINT_RETRACT);
+        elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, ELEVATOR_SETPOINT_EXTEND);
+        //in reverse direction, it will stop at 36 inches
+        elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); //always true */
         pidController = elevatorMotor.getPIDController();
 
         pidController.setP(p.get());
@@ -54,10 +62,10 @@ public class Elevator extends SnailSubsystem{
         pidController.setOutputRange(-1, 1);
 
         encoder = elevatorMotor.getEncoder();
-        encoder.setPositionConversionFactor(-ELEVATOR_REV_TO_POS_FACTOR);
-        encoder.setVelocityConversionFactor(-ELEVATOR_REV_TO_POS_FACTOR / 60);
+        encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
+        encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
         // encoder.setInverted(true);
-        encoder.setPosition(0.0);/* 
+        encoder.setPosition(0.6);/* 
 
         limitSwitch = new DigitalInput(ELEVATOR_MOTOR_ID); */
     }
@@ -65,13 +73,13 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
-        /* if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
+        if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
             elevatorMotor.set(0);
             return;
         } else if (encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND && speed > 0.0) {
             elevatorMotor.set(0);
             return;
-        } */
+        } 
 
         SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT/*  && speed < 0.0*/);
         SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND /*&& speed > 0.0*/);

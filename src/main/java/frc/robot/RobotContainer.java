@@ -235,8 +235,8 @@ public class RobotContainer {
         operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
 
         operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
-        // Operator Bindings
-        // operatorController.getButton(Button.kA.value).onTrue();
+        //Operator Bindings
+        //operatorController.getButton(Button.kA.value).onTrue();
 
         // compound commands
         // operatorController.getDPad(DPad.UP).onTrue(new HighScoreCommand(elevator, pivotArm, pivotWrist));
@@ -245,7 +245,7 @@ public class RobotContainer {
         operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm, pivotWrist));*/
 
-        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
+        // operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist));
 
         // operatorController.getDPad(DPad.DOWN).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
         // operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
@@ -306,15 +306,22 @@ public class RobotContainer {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
         trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+
+        List<Pose2d> trajPointsBack = new ArrayList<Pose2d>();
+        trajPointsBack.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+
+
+        SequentialCommandGroup command = new SequentialCommandGroup(
+            new ToPosCommand(drivetrain, trajPoints, true),
+            new ToPosCommand(drivetrain, trajPointsBack, false),
+            new ToPosCommand(drivetrain, trajPoints, true)
+        );
+        
         
         // drivetrain.drawTrajectory(new ToPosCommand(drivetrain, trajPoints, true).getTrajectory());
 
-        SequentialCommandGroup commandGroup = new SequentialCommandGroup();
-
-        // commandGroup.addCommands(new ScoreCommand(elevator, pivotArm, pivotWrist, claw));
-        commandGroup.addCommands(new ToPosCommand(drivetrain, trajPoints, true));
-
-        return commandGroup;
+        return command;
 
         
         

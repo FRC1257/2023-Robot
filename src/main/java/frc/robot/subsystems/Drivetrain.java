@@ -737,6 +737,7 @@ public class Drivetrain extends SnailSubsystem {
         return slowModeEnabled;
     }
 
+    
     public void setSlowMode(boolean slowMode) {
         slowModeEnabled = slowMode;
     }

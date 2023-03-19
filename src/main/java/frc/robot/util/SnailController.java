@@ -56,7 +56,7 @@ public class SnailController extends XboxController {
             return -applyDeadband(getLeftY());
         } else if (getRightBumper()) {
             return -applyDeadband(getRightY());
-        } else if (getLeftBumper()) {
+        } else if (getTrigger(true).get()) {
             return -applyDeadband(getLeftY());
         }
         return 0;
@@ -67,11 +67,14 @@ public class SnailController extends XboxController {
             return applyDeadband(getLeftX());
         } else if (getRightBumper()) {
             return applyDeadband(getLeftX());
-        } else if (getLeftBumper()) {
+        } else if (getTrigger(true).get()) {
             return applyDeadband(getRightX());
         }
         return 0;
     }
+    //these two commands work together to get input from the joystick to control the robot
+    //since getLeftBumper is true for driveforward and driveturn, it'll make it so tha tthe
+    //left y joystick controls the full movement
 
     public static double applyDeadband(double value) {
         if (Math.abs(value) < 0.08) return 0;

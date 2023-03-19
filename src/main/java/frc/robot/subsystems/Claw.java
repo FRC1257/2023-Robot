@@ -18,8 +18,8 @@ import frc.robot.util.TunableNumber;
 public class Claw extends SnailSubsystem {
     private CANSparkMax motorLeft;
     private CANSparkMax motorRight;
-    private DoubleSolenoid solenoid;
-    private Compressor compressor;
+    // private DoubleSolenoid solenoid;
+    // private Compressor compressor;
 
     private TunableNumber neutralSpeed = new TunableNumber("Claw Neutral Speed", ROLLER_NEUTRAL_SPEED);
     private TunableNumber intakeSpeed = new TunableNumber("Claw Intake Speed", ROLLER_INTAKING_SPEED);
@@ -60,11 +60,11 @@ public class Claw extends SnailSubsystem {
         // motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
         
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
+        //solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
         clawState = ClawState.CUBEINTAKE;
 
-        compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-        compressor.enableDigital();
+        //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
+        //compressor.enableDigital();
     }
 
     private void motorInit(CANSparkMax motor) {
@@ -92,14 +92,14 @@ public class Claw extends SnailSubsystem {
                 break;
         }
         
-        switch(clawState) {
-            case CUBEINTAKE:
-                solenoid.set(Value.kForward);
-                break;
-            case CONEINTAKE:
-                solenoid.set(Value.kReverse);
-                break;
-        }
+        // switch(clawState) {
+        //     case CUBEINTAKE:
+        //         solenoid.set(Value.kForward);
+        //         break;
+        //     case CONEINTAKE:
+        //         solenoid.set(Value.kReverse);
+        //         break;
+        // }
     }
 
     @Override
