@@ -120,6 +120,12 @@ public class RobotContainer {
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
+     * @see #isSimulation
+     * @see #configureAutoChoosers()
+     * @see #configureShuffleboard()
+     * @see #configureSubsystems()
+     * @see #configureButtonBindings()
+     * @see SnailController
      */
     public RobotContainer() {
         driveController = new SnailController(CONTROLLER_DRIVER_ID);
@@ -139,10 +145,17 @@ public class RobotContainer {
         isSimulation = RobotBase.isSimulation();
     }
 
+    /**
+     * Stop displaying trajectory on SmartDashboard
+     */
     public void stopDisplayingTraj() {
         updateTraj = false;
     }
 
+    /**
+     * Returns if current alliance color is blue from DriverStation
+     * @return  true if alliance color is blue
+     */
     private boolean getAllianceColor() {
         return DriverStation.getAlliance() == DriverStation.Alliance.Blue;
     }
@@ -153,7 +166,14 @@ public class RobotContainer {
     
 
     /**
-     * Declare all of our subsystems and their default bindings
+     * Declares all subsystems and their default bindings unless in testing mode.
+     * @see #isTestBot
+     * @see Drivetrain
+     * @see Elevator
+     * @see PivotArm
+     * @see PivotWrist
+     * @see Claw
+     * @see Vision
      */
     private void configureSubsystems() {
         // declare each of the subsystems here
@@ -232,7 +252,7 @@ public class RobotContainer {
     }
 
     /**
-     * Define {@link Button} -> command mappings.
+     * Define {@link Button} to command mappings.
      */
     private void configureButtonBindings() {
         // Drivetrain bindings
@@ -305,7 +325,7 @@ public class RobotContainer {
 
 
     /**
-     * Set up the choosers on shuffleboard for autonomous
+     * Set up the choosers on Shuffleboard for autonomous
      */
     public void configureAutoChoosers() {
         configureGamePieceChooser();
@@ -348,10 +368,10 @@ public class RobotContainer {
     }
 
     /**
-     * Update all of the subsystems
-     * This is run in a separate loop at a faster rate to:
-     * a) update subsystems faster
-     * b) prevent packet delay from driver station from delaying response from our robot
+     * Update all of the subsystems. This is run in a separate loop at a faster rate to:
+     * <ul>
+     * <li>update subsystems faster
+     * <li>prevent packet delay from driver station from delaying response from our robot
      */
     private void update() {
         for(SnailSubsystem subsystem : subsystems) {
@@ -359,6 +379,10 @@ public class RobotContainer {
         }
     }
 
+    /**
+     * Updates each subsystem's SmartDashboard data
+     * @see SnailSubsystem#displayShuffleboard()
+     */
     public void displayShuffleboard() {
         if (subsystems.size() == 0)
             return;
