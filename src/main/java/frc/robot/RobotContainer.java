@@ -20,8 +20,6 @@ import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
-import frc.robot.commands.pivotWrist.PivotWristManualCommand;
-import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 
 
 import frc.robot.commands.elevator.ElevatorManualCommand;
@@ -73,8 +71,6 @@ public class RobotContainer {
     
     private ArrayList<SnailSubsystem> subsystems;
     
-
-    private PivotWrist pivotWrist;
     
 
 
@@ -170,9 +166,6 @@ public class RobotContainer {
         elevator = new Elevator();
         elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getElevatorSpeed));
 
-        // Pivot Wrist
-        pivotWrist = new PivotWrist();
-        pivotWrist.setDefaultCommand(new PivotWristManualCommand(pivotWrist, operatorController::getLeftY));
         
         // Pivot Arm
         pivotArm = new PivotArm();
@@ -186,7 +179,6 @@ public class RobotContainer {
         subsystems.add(vision);
         subsystems.add(claw); 
         subsystems.add(pivotArm);
-        subsystems.add(pivotWrist);
         subsystems.add(elevator);
         
         // generate auto

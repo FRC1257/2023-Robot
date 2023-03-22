@@ -5,20 +5,18 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.claw.ClawIntakeCommand;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.pivotArm.PivotArmPIDCommand;
-import frc.robot.commands.pivotWrist.PivotWristPIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.*;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
 public class HoldCommand extends SequentialCommandGroup{
-    public HoldCommand(Elevator elevator, PivotArm pivotarm, PivotWrist pivotwrist) {
+    public HoldCommand(Elevator elevator, PivotArm pivotarm) {
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
             new ParallelCommandGroup( // run intake entire time
                 new ElevatorPIDCommand(elevator, 0),
                 new SequentialCommandGroup(
-                    new PivotArmPIDCommand(pivotarm, 0),
-                    new PivotWristPIDCommand(pivotwrist, 0)
+                    new PivotArmPIDCommand(pivotarm, 0)
                 )   
             )
         );
