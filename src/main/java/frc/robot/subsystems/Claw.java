@@ -7,10 +7,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import static frc.robot.Constants.Claw.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
 import frc.robot.util.TunableNumber;
@@ -34,14 +30,8 @@ public class Claw extends SnailSubsystem {
       NEUTRAL
     }
     
-    public enum ClawState {
-      CUBEINTAKE,
-      CONEINTAKE
-    }
-    
     //cube and cone states
     private RollerState rollerState;
-    private ClawState clawState;
     
     public Claw() {
         motorLeft = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
@@ -59,12 +49,6 @@ public class Claw extends SnailSubsystem {
 
         // motorRight.follow(motorLeft, true);
         rollerState = RollerState.NEUTRAL;
-        
-        //solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
-        clawState = ClawState.CUBEINTAKE;
-
-        //compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-        //compressor.enableDigital();
     }
 
     private void motorInit(CANSparkMax motor) {
@@ -91,22 +75,12 @@ public class Claw extends SnailSubsystem {
                 motorRight.set(-ejectSpeed.get());
                 break;
         }
-        
-        // switch(clawState) {
-        //     case CUBEINTAKE:
-        //         solenoid.set(Value.kForward);
-        //         break;
-        //     case CONEINTAKE:
-        //         solenoid.set(Value.kReverse);
-        //         break;
-        // }
     }
 
     @Override
     public void displayShuffleboard() {
         SmartDashboard.putNumber("Claw Left Motor Speed", motorLeft.get());
         SmartDashboard.putNumber("Claw Right Motor Speed", motorRight.get());
-        SmartDashboard.putString("Claw State", clawState.toString());
         SmartDashboard.putString("Claw Roller State", rollerState.toString());
     }
 
@@ -136,18 +110,7 @@ public class Claw extends SnailSubsystem {
         rollerState = RollerState.SHOOTING;
     }
     
-    public void cubeintake() {
-        clawState = ClawState.CUBEINTAKE;
-    }
-    
-    public void coneintake() {
-        clawState = ClawState.CONEINTAKE;
-    }
-    
     public RollerState getRollerState() {
         return rollerState;
-    }
-    public ClawState getClawState() {
-        return clawState;
     }
 }
