@@ -6,7 +6,7 @@ import frc.robot.commands.Intake.IntakeShootingCommand;
 import frc.robot.commands.IntakeArm.IntakeArmPIDCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArm;
-import static frc.robot.Constants.IntakeArmConstants.INTAKE_SETPOINT_TOP;
+import static frc.robot.Constants.IntakeArmConstants.INTAKE_SETPOINT_BOT;
 
 public class LowScoreShootingCommand extends SequentialCommandGroup {
 
@@ -14,7 +14,7 @@ public class LowScoreShootingCommand extends SequentialCommandGroup {
         addCommands(
             new ParallelCommandGroup(
                 new IntakeShootingCommand(intake),
-                new IntakeArmPIDCommand(intakeArm, INTAKE_SETPOINT_TOP)
+                new IntakeArmPIDCommand(intakeArm, INTAKE_SETPOINT_BOT)
             ),
         new IntakeShootingCommand(intake)
         );
