@@ -32,7 +32,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
 import frc.robot.commands.ScoreCommand;
-import frc.robot.commands.Compound_Commands.HighScoreCommand;
+import frc.robot.commands.Compound_Commands.HighScoreShootingCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
