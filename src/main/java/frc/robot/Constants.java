@@ -413,6 +413,11 @@ public final class Constants {
         public static final double PIVOT_ARM_SETPOINT_TOP = -30;
     }
 
+    public static class LED {
+        public static int LED_PORT_NUMBER = 1257;
+        public static int LED_COUNT = 1257;
+    }
+
     public static double PI = 3.141592653589793238462643;
     public static double UPDATE_PERIOD = 0.010; // seconds
     public final static int NEO_550_CURRENT_LIMIT = 25; // amps

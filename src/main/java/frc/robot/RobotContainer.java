@@ -23,6 +23,7 @@ import frc.robot.commands.drivetrain.*;
 
 
 import frc.robot.commands.elevator.ElevatorManualCommand;
+import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -79,6 +80,8 @@ public class RobotContainer {
     private Vision vision;
     private PivotArm pivotArm;
     private Intake intake;
+
+    private LED led;
 
 
 
@@ -175,6 +178,9 @@ public class RobotContainer {
 
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+
+        led = new LED();
+        led.setDefaultCommand(new LEDToggleCommand(led));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -185,6 +191,7 @@ public class RobotContainer {
         subsystems.add(pivotArm);
         subsystems.add(elevator);
         subsystems.add(intake);
+        subsystems.add(led);
         
         // generate auto
         generateTrajectories = new GenerateTrajectories(
