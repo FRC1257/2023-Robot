@@ -549,7 +549,7 @@ public class RobotContainer {
         hitAndRunChooser.addOption("Hit and Run", true);
     }
 
-    public int getScoreLevel(int scoreNumber) {
+    public int getScoreLevel(int scoreNumber) { // low 0, mid 1, high 2
         switch(scoreNumber) {
             case 1:
               return firstScoreLevelChooser.getSelected();
