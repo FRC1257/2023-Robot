@@ -45,6 +45,7 @@ import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
@@ -101,6 +102,9 @@ public class RobotContainer {
     public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> secondScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdScoreLevelChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -175,7 +179,7 @@ public class RobotContainer {
         // Pivot Arm
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
-
+        
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
 
@@ -238,6 +242,7 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
 
+        operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
 
@@ -289,6 +294,7 @@ public class RobotContainer {
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
         configureHitAndRunChooser();
+        configureScoreLevelChooser();
     }
 
     private int estimatedCurrentPose2d() {
@@ -448,6 +454,26 @@ public class RobotContainer {
         
     }
 
+    public void configureScoreLevelChooser() {
+        firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
+        firstScoreLevelChooser.addOption("low", 0);
+        firstScoreLevelChooser.addOption("mid", 1);
+        firstScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(firstScoreLevelChooser);
+
+        secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
+        secondScoreLevelChooser.addOption("low", 0);
+        secondScoreLevelChooser.addOption("mid", 1);
+        secondScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(secondScoreLevelChooser);
+
+        thirdScoreLevelChooser.setDefaultOption("Third score level chooser", 0);
+        thirdScoreLevelChooser.addOption("low", 0);
+        thirdScoreLevelChooser.addOption("mid", 1);
+        thirdScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(thirdScoreLevelChooser);
+    }
+    
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
         gamePieceChooser.addOption("1st Position", 0);
@@ -523,6 +549,19 @@ public class RobotContainer {
         hitAndRunChooser.addOption("Hit and Run", true);
     }
 
+    public int getScoreLevel(int scoreNumber) {
+        switch(scoreNumber) {
+            case 1:
+              return firstScoreLevelChooser.getSelected();
+            case 2:
+              return secondScoreLevelChooser.getSelected();
+            case 3:
+                return thirdScoreLevelChooser.getSelected();
+            default:
+                //bruh
+                throw new InputMismatchException("scoreNumber should be from 1 to 3");
+        }
+    }
     public boolean checkIfUpdate() {
         return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
             || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
