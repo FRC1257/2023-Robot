@@ -23,6 +23,7 @@ import frc.robot.commands.drivetrain.*;
 
 
 import frc.robot.commands.elevator.ElevatorManualCommand;
+import frc.robot.commands.led.LEDToggleCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -35,6 +36,7 @@ import frc.robot.commands.Compound_Commands.HighScoreCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
+import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
@@ -43,6 +45,7 @@ import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
@@ -77,6 +80,9 @@ public class RobotContainer {
     private Drivetrain drivetrain;
     private Vision vision;
     private PivotArm pivotArm;
+    private Intake intake;
+
+    private LED led;
 
 
 
@@ -97,6 +103,9 @@ public class RobotContainer {
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> secondScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdScoreLevelChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -172,6 +181,11 @@ public class RobotContainer {
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
         
+        intake = new Intake();
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+
+        led = new LED();
+        led.setDefaultCommand(new LEDToggleCommand(led));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -181,6 +195,8 @@ public class RobotContainer {
         subsystems.add(claw); 
         subsystems.add(pivotArm);
         subsystems.add(elevator);
+        subsystems.add(intake);
+        subsystems.add(led);
         
         // generate auto
         generateTrajectories = new GenerateTrajectories(
@@ -227,7 +243,7 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
 
-        operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
+        // operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
 
@@ -280,6 +296,7 @@ public class RobotContainer {
         configureThirdScorePositionChooser();
         configureHitAndRunChooser();
         configureChooseAuto();
+        configureScoreLevelChooser();
     }
 
     private int estimatedCurrentPose2d() {
@@ -439,6 +456,26 @@ public class RobotContainer {
         
     }
 
+    public void configureScoreLevelChooser() {
+        firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
+        firstScoreLevelChooser.addOption("low", 0);
+        firstScoreLevelChooser.addOption("mid", 1);
+        firstScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(firstScoreLevelChooser);
+
+        secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
+        secondScoreLevelChooser.addOption("low", 0);
+        secondScoreLevelChooser.addOption("mid", 1);
+        secondScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(secondScoreLevelChooser);
+
+        thirdScoreLevelChooser.setDefaultOption("Third score level chooser", 0);
+        thirdScoreLevelChooser.addOption("low", 0);
+        thirdScoreLevelChooser.addOption("mid", 1);
+        thirdScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(thirdScoreLevelChooser);
+    }
+    
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
         gamePieceChooser.addOption("1st Position", 0);
@@ -521,6 +558,19 @@ public class RobotContainer {
         autoChooser.addOption("Move forward", 3);
     }
 
+    public int getScoreLevel(int scoreNumber) { // low 0, mid 1, high 2
+        switch(scoreNumber) {
+            case 1:
+              return firstScoreLevelChooser.getSelected();
+            case 2:
+              return secondScoreLevelChooser.getSelected();
+            case 3:
+                return thirdScoreLevelChooser.getSelected();
+            default:
+                //bruh
+                throw new InputMismatchException("scoreNumber should be from 1 to 3");
+        }
+    }
     public boolean checkIfUpdate() {
         return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
             || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
