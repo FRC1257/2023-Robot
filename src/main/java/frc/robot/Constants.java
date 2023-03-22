@@ -115,8 +115,10 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
-         public final static int INTAKE_MOTOR_ID = 1257;
-
+        public final static int INTAKE_MOTOR_ID = 1257;
+        
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 1257;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 1257;
 
         // Pivot Wrist    
         public final static int PIVOT_WRIST_ID_LEFT = 2;
@@ -135,9 +137,9 @@ public final class Constants {
         public static int PIVOT_ARM_ID = 13;
 
         // Sensors
-        /* public static final int INTAKE_BUMP_SWITCH_ID = 24;
+        public static final int INTAKE_BUMP_SWITCH_ID = 24;
         public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
-        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30; */
+        public static final int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 
 
@@ -181,6 +183,17 @@ public final class Constants {
         public static final double INTAKE_NEUTRAL_SPEED = 0.0;
         public static final double INTAKE_INTAKING_SPEED = 0.85;
         public static final double INTAKE_EJECTING_SPEED = -0.85;
+        public static final double INTAKE_SHOOTING_SPEED = 0.95;
+    }
+
+    public static class IntakeArmConstants {
+        public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
+        public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
+        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
+        public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
+        
+        public static double INTAKE_SETPOINT_TOP = 1257; // TODO
+        public static double INTAKE_SETPOINT_BOT = -1257; // TODO
     }
 
     public static class Drivetrain {
