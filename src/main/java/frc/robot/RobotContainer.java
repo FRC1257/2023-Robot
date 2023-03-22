@@ -96,6 +96,7 @@ public class RobotContainer {
     public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -278,6 +279,7 @@ public class RobotContainer {
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
         configureHitAndRunChooser();
+        configureChooseAuto();
     }
 
     private int estimatedCurrentPose2d() {
@@ -512,14 +514,20 @@ public class RobotContainer {
         hitAndRunChooser.addOption("Hit and Run", true);
     }
 
+    public void configureChooseAuto() {
+        autoChooser.setDefaultOption("Normal auto", 0);
+        autoChooser.addOption("Shooting auto", 1);
+        autoChooser.addOption("3-piece", 2);
+        autoChooser.addOption("Move forward", 3);
+    }
+
     public boolean checkIfUpdate() {
         return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
             || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
             || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) 
             || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
             || SmartDashboard.getBoolean("Update Visual", false) 
-            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false
-        );
+            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
     }
 
     public void updateAutoChoosers() {

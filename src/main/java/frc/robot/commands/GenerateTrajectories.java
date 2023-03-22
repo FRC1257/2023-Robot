@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,7 +18,16 @@ import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
-public class GenerateTrajectories {
+public class GenerateTrajectories {    
+    public enum State {
+        NORMAL,
+        SHOOTING,
+        THREE_PIECE,
+        MOVE_FORWARD
+    }
+
+    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD };
+    
     private boolean charge;
     private boolean firstScore;
     private boolean secondScore;
@@ -45,9 +55,9 @@ public class GenerateTrajectories {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
-        this.threePiece = threePiece;
-        this.leaveTarmac = leaveTarmac;
-        this.hitAndRun = hitAndRun;
+        // this.threePiece = threePiece;
+        // this.leaveTarmac = leaveTarmac;
+        // this.hitAndRun = hitAndRun;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
@@ -92,8 +102,9 @@ public class GenerateTrajectories {
     //     trajectoryList.add(getFullTrajectory());
     // }
 
-
-
+    private State getAutoType() {
+        return autoType[RobotContainer.autoChooser.getSelected()];
+    }
 
     private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
@@ -182,14 +193,32 @@ public class GenerateTrajectories {
         }
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
-
+    
+    /**
+     * Made with full assumption that functions called by AutoDecider work.
+     */
     private void AutoDecider() {
-        if (threePiece) {
-            threePieceAuto();
-            return;
+        command = new SequentialCommandGroup();
+        
+        switch (getAutoType()) {
+            case NORMAL:
+                normalAuto();
+                break;
+            case SHOOTING:
+                shootingAuto();
+                break;
+            case THREE_PIECE:
+                threePieceAuto();
+                break;
+            case MOVE_FORWARD:
+                moveForward();
+                break;
         }
 
-        command = new SequentialCommandGroup();
+        trajectoryList.add(getFullTrajectory());
+    }
+
+    private void normalAuto() {
         // there are 3 possible steps we can take
         // Step 1
         if (firstScore) {
@@ -212,7 +241,7 @@ public class GenerateTrajectories {
             } else {
                 addLeaveCommunityTrajectory();
             }
-        }
+        } 
 
         // Step 3
         if (secondScore) {
@@ -221,21 +250,71 @@ public class GenerateTrajectories {
             if (charge) {
                 addChargeTrajectory();
             }
-    
-        }
+        } 
         // step 3 go for charge
         else if (charge) {
             addChargeTrajectory();
             this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        }
+        }  
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
             addLeaveCommunityTrajectory();
-        }
+        } 
+    }
+
+    private void shootingAuto() {
+        
+    }
+
+    private void threePieceAuto() {
+        // command = new SequentialCommandGroup();
+        this.StartPose = getFirstScoreLocation();
+        this.currentPose = this.StartPose;
+
+        addScoreHigh();
+
+        backUpAndTurn();
+
+        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
+        currentPose = getCargoLocation();
+        addToPosCommand(firstGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
+                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
+        currentPose = getSecondScoreLocation();
+        addToPosCommand(returnToScore);
+
+        addScoreHigh();
+
+        backUpAndTurn();
+
+        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
+        currentPose = getSecondCargoLocation();
+        addToPosCommand(secondGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain,
+                getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), false);
+        currentPose = getThirdScoreLocation();
+        addToPosCommand(returnToScore2);
+
+        addScoreHigh();
 
         trajectoryList.add(getFullTrajectory());
+    }
+
+    private void moveForward() {
 
     }
 
@@ -283,52 +362,6 @@ public class GenerateTrajectories {
             this.command.addCommands(new TurnAngleCommand(drivetrain, 180));
         }
         currentPose = flipPose(currentPose);
-    }
-
-    private void threePieceAuto() {
-        command = new SequentialCommandGroup();
-        this.StartPose = getFirstScoreLocation();
-        this.currentPose = this.StartPose;
-
-        addScoreHigh();
-
-        backUpAndTurn();
-
-        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
-                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
-        currentPose = getCargoLocation();
-        addToPosCommand(firstGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
-                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
-        currentPose = getSecondScoreLocation();
-        addToPosCommand(returnToScore);
-
-        addScoreHigh();
-
-        backUpAndTurn();
-
-        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
-                getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
-        currentPose = getSecondCargoLocation();
-        addToPosCommand(secondGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain,
-                getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), false);
-        currentPose = getThirdScoreLocation();
-        addToPosCommand(returnToScore2);
-
-        addScoreHigh();
-
-        trajectoryList.add(getFullTrajectory());
     }
 
     // step variables aren't random, they actually represent the order of the
