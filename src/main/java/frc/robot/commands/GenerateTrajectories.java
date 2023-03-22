@@ -18,7 +18,7 @@ import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
-public class GenerateTrajectories {    
+public class GenerateTrajectories {
     public enum State {
         NORMAL,
         SHOOTING,
@@ -27,7 +27,7 @@ public class GenerateTrajectories {
     }
 
     State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD };
-    
+
     private boolean charge;
     private boolean firstScore;
     private boolean secondScore;
@@ -98,8 +98,7 @@ public class GenerateTrajectories {
 
     // private Pose2d goForward(){
 
-
-    //     trajectoryList.add(getFullTrajectory());
+    // trajectoryList.add(getFullTrajectory());
     // }
 
     private State getAutoType() {
@@ -193,13 +192,13 @@ public class GenerateTrajectories {
         }
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
-    
+
     /**
      * Made with full assumption that functions called by AutoDecider work.
      */
     private void AutoDecider() {
         command = new SequentialCommandGroup();
-        
+
         switch (getAutoType()) {
             case NORMAL:
                 normalAuto();
@@ -241,7 +240,7 @@ public class GenerateTrajectories {
             } else {
                 addLeaveCommunityTrajectory();
             }
-        } 
+        }
 
         // Step 3
         if (secondScore) {
@@ -250,22 +249,22 @@ public class GenerateTrajectories {
             if (charge) {
                 addChargeTrajectory();
             }
-        } 
+        }
         // step 3 go for charge
         else if (charge) {
             addChargeTrajectory();
             this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        }  
+        }
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
             addLeaveCommunityTrajectory();
-        } 
+        }
     }
 
     private void shootingAuto() {
-        
+        // TODO: make shootingAuto()
     }
 
     private void threePieceAuto() {
@@ -314,8 +313,26 @@ public class GenerateTrajectories {
         trajectoryList.add(getFullTrajectory());
     }
 
+    /**
+     * Adds trajectory to move forward and back.
+     * @see #command
+     * @see SequentialCommandGroup#addCommands(edu.wpi.first.wpilibj2.command.Command...)
+     */
     private void moveForward() {
+        // Literally made while queueing for quals during Robbinsville 2023
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+        trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
 
+        List<Pose2d> trajPointsBack = new ArrayList<Pose2d>();
+        trajPointsBack
+                .add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+
+        command.addCommands(new SequentialCommandGroup(
+                new ToPosCommand(drivetrain, trajPoints, true),
+                new ToPosCommand(drivetrain, trajPointsBack, false),
+                new ToPosCommand(drivetrain, trajPoints, true)));
     }
 
     // TODO Fix these methods
@@ -355,7 +372,7 @@ public class GenerateTrajectories {
     }
 
     private void turn180() {
-        // 
+        //
         if (RobotBase.isSimulation()) {
             this.command.addCommands(new Delay(0.5));
         } else {
