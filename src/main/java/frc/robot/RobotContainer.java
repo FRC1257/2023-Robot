@@ -35,6 +35,7 @@ import frc.robot.commands.Compound_Commands.HighScoreCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
+import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
@@ -77,6 +78,7 @@ public class RobotContainer {
     private Drivetrain drivetrain;
     private Vision vision;
     private PivotArm pivotArm;
+    private Intake intake;
 
 
 
@@ -170,7 +172,9 @@ public class RobotContainer {
         // Pivot Arm
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
-        
+
+        intake = new Intake();
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -180,6 +184,7 @@ public class RobotContainer {
         subsystems.add(claw); 
         subsystems.add(pivotArm);
         subsystems.add(elevator);
+        subsystems.add(intake);
         
         // generate auto
         generateTrajectories = new GenerateTrajectories(
@@ -226,7 +231,6 @@ public class RobotContainer {
         operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
 
-        operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
 
