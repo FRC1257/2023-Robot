@@ -130,9 +130,6 @@ public final class Constants {
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 4;
 
-        public static int CLAW_FORWARD_ID = 0;
-        public static int CLAW_REVERSE_ID = 1;
-
         // Pivot ARm
         public static int PIVOT_ARM_ID = 13;
 
@@ -389,6 +386,16 @@ public final class Constants {
         public static Pose2d[] Straightline = new Pose2d[] {
                 new Pose2d(23.034, 17.493, Rotation2d.fromDegrees(0)),
                 new Pose2d(41.914, 17.493, Rotation2d.fromDegrees(0)),
+        };
+
+        public static Pose2d[] BLUE_SHOOT_POSE = new Pose2d[] {
+                new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(180)),
+                new Pose2d(4, 0.716, Rotation2d.fromDegrees(180)),
+        };
+
+        public static Pose2d[] RED_SHOOT_POSE = new Pose2d[] {
+                new Pose2d(13.847, 4.593, Rotation2d.fromDegrees(0)),
+                new Pose2d(12.57, 0.716, Rotation2d.fromDegrees(0)),
         };
 
 

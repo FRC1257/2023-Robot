@@ -48,7 +48,14 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private Pose2d[] ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
+    private Pose2d[] ALLIANCE_SHOOTING_POSE;
     private Pose2d[] chargePose;
+
+    private double pieceApproachAngle;
+    private double[][] ApproachAngle = {
+        {-90, 90}, // blue
+        {-90, 90} // red
+    };
 
     public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
             boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun) {
@@ -73,6 +80,7 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_SHOOTING_POSE = Autonomous.BLUE_SHOOT_POSE;
             blue = true;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
@@ -82,6 +90,7 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_SHOOTING_POSE = Autonomous.RED_SHOOT_POSE;
             blue = false;
         }
 
@@ -111,6 +120,10 @@ public class GenerateTrajectories {
 
     private Pose2d getSecondCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.secondGamePieceChooser.getSelected()];
+    }
+
+    private Pose2d getThirdCargoLocation() {
+        return ALLIANCE_CARGO_POSE[RobotContainer.thirdGamePieceChooser.getSelected()];
     }
 
     // 2 getScoreLocation() methods for some reason?
@@ -263,8 +276,91 @@ public class GenerateTrajectories {
         }
     }
 
+    private Pose2d niceAngle(Pose2d pose) {
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (blue) {
+                pieceApproachAngle = ApproachAngle[0][0];
+            } else {
+                pieceApproachAngle = ApproachAngle[1][0];
+            }
+        } else {
+            if (blue) {
+                pieceApproachAngle = ApproachAngle[0][1];
+            } else {
+                pieceApproachAngle = ApproachAngle[1][1];
+            }
+        }
+
+        return new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(pieceApproachAngle));
+    }
+
     private void shootingAuto() {
-        // TODO: make shootingAuto()
+        this.StartPose = getFirstScoreLocation();
+        this.currentPose = this.StartPose;
+
+        addScoreHigh();
+
+        backUpAndTurn();
+
+        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
+        currentPose = getCargoLocation();
+        addToPosCommand(firstGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        driveToShootingPose();
+        shootPiece();
+
+        turn180();
+
+        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
+                List.of(currentPose, niceAngle(getSecondCargoLocation())), false);
+        currentPose = niceAngle(getSecondCargoLocation());
+        addToPosCommand(secondGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        driveToShootingPose();
+        shootPiece();
+
+        turn180();
+
+        ToPosCommand thirdGoToCargo = new ToPosCommand(drivetrain,
+                List.of(currentPose, niceAngle(getThirdCargoLocation())), false);
+        currentPose = niceAngle(getSecondCargoLocation());
+        addToPosCommand(thirdGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        driveToShootingPose();
+        shootPiece();
+    }
+
+    public void shootPiece() {
+        // TODO add shooting
+        this.command.addCommands(new Delay(1));
+    }
+
+    public Pose2d getShootingPose() {
+        // TODO check if this is correct
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            return ALLIANCE_SHOOTING_POSE[0];
+        }
+        return ALLIANCE_SHOOTING_POSE[1];
+    }
+
+    public void driveToShootingPose() {
+        ToPosCommand driveToShootingPose = new ToPosCommand(drivetrain,
+                List.of(currentPose, getShootingPose()), false);
+        currentPose = getShootingPose();
+        addToPosCommand(driveToShootingPose);
     }
 
     private void threePieceAuto() {
@@ -329,10 +425,13 @@ public class GenerateTrajectories {
                 .add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
         trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
-        command.addCommands(new SequentialCommandGroup(
+        command.addCommands(
+            new SequentialCommandGroup(
                 new ToPosCommand(drivetrain, trajPoints, true),
                 new ToPosCommand(drivetrain, trajPointsBack, false),
-                new ToPosCommand(drivetrain, trajPoints, true)));
+                new ToPosCommand(drivetrain, trajPoints, true)
+            )
+        );
     }
 
     // TODO Fix these methods
