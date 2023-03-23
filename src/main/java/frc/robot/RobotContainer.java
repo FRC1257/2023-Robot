@@ -38,6 +38,7 @@ import frc.robot.commands.Compound_Commands.MidScoreCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.commands.led.LEDNeutralCommand;
 import frc.robot.commands.led.LEDYellowCommand;
+import frc.robot.commands.led.LEDPurpleCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
@@ -201,6 +202,7 @@ public class RobotContainer {
         subsystems.add(led);
         
         // generate auto
+        /* 
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
             charge,
@@ -209,7 +211,7 @@ public class RobotContainer {
             cargo,
             0,
             leaveTarmac
-        );
+        ); */
 
         if (SmartDashboard.getBoolean("Testing", false)) {
             tuningInit();
@@ -225,9 +227,7 @@ public class RobotContainer {
         // Drivetrain bindings
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
-        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        driveController.getButton(Button.kA.value).onTrue(new LEDPurpleCommand(led));
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
         // Operator bindings
@@ -239,10 +239,10 @@ public class RobotContainer {
         // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
         // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-
+/* 
         operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
         operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
-
+ */
         // operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
@@ -277,10 +277,10 @@ public class RobotContainer {
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         // driveController.getDPad(SnailController.DPad.UP).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_TOP));
         // driveController.getDPad(SnailController.DPad.DOWN).onTrue(new IntakeArmPIDCommand(intakearm, INTAKE_SETPOINT_BOT));
-
+/* 
         driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
+        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180)); */
     }
 
 
@@ -314,7 +314,7 @@ public class RobotContainer {
     /**
      * Do the logic to return the auto command to run
      */
-    public Command getAutoCommand() {
+    public Command getAutoCommand() {/* 
         
         updateAutoChoosers();
 
@@ -331,7 +331,8 @@ public class RobotContainer {
 
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
-        return generateTrajectories.getCommand();
+        return generateTrajectories.getCommand(); */
+        return new Delay(2);
         //return new DriveDistanceCommand(drivetrain, 10);
     }
 
@@ -377,16 +378,16 @@ public class RobotContainer {
         if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
             updateTraj = true;
             SmartDashboard.putBoolean("Reset Auto Viewer", false);
-        }
+        }/* 
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
             Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj);
-        }
+        } */
 
-        if (updateTraj && checkIfUpdate()) {
+        /* if (updateTraj && checkIfUpdate()) {
             DriverStation.reportWarning("Updating Auto", cargo);
             updateAutoChoosers();
 
@@ -404,7 +405,7 @@ public class RobotContainer {
 
             putTrajectoryTime();
             resetDashboard();
-        }
+        } */
     
     }
 
@@ -574,7 +575,7 @@ public class RobotContainer {
     }
 
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+        // SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
