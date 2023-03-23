@@ -169,7 +169,6 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
-        // Claw
         claw = new Claw();
         claw.setDefaultCommand(new ClawManualCommand(claw, operatorController::getLeftY));
         
@@ -239,7 +238,8 @@ public class RobotContainer {
         // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
 
-        operatorController.getButton(Button.kB.value).onTrue(new ClawToggleCommand(claw));
+        operatorController.getButton(Button.kB.value).whileTrue(new ClawOpenCommand(claw));
+        operatorController.getButton(Button.kA.value).whileTrue(new ClawCloseCommand(claw));
 
         // operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
@@ -533,10 +533,11 @@ public class RobotContainer {
     }
 
     public void configureChooseAuto() {
-        autoChooser.setDefaultOption("Normal auto", 0);
+        autoChooser.setDefaultOption("Move forward", 3);
         autoChooser.addOption("Shooting auto", 1);
         autoChooser.addOption("3-piece", 2);
-        autoChooser.addOption("Move forward", 3);
+        autoChooser.addOption("Normal Auto", 0);
+        autoChooser.addOption("Hit & Run", 4);
         SmartDashboard.putData(autoChooser);
     }
 

@@ -23,10 +23,11 @@ public class GenerateTrajectories {
         NORMAL,
         SHOOTING,
         THREE_PIECE,
-        MOVE_FORWARD
+        MOVE_FORWARD,
+        HIT_AND_RUN
     }
 
-    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD };
+    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD, State.HIT_AND_RUN };
 
     private boolean charge;
     private boolean firstScore;
@@ -36,7 +37,6 @@ public class GenerateTrajectories {
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
-    private boolean hitAndRun;
 
     private SequentialCommandGroup command;
     private Pose2d currentPose;
@@ -61,9 +61,7 @@ public class GenerateTrajectories {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
-        // this.threePiece = threePiece;
         this.leaveTarmac = leaveTarmac;
-        this.hitAndRun = hitAndRun;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
@@ -144,10 +142,6 @@ public class GenerateTrajectories {
 
         // index 0 is the area outside the community zone
         // index 1 is the area inside the community zone
-        if (hitAndRun) {
-            return chargePose[1];
-        }
-
         // in reality there are 2 possible places so we would just need to use the side
         // of the field we are on
         if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
@@ -186,7 +180,7 @@ public class GenerateTrajectories {
     }
 
     private Pose2d getHitAndRunPose2d() {
-        return flipPose(ALLIANCE_CHARGE_POSE_WAYPOINT[0]);
+        return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
     }
 
     private Pose2d getLeaveCommunityPose(Pose2d currentPose) {
@@ -196,9 +190,9 @@ public class GenerateTrajectories {
         // in reality there are 6 possible places so we would just need to use the
         // varialbes we have
         // also a jank fix
-        if (hitAndRun) {
+        /* if (hitAndRun) {
             return ALLIANCE_LEAVE_COMMUNITY[2];
-        }
+        } */
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             return ALLIANCE_LEAVE_COMMUNITY[0];
         }
@@ -224,9 +218,23 @@ public class GenerateTrajectories {
             case MOVE_FORWARD:
                 moveForward();
                 break;
+            case HIT_AND_RUN:
+                hitAndRunAuto();
+                break;
         }
 
         trajectoryList.add(getFullTrajectory());
+    }
+
+    private void hitAndRunAuto() {
+        if (firstScore) {
+            // addFirstScoreTrajectory();
+            addScoreHigh();
+        }
+
+        addOverChargeTrajectory();
+
+        command.addCommands(new NoPDBalanceCommand(drivetrain));
     }
 
     private void normalAuto() {
@@ -245,13 +253,14 @@ public class GenerateTrajectories {
             addPiecePickup();
             turn180();
         } else if (leaveTarmac) {
-            if (hitAndRun) {
+            addLeaveCommunityTrajectory();
+            /* if (hitAndRun) {
                 addOverChargeTrajectory();
                 this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
                 return;
             } else {
                 addLeaveCommunityTrajectory();
-            }
+            } */
         }
 
         // Step 3
@@ -417,13 +426,13 @@ public class GenerateTrajectories {
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
-        trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        trajPoints.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+        trajPoints.add(driveOutPose(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
 
         List<Pose2d> trajPointsBack = new ArrayList<Pose2d>();
         trajPointsBack
-                .add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
-        trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+                .add(driveOutPose(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        trajPointsBack.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
         command.addCommands(
             new SequentialCommandGroup(
@@ -451,6 +460,14 @@ public class GenerateTrajectories {
 
     public Pose2d shiftedPose(Pose2d pose) {
         double SHIFT_X = -0.4;
+        if (blue) {
+            SHIFT_X *= -1;
+        }
+        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
+    }
+
+    public Pose2d driveOutPose(Pose2d pose) {
+        double SHIFT_X = -10;
         if (blue) {
             SHIFT_X *= -1;
         }
@@ -559,9 +576,7 @@ public class GenerateTrajectories {
 
         // going around the charging station, if convenient
         // jank fix
-        if (hitAndRun) {
-
-        } else if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
             trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
         } else {
@@ -574,10 +589,6 @@ public class GenerateTrajectories {
         addToPosCommand(step2);
     }
 
-    private void outThenIn() {
-
-    }
-
     private void addChargeTrajectory() {
         ToPosCommand step3 = new ToPosCommand(drivetrain,
                 List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
@@ -587,12 +598,12 @@ public class GenerateTrajectories {
 
     private void addOverChargeTrajectory() {
         ToPosCommand step3 = new ToPosCommand(drivetrain,
-                List.of(currentPose, getHitAndRunPose2d()), false);
+                List.of(currentPose, getHitAndRunPose2d()), true);
         currentPose = getHitAndRunPose2d();
         addToPosCommand(step3);
 
-        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[1]), true);
-        currentPose = getChargeLocation();
+        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[0]), false);
+        currentPose = chargePose[0];
         addToPosCommand(step2);
     }
 

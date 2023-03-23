@@ -1,6 +1,5 @@
 package frc.robot.commands.Compound_Commands;
 
-import frc.robot.commands.claw.ClawEjectCommand;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.pivotArm.PivotArmPIDCommand;
 import frc.robot.subsystems.Elevator;
@@ -21,8 +20,7 @@ public class MidScoreShootingCommand extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND), 
                 new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID)
-            ),
-            new ClawEjectCommand(claw)
+            )
         );
     }
 }

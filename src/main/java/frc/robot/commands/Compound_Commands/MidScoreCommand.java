@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_MID;
 import static frc.robot.Constants.PivotWrist.WRIST_SETPOINT_MID;
 
-import frc.robot.commands.claw.ClawEjectCommand;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.pivotArm.PivotArmPIDCommand;
 import frc.robot.subsystems.Elevator;
@@ -20,8 +19,7 @@ public class MidScoreCommand extends SequentialCommandGroup {
     public MidScoreCommand(Elevator elevator, PivotArm pivotarm, Claw claw) {
         addCommands(
             new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND), 
-            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID),
-            new ClawEjectCommand(claw)
+            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID)
         );
     }
 }
