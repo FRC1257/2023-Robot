@@ -36,6 +36,8 @@ import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
+import frc.robot.commands.led.LEDNeutralCommand;
+import frc.robot.commands.led.LEDYellowCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
@@ -163,7 +165,7 @@ public class RobotContainer {
         // declare each of the subsystems here
 
         
-        vision = new Vision();
+        /* vision = new Vision();
         drivetrain = new Drivetrain(getStartingPos(), vision);
         // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
@@ -182,21 +184,21 @@ public class RobotContainer {
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
         
         intake = new Intake();
-        intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+        intake.setDefaultCommand(new IntakeNeutralCommand(intake)); */
 
-        //led = new LED();
-        // led.setDefaultCommand(new LEDToggleCommand(led));
+        led = new LED();
+        led.setDefaultCommand(new LEDYellowCommand(led));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
         
-        subsystems.add(drivetrain);
+        /* subsystems.add(drivetrain);
         subsystems.add(vision);
         subsystems.add(claw); 
         subsystems.add(pivotArm);
         subsystems.add(elevator);
-        subsystems.add(intake);
-        //subsystems.add(led);
+        subsystems.add(intake); */
+        subsystems.add(led);
         
         // generate auto
         generateTrajectories = new GenerateTrajectories(
@@ -323,11 +325,8 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece,
-            leaveTarmac,
-            hitAndRun
+            leaveTarmac
         );
-        
         putTrajectoryTime();
 
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
@@ -398,9 +397,7 @@ public class RobotContainer {
                 secondScore,
                 cargo,
                 estimatedCurrentPose2d(),
-                threePiece,
-                leaveTarmac,
-                hitAndRun
+                leaveTarmac
             );
 
             SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());

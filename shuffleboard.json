@@ -1568,6 +1568,110 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "18,12": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[8]",
+              "_title": "SendableChooser[8]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,13": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[9]",
+              "_title": "SendableChooser[9]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,13": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[10]",
+              "_title": "SendableChooser[10]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,13": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Intake Speed",
+              "_title": "Intake Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,13": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[7]",
+              "_title": "SendableChooser[7]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,13": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[11]/default",
+              "_title": "SendableChooser[11]/default",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[11]/active",
+              "_title": "SendableChooser[11]/active",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[11]",
+              "_title": "SendableChooser[11]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2201,28 +2305,41 @@
               "_showGlyph": false
             }
           },
-          "11,6": {
+          "6,4": {
             "size": [
-              2,
+              3,
               2
             ],
             "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Hit and Run",
-              "_title": "SmartDashboard/Hit and Run",
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[7]",
+              "_title": "/SmartDashboard/SendableChooser[7]",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "13,6": {
+          "11,6": {
             "size": [
-              2,
+              3,
               2
             ],
             "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
-              "_title": "SmartDashboard/3 Ball Auto",
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[4]",
+              "_title": "/SmartDashboard/SendableChooser[4]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,6": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[11]",
+              "_title": "/SmartDashboard/SendableChooser[11]",
               "_glyph": 148,
               "_showGlyph": false
             }

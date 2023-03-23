@@ -434,8 +434,8 @@ public final class Constants {
     }
 
     public static class LED {
-        public static int LED_PORT_NUMBER = 1257;
-        public static int LED_COUNT = 1257;
+        public static int LED_PORT_NUMBER = 1;
+        public static int LED_COUNT = 30;
     }
 
     public static double PI = 3.141592653589793238462643;
