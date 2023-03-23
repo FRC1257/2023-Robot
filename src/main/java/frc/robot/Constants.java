@@ -115,8 +115,10 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
-         public final static int INTAKE_MOTOR_ID = 1257;
-
+        public final static int INTAKE_MOTOR_ID = 1257;
+        
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 1257;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 1257;
 
         // Pivot Wrist    
         public final static int PIVOT_WRIST_ID_LEFT = 2;
@@ -128,16 +130,13 @@ public final class Constants {
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 4;
 
-        public static int CLAW_FORWARD_ID = 0;
-        public static int CLAW_REVERSE_ID = 1;
-
         // Pivot ARm
         public static int PIVOT_ARM_ID = 13;
 
         // Sensors
-        /* public static final int INTAKE_BUMP_SWITCH_ID = 24;
+        public static final int INTAKE_BUMP_SWITCH_ID = 24;
         public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
-        public static int WRIST_LIMIT_SWITCH_PORT_ID = 30; */
+        public static final int WRIST_LIMIT_SWITCH_PORT_ID = 30;
     };
 
 
@@ -181,6 +180,17 @@ public final class Constants {
         public static final double INTAKE_NEUTRAL_SPEED = 0.0;
         public static final double INTAKE_INTAKING_SPEED = 0.85;
         public static final double INTAKE_EJECTING_SPEED = -0.85;
+        public static final double INTAKE_SHOOTING_SPEED = 0.95;
+    }
+
+    public static class IntakeArmConstants {
+        public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
+        public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
+        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
+        public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
+        
+        public static double INTAKE_SETPOINT_TOP = 1257; // TODO
+        public static double INTAKE_SETPOINT_BOT = -1257; // TODO
     }
 
     public static class Drivetrain {
@@ -378,6 +388,16 @@ public final class Constants {
                 new Pose2d(41.914, 17.493, Rotation2d.fromDegrees(0)),
         };
 
+        public static Pose2d[] BLUE_SHOOT_POSE = new Pose2d[] {
+                new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(180)),
+                new Pose2d(4, 0.716, Rotation2d.fromDegrees(180)),
+        };
+
+        public static Pose2d[] RED_SHOOT_POSE = new Pose2d[] {
+                new Pose2d(13.847, 4.593, Rotation2d.fromDegrees(0)),
+                new Pose2d(12.57, 0.716, Rotation2d.fromDegrees(0)),
+        };
+
 
         public static double CHARGE_STATION_LOWER_Y = 1.508506;
         public static double CHARGE_STATION_UPPER_Y = 3.978656;
@@ -415,6 +435,11 @@ public final class Constants {
         public static double PIVOT_ARM_SETPOINT_HOLD = 0;
         public static final double PIVOT_ARM_SETPOINT_BOTTOM = -0.3;
         public static final double PIVOT_ARM_SETPOINT_TOP = -30;
+    }
+
+    public static class LED {
+        public static int LED_PORT_NUMBER = 1257;
+        public static int LED_COUNT = 1257;
     }
 
     public static double PI = 3.141592653589793238462643;

@@ -24,7 +24,8 @@ public class Intake extends SnailSubsystem {
     public enum State {
         INTAKING,
         EJECTING,
-        NEUTRAL;
+        NEUTRAL,
+        SHOOTING;
     }
 
     State intakeState = State.NEUTRAL;
@@ -41,6 +42,8 @@ public class Intake extends SnailSubsystem {
             case NEUTRAL:
                 intakeMotor.set(IntakeSpeed.INTAKE_NEUTRAL_SPEED);
                 break;
+            case SHOOTING:
+                intakeMotor.set(IntakeSpeed.INTAKE_SHOOTING_SPEED);
         }
         
     }
@@ -55,6 +58,10 @@ public class Intake extends SnailSubsystem {
 
     public void ejecting() {
         intakeState = State.EJECTING;
+    }
+
+    public void shooting() {
+        intakeState = State.SHOOTING;
     }
 
     public State getState() {

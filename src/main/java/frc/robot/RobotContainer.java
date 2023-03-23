@@ -31,7 +31,7 @@ import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
 import frc.robot.commands.ScoreCommand;
-import frc.robot.commands.Compound_Commands.HighScoreCommand;
+import frc.robot.commands.Compound_Commands.HighScoreShootingCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
@@ -44,6 +44,7 @@ import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
@@ -80,6 +81,8 @@ public class RobotContainer {
     private PivotArm pivotArm;
     private Intake intake;
 
+    private LED led;
+
 
 
     private Elevator elevator;
@@ -98,6 +101,11 @@ public class RobotContainer {
     public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> secondScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdScoreLevelChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdGamePieceChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -173,9 +181,12 @@ public class RobotContainer {
         // Pivot Arm
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
-
+        
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
+
+        //led = new LED();
+        // led.setDefaultCommand(new LEDToggleCommand(led));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -186,6 +197,7 @@ public class RobotContainer {
         subsystems.add(pivotArm);
         subsystems.add(elevator);
         subsystems.add(intake);
+        //subsystems.add(led);
         
         // generate auto
         generateTrajectories = new GenerateTrajectories(
@@ -195,9 +207,7 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece,
-            leaveTarmac,
-            hitAndRun 
+            leaveTarmac
         );
 
         if (SmartDashboard.getBoolean("Testing", false)) {
@@ -231,6 +241,7 @@ public class RobotContainer {
 
         operatorController.getButton(Button.kB.value).onTrue(new ClawToggleCommand(claw));
 
+        // operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
 
@@ -278,10 +289,13 @@ public class RobotContainer {
         configureGamePieceChooser();
         configureFirstScorePositionChooser();
         configureSecondScorePositionChooser();
+        configureThirdGamePieceChooser();
         configureStartPositionChooser();
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
         configureHitAndRunChooser();
+        configureChooseAuto();
+        configureScoreLevelChooser();
     }
 
     private int estimatedCurrentPose2d() {
@@ -299,30 +313,7 @@ public class RobotContainer {
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
-        trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
-
-        List<Pose2d> trajPointsBack = new ArrayList<Pose2d>();
-        trajPointsBack.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
-        trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
-
-
-        SequentialCommandGroup command = new SequentialCommandGroup(
-            new ToPosCommand(drivetrain, trajPoints, true),
-            new ToPosCommand(drivetrain, trajPointsBack, false),
-            new ToPosCommand(drivetrain, trajPoints, true)
-        );
         
-        
-        // drivetrain.drawTrajectory(new ToPosCommand(drivetrain, trajPoints, true).getTrajectory());
-
-        return command;
-
-        
-        
-/*         
-
         updateAutoChoosers();
 
         generateTrajectories = new GenerateTrajectories(
@@ -332,9 +323,7 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece,
-            leaveTarmac,
-            hitAndRun
+            leaveTarmac
         );
         
         putTrajectoryTime();
@@ -342,7 +331,7 @@ public class RobotContainer {
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
         return generateTrajectories.getCommand();
- */        //return new DriveDistanceCommand(drivetrain, 10);
+        //return new DriveDistanceCommand(drivetrain, 10);
     }
 
     /**
@@ -406,10 +395,8 @@ public class RobotContainer {
                 firstScore,
                 secondScore,
                 cargo,
-                estimatedCurrentPose2d(),
-                threePiece,
-                leaveTarmac,
-                hitAndRun
+                0,
+                leaveTarmac  
             );
 
             SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
@@ -441,6 +428,26 @@ public class RobotContainer {
         
     }
 
+    public void configureScoreLevelChooser() {
+        firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
+        firstScoreLevelChooser.addOption("low", 0);
+        firstScoreLevelChooser.addOption("mid", 1);
+        firstScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(firstScoreLevelChooser);
+
+        secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
+        secondScoreLevelChooser.addOption("low", 0);
+        secondScoreLevelChooser.addOption("mid", 1);
+        secondScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(secondScoreLevelChooser);
+
+        thirdScoreLevelChooser.setDefaultOption("Third score level chooser", 0);
+        thirdScoreLevelChooser.addOption("low", 0);
+        thirdScoreLevelChooser.addOption("mid", 1);
+        thirdScoreLevelChooser.addOption("high", 2);
+        SmartDashboard.putData(thirdScoreLevelChooser);
+    }
+    
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
         gamePieceChooser.addOption("1st Position", 0);
@@ -457,6 +464,15 @@ public class RobotContainer {
         secondGamePieceChooser.addOption("3rd Position", 2);
         secondGamePieceChooser.addOption("4th Position", 3);
         SmartDashboard.putData(secondGamePieceChooser);
+    }
+
+    public void configureThirdGamePieceChooser() {
+        thirdGamePieceChooser.setDefaultOption("Third Cargo Chooser", 0);
+        thirdGamePieceChooser.addOption("1st Position", 0);
+        thirdGamePieceChooser.addOption("2nd Position", 1);
+        thirdGamePieceChooser.addOption("3rd Position", 2);
+        thirdGamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(thirdGamePieceChooser);
     }
     
     public void configureFirstScorePositionChooser() {
@@ -516,14 +532,34 @@ public class RobotContainer {
         hitAndRunChooser.addOption("Hit and Run", true);
     }
 
+    public void configureChooseAuto() {
+        autoChooser.setDefaultOption("Normal auto", 0);
+        autoChooser.addOption("Shooting auto", 1);
+        autoChooser.addOption("3-piece", 2);
+        autoChooser.addOption("Move forward", 3);
+        SmartDashboard.putData(autoChooser);
+    }
+
+    public int getScoreLevel(int scoreNumber) { // low 0, mid 1, high 2
+        switch(scoreNumber) {
+            case 1:
+              return firstScoreLevelChooser.getSelected();
+            case 2:
+              return secondScoreLevelChooser.getSelected();
+            case 3:
+                return thirdScoreLevelChooser.getSelected();
+            default:
+                //bruh
+                throw new InputMismatchException("scoreNumber should be from 1 to 3");
+        }
+    }
     public boolean checkIfUpdate() {
         return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
             || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
             || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) 
             || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
             || SmartDashboard.getBoolean("Update Visual", false) 
-            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false
-        );
+            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
     }
 
     public void updateAutoChoosers() {

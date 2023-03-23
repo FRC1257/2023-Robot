@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,11 +19,19 @@ import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
 public class GenerateTrajectories {
+    public enum State {
+        NORMAL,
+        SHOOTING,
+        THREE_PIECE,
+        MOVE_FORWARD
+    }
+
+    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD };
+
     private boolean charge;
     private boolean firstScore;
     private boolean secondScore;
     private boolean cargo;
-    private boolean threePiece;
     private boolean blue;
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
@@ -38,14 +47,21 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private Pose2d[] ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
+    private Pose2d[] ALLIANCE_SHOOTING_POSE;
     private Pose2d[] chargePose;
 
+    private double pieceApproachAngle;
+    private double[][] ApproachAngle = {
+        {-90, 90}, // blue
+        {-90, 90} // red
+    };
+
     public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
-            boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun) {
+            boolean isCargo, int StartPose, boolean leaveTarmac) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
-        this.threePiece = threePiece;
+        // this.threePiece = threePiece;
         this.leaveTarmac = leaveTarmac;
         this.hitAndRun = hitAndRun;
 
@@ -63,6 +79,7 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_SHOOTING_POSE = Autonomous.BLUE_SHOOT_POSE;
             blue = true;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
@@ -72,6 +89,7 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
+            ALLIANCE_SHOOTING_POSE = Autonomous.RED_SHOOT_POSE;
             blue = false;
         }
 
@@ -88,12 +106,12 @@ public class GenerateTrajectories {
 
     // private Pose2d goForward(){
 
-
-    //     trajectoryList.add(getFullTrajectory());
+    // trajectoryList.add(getFullTrajectory());
     // }
 
-
-
+    private State getAutoType() {
+        return autoType[RobotContainer.autoChooser.getSelected()];
+    }
 
     private Pose2d getCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
@@ -101,6 +119,10 @@ public class GenerateTrajectories {
 
     private Pose2d getSecondCargoLocation() {
         return ALLIANCE_CARGO_POSE[RobotContainer.secondGamePieceChooser.getSelected()];
+    }
+
+    private Pose2d getThirdCargoLocation() {
+        return ALLIANCE_CARGO_POSE[RobotContainer.thirdGamePieceChooser.getSelected()];
     }
 
     // 2 getScoreLocation() methods for some reason?
@@ -183,13 +205,31 @@ public class GenerateTrajectories {
         return ALLIANCE_LEAVE_COMMUNITY[1];
     }
 
+    /**
+     * Made with full assumption that functions called by AutoDecider work.
+     */
     private void AutoDecider() {
-        if (threePiece) {
-            threePieceAuto();
-            return;
+        command = new SequentialCommandGroup();
+
+        switch (getAutoType()) {
+            case NORMAL:
+                normalAuto();
+                break;
+            case SHOOTING:
+                shootingAuto();
+                break;
+            case THREE_PIECE:
+                threePieceAuto();
+                break;
+            case MOVE_FORWARD:
+                moveForward();
+                break;
         }
 
-        command = new SequentialCommandGroup();
+        trajectoryList.add(getFullTrajectory());
+    }
+
+    private void normalAuto() {
         // there are 3 possible steps we can take
         // Step 1
         if (firstScore) {
@@ -221,7 +261,6 @@ public class GenerateTrajectories {
             if (charge) {
                 addChargeTrajectory();
             }
-    
         }
         // step 3 go for charge
         else if (charge) {
@@ -234,59 +273,97 @@ public class GenerateTrajectories {
         if (StartPose.equals(currentPose)) {
             addLeaveCommunityTrajectory();
         }
-
-        trajectoryList.add(getFullTrajectory());
-
     }
 
-    // TODO Fix these methods
-    private void addScoreHigh() {
-        // TODO add this
-        // command.addCommands(new ScoreCommand());
-    }
-
-    private void addPiecePickup() {
-        command.addCommands(new GetPieceCommand());
-    }
-
-    private void addToPosCommand(ToPosCommand command) {
-        this.command.addCommands(command);
-        trajectoryList.add(command.getTrajectory());
-    }
-
-    public Pose2d shiftedPose(Pose2d pose) {
-        double SHIFT_X = -0.4;
-        if (blue) {
-            SHIFT_X *= -1;
+    private Pose2d niceAngle(Pose2d pose) {
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            if (blue) {
+                pieceApproachAngle = ApproachAngle[0][0];
+            } else {
+                pieceApproachAngle = ApproachAngle[1][0];
+            }
+        } else {
+            if (blue) {
+                pieceApproachAngle = ApproachAngle[0][1];
+            } else {
+                pieceApproachAngle = ApproachAngle[1][1];
+            }
         }
-        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
+
+        return new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(pieceApproachAngle));
     }
 
-    private Pose2d flipPose(Pose2d pose) {
-        return new Pose2d(pose.getX(), pose.getY(), pose.getRotation().plus(Rotation2d.fromDegrees(180)));
-    }
+    private void shootingAuto() {
+        this.StartPose = getFirstScoreLocation();
+        this.currentPose = this.StartPose;
 
-    private void backUpAndTurn() {
-        ToPosCommand firstTurnAround = new ToPosCommand(drivetrain, List.of(currentPose, shiftedPose(currentPose)),
-                true);
-        currentPose = shiftedPose(currentPose);
-        addToPosCommand(firstTurnAround);
+        addScoreHigh();
+
+        backUpAndTurn();
+
+        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
+                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
+        currentPose = getCargoLocation();
+        addToPosCommand(firstGoToCargo);
+
+        addPiecePickup();
 
         turn180();
+
+        driveToShootingPose();
+        shootPiece();
+
+        turn180();
+
+        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
+                List.of(currentPose, niceAngle(getSecondCargoLocation())), false);
+        currentPose = niceAngle(getSecondCargoLocation());
+        addToPosCommand(secondGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        driveToShootingPose();
+        shootPiece();
+
+        turn180();
+
+        ToPosCommand thirdGoToCargo = new ToPosCommand(drivetrain,
+                List.of(currentPose, niceAngle(getThirdCargoLocation())), false);
+        currentPose = niceAngle(getThirdCargoLocation());
+        addToPosCommand(thirdGoToCargo);
+
+        addPiecePickup();
+
+        turn180();
+
+        driveToShootingPose();
+        shootPiece();
     }
 
-    private void turn180() {
-        // 
-        if (RobotBase.isSimulation()) {
-            this.command.addCommands(new Delay(0.5));
-        } else {
-            this.command.addCommands(new TurnAngleCommand(drivetrain, 180));
+    public void shootPiece() {
+        // TODO add shooting
+        this.command.addCommands(new Delay(1));
+    }
+
+    public Pose2d getShootingPose() {
+        // TODO check if this is correct
+        if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            return ALLIANCE_SHOOTING_POSE[0];
         }
-        currentPose = flipPose(currentPose);
+        return ALLIANCE_SHOOTING_POSE[1];
+    }
+
+    public void driveToShootingPose() {
+        ToPosCommand driveToShootingPose = new ToPosCommand(drivetrain,
+                List.of(currentPose, getShootingPose()), false);
+        currentPose = getShootingPose();
+        addToPosCommand(driveToShootingPose);
     }
 
     private void threePieceAuto() {
-        command = new SequentialCommandGroup();
+        // command = new SequentialCommandGroup();
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
@@ -329,6 +406,78 @@ public class GenerateTrajectories {
         addScoreHigh();
 
         trajectoryList.add(getFullTrajectory());
+    }
+
+    /**
+     * Adds trajectory to move forward and back.
+     * @see #command
+     * @see SequentialCommandGroup#addCommands(edu.wpi.first.wpilibj2.command.Command...)
+     */
+    private void moveForward() {
+        // Literally made while queueing for quals during Robbinsville 2023
+        // TODO Redo this so proper Pose2d is used
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+        trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+
+        List<Pose2d> trajPointsBack = new ArrayList<Pose2d>();
+        trajPointsBack
+                .add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        trajPointsBack.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+
+        command.addCommands(
+            new SequentialCommandGroup(
+                new ToPosCommand(drivetrain, trajPoints, true),
+                new ToPosCommand(drivetrain, trajPointsBack, false),
+                new ToPosCommand(drivetrain, trajPoints, true)
+            )
+        );
+    }
+
+    // TODO Fix these methods
+    private void addScoreHigh() {
+        // TODO add this
+        // command.addCommands(new ScoreCommand());
+    }
+
+    private void addPiecePickup() {
+        command.addCommands(new GetPieceCommand());
+    }
+
+    private void addToPosCommand(ToPosCommand command) {
+        this.command.addCommands(command);
+        trajectoryList.add(command.getTrajectory());
+    }
+
+    public Pose2d shiftedPose(Pose2d pose) {
+        double SHIFT_X = -0.4;
+        if (blue) {
+            SHIFT_X *= -1;
+        }
+        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
+    }
+
+    private Pose2d flipPose(Pose2d pose) {
+        return new Pose2d(pose.getX(), pose.getY(), pose.getRotation().plus(Rotation2d.fromDegrees(180)));
+    }
+
+    private void backUpAndTurn() {
+        ToPosCommand firstTurnAround = new ToPosCommand(drivetrain, List.of(currentPose, shiftedPose(currentPose)),
+                true);
+        currentPose = shiftedPose(currentPose);
+        addToPosCommand(firstTurnAround);
+
+        turn180();
+    }
+
+    private void turn180() {
+        //
+        if (RobotBase.isSimulation()) {
+            this.command.addCommands(new Delay(0.5));
+        } else {
+            this.command.addCommands(new TurnAngleCommand(drivetrain, 180));
+        }
+        currentPose = flipPose(currentPose);
     }
 
     // step variables aren't random, they actually represent the order of the
