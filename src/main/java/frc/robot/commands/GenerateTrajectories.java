@@ -331,7 +331,7 @@ public class GenerateTrajectories {
 
         ToPosCommand thirdGoToCargo = new ToPosCommand(drivetrain,
                 List.of(currentPose, niceAngle(getThirdCargoLocation())), false);
-        currentPose = niceAngle(getSecondCargoLocation());
+        currentPose = niceAngle(getThirdCargoLocation());
         addToPosCommand(thirdGoToCargo);
 
         addPiecePickup();
@@ -349,7 +349,7 @@ public class GenerateTrajectories {
 
     public Pose2d getShootingPose() {
         // TODO check if this is correct
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+        if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             return ALLIANCE_SHOOTING_POSE[0];
         }
         return ALLIANCE_SHOOTING_POSE[1];
@@ -415,6 +415,7 @@ public class GenerateTrajectories {
      */
     private void moveForward() {
         // Literally made while queueing for quals during Robbinsville 2023
+        // TODO Redo this so proper Pose2d is used
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
         trajPoints.add(shiftedPose(Autonomous.RED_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));

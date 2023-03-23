@@ -323,9 +323,7 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece,
-            leaveTarmac,
-            hitAndRun
+            leaveTarmac
         );
         
         putTrajectoryTime();
@@ -397,10 +395,8 @@ public class RobotContainer {
                 firstScore,
                 secondScore,
                 cargo,
-                estimatedCurrentPose2d(),
-                threePiece,
-                leaveTarmac,
-                hitAndRun
+                0,
+                leaveTarmac  
             );
 
             SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
