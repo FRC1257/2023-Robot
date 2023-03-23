@@ -32,7 +32,6 @@ public class GenerateTrajectories {
     private boolean firstScore;
     private boolean secondScore;
     private boolean cargo;
-    private boolean threePiece;
     private boolean blue;
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
@@ -51,13 +50,13 @@ public class GenerateTrajectories {
     private Pose2d[] chargePose;
 
     public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
-            boolean isCargo, int StartPose, boolean threePiece, boolean leaveTarmac, boolean hitAndRun) {
+            boolean isCargo, int StartPose, boolean leaveTarmac) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
         // this.threePiece = threePiece;
-        // this.leaveTarmac = leaveTarmac;
-        // this.hitAndRun = hitAndRun;
+        this.leaveTarmac = leaveTarmac;
+        this.hitAndRun = hitAndRun;
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
