@@ -161,8 +161,9 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
+        // Claw
         claw = new Claw();
-        claw.setDefaultCommand(new ClawNeutralCommand(claw));
+        claw.setDefaultCommand(new ClawManualCommand(claw, operatorController::getLeftY));
         
         // Vision
         elevator = new Elevator();
@@ -228,8 +229,7 @@ public class RobotContainer {
         // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
         // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
 
-        operatorController.getButton(Button.kB.value).whileTrue(new ClawIntakeCommand(claw));
-        operatorController.getButton(Button.kA.value).whileTrue(new ClawEjectCommand(claw));
+        operatorController.getButton(Button.kB.value).onTrue(new ClawToggleCommand(claw));
 
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();

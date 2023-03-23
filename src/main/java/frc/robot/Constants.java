@@ -390,17 +390,21 @@ public final class Constants {
     };
 
     public static class Claw {
-        public static double ROLLER_NEUTRAL_SPEED = 0;
-        public static double ROLLER_INTAKING_SPEED = -0.45;
-        public static double ROLLER_EJECTING_SPEED = 0.45;
-        public static double ROLLER_SHOOTING_SPEED = 0.8;
+        public static double[] CLAW_PID = new double[] {0, 0, 0, 0};
+        public static double CLAW_PID_TOLERANCE = 0.1257; // lol
+        public static double CLAW_PID_MAX_OUTPUT = 0.1257; // lol
+
+        public static double POSITION_CONVERSION_FACTOR = 1;
+
+        public static double CLAW_SETPOINT_CLOSED = 0.1257; // lol
+        public static double CLAW_SETPOINT_OPEN = 0.1257; // lol
     };
 
     public static class PivotArm {
         // PID constants
         public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
-        public static double PIVOT_ARM_PID_MAX_OUTPUT = 1257; // lol
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.1257; // lol
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 

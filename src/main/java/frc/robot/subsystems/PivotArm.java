@@ -79,11 +79,10 @@ public class PivotArm extends SnailSubsystem {
 
 
         switch (state) {
-            case MANUAL: {
+            case MANUAL:
                 armMotor.set(speed);
                 break;
-            }
-            case PID: {
+            case PID:
                 // send the desired setpoint to the PID controller and specify we want to use position control
                 armPIDController.setReference(setPoint, ControlType.kPosition);
 
@@ -92,7 +91,6 @@ public class PivotArm extends SnailSubsystem {
                     state = State.MANUAL;
                 } */
                 break;
-            }
         }
     }
 
