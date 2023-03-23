@@ -206,9 +206,7 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            threePiece,
-            leaveTarmac,
-            hitAndRun 
+            leaveTarmac
         );
 
         if (SmartDashboard.getBoolean("Testing", false)) {
