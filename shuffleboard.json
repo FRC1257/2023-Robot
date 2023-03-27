@@ -1646,6 +1646,90 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "0,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Closed",
+              "_title": "Claw Closed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Open",
+              "_title": "Claw Open",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
+              "_title": "Claw Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Encoder Position",
+              "_title": "Claw Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Setpoint",
+              "_title": "Claw Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Limit Switch State",
+              "_title": "Limit Switch State",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -2266,7 +2350,7 @@
               "Visuals/Show value": true
             }
           },
-          "8,6": {
+          "6,6": {
             "size": [
               2,
               2
@@ -2317,6 +2401,32 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "8,6": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[9]",
+              "_title": "/SmartDashboard/SendableChooser[9]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,7": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[8]",
+              "_title": "/SmartDashboard/SendableChooser[8]",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2332,19 +2442,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
-            "size": [
-              2,
-              6
-            ],
-            "content": {
-              "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/3 Ball Auto",
-              "_title": "3 Ball Auto?",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "2,0": {
             "size": [
               3,
@@ -2484,6 +2581,19 @@
               "Range/Min": 0.0,
               "Range/Max": 18.0,
               "Visuals/Show value": true
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/SendableChooser[7]",
+              "_title": "/SmartDashboard/SendableChooser[7]",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

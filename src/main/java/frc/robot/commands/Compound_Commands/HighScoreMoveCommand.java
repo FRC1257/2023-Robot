@@ -11,15 +11,13 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.PivotArm;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
-public class HighScoreShootingCommand extends SequentialCommandGroup{
+public class HighScoreMoveCommand extends SequentialCommandGroup{
     
-    public HighScoreShootingCommand(Elevator elevator, PivotArm pivotarm) {
+    public HighScoreMoveCommand(Elevator elevator, PivotArm pivotarm) {
         // TODO: Add new command sequence given Cube Shooting 
         addCommands(
             new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND),
-            new ParallelCommandGroup(
-                new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP)
-            )
+            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP)
         );
     }
     

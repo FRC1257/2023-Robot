@@ -1,14 +1,16 @@
 package frc.robot.commands.IntakeArm;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeArm;
 
 public class IntakeArmManualCommand extends CommandBase{
 	private IntakeArm intakearm;
-    private double speed;
-	public IntakeArmManualCommand(IntakeArm intakearm, double speed) {
+    private DoubleSupplier speedSupplier;
+	public IntakeArmManualCommand(IntakeArm intakearm, DoubleSupplier speedSupplier) {
         this.intakearm = intakearm;
-        this.speed = speed;
+        this.speedSupplier = speedSupplier;
         addRequirements(intakearm);
     }
 
@@ -19,7 +21,7 @@ public class IntakeArmManualCommand extends CommandBase{
 
     @Override
     public void execute() {
-        intakearm.manual(speed);
+        intakearm.manual(speedSupplier.getAsDouble());
     }
 
     @Override

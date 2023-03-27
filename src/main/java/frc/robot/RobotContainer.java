@@ -30,12 +30,12 @@ import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
-import frc.robot.commands.ScoreCommand;
-import frc.robot.commands.Compound_Commands.HighScoreShootingCommand;
+import frc.robot.commands.Compound_Commands.HighScoreMoveCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
-import frc.robot.commands.Compound_Commands.MidScoreCommand;
+import frc.robot.commands.Compound_Commands.MidScoreMoveCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
+import frc.robot.commands.IntakeArm.IntakeArmManualCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
@@ -80,6 +80,7 @@ public class RobotContainer {
     private Vision vision;
     private PivotArm pivotArm;
     private Intake intake;
+    private IntakeArm intakeArm;
 
     private LED led;
 
@@ -184,6 +185,9 @@ public class RobotContainer {
         intake = new Intake();
         intake.setDefaultCommand(new IntakeNeutralCommand(intake));
 
+        intakeArm = new IntakeArm();
+        intakeArm.setDefaultCommand(new IntakeArmManualCommand(intakeArm, operatorController::getLeftY));
+
         //led = new LED();
         // led.setDefaultCommand(new LEDToggleCommand(led));
         
@@ -196,24 +200,15 @@ public class RobotContainer {
         subsystems.add(pivotArm);
         subsystems.add(elevator);
         subsystems.add(intake);
+        subsystems.add(intakeArm);  
         //subsystems.add(led);
         
         // generate auto
-        generateTrajectories = new GenerateTrajectories(
-            drivetrain,
-            charge,
-            firstScore,
-            secondScore,
-            cargo,
-            0,
-            leaveTarmac
-        );
+        getAutoCommand();
 
         if (SmartDashboard.getBoolean("Testing", false)) {
             tuningInit();
         }
-
-        putTrajectoryTime();
     }
 
     /**
@@ -323,13 +318,18 @@ public class RobotContainer {
             secondScore,
             cargo,
             0,
-            leaveTarmac
+            leaveTarmac,
+            elevator,
+            pivotArm,
+            intake,
+            intakeArm,
+            claw
         );
         
         putTrajectoryTime();
 
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
-        // DriverStation.reportWarning("Auto Command: " + generateTrajedies.getTrajectory().toString(), false);
+        DriverStation.reportWarning("Auto Command Generated", false);
         return generateTrajectories.getCommand();
         //return new DriveDistanceCommand(drivetrain, 10);
     }
@@ -387,21 +387,10 @@ public class RobotContainer {
 
         if (updateTraj && checkIfUpdate()) {
             DriverStation.reportWarning("Updating Auto", cargo);
-            updateAutoChoosers();
-
-            generateTrajectories = new GenerateTrajectories(
-                drivetrain,
-                charge,
-                firstScore,
-                secondScore,
-                cargo,
-                0,
-                leaveTarmac  
-            );
+            getAutoCommand();
 
             SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
-            putTrajectoryTime();
             resetDashboard();
         }
     
@@ -430,21 +419,27 @@ public class RobotContainer {
 
     public void configureScoreLevelChooser() {
         firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
-        firstScoreLevelChooser.addOption("low", 0);
-        firstScoreLevelChooser.addOption("mid", 1);
-        firstScoreLevelChooser.addOption("high", 2);
+        firstScoreLevelChooser.addOption("low arm", 0);
+        firstScoreLevelChooser.addOption("mid arm", 1);
+        firstScoreLevelChooser.addOption("high arm", 2);
+        firstScoreLevelChooser.addOption("mid shoot", 3);
+        firstScoreLevelChooser.addOption("high shoot", 4);
         SmartDashboard.putData(firstScoreLevelChooser);
 
         secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
-        secondScoreLevelChooser.addOption("low", 0);
-        secondScoreLevelChooser.addOption("mid", 1);
-        secondScoreLevelChooser.addOption("high", 2);
+        secondScoreLevelChooser.addOption("low arm", 0);
+        secondScoreLevelChooser.addOption("mid arm", 1);
+        secondScoreLevelChooser.addOption("high arm", 2);
+        secondScoreLevelChooser.addOption("mid shoot", 3);
+        secondScoreLevelChooser.addOption("high shoot", 4);
         SmartDashboard.putData(secondScoreLevelChooser);
 
         thirdScoreLevelChooser.setDefaultOption("Third score level chooser", 0);
-        thirdScoreLevelChooser.addOption("low", 0);
-        thirdScoreLevelChooser.addOption("mid", 1);
-        thirdScoreLevelChooser.addOption("high", 2);
+        thirdScoreLevelChooser.addOption("low arm", 0);
+        thirdScoreLevelChooser.addOption("mid arm", 1);
+        thirdScoreLevelChooser.addOption("high arm", 2);
+        thirdScoreLevelChooser.addOption("mid shoot", 3);
+        thirdScoreLevelChooser.addOption("high shoot", 4);
         SmartDashboard.putData(thirdScoreLevelChooser);
     }
     
@@ -538,6 +533,7 @@ public class RobotContainer {
         autoChooser.addOption("3-piece", 2);
         autoChooser.addOption("Normal Auto", 0);
         autoChooser.addOption("Hit & Run", 4);
+        autoChooser.addOption("Normal Auto No Turn", 5);
         SmartDashboard.putData(autoChooser);
     }
 

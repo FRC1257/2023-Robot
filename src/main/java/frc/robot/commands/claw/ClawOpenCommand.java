@@ -1,5 +1,6 @@
 package frc.robot.commands.claw;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
@@ -30,6 +31,9 @@ public class ClawOpenCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        if (RobotBase.isSimulation()) {
+            return true;
+        }
         return claw.atSetpoint();
     }
 }

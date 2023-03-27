@@ -10,13 +10,25 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.*;
 import frc.robot.Constants.Autonomous;
+import frc.robot.commands.Compound_Commands.HighScoreMoveCommand;
+import frc.robot.commands.Compound_Commands.HoldCommand;
+import frc.robot.commands.Compound_Commands.IntakeCommand;
+import frc.robot.commands.Compound_Commands.LowScoreShootingCommand;
+import frc.robot.commands.Compound_Commands.MidScoreMoveCommand;
+import frc.robot.commands.Compound_Commands.MidScoreShootingCommand;
+import frc.robot.commands.IntakeArm.IntakeArmPIDCommand;
+import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
+
+import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_MID;
 
 public class GenerateTrajectories {
     public enum State {
@@ -24,10 +36,11 @@ public class GenerateTrajectories {
         SHOOTING,
         THREE_PIECE,
         MOVE_FORWARD,
-        HIT_AND_RUN
+        HIT_AND_RUN,
+        NORMAL_NO_TURN
     }
 
-    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD, State.HIT_AND_RUN };
+    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD, State.HIT_AND_RUN, State.NORMAL_NO_TURN };
 
     private boolean charge;
     private boolean firstScore;
@@ -41,7 +54,6 @@ public class GenerateTrajectories {
     private SequentialCommandGroup command;
     private Pose2d currentPose;
     private List<Trajectory> trajectoryList = new ArrayList<Trajectory>();
-    private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
@@ -49,6 +61,7 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
     private Pose2d[] ALLIANCE_SHOOTING_POSE;
     private Pose2d[] chargePose;
+    private Pose2d[] kTURNPose;
 
     private double pieceApproachAngle;
     private double[][] ApproachAngle = {
@@ -56,8 +69,14 @@ public class GenerateTrajectories {
         {-90, 90} // red
     };
 
+    private Elevator elevator;
+    private PivotArm pivotArm;
+    private Intake intake;
+    private IntakeArm intakeArm;
+    private Claw claw;
+
     public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
-            boolean isCargo, int StartPose, boolean leaveTarmac) {
+            boolean isCargo, int StartPose, boolean leaveTarmac, Elevator elevator, PivotArm pivotArm, Intake intake, IntakeArm intakearm, Claw claw) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
@@ -65,12 +84,16 @@ public class GenerateTrajectories {
 
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
+        this.elevator = elevator;
+        this.pivotArm = pivotArm;
+        this.intake = intake;
+        this.intakeArm = intakearm;
+        this.claw = claw;
 
         command = new SequentialCommandGroup();
         currentPose = new Pose2d();
         // trajectoryList.add(new Trajectory());
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
             ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.BLUE_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
@@ -80,7 +103,6 @@ public class GenerateTrajectories {
             ALLIANCE_SHOOTING_POSE = Autonomous.BLUE_SHOOT_POSE;
             blue = true;
         } else {
-            ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
             ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.RED_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
@@ -91,7 +113,6 @@ public class GenerateTrajectories {
             blue = false;
         }
 
-        // this.StartPose = ALLIANCE_START_POSE[StartPose];
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
@@ -221,6 +242,9 @@ public class GenerateTrajectories {
             case HIT_AND_RUN:
                 hitAndRunAuto();
                 break;
+            case NORMAL_NO_TURN:
+                normalNoTurnAuto();
+                break;
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -237,12 +261,111 @@ public class GenerateTrajectories {
         command.addCommands(new NoPDBalanceCommand(drivetrain));
     }
 
+    private void normalNoTurnAuto() {
+        // there are 3 possible steps we can take
+        // Step 1
+        if (firstScore) {
+            // addFirstScoreTrajectory();
+            addScore(RobotContainer.firstScoreLevelChooser.getSelected());
+        }
+
+        // then we either go for cargo or leave the tarmac to get points
+        // Step 2
+        if (cargo) {
+            // going for cargo implies leaving community
+            addBackToCargo(); // TODO add this
+            addPiecePickup();
+        } else if (leaveTarmac) {
+            addLeaveCommunityTrajectory();
+            /* if (hitAndRun) {
+                addOverChargeTrajectory();
+                this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+                return;
+            } else {
+                addLeaveCommunityTrajectory();
+            } */
+        }
+
+        // Step 3
+        if (secondScore) {
+            addSecondScoreTrajectory();
+            addScore(RobotContainer.secondScoreLevelChooser.getSelected());
+            if (charge) {
+                addChargeTrajectory();
+            }
+        }
+        // step 3 go for charge
+        else if (charge) {
+            addChargeTrajectory();
+            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+        }
+
+        // if none of these have run something has gone wrong
+        // so just leave the community
+        if (StartPose.equals(currentPose)) {
+            addLeaveCommunityTrajectory();
+        }
+    }
+
+    private void addScore(int scorePosition) {
+        switch (scorePosition) {
+            case 0:
+                // score with the intake
+                addScoreLow();
+                break;
+            case 1:
+                // score with arm and elevator
+                addScoreMid();
+                break;
+            case 2:
+                // score with arm and elevator
+                addScoreHigh();
+                break;
+            case 3:
+                // shoot
+                addScoreMidShoot();
+                break;
+            case 4:
+                addScoreHighShoot();
+                break;
+            default:
+                addScoreLow();
+                break;
+        }
+        addHold();
+    }
+
+    private Command returnScoreMove(int scorePosition) {
+        switch (scorePosition) {
+            case 0:
+                // get into intaking position for intake arm and intake
+                return new IntakeCommand(intake, intakeArm);
+            case 1:
+                // move elevator and pivot arm to mid score position
+                return new MidScoreMoveCommand(elevator, pivotArm);
+            case 2:
+                // move elevator and pivot arm to high score position
+                return new HighScoreMoveCommand(elevator, pivotArm);
+            case 3:
+                // move intake arm to mid score position
+                // prepare to shoot
+                return new IntakeArmPIDCommand(intakeArm, PIVOT_ARM_SETPOINT_MID);
+            case 4:
+                // move intake arm to high score position
+                // prepare to shoot
+                return new IntakeArmPIDCommand(intakeArm, PIVOT_ARM_SETPOINT_MID);
+            default:
+                // go to starting position for the bot
+                return new HoldCommand(elevator, pivotArm, intakeArm, intake);
+        }
+    }
+
     private void normalAuto() {
         // there are 3 possible steps we can take
         // Step 1
         if (firstScore) {
             // addFirstScoreTrajectory();
-            addScoreHigh();
+            addScore(RobotContainer.firstScoreLevelChooser.getSelected());;
         }
 
         // then we either go for cargo or leave the tarmac to get points
@@ -266,7 +389,7 @@ public class GenerateTrajectories {
         // Step 3
         if (secondScore) {
             addSecondScoreTrajectory();
-            addScoreHigh();
+            addScore(RobotContainer.secondScoreLevelChooser.getSelected());
             if (charge) {
                 addChargeTrajectory();
             }
@@ -306,7 +429,7 @@ public class GenerateTrajectories {
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
-        addScoreHigh();
+        addScore(RobotContainer.firstScoreLevelChooser.getSelected());
 
         backUpAndTurn();
 
@@ -376,7 +499,7 @@ public class GenerateTrajectories {
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
-        addScoreHigh();
+        addScore(RobotContainer.firstScoreLevelChooser.getSelected());
 
         backUpAndTurn();
 
@@ -394,7 +517,7 @@ public class GenerateTrajectories {
         currentPose = getSecondScoreLocation();
         addToPosCommand(returnToScore);
 
-        addScoreHigh();
+        addScore(RobotContainer.secondScoreLevelChooser.getSelected());
 
         backUpAndTurn();
 
@@ -412,7 +535,7 @@ public class GenerateTrajectories {
         currentPose = getThirdScoreLocation();
         addToPosCommand(returnToScore2);
 
-        addScoreHigh();
+        addScore(RobotContainer.thirdScoreLevelChooser.getSelected());
 
         trajectoryList.add(getFullTrajectory());
     }
@@ -447,14 +570,64 @@ public class GenerateTrajectories {
     private void addScoreHigh() {
         // TODO add this
         // command.addCommands(new ScoreCommand());
+        command.addCommands(
+            new SequentialCommandGroup(
+                new HighScoreMoveCommand(elevator, pivotArm),
+                new Delay(0.5),
+                new ClawOpenCommand(claw)
+        ));
+    }
+
+    private void addScoreLow() {
+        // TODO add this
+        // command.addCommands(new ScoreCommand());
+        command.addCommands(
+            new LowScoreShootingCommand(intake, intakeArm)
+        );
+        
+    }
+
+    private void addHold() {
+        // TODO add this
+        command.addCommands(new HoldCommand(elevator, pivotArm, intakeArm, intake));
+    }
+
+    private void addScoreMid() {
+        command.addCommands(
+            new SequentialCommandGroup(
+                new MidScoreMoveCommand(elevator, pivotArm),
+                new Delay(0.5),
+                new ClawOpenCommand(claw)
+        ));
+    }
+
+    private void addScoreMidShoot() {
+        command.addCommands(
+            new MidScoreShootingCommand(intakeArm, intake)
+        );
+    }
+
+    private void addScoreHighShoot() {
+        command.addCommands(
+            new MidScoreShootingCommand(intakeArm, intake)
+        );
+        
     }
 
     private void addPiecePickup() {
-        command.addCommands(new GetPieceCommand());
+        command.addCommands(new IntakeCommand(intake, intakeArm));
     }
 
-    private void addToPosCommand(ToPosCommand command) {
-        this.command.addCommands(command);
+    private void addToPosCommand(ToPosCommand command, Command... commands) {
+        if (commands.length == 0) {
+            this.command.addCommands(command);
+        } else {
+            this.command.addCommands(new ParallelCommandGroup(
+                commands[0],
+                command
+            ));
+        }
+        
         trajectoryList.add(command.getTrajectory());
     }
 
@@ -509,7 +682,7 @@ public class GenerateTrajectories {
         ToPosCommand returnToScore = new ToPosCommand(drivetrain,
                 getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
         currentPose = getSecondScoreLocation();
-        addToPosCommand(returnToScore);
+        addToPosCommand(returnToScore, returnScoreMove(RobotContainer.secondScoreLevelChooser.getSelected()));
     }
 
     private List<Pose2d> getTrajPointsWaypoint(Pose2d start, Pose2d end) {
@@ -563,7 +736,26 @@ public class GenerateTrajectories {
         trajPoints.add(getCargoLocation());
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
         currentPose = getCargoLocation();
-        addToPosCommand(step2);
+        addToPosCommand(step2, returnScoreMove(0));
+    }
+
+    private void addBackToCargo() {
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
+        } else {
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
+        }
+
+        // trajPoints.add(getCargoLocation());
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
+        currentPose = getCargoLocation();
+        addToPosCommand(step2, new IntakeCommand(intake, intakeArm));
     }
 
     private void addLeaveCommunityTrajectory() {

@@ -115,17 +115,13 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 8;
 
         // Intakes
-        public final static int INTAKE_MOTOR_ID = 1257;
+        public final static int INTAKE_MOTOR_ID = 21;
         
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 1257;
-        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 1257;
-
-        // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 2;
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 17;
+        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 27;
 
         // Claw
         public static int CLAW_MOTOR_LEFT_ID = 3;
-        public static int CLAW_MOTOR_RIGHT_ID = 7;
 
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 4;
@@ -361,7 +357,7 @@ public final class Constants {
         };
 
         // bottom to top (farthest from community to closest)
-        public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
+        /* public static Pose2d[] BLUE_START_POSE = new Pose2d[] {
                 new Pose2d(2.285, 0.736, Rotation2d.fromDegrees(0)),
                 new Pose2d(2.285, 2.638, Rotation2d.fromDegrees(0)),
                 new Pose2d(2.285, 4.357, Rotation2d.fromDegrees(0)),
@@ -371,7 +367,7 @@ public final class Constants {
                 new Pose2d(14.384, 0.736, Rotation2d.fromDegrees(180)),
                 new Pose2d(14.384, 2.638, Rotation2d.fromDegrees(180)),
                 new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
-        };
+        }; */
 
         public static Pose2d[] BLUE_PARK_POSE = new Pose2d[] {
                 new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(0)),
@@ -382,11 +378,11 @@ public final class Constants {
                 new Pose2d(13.847, 4.593, Rotation2d.fromDegrees(180)),
                 new Pose2d(12.57, 0.716, Rotation2d.fromDegrees(180)),
         };
-
+/* 
         public static Pose2d[] Straightline = new Pose2d[] {
                 new Pose2d(23.034, 17.493, Rotation2d.fromDegrees(0)),
                 new Pose2d(41.914, 17.493, Rotation2d.fromDegrees(0)),
-        };
+        }; */
 
         public static Pose2d[] BLUE_SHOOT_POSE = new Pose2d[] {
                 new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(180)),

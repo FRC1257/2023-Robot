@@ -47,6 +47,9 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
+        "Field": {
+          "open": true
+        },
         "open": true
       }
     }

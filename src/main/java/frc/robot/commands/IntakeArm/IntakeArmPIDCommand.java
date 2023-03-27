@@ -1,5 +1,6 @@
 package frc.robot.commands.IntakeArm;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeArm;
 
@@ -28,6 +29,9 @@ public class IntakeArmPIDCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
+        if (RobotBase.isSimulation()) {
+            return true;
+        }
         return intakearm.getState() != IntakeArm.State.PID;
     }
 }

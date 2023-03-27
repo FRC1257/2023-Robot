@@ -12,11 +12,8 @@ public class LowScoreShootingCommand extends SequentialCommandGroup {
 
     public LowScoreShootingCommand(Intake intake, IntakeArm intakeArm) {
         addCommands(
-            new ParallelCommandGroup(
-                new IntakeShootingCommand(intake),
-                new IntakeArmPIDCommand(intakeArm, INTAKE_SETPOINT_BOT)
-            ),
-        new IntakeShootingCommand(intake)
+            new IntakeArmPIDCommand(intakeArm, INTAKE_SETPOINT_BOT),
+            new IntakeShootingCommand(intake)
         );
     }
     
