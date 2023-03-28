@@ -115,28 +115,23 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 4;
 
         // Intakes
-        public final static int INTAKE_MOTOR_LEFT_ID = 1257;
-        public final static int INTAKE_MOTOR_RIGHT_ID = 1257;
+        public final static int INTAKE_MOTOR_LEFT_ID = 12;
+        public final static int INTAKE_MOTOR_RIGHT_ID = 13;
         
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 1257;
-        
-        // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 8;
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 6;
 
         // Claw
-        public static int CLAW_MOTOR_LEFT_ID = 6;
-        public static int CLAW_MOTOR_RIGHT_ID = 7;
+        public static int CLAW_MOTOR_LEFT_ID = 8;
 
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 5;
 
         // Pivot ARm
-        public static int PIVOT_ARM_ID = 13;
+        public static int PIVOT_ARM_ID = 7;
 
         // Sensors
         public static final int INTAKE_BUMP_SWITCH_ID = 24;
-        public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
-        public static final int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+        public static final int ELEVATOR_LIMIT_SWITCH = 0;
     };
 
 
