@@ -38,12 +38,19 @@ public class Elevator extends SnailSubsystem{
     }
 
     private State elevatorState = State.MANUAL; 
-
+    
     public Elevator() {
+        SmartDashboard.putBoolean("Motor mode", false);
+        
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         elevatorMotor.restoreFactoryDefaults();
         // pivotWristMotor.setIdleMode(IdleMode.kBrake);
-        elevatorMotor.setIdleMode(IdleMode.kBrake);
+        if (SmartDashboard.getBoolean("Coast mode", false)) {
+            elevatorMotor.setIdleMode(IdleMode.kCoast);
+        }
+        else {
+            elevatorMotor.setIdleMode(IdleMode.kBrake);
+        } 
         elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         /* elevatorMotor.setInverted(true);
 
@@ -73,6 +80,13 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
+        if (SmartDashboard.getBoolean("Coast mode", false)) {
+            elevatorMotor.setIdleMode(IdleMode.kCoast);
+        }
+        else {
+            elevatorMotor.setIdleMode(IdleMode.kBrake);
+        }
+
         if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
             elevatorMotor.set(0);
             return;
