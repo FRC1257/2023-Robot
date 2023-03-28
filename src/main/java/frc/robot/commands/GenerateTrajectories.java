@@ -467,7 +467,7 @@ public class GenerateTrajectories {
     }
 
     public Pose2d driveOutPose(Pose2d pose) {
-        double SHIFT_X = -10;
+        double SHIFT_X = -4;
         if (blue) {
             SHIFT_X *= -1;
         }

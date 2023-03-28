@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
  
 import java.util.Optional;
 import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -332,21 +333,23 @@ public class Drivetrain extends SnailSubsystem {
                 }
  
                 // comment this out while initially tuning
-                if(anglePIDController.atSetpoint() && anglePIDController.getVelocityError() < 20) {
+                if(anglePIDController.atSetpoint() && anglePIDController.getVelocityError() < 1 && anglePIDController.getVelocityError() != 0) {
                     state = defaultState;
                     angleSetpoint = defaultSetpoint;
                     frontLeftMotor.set(0);
                     frontRightMotor.set(0);
                     break;
                 }
-
-                if (pathTimer.get() > 3) {
+                
+                /* 
+                if (pathTimer.get() > 10) { 
+                    DriverStation.reportError("Turn Command ended", false);
                     state = defaultState;
                     angleSetpoint = defaultSetpoint;
                     frontLeftMotor.set(0);
                     frontRightMotor.set(0);
                     break;
-                }
+                } */
  
                 double turnOutput = anglePIDController.calculate(Gyro.getInstance().getRobotAngle(), angleSetpoint);
                 turnOutput = MathUtil.clamp(turnOutput, -DRIVE_ANGLE_MAX_OUTPUT, DRIVE_ANGLE_MAX_OUTPUT);
