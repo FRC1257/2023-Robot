@@ -1661,6 +1661,142 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "2,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Motor mode",
+              "_title": "Motor mode",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Closed",
+              "_title": "Claw Closed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Open",
+              "_title": "Claw Open",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
+              "_title": "Claw Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Encoder Position",
+              "_title": "Claw Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Setpoint",
+              "_title": "Claw Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Intake Right Speed",
+              "_title": "Intake Right Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Intake Left Speed",
+              "_title": "Intake Left Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "17,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motion State",
+              "_title": "Claw Motion State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/deez",
+              "_title": "deez",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -3134,6 +3270,65 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Left Motor Speed",
               "_title": "SmartDashboard/Claw Left Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,2": {
+            "size": [
+              3,
+              3
+            ],
+            "content": {
+              "_type": "Graph",
+              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
+              "_title": "SmartDashboard/Claw Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Graph/Visible time": 30.0,
+              "Graph/X-axis auto scrolling": true,
+              "Y-axis/Automatic bounds": true,
+              "Y-axis/Upper bound": 1.0,
+              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/Claw Motor Speed": true
+            }
+          },
+          "14,5": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw State",
+              "_title": "SmartDashboard/Claw State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw State",
+              "_title": "SmartDashboard/Claw State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/deez",
+              "_title": "SmartDashboard/deez",
               "_glyph": 148,
               "_showGlyph": false
             }

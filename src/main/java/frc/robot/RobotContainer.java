@@ -264,7 +264,7 @@ public class RobotContainer {
         
         
         // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
-        driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
+        driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain));
         
         // driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));

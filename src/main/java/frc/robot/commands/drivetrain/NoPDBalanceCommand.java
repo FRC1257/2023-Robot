@@ -19,7 +19,7 @@ public class NoPDBalanceCommand extends CommandBase {
 	private final Gyro gyro;
     private Timer m_timer = new Timer();
 	private double error;
-	private double m_timeLimit;
+	private double m_timeLimit = 5;
 
     private TunableNumber speed = new TunableNumber("Balance Speed Tune", .17);
 
