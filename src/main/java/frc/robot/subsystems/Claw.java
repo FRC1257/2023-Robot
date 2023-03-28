@@ -27,6 +27,8 @@ public class Claw extends SnailSubsystem {
     private SparkMaxPIDController clawPIDController;
     private double speed;
     private double setPoint;
+
+    private double addSpeed = 0;
     
     public enum ClawState {
         OPEN,
@@ -35,7 +37,8 @@ public class Claw extends SnailSubsystem {
 
     public enum ClawMotionState {
       MANUAL,
-      PID
+      PID,
+      AUTO
     }
     
     private ClawMotionState clawMotionState;
@@ -46,6 +49,7 @@ public class Claw extends SnailSubsystem {
         clawMotor.restoreFactoryDefaults();
         clawMotor.setIdleMode(IdleMode.kBrake);
         clawMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        clawMotor.setInverted(true);
 
         clawEncoder = clawMotor.getEncoder();
         clawEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
@@ -68,12 +72,33 @@ public class Claw extends SnailSubsystem {
 
         switch(clawMotionState) {
             case MANUAL:
-                clawMotor.set(speed);
+                /* if (speed > 0.1) {
+                    clawState = ClawState.OPEN;
+                } else if (speed < -0.1) {
+                    clawState = ClawState.CLOSED;
+                } */
+                clawMotor.set(speed + addSpeed);
                 break;
             case PID:
-                clawPIDController.setReference(setPoint, ControlType.kPosition);
+                // clawPIDController.setReference(setPoint, ControlType.kPosition);
                 break;
-        }
+            case AUTO:
+                if (clawState == ClawState.OPEN) {
+                    clawMotor.set(0.1);
+                } else {
+                    clawMotor.set(-0.1);
+                }
+                break;
+        }/* 
+
+        switch (clawState) {
+            case OPEN:
+                addSpeed = 0.01;
+                break;
+            case CLOSED:
+                addSpeed = -0.07;
+                break;
+        } */
     }
 
     public void setPosition(double setpoint) {

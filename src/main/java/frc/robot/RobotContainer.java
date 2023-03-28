@@ -35,6 +35,8 @@ import frc.robot.commands.Compound_Commands.HighScoreShootingCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.IntakeCommand;
 import frc.robot.commands.Compound_Commands.MidScoreCommand;
+import frc.robot.commands.Intake.IntakeEjectingCommand;
+import frc.robot.commands.Intake.IntakeIntakingCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.commands.drivetrain.ToPosCommand;
@@ -195,7 +197,7 @@ public class RobotContainer {
         subsystems.add(claw); 
         subsystems.add(pivotArm);
         subsystems.add(elevator);
-        subsystems.add(intake);
+        subsystems.add(intake); 
         //subsystems.add(led);
         
         // generate auto
@@ -234,13 +236,11 @@ public class RobotContainer {
         // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
 
         // // Operator bindings
-        // operatorController.getButton(Button.kA.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_INTAKE));
-        // operatorController.getButton(Button.kB.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_HIGH));
-        // operatorController.getButton(Button.kX.value).onTrue(new PivotWristPIDCommand(pivotWrist, Constants.PivotWrist.WRIST_SETPOINT_MID));
-
+        
+        /* 
         operatorController.getButton(Button.kB.value).whileTrue(new ClawOpenCommand(claw));
         operatorController.getButton(Button.kA.value).whileTrue(new ClawCloseCommand(claw));
-
+        */
         // operatorController.getButton(Button.kY.value).whileTrue(new ClawItemToggleCommand(claw));
         //Operator Bindings
         //operatorController.getButton(Button.kA.value).onTrue();
@@ -264,7 +264,7 @@ public class RobotContainer {
         
         
         // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
-        // driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
+        driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
         
         // driveController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, Constants.Autonomous.BLUE_SCORE_POSE[4]));
         // driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
@@ -279,6 +279,9 @@ public class RobotContainer {
         driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
         driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
+
+        operatorController.getButton(Button.kA.value).whileTrue(new IntakeIntakingCommand(intake));
+        operatorController.getButton(Button.kB.value).whileTrue(new IntakeEjectingCommand(intake));
     }
 
 
@@ -316,7 +319,7 @@ public class RobotContainer {
         
         updateAutoChoosers();
 
-        generateTrajectories = new GenerateTrajectories(
+        generateTrajectories = new GenerateTrajectories(    
             drivetrain,
             charge,
             firstScore,

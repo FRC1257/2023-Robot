@@ -104,39 +104,34 @@ public final class Constants {
 
         // Drivetrain Test Bot
         /* public final static int DRIVE_FRONT_LEFT = 17;
-        public final static int DRIVE_FRONT_RIGHT = 13;
-        public final static int DRIVE_BACK_LEFT = 5;
-        public final static int DRIVE_BACK_RIGHT = 2; */
+        public final static int DRIVE_FRONT_RIGHT = 10;
+        public final static int DRIVE_BACK_LEFT = 9;
+        public final static int DRIVE_BACK_RIGHT = 11; */
 
         // Drivetrain Main
-        public final static int DRIVE_FRONT_LEFT = 14;
-        public final static int DRIVE_FRONT_RIGHT = 12;
-        public final static int DRIVE_BACK_LEFT = 15;
-        public final static int DRIVE_BACK_RIGHT = 8;
+        public final static int DRIVE_FRONT_LEFT = 1;
+        public final static int DRIVE_FRONT_RIGHT = 2;
+        public final static int DRIVE_BACK_LEFT = 3;
+        public final static int DRIVE_BACK_RIGHT = 4;
 
         // Intakes
-        public final static int INTAKE_MOTOR_ID = 1257;
+        public final static int INTAKE_MOTOR_LEFT_ID = 12;
+        public final static int INTAKE_MOTOR_RIGHT_ID = 13;
         
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 1257;
-        public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 1257;
-
-        // Pivot Wrist    
-        public final static int PIVOT_WRIST_ID_LEFT = 2;
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 6;
 
         // Claw
-        public static int CLAW_MOTOR_LEFT_ID = 3;
-        public static int CLAW_MOTOR_RIGHT_ID = 7;
+        public static int CLAW_MOTOR_LEFT_ID = 8;
 
         // New Elevator Motor Design
-        public final static int ELEVATOR_MOTOR_ID = 4;
+        public final static int ELEVATOR_MOTOR_ID = 5;
 
         // Pivot ARm
-        public static int PIVOT_ARM_ID = 13;
+        public static int PIVOT_ARM_ID = 7;
 
         // Sensors
         public static final int INTAKE_BUMP_SWITCH_ID = 24;
-        public static final int INTAKE_ARM_BUMP_SWITCH_ID = 25;
-        public static final int WRIST_LIMIT_SWITCH_PORT_ID = 30;
+        public static final int ELEVATOR_LIMIT_SWITCH = 0;
     };
 
 
@@ -228,9 +223,9 @@ public final class Constants {
         public static double DRIVE_DIST_MAX_OUTPUT = 0.6;
 
         // angular position PID works for test bot
-        public static double[] DRIVE_ANGLE_PID = { 0.075, 0.005, 0.005 };
+        public static double[] DRIVE_ANGLE_PID = { 0.075, 0.1, 0.005 };
         public static double DRIVE_ANGLE_TOLERANCE = 0.5;
-        public static double DRIVE_ANGLE_MAX_OUTPUT = 0.5;
+        public static double DRIVE_ANGLE_MAX_OUTPUT = 0.6;
 
         // velocity PID (for closed loop, profiling, and trajectory)
         public static int DRIVE_VEL_SLOT = 0;

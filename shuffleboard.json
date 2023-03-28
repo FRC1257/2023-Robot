@@ -1646,6 +1646,21 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "0,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Limit Switch",
+              "_title": "Limit Switch",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -2672,6 +2687,21 @@
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/Elevator Bottom",
               "_title": "/SmartDashboard/Elevator Bottom",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,5": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Limit Switch",
+              "_title": "SmartDashboard/Limit Switch",
               "_glyph": 148,
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",

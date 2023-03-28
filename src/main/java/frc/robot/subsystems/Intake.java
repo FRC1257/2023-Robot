@@ -11,14 +11,24 @@ import frc.robot.Constants.IntakeSpeed;
 
 public class Intake extends SnailSubsystem {
 
-    private CANSparkMax intakeMotor;
+    private CANSparkMax intakeMotorRight;
+    private CANSparkMax intakeMotorLeft;
 
     public Intake() {
-        intakeMotor = new CANSparkMax(ElectricalLayout.INTAKE_MOTOR_ID, MotorType.kBrushless);
-        intakeMotor.restoreFactoryDefaults();
-        intakeMotor.setIdleMode(IdleMode.kBrake);
-        intakeMotor.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
-        intakeMotor.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        intakeMotorRight = new CANSparkMax(ElectricalLayout.INTAKE_MOTOR_LEFT_ID, MotorType.kBrushless);
+        intakeMotorRight.restoreFactoryDefaults();
+        intakeMotorRight.setIdleMode(IdleMode.kBrake);
+        intakeMotorRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        intakeMotorRight.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+
+        intakeMotorLeft = new CANSparkMax(ElectricalLayout.INTAKE_MOTOR_RIGHT_ID, MotorType.kBrushless);
+        intakeMotorLeft.restoreFactoryDefaults();
+        intakeMotorLeft.setIdleMode(IdleMode.kBrake);
+        intakeMotorLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        intakeMotorLeft.setSmartCurrentLimit(Constants.NEO_CURRENT_LIMIT);
+        intakeMotorLeft.setInverted(true);
+
+        intakeMotorLeft.follow(intakeMotorRight);
     }
 
     public enum State {
@@ -34,16 +44,16 @@ public class Intake extends SnailSubsystem {
     public void update() {
         switch(intakeState) {
             case INTAKING:
-                intakeMotor.set(IntakeSpeed.INTAKE_INTAKING_SPEED);
+                intakeMotorRight.set(IntakeSpeed.INTAKE_INTAKING_SPEED);
                 break;
             case EJECTING:
-                intakeMotor.set(IntakeSpeed.INTAKE_EJECTING_SPEED);
+                intakeMotorRight.set(IntakeSpeed.INTAKE_EJECTING_SPEED);
                 break;
             case NEUTRAL:
-                intakeMotor.set(IntakeSpeed.INTAKE_NEUTRAL_SPEED);
+                intakeMotorRight.set(IntakeSpeed.INTAKE_NEUTRAL_SPEED);
                 break;
             case SHOOTING:
-                intakeMotor.set(IntakeSpeed.INTAKE_SHOOTING_SPEED);
+                intakeMotorRight.set(IntakeSpeed.INTAKE_SHOOTING_SPEED);
         }
         
     }
@@ -71,7 +81,8 @@ public class Intake extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Intake Speed", intakeMotor.get());
+        SmartDashboard.putNumber("Intake Right Speed", intakeMotorRight.get());
+        SmartDashboard.putNumber("Intake Left Speed", intakeMotorLeft.get());
     }
 
     @Override
