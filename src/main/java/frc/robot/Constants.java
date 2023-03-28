@@ -165,8 +165,8 @@ public final class Constants {
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
         // TODO Tune
-        public static final float ELEVATOR_SETPOINT_RETRACT = 0.5f;
-        public static final float ELEVATOR_SETPOINT_EXTEND = 36.6f;
+        public static final double ELEVATOR_SETPOINT_RETRACT = 1.3;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 28;
 
         public static final double ELEVATOR_STOP_BUFFER = 5;
     }

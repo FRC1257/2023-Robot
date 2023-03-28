@@ -22,7 +22,7 @@ public class ClawManualCommand extends CommandBase {
 
     @Override
     public void execute() {
-        claw.manualControl(speedSupplier.getAsDouble());
+        claw.manualControl(speedSupplier.getAsDouble()/5);
     }
 
     @Override

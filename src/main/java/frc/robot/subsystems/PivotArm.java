@@ -48,7 +48,7 @@ public class PivotArm extends SnailSubsystem {
         armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
         armMotor.restoreFactoryDefaults();
         // armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setIdleMode(IdleMode.kCoast);
         armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
         armEncoder = armMotor.getEncoder();
