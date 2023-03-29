@@ -30,19 +30,19 @@ public class Claw extends SnailSubsystem {
 
     private double addSpeed = 0;
     
-    public enum ClawState {
-        OPEN,
-        CLOSED
+    public enum ClawMoveState {
+        OPENING,
+        CLOSING
     }
 
-    public enum ClawMotionState {
+    public enum ClawState {
       MANUAL,
       PID,
       //AUTO
     }
     
-    private ClawMotionState clawMotionState;
     private ClawState clawState;
+    private ClawMoveState clawMoveState;
     private TunableNumber deez = new TunableNumber("deez", -0.1);
     
     public Claw() {
@@ -63,8 +63,8 @@ public class Claw extends SnailSubsystem {
         clawPIDController.setFF(ff.get());
         clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
-        clawMotionState = ClawMotionState.MANUAL;
-        clawState = ClawState.CLOSED;
+        clawState = ClawState.MANUAL;
+        clawMoveState = ClawMoveState.CLOSING;
         
     }
     
@@ -73,12 +73,12 @@ public class Claw extends SnailSubsystem {
         SmartDashboard.putBoolean("Claw Closed", clawEncoder.getPosition() <= CLAW_SETPOINT_CLOSED /*&& speed < 0.0*/);
         SmartDashboard.putBoolean("Claw Open", clawEncoder.getPosition() >= CLAW_SETPOINT_OPEN /*&& speed > 0.0*/);
 
-        switch(clawMotionState) {
+        switch(clawState) {
             case MANUAL:
                  if (speed > 0.1) {
-                    clawState = ClawState.OPEN;
+                    clawMoveState = ClawMoveState.OPENING;
                 } else if (speed < -0.1) {
-                    clawState = ClawState.CLOSED;
+                    clawMoveState = ClawMoveState.CLOSING;
                 } 
                 clawMotor.set(speed + addSpeed);
                 break;
@@ -94,32 +94,33 @@ public class Claw extends SnailSubsystem {
             //     break;
         } 
 
-        switch (clawState) {
-            case OPEN:
+        switch (clawMoveState) {
+            case OPENING:
                 addSpeed = -0.01;
                 break;
-            case CLOSED:
+            case CLOSING:
                 addSpeed = deez.get();
                 break;
         } 
     }
 
     public void setPosition(double setpoint) {
-        this.clawMotionState = ClawMotionState.PID;
+        this.clawState = ClawState.PID;
         this.setPoint = setpoint;
     }
 
     public void close() {
         setPosition(CLAW_SETPOINT_CLOSED);
-        clawState = ClawState.CLOSED;
+        clawMoveState = ClawMoveState.CLOSING;
     }
 
     public void open() {
         setPosition(CLAW_SETPOINT_OPEN);
+        clawMoveState = ClawMoveState.OPENING;
     }
 
     public void endPID() {
-        this.clawMotionState = ClawMotionState.MANUAL;
+        this.clawState = ClawState.MANUAL;
     }
 
     @Override
@@ -127,8 +128,8 @@ public class Claw extends SnailSubsystem {
         SmartDashboard.putNumber("Claw Motor Speed", clawMotor.get());
         SmartDashboard.putNumber("Claw Encoder Position", clawEncoder.getPosition());
         SmartDashboard.putNumber("Claw Setpoint", setPoint);
-        SmartDashboard.putString("Claw Motion State", clawMotionState.name());
-        SmartDashboard.putString("Claw State", clawState.name());
+        SmartDashboard.putString("Claw Motion State", clawState.name());
+        SmartDashboard.putString("Claw State", clawMoveState.name());
     }
 
     @Override
@@ -150,7 +151,7 @@ public class Claw extends SnailSubsystem {
     }
 
     public void manualControl(double newSpeed) {
-        clawMotionState = ClawMotionState.MANUAL;
+        clawState = ClawState.MANUAL;
         speed = newSpeed;
     }
 
@@ -158,11 +159,11 @@ public class Claw extends SnailSubsystem {
         return Math.abs(clawEncoder.getPosition() - setPoint) < CLAW_PID_TOLERANCE;
     }
     
-    public ClawMotionState getMotionState() {
-        return clawMotionState;
+    public ClawState getMotionState() {
+        return clawState;
     }
 
-    public ClawState getState() {
-        return clawState;
+    public ClawMoveState getState() {
+        return clawMoveState;
     }
 }

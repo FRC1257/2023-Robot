@@ -244,7 +244,6 @@ public class RobotContainer {
 
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
         operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));
-        operatorController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, vision));
     }
 
 
