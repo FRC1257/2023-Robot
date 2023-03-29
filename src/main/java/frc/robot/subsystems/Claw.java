@@ -38,11 +38,12 @@ public class Claw extends SnailSubsystem {
     public enum ClawMotionState {
       MANUAL,
       PID,
-      AUTO
+      //AUTO
     }
     
     private ClawMotionState clawMotionState;
     private ClawState clawState;
+    private TunableNumber deez = new TunableNumber("deez", -0.1);
     
     public Claw() {
         clawMotor = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
@@ -63,6 +64,8 @@ public class Claw extends SnailSubsystem {
         clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
         clawMotionState = ClawMotionState.MANUAL;
+        clawState = ClawState.CLOSED;
+        
     }
     
     @Override
@@ -72,33 +75,33 @@ public class Claw extends SnailSubsystem {
 
         switch(clawMotionState) {
             case MANUAL:
-                /* if (speed > 0.1) {
+                 if (speed > 0.1) {
                     clawState = ClawState.OPEN;
                 } else if (speed < -0.1) {
                     clawState = ClawState.CLOSED;
-                } */
+                } 
                 clawMotor.set(speed + addSpeed);
                 break;
             case PID:
                 // clawPIDController.setReference(setPoint, ControlType.kPosition);
                 break;
-            case AUTO:
-                if (clawState == ClawState.OPEN) {
-                    clawMotor.set(0.1);
-                } else {
-                    clawMotor.set(-0.1);
-                }
-                break;
-        }/* 
+            // case AUTO:
+            //     if (clawState == ClawState.OPEN) {
+            //         clawMotor.set(0.1);
+            //     } else {
+            //         clawMotor.set(-0.1);
+            //     }
+            //     break;
+        } 
 
         switch (clawState) {
             case OPEN:
-                addSpeed = 0.01;
+                addSpeed = -0.01;
                 break;
             case CLOSED:
-                addSpeed = -0.07;
+                addSpeed = deez.get();
                 break;
-        } */
+        } 
     }
 
     public void setPosition(double setpoint) {
@@ -124,7 +127,8 @@ public class Claw extends SnailSubsystem {
         SmartDashboard.putNumber("Claw Motor Speed", clawMotor.get());
         SmartDashboard.putNumber("Claw Encoder Position", clawEncoder.getPosition());
         SmartDashboard.putNumber("Claw Setpoint", setPoint);
-        SmartDashboard.putString("Claw State", clawMotionState.name());
+        SmartDashboard.putString("Claw Motion State", clawMotionState.name());
+        SmartDashboard.putString("Claw State", clawState.name());
     }
 
     @Override

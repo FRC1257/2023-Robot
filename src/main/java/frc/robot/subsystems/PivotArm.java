@@ -48,7 +48,7 @@ public class PivotArm extends SnailSubsystem {
         armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
         armMotor.restoreFactoryDefaults();
         // armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setIdleMode(IdleMode.kCoast);
         armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
         armEncoder = armMotor.getEncoder();
@@ -130,6 +130,12 @@ public class PivotArm extends SnailSubsystem {
         d.updateFunction(() -> armPIDController.setD(d.get()));
         ff.updateFunction(() -> armPIDController.setFF(ff.get()));
         maxOutput.updateFunction(() -> armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
+
+        if (SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kBrake) {
+            armMotor.setIdleMode(IdleMode.kBrake);
+        } else if (!SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kCoast) {
+            armMotor.setIdleMode(IdleMode.kCoast);
+        }
     }
 
     public void manualControl(double newSpeed) {

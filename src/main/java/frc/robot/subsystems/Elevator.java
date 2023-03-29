@@ -45,12 +45,7 @@ public class Elevator extends SnailSubsystem{
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         elevatorMotor.restoreFactoryDefaults();
         // pivotWristMotor.setIdleMode(IdleMode.kBrake);
-        if (SmartDashboard.getBoolean("Coast mode", false)) {
-            elevatorMotor.setIdleMode(IdleMode.kCoast);
-        }
-        else {
-            elevatorMotor.setIdleMode(IdleMode.kBrake);
-        } 
+        elevatorMotor.setIdleMode(IdleMode.kCoast);
         elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
         /* elevatorMotor.setInverted(true);
 
@@ -80,27 +75,17 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void update() {
-        if (SmartDashboard.getBoolean("Coast mode", false)) {
-            elevatorMotor.setIdleMode(IdleMode.kCoast);
-        }
-        else {
-            elevatorMotor.setIdleMode(IdleMode.kBrake);
-        }
-        
-        if (limitSwitch.get()) {
-            encoder.setPosition(ELEVATOR_SETPOINT_EXTEND);
-        }
-
-        if (encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT && speed < 0.0) {
+        // negative speed moves it up
+        if (encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND && speed < 0.0) {
             elevatorMotor.set(0);
             return;
-        } else if (encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND && speed > 0.0) {
+        } else if (encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT && speed > 0.0) {
             elevatorMotor.set(0);
             return;
         } 
 
-        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() <= ELEVATOR_SETPOINT_RETRACT/*  && speed < 0.0*/);
-        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() >= ELEVATOR_SETPOINT_EXTEND /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
+        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
 
         switch(elevatorState) {
             case MANUAL:
@@ -144,6 +129,8 @@ public class Elevator extends SnailSubsystem{
         SmartDashboard.putNumber("Elevator Setpoint", setpoint);
         SmartDashboard.putString("Elevator State", elevatorState.toString());
         SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
+        SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
+
     }
 
     @Override
@@ -160,6 +147,12 @@ public class Elevator extends SnailSubsystem{
         i.updateFunction(() -> pidController.setI(i.get()));
         d.updateFunction(() -> pidController.setD(d.get()));
         ff.updateFunction(() -> pidController.setFF(ff.get()));
+
+        if (SmartDashboard.getBoolean("Motor mode", false) && elevatorMotor.getIdleMode() != IdleMode.kBrake) {
+            elevatorMotor.setIdleMode(IdleMode.kBrake);
+        } else if (!SmartDashboard.getBoolean("Motor mode", false) && elevatorMotor.getIdleMode() != IdleMode.kCoast) {
+            elevatorMotor.setIdleMode(IdleMode.kCoast);
+        }
     }
     
     public boolean atSetpoint() {

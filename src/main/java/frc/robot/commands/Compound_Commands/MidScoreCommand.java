@@ -21,8 +21,7 @@ public class MidScoreCommand extends SequentialCommandGroup {
     public MidScoreCommand(Elevator elevator, PivotArm pivotarm, Claw claw, Intake intake) {
         addCommands(
             new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND), 
-            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID),
-            new IntakeEjectingCommand(intake)
+            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID)
         );
     }
 }

@@ -23,7 +23,7 @@ public class ElevatorManualCommand extends CommandBase{
 
     @Override
     public void execute() {
-        elevator.manual(speed.getAsDouble());
+        elevator.manual(speed.getAsDouble()/2);
     }
 
     @Override
