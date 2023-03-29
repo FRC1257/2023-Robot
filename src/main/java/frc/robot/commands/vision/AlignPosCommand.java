@@ -28,19 +28,6 @@ public class AlignPosCommand extends CommandBase {
         addRequirements(drivetrain);
     }
 
-    public AlignPosCommand(Drivetrain drivetrain, Vision vision) {
-        this.drivetrain = drivetrain;
-        int desiredScorePos = vision.getDesiredScorePos();
-
-        if (SmartDashboard.getBoolean("isAllianceBlue", false))
-            this.target = BLUE_SCORE_POSE[desiredScorePos];
-        else
-            this.target = RED_SCORE_POSE[desiredScorePos];
-        
-        addRequirements(drivetrain);
-        addRequirements(vision);
-    }
-
     @Override
     public void initialize() {
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_ALIGN_MAX_VEL, DRIVE_ALIGN_MAX_ACC).setReversed(true);
