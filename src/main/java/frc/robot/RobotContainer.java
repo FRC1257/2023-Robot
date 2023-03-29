@@ -27,6 +27,8 @@ import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
+import frc.robot.commands.scoringAssist.DecrementScorePosCommand;
+import frc.robot.commands.scoringAssist.IncrementScorePosCommand;
 import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
@@ -239,6 +241,10 @@ public class RobotContainer {
         driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
         driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
+
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
+        operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));
+        operatorController.getButton(Button.kY.value).onTrue(new AlignPosCommand(drivetrain, vision));
     }
 
 

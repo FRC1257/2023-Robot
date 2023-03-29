@@ -34,6 +34,7 @@ public class Vision extends SnailSubsystem {
     PhotonPoseEstimator backPoseEstimator; // stores the pose estimator
     AprilTagFieldLayout aprilTagFieldLayout; // stores the field layout
     public Pose2d prevEstimatedRobotPose;
+    private int desiredScorePos = 1; // Score pos robot should align to for driver assist
 
     private Optional<EstimatedRobotPose> chosenEstimate;
 
@@ -152,6 +153,8 @@ public class Vision extends SnailSubsystem {
                     camPose.estimatedPose.toPose2d().getX(), camPose.estimatedPose.toPose2d().getY(),
                     camPose.timestampSeconds });
         }
+
+        SmartDashboard.putNumber("Desired Score Pos", desiredScorePos);
     }
 
     @Override
@@ -163,5 +166,23 @@ public class Vision extends SnailSubsystem {
     public void setPipeline(int i) {
         frontCamera.setPipelineIndex(i);
         backCamera.setPipelineIndex(i);
+    }
+
+    public int getDesiredScorePos() {
+        return desiredScorePos;
+    }
+
+    public void incrementScorePos() {
+        desiredScorePos++;
+        if (desiredScorePos > 9) {
+            desiredScorePos = 1;
+        }
+    }
+
+    public void decrementScorePos() {
+        desiredScorePos--;
+        if (desiredScorePos < 1) {
+            desiredScorePos = 9;
+        }
     }
 }
