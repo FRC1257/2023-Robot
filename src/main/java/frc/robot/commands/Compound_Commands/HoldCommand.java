@@ -12,12 +12,8 @@ public class HoldCommand extends SequentialCommandGroup{
     public HoldCommand(Elevator elevator, PivotArm pivotarm) {
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
-            new ParallelCommandGroup( // run intake entire time
-                new ElevatorPIDCommand(elevator, 0),
-                new SequentialCommandGroup(
-                    new PivotArmPIDCommand(pivotarm, 0)
-                )   
-            )
+            new ElevatorPIDCommand(elevator, 0),
+            new PivotArmPIDCommand(pivotarm, 0)
         );
     }
 

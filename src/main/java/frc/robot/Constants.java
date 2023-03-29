@@ -168,6 +168,8 @@ public final class Constants {
         public static final double ELEVATOR_SETPOINT_RETRACT = 1.3;
         public static final double ELEVATOR_SETPOINT_EXTEND = 28;
 
+        public static final double ELEVATOR_SETPOINT_MIDDLE = (ELEVATOR_SETPOINT_RETRACT + ELEVATOR_SETPOINT_EXTEND) / 2;
+
         public static final double ELEVATOR_STOP_BUFFER = 5;
     }
 
