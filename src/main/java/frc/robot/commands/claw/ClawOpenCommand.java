@@ -15,12 +15,11 @@ public class ClawOpenCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        
+        claw.open();
     }
 
     @Override
     public void execute() {
-        claw.open();
     }
 
     @Override

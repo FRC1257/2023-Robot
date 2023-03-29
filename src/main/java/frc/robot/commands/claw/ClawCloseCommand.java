@@ -15,11 +15,11 @@ public class ClawCloseCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        claw.close();
     }
 
     @Override
     public void execute() {
-        claw.close();
     }
 
     @Override
