@@ -28,6 +28,6 @@ public class ElevatorPIDCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return elevator.atSetpoint();
+        return elevator.getState() != Elevator.State.PID;
     }
 }

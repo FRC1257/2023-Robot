@@ -93,9 +93,9 @@ public class Elevator extends SnailSubsystem{
                 break;
             case PID:
                 pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
-                /* if (Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE ) {
+                if (Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE ) {
                     endPID();
-                } */
+                }
                 break;
         }
     }

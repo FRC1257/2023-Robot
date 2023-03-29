@@ -76,8 +76,7 @@
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "8,0": {
@@ -1797,6 +1796,47 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "6,15": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Motor Break",
+              "_title": "Motor Break",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "8,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Desired Score Pos",
+              "_title": "Desired Score Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Brake",
+              "_title": "Elevator Brake",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2102,8 +2142,7 @@
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "5,1": {
@@ -2222,8 +2261,7 @@
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "6,0": {
@@ -2574,8 +2612,7 @@
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           },
           "5,4": {
@@ -2690,8 +2727,7 @@
               "_showGlyph": false,
               "Game/Game": "A2023_Charged_Up",
               "Visuals/Robot Icon Size": 50.0,
-              "Visuals/Show Outside Circles": false,
-              "Colors/traj": "#FFFFFFFF"
+              "Visuals/Show Outside Circles": false
             }
           }
         }
@@ -2842,6 +2878,45 @@
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,7": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Motor mode",
+              "_title": "SmartDashboard/Motor mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_title": "SmartDashboard/Elevator Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,7": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }
@@ -3332,15 +3407,41 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "11,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
+              "_title": "SmartDashboard/Elevator Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 814.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 926.4000244140625
   }
 }

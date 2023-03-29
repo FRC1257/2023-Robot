@@ -16,7 +16,7 @@ public class HighScoreCommand extends SequentialCommandGroup{
     public HighScoreCommand(Elevator elevator, PivotArm pivotarm) {
         // TODO: Add new command sequence given Cube Shooting 
         addCommands(
-            new ElevatorPIDCommand(elevator, ELEVATOR_SETPOINT_EXTEND),
+            new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND),
             new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP)
         );
     }

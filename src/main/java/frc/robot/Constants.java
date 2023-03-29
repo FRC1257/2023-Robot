@@ -157,10 +157,10 @@ public final class Constants {
 
     public static class ElevatorConstants {
 
-        public static final double[] ELEVATOR_PID = new double[] {0, 0, 0, 0}; // TODO Tune
+        public static final double[] ELEVATOR_PID = new double[] {0.1, 0, 0, 0}; // TODO Tune
 
         // TODO Tune
-        public static double ELEVATOR_PID_MAX_OUTPUT = 1257;
+        public static double ELEVATOR_PID_MAX_OUTPUT = 0.8;
         public static double ELEVATOR_REV_TO_POS_FACTOR = 1; 
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
@@ -419,16 +419,16 @@ public final class Constants {
 
     public static class PivotArm {
         // PID constants
-        public static double[] PIVOT_ARM_PID = new double[] {0, 0, 0, 0};
+        public static double[] PIVOT_ARM_PID = new double[] {0.25, 0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
-        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.1257; // lol
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.8; // lol
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 
         // Setpoints between -1 and 1
-        public static double PIVOT_ARM_SETPOINT_UP = 216.6;
-        public static double PIVOT_ARM_SETPOINT_MID = 216.6;
-        public static double PIVOT_ARM_SETPOINT_INTAKE = 260; // also used for low score
+        public static double PIVOT_ARM_SETPOINT_UP = 135;
+        public static double PIVOT_ARM_SETPOINT_MID = 175;
+        public static double PIVOT_ARM_SETPOINT_INTAKE = 0; // also used for low score
         public static double PIVOT_ARM_SETPOINT_HOLD = 0;
         public static final double PIVOT_ARM_SETPOINT_BOTTOM = -0.3;
         public static final double PIVOT_ARM_SETPOINT_TOP = -30;

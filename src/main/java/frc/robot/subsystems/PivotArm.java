@@ -87,9 +87,9 @@ public class PivotArm extends SnailSubsystem {
                 armPIDController.setReference(setPoint, ControlType.kPosition);
 
                 // check our error and update the state if we finish
-                /* if(Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
+                if(Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
                     state = State.MANUAL;
-                } */
+                }
                 break;
         }
     }

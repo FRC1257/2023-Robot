@@ -43,7 +43,7 @@ public class Claw extends SnailSubsystem {
     
     private ClawState clawState;
     private ClawMoveState clawMoveState;
-    private TunableNumber deez = new TunableNumber("deez", -0.1);
+    private TunableNumber deez = new TunableNumber("deez", 0);
     
     public Claw() {
         clawMotor = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
