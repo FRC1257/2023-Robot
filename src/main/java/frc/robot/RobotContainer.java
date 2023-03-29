@@ -365,6 +365,7 @@ public class RobotContainer {
 
     public void configureShuffleboard() {
         // Field Side
+        SmartDashboard.putBoolean("Motor Break", true);
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", true);
         //getting the auto values for score, cargo, and charge

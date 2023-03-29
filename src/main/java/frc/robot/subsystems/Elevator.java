@@ -129,6 +129,8 @@ public class Elevator extends SnailSubsystem{
         SmartDashboard.putNumber("Elevator Setpoint", setpoint);
         SmartDashboard.putString("Elevator State", elevatorState.toString());
         SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
+        SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
+
     }
 
     @Override
@@ -145,6 +147,12 @@ public class Elevator extends SnailSubsystem{
         i.updateFunction(() -> pidController.setI(i.get()));
         d.updateFunction(() -> pidController.setD(d.get()));
         ff.updateFunction(() -> pidController.setFF(ff.get()));
+
+        if (SmartDashboard.getBoolean("Motor mode", false) && elevatorMotor.getIdleMode() != IdleMode.kBrake) {
+            elevatorMotor.setIdleMode(IdleMode.kBrake);
+        } else if (!SmartDashboard.getBoolean("Motor mode", false) && elevatorMotor.getIdleMode() != IdleMode.kCoast) {
+            elevatorMotor.setIdleMode(IdleMode.kCoast);
+        }
     }
     
     public boolean atSetpoint() {

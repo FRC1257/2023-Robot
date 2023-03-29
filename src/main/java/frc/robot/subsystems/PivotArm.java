@@ -130,6 +130,12 @@ public class PivotArm extends SnailSubsystem {
         d.updateFunction(() -> armPIDController.setD(d.get()));
         ff.updateFunction(() -> armPIDController.setFF(ff.get()));
         maxOutput.updateFunction(() -> armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
+
+        if (SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kBrake) {
+            armMotor.setIdleMode(IdleMode.kBrake);
+        } else if (!SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kCoast) {
+            armMotor.setIdleMode(IdleMode.kCoast);
+        }
     }
 
     public void manualControl(double newSpeed) {
