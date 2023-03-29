@@ -17,25 +17,47 @@ import java.util.List;
 
 public class AlignPosCommand extends CommandBase { 
     private final Drivetrain drivetrain;
+    private final Vision vision;
     private Trajectory trajectory;
+    private Pose2d[] POSSIBLE_TARGETS;
     private Pose2d target;
+    private int desiredScorePos;
+    private boolean useVision;
 
-
-    public AlignPosCommand(Drivetrain drivetrain, Pose2d target) { 
+    public AlignPosCommand(Drivetrain drivetrain, Vision vision, Pose2d target) { 
         this.drivetrain = drivetrain;
+        this.vision = vision;
         this.target = target;
+        useVision = false;
         
-        addRequirements(drivetrain);
+        addRequirements(drivetrain, vision);
+    }
+
+    public AlignPosCommand(Drivetrain drivetrain, Vision vision) {
+        this.drivetrain = drivetrain;
+        this.vision = vision;
+        desiredScorePos = vision.getDesiredScorePos();
+
+        if (SmartDashboard.getBoolean("isAllianceBlue", false))
+            this.POSSIBLE_TARGETS = BLUE_SCORE_POSE;
+        else
+            this.POSSIBLE_TARGETS = RED_SCORE_POSE;
+        
+        useVision = true;
+        addRequirements(drivetrain, vision);
     }
 
     @Override
     public void initialize() {
+        desiredScorePos = vision.getDesiredScorePos(); 
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_ALIGN_MAX_VEL, DRIVE_ALIGN_MAX_ACC).setReversed(true);
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
 
         trajPoints.add(drivetrain.getPosition());
-        trajPoints.add(target);
-
+        if (useVision)
+            trajPoints.add(POSSIBLE_TARGETS[desiredScorePos]);
+        else
+            trajPoints.add(target);
 
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
 
@@ -44,7 +66,6 @@ public class AlignPosCommand extends CommandBase {
 
     @Override
     public void execute() {
-        
     }
 
     @Override

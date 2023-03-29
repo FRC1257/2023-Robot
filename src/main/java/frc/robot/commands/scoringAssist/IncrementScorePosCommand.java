@@ -18,7 +18,6 @@ public class IncrementScorePosCommand extends CommandBase {
 
     @Override
     public void execute() {
-
     }
 
     @Override
