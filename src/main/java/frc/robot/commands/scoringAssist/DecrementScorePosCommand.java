@@ -13,12 +13,12 @@ public class DecrementScorePosCommand extends CommandBase {
 
     @Override
     public void initialize() {
-
+        vision.decrementScorePos();
     }
 
     @Override
     public void execute() {
-        vision.decrementScorePos();
+
     }
 
     @Override
