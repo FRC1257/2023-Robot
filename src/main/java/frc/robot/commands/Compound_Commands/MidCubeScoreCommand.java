@@ -15,10 +15,10 @@ import frc.robot.subsystems.Claw;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
 
-public class MidScoreCommand extends SequentialCommandGroup {
+public class MidCubeScoreCommand extends SequentialCommandGroup {
     
     // TODO: Add new command sequence based off of Cube Shooting
-    public MidScoreCommand(Elevator elevator, PivotArm pivotarm) {
+    public MidCubeScoreCommand(Elevator elevator, PivotArm pivotarm) {
         addCommands(
             new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND), 
             new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID)

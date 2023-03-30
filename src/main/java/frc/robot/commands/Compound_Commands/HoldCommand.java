@@ -4,16 +4,16 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
 import frc.robot.commands.pivotArm.PivotArmPIDCommand;
-import frc.robot.Constants;
+import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD;
 import frc.robot.subsystems.*;
-import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
+import static frc.robot.Constants.ElevatorConstants.*;
 
 public class HoldCommand extends SequentialCommandGroup{
     public HoldCommand(Elevator elevator, PivotArm pivotarm) {
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
-            new ElevatorPIDCommand(elevator, 0.6-10),
-            new PivotArmPIDCommand(pivotarm, 10)
+            new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_RETRACT),
+            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_HOLD)
         );
     }
 

@@ -165,8 +165,8 @@ public final class Constants {
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
         // TODO Tune
-        public static final double ELEVATOR_SETPOINT_RETRACT = 1.3;
-        public static final double ELEVATOR_SETPOINT_EXTEND = 28;
+        public static final double ELEVATOR_SETPOINT_RETRACT = 0;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 32;
 
         public static final double ELEVATOR_SETPOINT_MIDDLE = (ELEVATOR_SETPOINT_RETRACT + ELEVATOR_SETPOINT_EXTEND) / 2;
 
@@ -428,10 +428,10 @@ public final class Constants {
         // Setpoints between -1 and 1
         public static double PIVOT_ARM_SETPOINT_UP = 135;
         public static double PIVOT_ARM_SETPOINT_MID = 175;
-        public static double PIVOT_ARM_SETPOINT_INTAKE = 0; // also used for low score
-        public static double PIVOT_ARM_SETPOINT_HOLD = 0;
-        public static final double PIVOT_ARM_SETPOINT_BOTTOM = -0.3;
-        public static final double PIVOT_ARM_SETPOINT_TOP = -30;
+        // public static double PIVOT_ARM_SETPOINT_INTAKE = 0; // also used for low score
+        public static double PIVOT_ARM_SETPOINT_HOLD = 10;
+        public static final double PIVOT_ARM_SETPOINT_BOTTOM = 0;
+        public static final double PIVOT_ARM_SETPOINT_TOP = 170;
     }
 
     public static class LED {

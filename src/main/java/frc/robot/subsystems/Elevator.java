@@ -84,6 +84,12 @@ public class Elevator extends SnailSubsystem{
             return;
         } 
 
+        if (elevatorState == State.PID && (encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND || encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT)) {
+            elevatorMotor.set(0);
+            endPID();
+            return;
+        }
+
         SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
         SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
 

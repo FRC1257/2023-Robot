@@ -11,9 +11,9 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.PivotArm;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
-public class HighScoreCommand extends SequentialCommandGroup{
+public class MidConeScoreCommand extends SequentialCommandGroup{
     
-    public HighScoreCommand(Elevator elevator, PivotArm pivotarm) {
+    public MidConeScoreCommand(Elevator elevator, PivotArm pivotarm) {
         // TODO: Add new command sequence given Cube Shooting 
         addCommands(
             new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND),

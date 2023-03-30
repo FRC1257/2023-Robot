@@ -20,14 +20,14 @@ import frc.robot.RobotContainer;
 
 public class GenerateTrajectories {
     public enum State {
-        NORMAL,
+        NORMAL,/* 
         SHOOTING,
-        THREE_PIECE,
+        THREE_PIECE, */
         MOVE_FORWARD,
         HIT_AND_RUN
     }
 
-    State[] autoType = { State.NORMAL, State.SHOOTING, State.THREE_PIECE, State.MOVE_FORWARD, State.HIT_AND_RUN };
+    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN };
 
     private boolean charge;
     private boolean firstScore;
@@ -115,25 +115,9 @@ public class GenerateTrajectories {
         return ALLIANCE_CARGO_POSE[RobotContainer.gamePieceChooser.getSelected()];
     }
 
-    private Pose2d getSecondCargoLocation() {
-        return ALLIANCE_CARGO_POSE[RobotContainer.secondGamePieceChooser.getSelected()];
-    }
-
-    private Pose2d getThirdCargoLocation() {
-        return ALLIANCE_CARGO_POSE[RobotContainer.thirdGamePieceChooser.getSelected()];
-    }
-
     // 2 getScoreLocation() methods for some reason?
     private Pose2d getFirstScoreLocation() {
         return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
-    }
-
-    private Pose2d getSecondScoreLocation() {
-        return ALLIANCE_SCORE_POSE[RobotContainer.secondScorePositionChooser.getSelected()];
-    }
-
-    private Pose2d getThirdScoreLocation() {
-        return ALLIANCE_SCORE_POSE[RobotContainer.thirdScorePositionChooser.getSelected()];
     }
 
     private Pose2d getChargeLocation() {
@@ -209,12 +193,12 @@ public class GenerateTrajectories {
             case NORMAL:
                 normalAuto();
                 break;
-            case SHOOTING:
+            /* case SHOOTING:
                 shootingAuto();
                 break;
             case THREE_PIECE:
                 threePieceAuto();
-                break;
+                break; */
             case MOVE_FORWARD:
                 moveForward();
                 break;
@@ -264,7 +248,7 @@ public class GenerateTrajectories {
         }
 
         // Step 3
-        if (secondScore) {
+        /* if (secondScore) {
             addSecondScoreTrajectory();
             addScoreHigh();
             if (charge) {
@@ -272,7 +256,7 @@ public class GenerateTrajectories {
             }
         }
         // step 3 go for charge
-        else if (charge) {
+        else  */if (charge) {
             addChargeTrajectory();
             this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
         }
@@ -300,7 +284,7 @@ public class GenerateTrajectories {
         }
 
         return new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(pieceApproachAngle));
-    }
+    }/* 
 
     private void shootingAuto() {
         this.StartPose = getFirstScoreLocation();
@@ -349,7 +333,7 @@ public class GenerateTrajectories {
 
         driveToShootingPose();
         shootPiece();
-    }
+    } */
 
     public void shootPiece() {
         // TODO add shooting
@@ -369,7 +353,7 @@ public class GenerateTrajectories {
                 List.of(currentPose, getShootingPose()), false);
         currentPose = getShootingPose();
         addToPosCommand(driveToShootingPose);
-    }
+    }/* 
 
     private void threePieceAuto() {
         // command = new SequentialCommandGroup();
@@ -415,7 +399,7 @@ public class GenerateTrajectories {
         addScoreHigh();
 
         trajectoryList.add(getFullTrajectory());
-    }
+    } */
 
     /**
      * Adds trajectory to move forward and back.
@@ -503,14 +487,14 @@ public class GenerateTrajectories {
         ToPosCommand step1 = new ToPosCommand(drivetrain, List.of(StartPose, getFirstScoreLocation()), true);
         currentPose = getFirstScoreLocation();
         addToPosCommand(step1);
-    }
+    }/* 
 
     private void addSecondScoreTrajectory() {
         ToPosCommand returnToScore = new ToPosCommand(drivetrain,
                 getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
         currentPose = getSecondScoreLocation();
         addToPosCommand(returnToScore);
-    }
+    } */
 
     private List<Pose2d> getTrajPointsWaypoint(Pose2d start, Pose2d end) {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();

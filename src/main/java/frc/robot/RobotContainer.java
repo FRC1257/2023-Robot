@@ -33,9 +33,9 @@ import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
-import frc.robot.commands.Compound_Commands.HighScoreCommand;
+import frc.robot.commands.Compound_Commands.MidConeScoreCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
-import frc.robot.commands.Compound_Commands.MidScoreCommand;
+import frc.robot.commands.Compound_Commands.MidCubeScoreCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.commands.IntakeArm.IntakeArmManualCommand;
 import frc.robot.subsystems.SnailSubsystem;
@@ -96,17 +96,10 @@ public class RobotContainer {
 
     // choosers
     public static SendableChooser<Integer> firstScorePositionChooser = new SendableChooser<>();
-    public static SendableChooser<Integer> secondScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
-    public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
-    public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
-    public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
-    public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
+    // public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
     public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
-    public static SendableChooser<Integer> secondScoreLevelChooser = new SendableChooser<>();
-    public static SendableChooser<Integer> thirdScoreLevelChooser = new SendableChooser<>();
-    public static SendableChooser<Integer> thirdGamePieceChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
@@ -220,13 +213,13 @@ public class RobotContainer {
         // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
         
         // compound commands
-        operatorController.getDPad(DPad.LEFT).onTrue(new HighScoreCommand(elevator, pivotArm));
+        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeScoreCommand(elevator, pivotArm));
         // intake and low score are same
         // operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
         // operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
-        operatorController.getDPad(DPad.RIGHT).onTrue(new MidScoreCommand(elevator, pivotArm));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeScoreCommand(elevator, pivotArm));
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
-        
+        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));
 
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));
 
@@ -257,20 +250,8 @@ public class RobotContainer {
     public void configureAutoChoosers() {
         configureGamePieceChooser();
         configureFirstScorePositionChooser();
-        configureSecondScorePositionChooser();
-        configureThirdGamePieceChooser();
-        configureStartPositionChooser();
-        configureSecondGamePieceChooser();
-        configureThirdScorePositionChooser();
-        configureHitAndRunChooser();
         configureChooseAuto();
         configureScoreLevelChooser();
-    }
-
-    private int estimatedCurrentPose2d() {
-        // TODO: Implement this with PhotonVision
-        // return new Pose2d(0, 0, new Rotation2d(0.0));
-        return startPositionChooser.getSelected();
     }
 
     public Pose2d shiftedPose(Pose2d pose) {
@@ -395,12 +376,12 @@ public class RobotContainer {
     public void configureScoreLevelChooser() {
         firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
         firstScoreLevelChooser.addOption("low arm", 0);
-        firstScoreLevelChooser.addOption("mid arm", 1);
-        firstScoreLevelChooser.addOption("high arm", 2);
+        firstScoreLevelChooser.addOption("mid cone arm", 1);
+        firstScoreLevelChooser.addOption("mid cube arm", 2);/* 
         firstScoreLevelChooser.addOption("mid shoot", 3);
-        firstScoreLevelChooser.addOption("high shoot", 4);
+        firstScoreLevelChooser.addOption("high shoot", 4); */
         SmartDashboard.putData(firstScoreLevelChooser);
-
+        /* 
         secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
         secondScoreLevelChooser.addOption("low arm", 0);
         secondScoreLevelChooser.addOption("mid arm", 1);
@@ -415,7 +396,7 @@ public class RobotContainer {
         thirdScoreLevelChooser.addOption("high arm", 2);
         thirdScoreLevelChooser.addOption("mid shoot", 3);
         thirdScoreLevelChooser.addOption("high shoot", 4);
-        SmartDashboard.putData(thirdScoreLevelChooser);
+        SmartDashboard.putData(thirdScoreLevelChooser); */
     }
     
     public void configureGamePieceChooser() {
@@ -425,24 +406,6 @@ public class RobotContainer {
         gamePieceChooser.addOption("3rd Position", 2);
         gamePieceChooser.addOption("4th Position", 3);
         SmartDashboard.putData(gamePieceChooser);
-    }
-
-    public void configureSecondGamePieceChooser() {
-        secondGamePieceChooser.setDefaultOption("Second Cargo Chooser", 0);
-        secondGamePieceChooser.addOption("1st Position", 0);
-        secondGamePieceChooser.addOption("2nd Position", 1);
-        secondGamePieceChooser.addOption("3rd Position", 2);
-        secondGamePieceChooser.addOption("4th Position", 3);
-        SmartDashboard.putData(secondGamePieceChooser);
-    }
-
-    public void configureThirdGamePieceChooser() {
-        thirdGamePieceChooser.setDefaultOption("Third Cargo Chooser", 0);
-        thirdGamePieceChooser.addOption("1st Position", 0);
-        thirdGamePieceChooser.addOption("2nd Position", 1);
-        thirdGamePieceChooser.addOption("3rd Position", 2);
-        thirdGamePieceChooser.addOption("4th Position", 3);
-        SmartDashboard.putData(thirdGamePieceChooser);
     }
     
     public void configureFirstScorePositionChooser() {
@@ -459,56 +422,10 @@ public class RobotContainer {
         SmartDashboard.putData(firstScorePositionChooser);
     }
 
-    public void configureSecondScorePositionChooser() {
-        secondScorePositionChooser.setDefaultOption("Second Score Position Chooser", 0);
-        secondScorePositionChooser.addOption("1st Position", 0);
-        secondScorePositionChooser.addOption("2nd Position", 1);
-        secondScorePositionChooser.addOption("3rd Position", 2);
-        secondScorePositionChooser.addOption("4th Position", 3);
-        secondScorePositionChooser.addOption("5th Position", 4);
-        secondScorePositionChooser.addOption("6th Position", 5);
-        secondScorePositionChooser.addOption("7th Position", 6);
-        secondScorePositionChooser.addOption("8th Position", 7);
-        secondScorePositionChooser.addOption("9th Position", 8);
-        SmartDashboard.putData(secondScorePositionChooser);
-    }
-
-
-    public void configureThirdScorePositionChooser() {
-        thirdScorePositionChooser.setDefaultOption("Third Score Position Chooser", 0);
-        thirdScorePositionChooser.addOption("1st Position", 0);
-        thirdScorePositionChooser.addOption("2nd Position", 1);
-        thirdScorePositionChooser.addOption("3rd Position", 2);
-        thirdScorePositionChooser.addOption("4th Position", 3);
-        thirdScorePositionChooser.addOption("5th Position", 4);
-        thirdScorePositionChooser.addOption("6th Position", 5);
-        thirdScorePositionChooser.addOption("7th Position", 6);
-        thirdScorePositionChooser.addOption("8th Position", 7);
-        thirdScorePositionChooser.addOption("9th Position", 8);
-        SmartDashboard.putData(thirdScorePositionChooser);
-    }
-
-    public void configureStartPositionChooser() {
-        startPositionChooser.setDefaultOption("Start Position", 0);
-        startPositionChooser.addOption("1st Position", 0);
-        startPositionChooser.addOption("2nd Position", 1);
-        startPositionChooser.addOption("3rd Position", 2);
-        SmartDashboard.putData(startPositionChooser);
-    }
-
-    public void configureHitAndRunChooser() {
-        hitAndRunChooser.setDefaultOption("Hit and Run", false);
-        hitAndRunChooser.addOption("Hit and Run", false);
-        hitAndRunChooser.addOption("Hit and Run", true);
-    }
-
     public void configureChooseAuto() {
-        autoChooser.setDefaultOption("Move forward", 3);
-        autoChooser.addOption("Shooting auto", 1);
-        autoChooser.addOption("3-piece", 2);
+        autoChooser.setDefaultOption("Move forward", 1);
         autoChooser.addOption("Normal Auto", 0);
-        autoChooser.addOption("Hit & Run", 4);
-        autoChooser.addOption("Normal Auto No Turn", 5);
+        autoChooser.addOption("Hit & Run", 2);
         SmartDashboard.putData(autoChooser);
     }
 
@@ -516,10 +433,6 @@ public class RobotContainer {
         switch(scoreNumber) {
             case 1:
               return firstScoreLevelChooser.getSelected();
-            case 2:
-              return secondScoreLevelChooser.getSelected();
-            case 3:
-                return thirdScoreLevelChooser.getSelected();
             default:
                 //bruh
                 throw new InputMismatchException("scoreNumber should be from 1 to 3");
