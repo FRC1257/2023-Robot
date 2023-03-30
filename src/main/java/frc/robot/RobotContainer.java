@@ -33,9 +33,11 @@ import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
-import frc.robot.commands.Compound_Commands.MidConeScoreCommand;
+import frc.robot.commands.Compound_Commands.MidConeSetpointCommand;
 import frc.robot.commands.Compound_Commands.HoldCommand;
-import frc.robot.commands.Compound_Commands.MidCubeScoreCommand;
+import frc.robot.commands.Compound_Commands.MidCubeSetpointCommand;
+import frc.robot.commands.Compound_Commands.ScoreConeCommand;
+import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.commands.IntakeArm.IntakeArmManualCommand;
 import frc.robot.subsystems.SnailSubsystem;
@@ -213,11 +215,18 @@ public class RobotContainer {
         // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
         
         // compound commands
-        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeScoreCommand(elevator, pivotArm));
+        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));
         // intake and low score are same
         // operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
         // operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
-        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeScoreCommand(elevator, pivotArm));
+        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
+
+//TESTING
+        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
+        operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
+//Testing
+
+
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
         operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));
 

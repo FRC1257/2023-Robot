@@ -16,7 +16,7 @@ public class ScoreCubeCommand extends SequentialCommandGroup {
         // Use addRequirements() here to declare subsystem dependencies.
         addCommands(
             new ParallelDeadlineGroup(
-                new MidCubeScoreCommand(elevator, pivotArm),
+                new MidCubeSetpointCommand(elevator, pivotArm),
                 new ClawCloseCommand(claw, 5)
             ),
             new Delay(0.2),

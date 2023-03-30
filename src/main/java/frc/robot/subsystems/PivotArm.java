@@ -74,6 +74,7 @@ public class PivotArm extends SnailSubsystem {
             }
         } */
 
+        /* 
         if (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) {
             armMotor.set(0);
             return;
@@ -87,7 +88,7 @@ public class PivotArm extends SnailSubsystem {
             endPID();
             return;
         }
-
+*/
         SmartDashboard.putBoolean("Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
         SmartDashboard.putBoolean("Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
 

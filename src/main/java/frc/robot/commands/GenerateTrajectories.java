@@ -11,12 +11,27 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.PivotArm;
 import frc.robot.Constants.Autonomous;
+import frc.robot.commands.Compound_Commands.MidConeSetpointCommand;
+import frc.robot.commands.Compound_Commands.ScoreConeCommand;
+import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
+import frc.robot.commands.claw.ClawCloseCommand;
+import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
+
+import static frc.robot.Constants.Claw.CLAW_OPEN_TIME;
+import static frc.robot.Constants.Claw.CLAW_CLOSE_TIME;
+import static frc.robot.Constants.Autonomous.BLUE_WAYPOINT_POSE;
+import static frc.robot.Constants.Autonomous.RED_WAYPOINT_POSE;
+import static frc.robot.Constants.Autonomous.BlueNormalEnd;
+import static frc.robot.Constants.Autonomous.RedNormalEnd;
 
 public class GenerateTrajectories {
     public enum State {
@@ -37,6 +52,9 @@ public class GenerateTrajectories {
     private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
+    private Elevator elevator;
+    private PivotArm pivotArm;
+    private Claw claw;
 
     private SequentialCommandGroup command;
     private Pose2d currentPose;
@@ -56,13 +74,15 @@ public class GenerateTrajectories {
         {-90, 90} // red
     };
 
-    public GenerateTrajectories(Drivetrain drivetrain, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
+    public GenerateTrajectories(Drivetrain drivetrain, Elevator elevator, PivotArm pivotArm, Claw claw, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
             boolean isCargo, int StartPose, boolean leaveTarmac) {
         this.charge = isCharge;
         this.firstScore = isFirstScore;
         this.secondScore = isSecondScore;
         this.leaveTarmac = leaveTarmac;
-
+        this.elevator = elevator;
+        this.pivotArm = pivotArm;
+        this.claw = claw;
         this.cargo = isCargo;
         this.drivetrain = drivetrain;
 
@@ -211,6 +231,7 @@ public class GenerateTrajectories {
     }
 
     private void hitAndRunAuto() {
+        
         if (firstScore) {
             // addFirstScoreTrajectory();
             addScoreHigh();
@@ -222,30 +243,37 @@ public class GenerateTrajectories {
     }
 
     private void normalAuto() {
-        // there are 3 possible steps we can take
-        // Step 1
-        if (firstScore) {
-            // addFirstScoreTrajectory();
-            addScoreHigh();
-        }
+        
+        if (firstScore){
+            if (StartPose.equals(ALLIANCE_START_POSE[2])) {
+                addScoreMidCube();
+            }
 
+            if (StartPose.equals(ALLIANCE_START_POSE[1])){
+                hitAndRunAuto();
+            }
+            if (StartPose.equals(ALLIANCE_START_POSE[0])){
+                moveForward();
+            }
+
+        }
         // then we either go for cargo or leave the tarmac to get points
         // Step 2
-        if (cargo) {
-            // going for cargo implies leaving community
-            addCargoTrajectory();
-            addPiecePickup();
-            turn180();
-        } else if (leaveTarmac) {
-            addLeaveCommunityTrajectory();
-            /* if (hitAndRun) {
-                addOverChargeTrajectory();
-                this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-                return;
-            } else {
-                addLeaveCommunityTrajectory();
-            } */
-        }
+        // if (cargo) {
+        //     // going for cargo implies leaving community
+        //     addCargoTrajectory();
+        //     addPiecePickup();
+        //     turn180();
+        // } else if (leaveTarmac) {
+        //     addLeaveCommunityTrajectory();
+        //     /* if (hitAndRun) {
+        //         addOverChargeTrajectory();
+        //         this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+        //         return;
+        //     } else {
+        //         addLeaveCommunityTrajectory();
+        //     } */
+        // }
 
         // Step 3
         /* if (secondScore) {
@@ -256,16 +284,17 @@ public class GenerateTrajectories {
             }
         }
         // step 3 go for charge
-        else  */if (charge) {
-            addChargeTrajectory();
-            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        }
+        // else  if (charge) {
+        //     addChargeTrajectory();
+        //     this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+        // }
 
         // if none of these have run something has gone wrong
         // so just leave the community
-        if (StartPose.equals(currentPose)) {
-            addLeaveCommunityTrajectory();
-        }
+        // if (StartPose.equals(currentPose)) {
+        //     addLeaveCommunityTrajectory();
+        // }
+        */
     }
 
     private Pose2d niceAngle(Pose2d pose) {
@@ -431,6 +460,52 @@ public class GenerateTrajectories {
     private void addScoreHigh() {
         // TODO add this
         // command.addCommands(new ScoreCommand());
+    }
+
+    private void addScoreMidCone(){
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            trajPoints.add(BlueNormalEnd);
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            trajPoints.add(RedNormalEnd);
+        }
+
+        trajPoints.add(getCargoLocation());
+        command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        currentPose = getCargoLocation();
+        addToPosCommand(step2);
+        
+    }
+
+    private void addScoreMidCube(){
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+
+        // going around the charging station, if convenient
+        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            trajPoints.add(BlueNormalEnd);
+        } else {
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
+            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            trajPoints.add(RedNormalEnd);
+        }
+
+        trajPoints.add(getCargoLocation());
+        command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        currentPose = getCargoLocation();
+        addToPosCommand(step2);
+        
     }
 
     private void addPiecePickup() {

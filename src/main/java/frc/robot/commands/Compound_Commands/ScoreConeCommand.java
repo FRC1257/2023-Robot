@@ -16,7 +16,7 @@ public class ScoreConeCommand extends SequentialCommandGroup {
         // Use addRequirements() here to declare subsystem dependencies.
         addCommands(
             new ParallelDeadlineGroup(
-                new MidConeScoreCommand(elevator, pivotArm),
+                new MidConeSetpointCommand(elevator, pivotArm),
                 new ClawCloseCommand(claw, 5)
             ),
             new Delay(0.2),

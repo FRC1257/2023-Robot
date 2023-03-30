@@ -9,7 +9,7 @@ import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 
@@ -121,7 +121,7 @@ public final class Constants {
         public static final int INTAKE_ARM_MOTOR_LEFT_ID = 6;
 
         // Claw
-        public static int CLAW_MOTOR_LEFT_ID = 8;
+        public static int CLAW_MOTOR_LEFT_ID = 10;
 
         // New Elevator Motor Design
         public final static int ELEVATOR_MOTOR_ID = 5;
@@ -255,7 +255,7 @@ public final class Constants {
         /* public static Transform3d CAMERA_TO_ROBOT = new Transform3d(); */
         
         // TODO Ask Build Team
-        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, 0.1), new Rotation3d(0, 0, 0));
+        public static Transform3d CAMERA_TO_ROBOT_FRONT = new Transform3d(new Translation3d(0.35, 0.15, Units.feetToMeters(6)), new Rotation3d(0, 0, 0));
         public static Transform3d CAMERA_TO_ROBOT_BACK = new Transform3d(new Translation3d(0.35, -0.15 , 0.1), new Rotation3d(0.0, 180.0, 0.0));
         
         // public static AprilTagFieldLayout aprilTagFieldLayout = new
@@ -370,6 +370,8 @@ public final class Constants {
                 new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
         };
 
+        public static Pose2d BlueNormalEnd = new Pose2d(6.847, 6.251, Rotation2d.fromDegrees(0));
+        public static Pose2d RedNormalEnd = new Pose2d(9.583, 6.251, Rotation2d.fromDegrees(180));
         public static Pose2d[] BLUE_PARK_POSE = new Pose2d[] {
                 new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(0)),
                 new Pose2d(4, 0.716, Rotation2d.fromDegrees(0)),
@@ -411,13 +413,15 @@ public final class Constants {
         public static double CLAW_PID_TOLERANCE = 0.1257; // lol
         public static double CLAW_PID_MAX_OUTPUT = 0.1257; // lol */
 
-        public static double CLAW_OPEN_SPEED = 0.5;
-        public static double CLAW_CLOSED_SPEED = 0.3;
+        public static double CLAW_CLOSED_SPEED = 0.5;
+        public static double CLAW_OPEN_SPEED = -0.25;
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 
         public static double CLAW_SETPOINT_CLOSED = 0.1257; // lol
         public static double CLAW_SETPOINT_OPEN = 0.1257; // lol
+        public static double CLAW_OPEN_TIME = 2.0;
+        public static double CLAW_CLOSE_TIME = 2.20;
     };
 
     public static class PivotArm {
