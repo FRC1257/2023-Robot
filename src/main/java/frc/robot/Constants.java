@@ -407,9 +407,12 @@ public final class Constants {
     };
 
     public static class Claw {
-        public static double[] CLAW_PID = new double[] {0, 0, 0, 0};
+        /* public static double[] CLAW_PID = new double[] {0, 0, 0, 0};
         public static double CLAW_PID_TOLERANCE = 0.1257; // lol
-        public static double CLAW_PID_MAX_OUTPUT = 0.1257; // lol
+        public static double CLAW_PID_MAX_OUTPUT = 0.1257; // lol */
+
+        public static double CLAW_OPEN_SPEED = 0.5;
+        public static double CLAW_CLOSED_SPEED = 0.3;
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 

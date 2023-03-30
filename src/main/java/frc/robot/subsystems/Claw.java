@@ -16,15 +16,15 @@ import frc.robot.Constants.ElectricalLayout;
 import frc.robot.util.TunableNumber;
 
 public class Claw extends SnailSubsystem {
-    private TunableNumber p = new TunableNumber("Pivot Arm P", CLAW_PID[0]);
+    /* private TunableNumber p = new TunableNumber("Pivot Arm P", CLAW_PID[0]);
     private TunableNumber i = new TunableNumber("Pivot Arm I", CLAW_PID[1]);
     private TunableNumber d = new TunableNumber("Pivot Arm D", CLAW_PID[2]);
     private TunableNumber ff = new TunableNumber("Pivot Arm FF", CLAW_PID[3]);
     private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", CLAW_PID_MAX_OUTPUT);
-
+     */
     private CANSparkMax clawMotor;
     private RelativeEncoder clawEncoder;
-    private SparkMaxPIDController clawPIDController;
+    /* private SparkMaxPIDController clawPIDController; */
     private double speed;
     private double setPoint;
 
@@ -56,12 +56,12 @@ public class Claw extends SnailSubsystem {
         clawEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         clawEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
-        clawPIDController = clawMotor.getPIDController();
+        /* clawPIDController = clawMotor.getPIDController();
         clawPIDController.setP(p.get());
         clawPIDController.setI(i.get());
         clawPIDController.setD(d.get());
         clawPIDController.setFF(ff.get());
-        clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
+        clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()); */
 
         clawState = ClawState.MANUAL;
         clawMoveState = ClawMoveState.CLOSING;
@@ -134,30 +134,30 @@ public class Claw extends SnailSubsystem {
 
     @Override
     public void tuningInit() {
-        p.reset();
+        /* p.reset();
         i.reset();
         d.reset();
         ff.reset();
-        maxOutput.reset();
+        maxOutput.reset(); */
     }
 
     @Override
     public void tuningPeriodic() {
-        p.updateFunction(() -> clawPIDController.setP(p.get()));
+        /* p.updateFunction(() -> clawPIDController.setP(p.get()));
         i.updateFunction(() -> clawPIDController.setI(i.get()));
         d.updateFunction(() -> clawPIDController.setD(d.get()));
         ff.updateFunction(() -> clawPIDController.setFF(ff.get()));
-        maxOutput.updateFunction(() -> clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
+        maxOutput.updateFunction(() -> clawPIDController.setOutputRange(-maxOutput.get(), maxOutput.get())); */
     }
 
     public void manualControl(double newSpeed) {
         clawState = ClawState.MANUAL;
         speed = newSpeed;
     }
-
+    /* 
     public boolean atSetpoint() {
         return Math.abs(clawEncoder.getPosition() - setPoint) < CLAW_PID_TOLERANCE;
-    }
+    } */
     
     public ClawState getMotionState() {
         return clawState;

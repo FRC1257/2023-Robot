@@ -1,5 +1,6 @@
 package frc.robot.commands.claw;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Claw;
 
@@ -7,19 +8,22 @@ import static frc.robot.Constants.Claw.*;
 
 public class ClawCloseCommand extends CommandBase {
     private Claw claw;
+    double start, time;
 
-    public ClawCloseCommand(Claw claw) {
+    public ClawCloseCommand(Claw claw, double time) {
         this.claw = claw;
+        this.time = time;
         addRequirements(claw);
     }
 
     @Override
     public void initialize() {
-        claw.close();
+        start = Timer.getFPGATimestamp();
     }
 
     @Override
     public void execute() {
+        claw.manualControl(CLAW_CLOSED_SPEED);
     }
 
     @Override
@@ -29,6 +33,6 @@ public class ClawCloseCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return claw.atSetpoint();
+        return Timer.getFPGATimestamp() - start >= time;
     }
 }
