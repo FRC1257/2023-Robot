@@ -69,7 +69,7 @@ public class Elevator extends SnailSubsystem{
         // encoder.setInverted(true);
         encoder.setPosition(0.6);
 
-        limitSwitch = new DigitalInput(0); 
+        limitSwitch = new DigitalInput(16); 
     }
 
 
