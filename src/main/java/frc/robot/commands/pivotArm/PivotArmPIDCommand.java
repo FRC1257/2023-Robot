@@ -1,5 +1,6 @@
 package frc.robot.commands.pivotArm;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.PivotArm;
 
@@ -29,6 +30,8 @@ public class PivotArmPIDCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
+        if (RobotBase.isSimulation())
+            return true;
         return pivotArm.getState() != PivotArm.State.PID;
     }
 }
