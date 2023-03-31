@@ -139,6 +139,10 @@ public class GenerateTrajectories {
         return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
     }
 
+    private Pose2d getStartLocation() {
+        return ALLIANCE_START_POSE[RobotContainer.startPositionChooser.getSelected()];
+    }
+
     private Pose2d getChargeLocation() {
         // should be stored as a constant then retrieved for this
         // currently returning this random thing
@@ -244,14 +248,14 @@ public class GenerateTrajectories {
     private void normalAuto() {
         
         if (firstScore){
-            if (StartPose.equals(ALLIANCE_START_POSE[2])) {
+            if (getStartLocation().equals(ALLIANCE_START_POSE[2])) {
                 addScoreMidCube();
             }
 
-            if (StartPose.equals(ALLIANCE_START_POSE[1])){
+            if (getStartLocation().equals(ALLIANCE_START_POSE[1])){
                 hitAndRunAuto();
             }
-            if (StartPose.equals(ALLIANCE_START_POSE[0])){
+            if (getStartLocation().equals(ALLIANCE_START_POSE[0])){
                 moveForward();
             }
 

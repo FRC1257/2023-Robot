@@ -98,7 +98,7 @@ public class RobotContainer {
     // choosers
     public static SendableChooser<Integer> firstScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
-    // public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
+    public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
     public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
 
@@ -260,6 +260,7 @@ public class RobotContainer {
         configureFirstScorePositionChooser();
         configureChooseAuto();
         configureScoreLevelChooser();
+        configureStartPositionChooser();
     }
 
     public Pose2d shiftedPose(Pose2d pose) {
@@ -414,6 +415,14 @@ public class RobotContainer {
         gamePieceChooser.addOption("3rd Position", 2);
         gamePieceChooser.addOption("4th Position", 3);
         SmartDashboard.putData(gamePieceChooser);
+    }
+
+    public void configureStartPositionChooser() {
+        startPositionChooser.setDefaultOption("First Position Chooser", 0);
+        startPositionChooser.addOption("Position 1", 0);
+        startPositionChooser.addOption("Position 2", 1);
+        startPositionChooser.addOption("Position 3", 2);
+        SmartDashboard.putData(startPositionChooser);
     }
     
     public void configureFirstScorePositionChooser() {
