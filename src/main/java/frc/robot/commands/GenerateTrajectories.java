@@ -435,6 +435,7 @@ public class GenerateTrajectories {
      * @see SequentialCommandGroup#addCommands(edu.wpi.first.wpilibj2.command.Command...)
      */
     private void moveForward() {
+        command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
