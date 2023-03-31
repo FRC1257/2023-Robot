@@ -15,6 +15,8 @@ public class HoldCommand extends SequentialCommandGroup{
             new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_RETRACT),
             new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_HOLD)
         );
+
+        addRequirements(elevator, pivotarm);
     }
 
  
