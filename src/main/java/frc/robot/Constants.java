@@ -134,33 +134,12 @@ public final class Constants {
         public static final int ELEVATOR_LIMIT_SWITCH = 0;
     };
 
-
-    public static class PivotWrist {
-        public static double WRIST_ENCODER_PCF = 1; // TODO set
-        public static double[] WRIST_PID = new double[] {0, 0, 0, 0}; // TODO Tune
-
-        public static double WRIST_PID_MAX_OUTPUT = 1257;
-        public static double WRIST_PID_TOLERANCE = 1;
-
-        public static double WRIST_MAX_VEL = 10;
-        public static double WRIST_MAX_ACC = 0.50;
-        
-        public static int WRIST_PID_SLOT_VEL = 0;
-        public static int WRIST_PID_SLOT_ACC = 1;
-
-        // setpoints for the wrist
-        public static double WRIST_SETPOINT_INTAKE = -133.4;
-        public static double WRIST_SETPOINT_HIGH = -90;
-        public static double WRIST_SETPOINT_MID = -90;
-        public static double WRIST_SETPOINT_HOLD = 0;
-    }
-
     public static class ElevatorConstants {
 
-        public static final double[] ELEVATOR_PID = new double[] {0.1, 0, 0, 0}; // TODO Tune
+        public static final double[] ELEVATOR_PID = new double[] {0.1, 0, 0, 0};
 
         // TODO Tune
-        public static double ELEVATOR_PID_MAX_OUTPUT = 0.8;
+        public static double ELEVATOR_PID_MAX_OUTPUT = 0.7;
         public static double ELEVATOR_REV_TO_POS_FACTOR = 1; 
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
@@ -183,7 +162,7 @@ public final class Constants {
     public static class IntakeArmConstants {
         public static final double INTAKE_ARM_PID_TOLERANCE = 0.1;
         public static final double[] INTAKE_ARM_PID = new double[] {0.1, 0, 0.01, 0.01};
-        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.3;
+        public static final double INTAKE_ARM_PID_MAX_OUTPUT = 0.5;
         public static final double INTAKE_ARM_GEAR_FACTOR = -12; 
         
         public static double INTAKE_SETPOINT_TOP = 1257; // TODO
@@ -225,7 +204,7 @@ public final class Constants {
         public static double DRIVE_DIST_MAX_OUTPUT = 0.6;
 
         // angular position PID works for test bot
-        public static double[] DRIVE_ANGLE_PID = { 0.075, 0.1, 0.005 };
+        public static double[] DRIVE_ANGLE_PID = { 0.055, 0.1, 0.005 };
         public static double DRIVE_ANGLE_TOLERANCE = 0.5;
         public static double DRIVE_ANGLE_MAX_OUTPUT = 0.6;
 
@@ -427,8 +406,8 @@ public final class Constants {
     public static class PivotArm {
         // PID constants
         public static double[] PIVOT_ARM_PID = new double[] {0.25, 0, 0, 0};
-        public static double PIVOT_ARM_PID_TOLERANCE = 1; // lol
-        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.8; // lol
+        public static double PIVOT_ARM_PID_TOLERANCE = 1; 
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.8; 
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 

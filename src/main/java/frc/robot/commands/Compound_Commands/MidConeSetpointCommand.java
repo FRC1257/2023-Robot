@@ -2,7 +2,6 @@ package frc.robot.commands.Compound_Commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import static frc.robot.Constants.PivotWrist.WRIST_SETPOINT_HIGH;
 import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_UP;
 
 import frc.robot.commands.elevator.ElevatorPIDCommand;

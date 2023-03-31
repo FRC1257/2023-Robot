@@ -16,7 +16,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.PivotArm;
 import frc.robot.Constants.Autonomous;
-import frc.robot.commands.Compound_Commands.MidConeSetpointCommand;
 import frc.robot.commands.Compound_Commands.ScoreConeCommand;
 import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;

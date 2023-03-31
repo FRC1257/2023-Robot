@@ -3,7 +3,6 @@ package frc.robot.commands.Compound_Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import static frc.robot.Constants.PivotArm.PIVOT_ARM_SETPOINT_MID;
-import static frc.robot.Constants.PivotWrist.WRIST_SETPOINT_MID;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.Intake.IntakeEjectingCommand;
