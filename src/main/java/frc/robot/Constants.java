@@ -186,8 +186,8 @@ public final class Constants {
         public static double DRIVE_CLOSED_MAX_ACC = 1.5; // m/s^2
 
         // trajectory following
-        public static double DRIVE_TRAJ_MAX_VEL = 3.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 0.50; //.75;  // m/s^2
+        public static double DRIVE_TRAJ_MAX_VEL = 4.0; // m/s
+        public static double DRIVE_TRAJ_MAX_ACC = 0.750; //.75;  // m/s^2
         public static double DRIVE_TRAJ_RAMSETE_B = 2.0; // don't change
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
@@ -315,11 +315,11 @@ public final class Constants {
         };
 
         public static Pose2d[] BLUE_CHARGE_POSE_WAYPOINT =new Pose2d[] {
-                new Pose2d(5.4, 2.75, Rotation2d.fromDegrees(180)),
+                new Pose2d(5.8, 2.75, Rotation2d.fromDegrees(180)),
                 new Pose2d(3.2, 2.75, Rotation2d.fromDegrees(0)),
         };
         public static Pose2d[] RED_CHARGE_POSE_WAYPOINT = new Pose2d[] {
-                new Pose2d(11, 2.75, Rotation2d.fromDegrees(0)), 
+                new Pose2d(10.5, 2.75, Rotation2d.fromDegrees(0)), 
                 new Pose2d(13.5, 2.75, Rotation2d.fromDegrees(180)),
         };
 
@@ -397,8 +397,6 @@ public final class Constants {
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 
-        public static double CLAW_SETPOINT_CLOSED = 0.1257; // lol
-        public static double CLAW_SETPOINT_OPEN = 0.1257; // lol
         public static double CLAW_OPEN_TIME = 2.0;
         public static double CLAW_CLOSE_TIME = 2.20;
     };

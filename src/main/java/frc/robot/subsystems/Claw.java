@@ -70,8 +70,6 @@ public class Claw extends SnailSubsystem {
     
     @Override
     public void update() {
-        SmartDashboard.putBoolean("Claw Closed", clawEncoder.getPosition() <= CLAW_SETPOINT_CLOSED /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("Claw Open", clawEncoder.getPosition() >= CLAW_SETPOINT_OPEN /*&& speed > 0.0*/);
 
         switch(clawState) {
             case MANUAL:
@@ -107,7 +105,7 @@ public class Claw extends SnailSubsystem {
     public void setPosition(double setpoint) {
         this.clawState = ClawState.PID;
         this.setPoint = setpoint;
-    }
+    }/* 
 
     public void close() {
         setPosition(CLAW_SETPOINT_CLOSED);
@@ -117,7 +115,7 @@ public class Claw extends SnailSubsystem {
     public void open() {
         setPosition(CLAW_SETPOINT_OPEN);
         clawMoveState = ClawMoveState.OPENING;
-    }
+    } */
 
     public void endPID() {
         this.clawState = ClawState.MANUAL;

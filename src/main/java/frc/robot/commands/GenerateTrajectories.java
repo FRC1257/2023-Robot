@@ -249,6 +249,8 @@ public class GenerateTrajectories {
             }
         }
 
+        command.addCommands(new HoldCommand(elevator, pivotArm));
+
         addOverChargeTrajectory();
 
         command.addCommands(new NoPDBalanceCommand(drivetrain));
