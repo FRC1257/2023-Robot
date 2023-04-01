@@ -196,7 +196,7 @@ public class RobotContainer {
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
 
 //TESTING
-        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
+        operatorController.getButton(Button.kA.value).onTrue(new PickupCommand(elevator, pivotArm));
         operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
 //Testing
 
