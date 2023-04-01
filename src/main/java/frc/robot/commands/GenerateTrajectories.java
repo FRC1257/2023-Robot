@@ -253,7 +253,7 @@ public class GenerateTrajectories {
 
         addOverChargeTrajectory();
 
-        command.addCommands(new PDBalanceCommand(drivetrain, true));
+        command.addCommands(new PDBalanceCommand(drivetrain, false));
     }
 
     private void normalAuto() {

@@ -405,7 +405,7 @@ public final class Constants {
         // PID constants
         public static double[] PIVOT_ARM_PID = new double[] {0.25, 0, 0, 0};
         public static double PIVOT_ARM_PID_TOLERANCE = 1; 
-        public static double PIVOT_ARM_PID_MAX_OUTPUT = 0.8; 
+        public static double PIVOT_ARM_PID_MAX_OUTPUT = 1; 
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 
