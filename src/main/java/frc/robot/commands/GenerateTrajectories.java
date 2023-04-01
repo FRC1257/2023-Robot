@@ -128,6 +128,7 @@ public class GenerateTrajectories {
     }
 
     private boolean getConeOrCube() {
+        //used to decide if we are coning or cubing
         // true = cone
         // false = cube
         switch (RobotContainer.firstScorePositionChooser.getSelected()) {
