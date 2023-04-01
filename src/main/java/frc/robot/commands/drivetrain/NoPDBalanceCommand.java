@@ -47,15 +47,19 @@ public class NoPDBalanceCommand extends CommandBase {
 
 	@Override
 	public void execute() {
+		SmartDashboard.putBoolean("Balance Running", true);
 		error = gyro.getRollAngle();
+		SmartDashboard.putNumber("Balance Error", error);
         
+		SmartDashboard.putNumber("Balance Output", Math.copySign(speed.get(), error));
         drivetrain.velocityDrive(Math.copySign(speed.get(), error), 0);
 		
-		SmartDashboard.putBoolean("Align error", m_timer.get() > m_timeLimit);
+		SmartDashboard.putBoolean("Align time boolean", m_timer.get() > m_timeLimit);
 	}
 
 	@Override
 	public void end(boolean interrupted) {
+		SmartDashboard.putBoolean("Balance Running", false);
 		drivetrain.velocityDrive(0, 0);
 	}
 

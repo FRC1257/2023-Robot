@@ -38,8 +38,13 @@ public class PDBalanceCommand extends CommandBase {
 	@Override
 	public void execute() {
 		error = gyro.getRollAngle();
+
 		double velocity = controller.calculate(error, Autonomous.BALANCE_SETPOINT_ANGLE);
-		
+		SmartDashboard.putBoolean("Balance Running", true);
+		error = gyro.getRollAngle();
+		SmartDashboard.putNumber("Balance Error", error);
+        
+		SmartDashboard.putNumber("Balance Unclamped velocity", velocity);
 		if (controller.atSetpoint()) {
 			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.2, 0.2), 0);
 			levelCounter ++;
@@ -53,6 +58,7 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public void end(boolean interrupted) {
+		SmartDashboard.putBoolean("Balance Running", false);
 		drivetrain.velocityDrive(0, 0);
 	}
 
