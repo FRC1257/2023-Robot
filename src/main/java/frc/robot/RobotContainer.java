@@ -223,9 +223,9 @@ public class RobotContainer {
         driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180)); */ // uncomment later
 
         // testing
-        driveController.getDPad(DPad.RIGHT).onTrue(new NoPDBalanceCommand(drivetrain));
+        // driveController.getDPad(DPad.RIGHT).onTrue(new NoPDBalanceCommand(drivetrain));
         driveController.getDPad(DPad.LEFT).onTrue(new PDBalanceCommand(drivetrain, true));
-        driveController.getDPad(DPad.UP).onTrue(new PDBalanceWithVel(drivetrain, true));
+        // driveController.getDPad(DPad.UP).onTrue(new PDBalanceWithVel(drivetrain, true));
 
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
         operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));

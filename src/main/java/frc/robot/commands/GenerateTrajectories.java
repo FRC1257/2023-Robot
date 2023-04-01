@@ -22,8 +22,8 @@ import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;
 import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.BrakeCommand;
-import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
+import frc.robot.commands.drivetrain.ResetDriveCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
@@ -82,6 +82,7 @@ public class GenerateTrajectories {
         this.drivetrain = drivetrain;
 
         command = new SequentialCommandGroup();
+        command.addCommands(new ResetDriveCommand(drivetrain));
         currentPose = new Pose2d();
         // trajectoryList.add(new Trajectory());
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
@@ -247,13 +248,12 @@ public class GenerateTrajectories {
             } else {
                 command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
             }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
         }
-
-        command.addCommands(new HoldCommand(elevator, pivotArm));
 
         addOverChargeTrajectory();
 
-        command.addCommands(new NoPDBalanceCommand(drivetrain));
+        command.addCommands(new PDBalanceCommand(drivetrain, true));
     }
 
     private void normalAuto() {
@@ -267,7 +267,7 @@ public class GenerateTrajectories {
 
         if (charge) {
             addChargeTrajectory();
-            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+            this.command.addCommands(new PDBalanceCommand(drivetrain, true));
         } else if (goToCyclePose) {
             addCycleTrajectory();
             return;

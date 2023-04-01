@@ -47,7 +47,15 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
-        "open": true
+        "SendableChooser[0]": {
+          "open": true
+        },
+        "SendableChooser[1]": {
+          "open": true
+        },
+        "SendableChooser[2]": {
+          "open": true
+        }
       }
     }
   }

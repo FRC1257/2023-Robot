@@ -17,4 +17,9 @@ public class ResetDriveCommand extends InstantCommand {
     public void initialize() {
         drivetrain.zero();
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
 }

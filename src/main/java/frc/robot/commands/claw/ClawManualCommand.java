@@ -25,7 +25,7 @@ public class ClawManualCommand extends CommandBase {
         double speed = speedSupplier.getAsDouble();
         if (speed < 0) {
             // closing
-            claw.manualControl(speed/7);
+            claw.manualControl(speed/6);
         } else {
             // opening
             claw.manualControl(speed/7);

@@ -187,7 +187,7 @@ public final class Constants {
 
         // trajectory following
         public static double DRIVE_TRAJ_MAX_VEL = 4.0; // m/s
-        public static double DRIVE_TRAJ_MAX_ACC = 0.750; //.75;  // m/s^2
+        public static double DRIVE_TRAJ_MAX_ACC = 0.51; //.75;  // m/s^2
         public static double DRIVE_TRAJ_RAMSETE_B = 2.0; // don't change
         public static double DRIVE_TRAJ_RAMSETE_ZETA = 0.7;
 
@@ -248,7 +248,7 @@ public final class Constants {
         // TODO calculate true positions
 
         static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
-        public static double BALANCE_KP = 0.0295;
+        public static double BALANCE_KP = 0.02;
         public static double BALANCE_KD = 0;
         public static double BALANCE_SETPOINT_ANGLE = 0;
         public static double BALANCE_THRESHOLD_DEGREES = 3;
@@ -315,11 +315,11 @@ public final class Constants {
         };
 
         public static Pose2d[] BLUE_CHARGE_POSE_WAYPOINT =new Pose2d[] {
-                new Pose2d(5.8, 2.75, Rotation2d.fromDegrees(180)),
+                new Pose2d(6.1, 2.75, Rotation2d.fromDegrees(180)),
                 new Pose2d(3.2, 2.75, Rotation2d.fromDegrees(0)),
         };
         public static Pose2d[] RED_CHARGE_POSE_WAYPOINT = new Pose2d[] {
-                new Pose2d(10.5, 2.75, Rotation2d.fromDegrees(0)), 
+                new Pose2d(10.2, 2.75, Rotation2d.fromDegrees(0)), 
                 new Pose2d(13.5, 2.75, Rotation2d.fromDegrees(180)),
         };
 

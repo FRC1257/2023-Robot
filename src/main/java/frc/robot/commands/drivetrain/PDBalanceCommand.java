@@ -46,11 +46,11 @@ public class PDBalanceCommand extends CommandBase {
         
 		SmartDashboard.putNumber("Balance Unclamped velocity", velocity);
 		if (controller.atSetpoint()) {
-			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.2, 0.2), 0);
+			drivetrain.velocityDrive(MathUtil.clamp(velocity, -0.2, 0.2), 0);
 			levelCounter ++;
 		} else {
 			levelCounter = 0;
-			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.75, 0.75), 0);
+			drivetrain.velocityDrive(MathUtil.clamp(velocity, -0.75, 0.75), 0);
 		}
 		
 		// SmartDashboard.putNumber("Align error", error);
