@@ -40,10 +40,11 @@ public class GenerateTrajectories {
         SHOOTING,
         THREE_PIECE, */
         MOVE_FORWARD,
-        HIT_AND_RUN
+        HIT_AND_RUN,
+        HIT
     }
 
-    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN };
+    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN, State.HIT };
 
     private boolean charge;
     private boolean firstScore;
@@ -234,6 +235,9 @@ public class GenerateTrajectories {
             case HIT_AND_RUN:
                 hitAndRunAuto();
                 break;
+            case HIT:
+                hitAuto();
+                break;
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -252,6 +256,25 @@ public class GenerateTrajectories {
         }
 
         addOverChargeTrajectory();
+
+        command.addCommands(new PDBalanceCommand(drivetrain, true));
+    }
+
+    private void hitAuto() {
+        
+        if (firstScore) {
+            // addFirstScoreTrajectory();
+            if (getConeOrCube()) {
+                command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+            } else {
+                command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+            }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
+        }
+
+        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[0]), true);
+        currentPose = chargePose[0];
+        addToPosCommand(step2);
 
         command.addCommands(new PDBalanceCommand(drivetrain, true));
     }
