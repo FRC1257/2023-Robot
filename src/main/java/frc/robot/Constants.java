@@ -251,7 +251,7 @@ public final class Constants {
         public static double BALANCE_KP = 0.0295;
         public static double BALANCE_KD = 0;
         public static double BALANCE_SETPOINT_ANGLE = 0;
-        public static double BALANCE_THRESHOLD_DEGREES = 9;
+        public static double BALANCE_THRESHOLD_DEGREES = 3;
         public static int BALANCE_STEPS_THRESHOLD = 100;
 
         public static Pose2d[] BLUE_SCORE_POSE = new Pose2d[] {

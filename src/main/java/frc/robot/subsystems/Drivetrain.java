@@ -210,6 +210,20 @@ public class Drivetrain extends SnailSubsystem {
         frontRightMotor.setInverted(true);
         backRightMotor.setInverted(true);
     }
+
+    public void setNormalBrake() {
+        frontLeftMotor.setIdleMode(IdleMode.kBrake);
+        frontRightMotor.setIdleMode(IdleMode.kBrake);
+        backLeftMotor.setIdleMode(IdleMode.kCoast);
+        backRightMotor.setIdleMode(IdleMode.kCoast);
+    }
+
+    public void setStopBrake() {
+        frontLeftMotor.setIdleMode(IdleMode.kBrake);
+        frontRightMotor.setIdleMode(IdleMode.kBrake);
+        backLeftMotor.setIdleMode(IdleMode.kBrake);
+        backRightMotor.setIdleMode(IdleMode.kBrake);
+    }
  
     // configure all encoder settings and conversion factors
     private void configureEncoders() {

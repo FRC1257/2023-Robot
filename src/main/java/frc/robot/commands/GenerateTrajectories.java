@@ -21,6 +21,7 @@ import frc.robot.commands.Compound_Commands.ScoreConeCommand;
 import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;
 import frc.robot.commands.claw.ClawOpenCommand;
+import frc.robot.commands.drivetrain.BrakeCommand;
 import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
@@ -108,6 +109,7 @@ public class GenerateTrajectories {
         this.currentPose = this.StartPose;
 
         AutoDecider();
+        command.addCommands(new BrakeCommand(drivetrain));
     }
 
     // TODO make method to get positions

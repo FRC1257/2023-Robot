@@ -21,7 +21,7 @@ public class NoPDBalanceCommand extends CommandBase {
 	private double error;
 	private double m_timeLimit = 5;
 
-    private TunableNumber speed = new TunableNumber("Balance Speed Tune", .17);
+    private TunableNumber speed = new TunableNumber("Balance Speed Tune", .5);
 
 	public NoPDBalanceCommand(Drivetrain drivetrain) {
 

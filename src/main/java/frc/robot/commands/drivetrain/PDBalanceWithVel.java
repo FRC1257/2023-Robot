@@ -10,20 +10,24 @@ import frc.robot.util.Gyro;
 import frc.robot.util.TunableNumber;
 import edu.wpi.first.math.MathUtil;
 
-public class PDBalanceCommand extends CommandBase {
+public class PDBalanceWithVel extends CommandBase {
 	private final Drivetrain drivetrain;
-	private final PIDController controller;
+	private PIDController controller;
 	private final Gyro gyro;
 	private double error;
 	private boolean stop;
 	private int levelCounter = 0;
 
-	public PDBalanceCommand(Drivetrain drivetrain, boolean stop) {
+    private TunableNumber kP = new TunableNumber("Balance kP", Autonomous.BALANCE_KP);
+    private TunableNumber kD = new TunableNumber("Balance kD", Autonomous.BALANCE_KD);
+    private TunableNumber threshold = new TunableNumber("Balance Stop Tolerance", Autonomous.BALANCE_THRESHOLD_DEGREES);
+
+	public PDBalanceWithVel(Drivetrain drivetrain, boolean stop) {
 		this.stop = stop;
 
 		this.drivetrain = drivetrain;
-		this.controller = new PIDController(Autonomous.BALANCE_KP, 0, Autonomous.BALANCE_KD);
-		this.controller.setTolerance(Autonomous.BALANCE_THRESHOLD_DEGREES);
+		this.controller = new PIDController(kP.get(), 0, kD.get());
+		this.controller.setTolerance(threshold.get());
 
 		gyro = Gyro.getInstance();
 		error = gyro.getRollAngle();
@@ -32,6 +36,8 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
+        this.controller = new PIDController(kP.get(), 0, kD.get());
+		this.controller.setTolerance(threshold.get());
 		drivetrain.setSlowMode(true);
 	}
 
@@ -39,9 +45,15 @@ public class PDBalanceCommand extends CommandBase {
 	public void execute() {
 		error = gyro.getRollAngle();
 		double velocity = controller.calculate(error, Autonomous.BALANCE_SETPOINT_ANGLE);
+
+        // check if it is tipping?
+        if (controller.getVelocityError() > 2) {
+            drivetrain.velocityDrive(0, 0);
+            return;
+        }
 		
 		if (controller.atSetpoint()) {
-			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.2, 0.2), 0);
+			drivetrain.velocityDrive(0, 0);
 			levelCounter ++;
 		} else {
 			levelCounter = 0;
