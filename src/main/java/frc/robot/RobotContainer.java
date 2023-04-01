@@ -393,6 +393,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Move forward", 1);
         autoChooser.addOption("Normal Auto", 0);
         autoChooser.addOption("Hit & Run", 2);
+        autoChooser.addOption("Hit", 3);
         SmartDashboard.putData(autoChooser);
     }
     
