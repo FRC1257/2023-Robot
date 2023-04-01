@@ -1769,6 +1769,196 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "16,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Motor mode",
+              "_title": "Motor mode",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,15": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Auto Close to Cycle",
+              "_title": "Auto Close to Cycle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "18,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/deez",
+              "_title": "deez",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Desired Score Pos",
+              "_title": "Desired Score Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motion State",
+              "_title": "Claw Motion State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Brake",
+              "_title": "Elevator Brake",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance kP",
+              "_title": "Balance kP",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance kD",
+              "_title": "Balance kD",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance Stop Tolerance",
+              "_title": "Balance Stop Tolerance",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,15": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Balance Running",
+              "_title": "Balance Running",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "18,15": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance Error",
+              "_title": "Balance Error",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,16": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance Output",
+              "_title": "Balance Output",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,16": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Align time boolean",
+              "_title": "Align time boolean",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,16": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Balance Unclamped velocity",
+              "_title": "Balance Unclamped velocity",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2915,40 +3105,7 @@
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
-            },
-          "14,2": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
-              "_title": "SmartDashboard/Claw Motor Speed",
-              "_glyph": 148,
-              "_showGlyph": false,
-              "Graph/Visible time": 30.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Claw Motor Speed": true
             }
-          },
-          "14,3": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
-              "_title": "/SmartDashboard/Claw Motor Speed",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          }
           },
           "14,5": {
             "size": [
@@ -3011,6 +3168,76 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
               "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Pivot Arm",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Extend",
+              "_title": "SmartDashboard/Pivot Arm Extend",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Bottom",
+              "_title": "SmartDashboard/Pivot Arm Bottom",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Pivot Arm Motor Speed",
+              "_title": "SmartDashboard/Pivot Arm Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
