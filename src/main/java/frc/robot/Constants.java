@@ -349,8 +349,8 @@ public final class Constants {
                 new Pose2d(14.384, 4.357, Rotation2d.fromDegrees(180)),
         };
 
-        public static Pose2d BlueNormalEnd = new Pose2d(6.847, 6.251, Rotation2d.fromDegrees(0));
-        public static Pose2d RedNormalEnd = new Pose2d(9.583, 6.251, Rotation2d.fromDegrees(180));
+        public static Pose2d BlueNormalEnd = new Pose2d(7.2, 6.251, Rotation2d.fromDegrees(0));
+        public static Pose2d RedNormalEnd = new Pose2d(9.4, 6.251, Rotation2d.fromDegrees(180));
         public static Pose2d[] BLUE_PARK_POSE = new Pose2d[] {
                 new Pose2d(2.324, 4.593, Rotation2d.fromDegrees(0)),
                 new Pose2d(4, 0.716, Rotation2d.fromDegrees(0)),

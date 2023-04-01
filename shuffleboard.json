@@ -1838,6 +1838,21 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "12,15": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Auto Close to Cycle",
+              "_title": "Auto Close to Cycle",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -2016,6 +2031,32 @@
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
               "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Auto Close to Cycle",
+              "_title": "SmartDashboard/Auto Close to Cycle",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,6": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Motor mode",
+              "_title": "True is Brake Mode",
               "_glyph": 148,
               "_showGlyph": false
             }

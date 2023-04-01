@@ -91,7 +91,6 @@ public class RobotContainer {
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
     private boolean charge;
-    private boolean leaveTarmac = true;
 
     private boolean isSimulation;
     private GenerateTrajectories generateTrajectories;
@@ -253,7 +252,9 @@ public class RobotContainer {
             elevator,
             pivotArm,
             claw,
-            charge
+            charge,
+            SmartDashboard.getBoolean("Auto Close to Cycle", false),
+            firstScore
         );
 
         putTrajectoryTime();
@@ -330,7 +331,7 @@ public class RobotContainer {
 
     public void configureShuffleboard() {
         // Field Side
-        SmartDashboard.putBoolean("Motor Break", true);
+        SmartDashboard.putBoolean("Motor mode", true);
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
@@ -338,6 +339,7 @@ public class RobotContainer {
         /* SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
         SmartDashboard.putBoolean("Auto Get Cargo", cargo); */
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putBoolean("Auto Close to Cycle", false);
         SmartDashboard.putNumber("View Trajectory Pos", 0);
         SmartDashboard.putBoolean("Update Visual", false);
         /* SmartDashboard.putBoolean("3 Ball Auto", false);
@@ -398,7 +400,6 @@ public class RobotContainer {
     public void updateAutoChoosers() {
         firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
         charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
-        leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
     }
 
     public void putTrajectoryTime() {
@@ -414,7 +415,6 @@ public class RobotContainer {
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
         SmartDashboard.putBoolean("Update Visual", false);
-        SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
     }
 
 }

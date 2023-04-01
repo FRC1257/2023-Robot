@@ -47,6 +47,7 @@ public class GenerateTrajectories {
     private boolean charge;
     private boolean firstScore;
     private boolean blue;
+    private boolean goToCyclePose;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
     private Elevator elevator;
@@ -70,8 +71,10 @@ public class GenerateTrajectories {
         {-90, 90} // red
     };
 
-    public GenerateTrajectories(Drivetrain drivetrain, Elevator elevator, PivotArm pivotArm, Claw claw, boolean isCharge) {
+    public GenerateTrajectories(Drivetrain drivetrain, Elevator elevator, PivotArm pivotArm, Claw claw, boolean isCharge, boolean goToCyclePose, boolean firstScore) {
         this.charge = isCharge;
+        this.goToCyclePose = goToCyclePose;
+        this.firstScore = firstScore;
         this.elevator = elevator;
         this.pivotArm = pivotArm;
         this.claw = claw;
@@ -249,17 +252,20 @@ public class GenerateTrajectories {
     }
 
     private void normalAuto() {
-        if (getConeOrCube()) {
-            addScoreMidCone();
-        } else {
-            addScoreMidCube();
+        if (firstScore) {
+            if (getConeOrCube()) {
+                addScoreMidCone();
+            } else {
+                addScoreMidCube();
+            }
         }
 
         if (charge) {
             addChargeTrajectory();
             this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        } else {
-            turn180();
+        } else if (goToCyclePose) {
+            addCycleTrajectory();
+            return;
         }
 
         // if none of these have run something has gone wrong
@@ -267,6 +273,8 @@ public class GenerateTrajectories {
         if (StartPose.equals(currentPose)) {
             addLeaveCommunityTrajectory();
         }
+
+        turn180();
         
     }
 
@@ -296,7 +304,12 @@ public class GenerateTrajectories {
      * @see SequentialCommandGroup#addCommands(edu.wpi.first.wpilibj2.command.Command...)
      */
     private void moveForward() {
-        command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+        if (getConeOrCube()) {
+            command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+        } else {
+            command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+        }
+
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
@@ -308,13 +321,25 @@ public class GenerateTrajectories {
                 .add(driveOutPose(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
         trajPointsBack.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
-        command.addCommands(
-            new SequentialCommandGroup(
-                new ToPosCommand(drivetrain, trajPoints, true),
-                new ToPosCommand(drivetrain, trajPointsBack, false),
-                new ToPosCommand(drivetrain, trajPoints, true)
-            )
-        );
+        addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
+        addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        turn180();
+    }
+
+    private Pose2d getCyclePose2d() {
+        if (blue) {
+            return Autonomous.BlueNormalEnd;
+        } else {
+            return Autonomous.RedNormalEnd;
+        }
+    }
+
+    private void addCycleTrajectory(){
+        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(currentPose);
+        trajPoints.add(getCyclePose2d());
+        addToPosCommand(new ToPosCommand(drivetrain, trajPoints, false));
     }
 
     private List<Pose2d> getTrajPointsWaypointReverse(Pose2d start, Pose2d end) {
@@ -340,7 +365,7 @@ public class GenerateTrajectories {
         command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
         command.addCommands(new HoldCommand(elevator, pivotArm));
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
-        currentPose = getCargoLocation();
+        currentPose = flipPose(getCargoLocation());
         addToPosCommand(step2);
         
     }
@@ -351,7 +376,7 @@ public class GenerateTrajectories {
         command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
         command.addCommands(new HoldCommand(elevator, pivotArm));
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
-        currentPose = getCargoLocation();
+        currentPose = flipPose(getCargoLocation());
         addToPosCommand(step2);
         
     }
@@ -412,21 +437,8 @@ public class GenerateTrajectories {
         // this method and addCargoTrajectory are almost identical, different by one
         // line
         // TODO: refactor further to avoid confusion
-        // backUpAndTurn();
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
-
-        // going around the charging station, if convenient
-        // jank fix
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
-        } else {
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
-        }
-        trajPoints.add(flipPose(getLeaveCommunityPose(currentPose)));
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        List<Pose2d> trajPoints = getTrajPointsWaypointReverse(currentPose, flipPose(getLeaveCommunityPose(currentPose)));
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
         currentPose = flipPose(getLeaveCommunityPose(currentPose));
         addToPosCommand(step2);
     }

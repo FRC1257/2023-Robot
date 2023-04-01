@@ -39,9 +39,7 @@ public class Elevator extends SnailSubsystem{
 
     private State elevatorState = State.MANUAL; 
     
-    public Elevator() {
-        SmartDashboard.putBoolean("Motor mode", false);
-        
+    public Elevator() {        
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         elevatorMotor.restoreFactoryDefaults();
         // pivotWristMotor.setIdleMode(IdleMode.kBrake);
