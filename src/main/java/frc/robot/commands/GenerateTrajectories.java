@@ -276,7 +276,7 @@ public class GenerateTrajectories {
         currentPose = chargePose[0];
         addToPosCommand(step2);
 
-        command.addCommands(new PDBalanceCommand(drivetrain, true));
+        command.addCommands(new PDBalanceCommand(drivetrain, false));
     }
 
     private void normalAuto() {

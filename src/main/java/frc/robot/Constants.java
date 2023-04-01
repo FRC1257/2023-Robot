@@ -248,7 +248,7 @@ public final class Constants {
         // TODO calculate true positions
 
         static double trackWidthAdded = Drivetrain.DRIVE_TRACK_WIDTH_M / 2;
-        public static double BALANCE_KP = 0.02;
+        public static double BALANCE_KP = 0.0205;
         public static double BALANCE_KD = 0;
         public static double BALANCE_SETPOINT_ANGLE = 0;
         public static double BALANCE_THRESHOLD_DEGREES = 3;
