@@ -1669,6 +1669,128 @@
             ],
             "content": {
               "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Closed",
+              "_title": "Claw Closed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,14": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Open",
+              "_title": "Claw Open",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
+              "_title": "Claw Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Encoder Position",
+              "_title": "Claw Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Setpoint",
+              "_title": "Claw Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Intake Right Speed",
+              "_title": "Intake Right Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Intake Left Speed",
+              "_title": "Intake Left Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,14": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Add Speed",
+              "_title": "Claw Add Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "LiveWindow",
+      "autoPopulate": true,
+      "autoPopulatePrefix": "LiveWindow/",
+      "widgetPane": {
+        "gridSize": 64.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "13,0": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/Motor mode",
               "_title": "Motor mode",
               "_glyph": 148,
@@ -2780,6 +2902,20 @@
               "_showGlyph": false
             }
           },
+          "14,1": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Claw Closed",
+              "_title": "/SmartDashboard/Claw Closed",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            },
           "14,2": {
             "size": [
               3,
@@ -2799,6 +2935,20 @@
               "Y-axis/Unit": "ul",
               "Visible data/SmartDashboard/Claw Motor Speed": true
             }
+          },
+          "14,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Claw Motor Speed",
+              "_title": "/SmartDashboard/Claw Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          }
           },
           "14,5": {
             "size": [

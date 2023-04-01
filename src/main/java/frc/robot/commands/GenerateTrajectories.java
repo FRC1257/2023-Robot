@@ -311,6 +311,8 @@ public class GenerateTrajectories {
         } else {
             command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
         }
+        command.addCommands(new HoldCommand(elevator, pivotArm));
+
 
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
@@ -324,8 +326,8 @@ public class GenerateTrajectories {
         trajPointsBack.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
         addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
-        addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
-        addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
         turn180();
     }
 

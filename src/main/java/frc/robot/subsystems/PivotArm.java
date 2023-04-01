@@ -74,7 +74,7 @@ public class PivotArm extends SnailSubsystem {
             }
         } */
 
-            
+            /* 
         if (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_TOP && speed < 0.0) {
             armMotor.set(0);
             return;
@@ -82,6 +82,7 @@ public class PivotArm extends SnailSubsystem {
             armMotor.set(0);
             return;
         } 
+        */
         /* 
         if (state == State.PID && (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM || armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP)) {
             armMotor.set(0);
