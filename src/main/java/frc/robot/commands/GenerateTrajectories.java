@@ -16,6 +16,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.PivotArm;
 import frc.robot.Constants.Autonomous;
+import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.ScoreConeCommand;
 import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;
@@ -45,10 +46,7 @@ public class GenerateTrajectories {
 
     private boolean charge;
     private boolean firstScore;
-    private boolean secondScore;
-    private boolean cargo;
     private boolean blue;
-    private boolean leaveTarmac;
     private Drivetrain drivetrain;
     private Pose2d StartPose;
     private Elevator elevator;
@@ -64,7 +62,6 @@ public class GenerateTrajectories {
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
     private Pose2d[] ALLIANCE_CHARGE_POSE_WAYPOINT;
     private Pose2d[] ALLIANCE_LEAVE_COMMUNITY;
-    private Pose2d[] ALLIANCE_SHOOTING_POSE;
     private Pose2d[] chargePose;
 
     private double pieceApproachAngle;
@@ -73,16 +70,11 @@ public class GenerateTrajectories {
         {-90, 90} // red
     };
 
-    public GenerateTrajectories(Drivetrain drivetrain, Elevator elevator, PivotArm pivotArm, Claw claw, boolean isCharge, boolean isFirstScore, boolean isSecondScore,
-            boolean isCargo, int StartPose, boolean leaveTarmac) {
+    public GenerateTrajectories(Drivetrain drivetrain, Elevator elevator, PivotArm pivotArm, Claw claw, boolean isCharge) {
         this.charge = isCharge;
-        this.firstScore = isFirstScore;
-        this.secondScore = isSecondScore;
-        this.leaveTarmac = leaveTarmac;
         this.elevator = elevator;
         this.pivotArm = pivotArm;
         this.claw = claw;
-        this.cargo = isCargo;
         this.drivetrain = drivetrain;
 
         command = new SequentialCommandGroup();
@@ -96,7 +88,6 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.BLUE_WAYPOINT_POSE;
             chargePose = Autonomous.BLUE_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
-            ALLIANCE_SHOOTING_POSE = Autonomous.BLUE_SHOOT_POSE;
             blue = true;
         } else {
             ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
@@ -106,7 +97,6 @@ public class GenerateTrajectories {
             ALLIANCE_WAYPOINTS_POSE = Autonomous.RED_WAYPOINT_POSE;
             chargePose = Autonomous.RED_CHARGE_POSE;
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.RED_LEAVE_COMMUNITY_POSE;
-            ALLIANCE_SHOOTING_POSE = Autonomous.RED_SHOOT_POSE;
             blue = false;
         }
 
@@ -118,13 +108,6 @@ public class GenerateTrajectories {
     }
 
     // TODO make method to get positions
-
-    // gets the cargoLocation based on what side the robot is on
-
-    // private Pose2d goForward(){
-
-    // trajectoryList.add(getFullTrajectory());
-    // }
 
     private State getAutoType() {
         return autoType[RobotContainer.autoChooser.getSelected()];
@@ -139,8 +122,30 @@ public class GenerateTrajectories {
         return ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()];
     }
 
-    private Pose2d getStartLocation() {
-        return ALLIANCE_START_POSE[RobotContainer.startPositionChooser.getSelected()];
+    private boolean getConeOrCube() {
+        // true = cone
+        // false = cube
+        switch (RobotContainer.firstScorePositionChooser.getSelected()) {
+            case 0:
+                return true;
+            case 1:
+                return false;
+            case 2:
+                return true;
+            case 3:
+                return true;
+            case 4:
+                return false;
+            case 5:
+                return true;
+            case 6:
+                return true;
+            case 7:
+                return false;
+            case 8:
+                return true;
+        }
+        return true;
     }
 
     private Pose2d getChargeLocation() {
@@ -216,12 +221,6 @@ public class GenerateTrajectories {
             case NORMAL:
                 normalAuto();
                 break;
-            /* case SHOOTING:
-                shootingAuto();
-                break;
-            case THREE_PIECE:
-                threePieceAuto();
-                break; */
             case MOVE_FORWARD:
                 moveForward();
                 break;
@@ -237,7 +236,11 @@ public class GenerateTrajectories {
         
         if (firstScore) {
             // addFirstScoreTrajectory();
-            addScoreHigh();
+            if (getConeOrCube()) {
+                command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+            } else {
+                command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+            }
         }
 
         addOverChargeTrajectory();
@@ -246,58 +249,23 @@ public class GenerateTrajectories {
     }
 
     private void normalAuto() {
-        
-        if (firstScore){
-            if (getStartLocation().equals(ALLIANCE_START_POSE[2])) {
-                addScoreMidCube();
-            }
-
-            if (getStartLocation().equals(ALLIANCE_START_POSE[1])){
-                hitAndRunAuto();
-            }
-            if (getStartLocation().equals(ALLIANCE_START_POSE[0])){
-                moveForward();
-            }
-
+        if (getConeOrCube()) {
+            addScoreMidCone();
+        } else {
+            addScoreMidCube();
         }
-        // then we either go for cargo or leave the tarmac to get points
-        // Step 2
-        // if (cargo) {
-        //     // going for cargo implies leaving community
-        //     addCargoTrajectory();
-        //     addPiecePickup();
-        //     turn180();
-        // } else if (leaveTarmac) {
-        //     addLeaveCommunityTrajectory();
-        //     /* if (hitAndRun) {
-        //         addOverChargeTrajectory();
-        //         this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        //         return;
-        //     } else {
-        //         addLeaveCommunityTrajectory();
-        //     } */
-        // }
 
-        // Step 3
-        /* if (secondScore) {
-            addSecondScoreTrajectory();
-            addScoreHigh();
-            if (charge) {
-                addChargeTrajectory();
-            }
+        if (charge) {
+            addChargeTrajectory();
+            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
         }
-        // step 3 go for charge
-        // else  if (charge) {
-        //     addChargeTrajectory();
-        //     this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
-        // }
 
         // if none of these have run something has gone wrong
         // so just leave the community
-        // if (StartPose.equals(currentPose)) {
-        //     addLeaveCommunityTrajectory();
-        // }
-        */
+        if (StartPose.equals(currentPose)) {
+            addLeaveCommunityTrajectory();
+        }
+        
     }
 
     private Pose2d niceAngle(Pose2d pose) {
@@ -316,122 +284,9 @@ public class GenerateTrajectories {
         }
 
         return new Pose2d(pose.getX(), pose.getY(), Rotation2d.fromDegrees(pieceApproachAngle));
-    }/* 
-
-    private void shootingAuto() {
-        this.StartPose = getFirstScoreLocation();
-        this.currentPose = this.StartPose;
-
-        addScoreHigh();
-
-        backUpAndTurn();
-
-        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
-                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
-        currentPose = getCargoLocation();
-        addToPosCommand(firstGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        driveToShootingPose();
-        shootPiece();
-
-        turn180();
-
-        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
-                List.of(currentPose, niceAngle(getSecondCargoLocation())), false);
-        currentPose = niceAngle(getSecondCargoLocation());
-        addToPosCommand(secondGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        driveToShootingPose();
-        shootPiece();
-
-        turn180();
-
-        ToPosCommand thirdGoToCargo = new ToPosCommand(drivetrain,
-                List.of(currentPose, niceAngle(getThirdCargoLocation())), false);
-        currentPose = niceAngle(getThirdCargoLocation());
-        addToPosCommand(thirdGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        driveToShootingPose();
-        shootPiece();
-    } */
-
-    public void shootPiece() {
-        // TODO add shooting
-        this.command.addCommands(new Delay(1));
     }
 
-    public Pose2d getShootingPose() {
-        // TODO check if this is correct
-        if (StartPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            return ALLIANCE_SHOOTING_POSE[0];
-        }
-        return ALLIANCE_SHOOTING_POSE[1];
-    }
-
-    public void driveToShootingPose() {
-        ToPosCommand driveToShootingPose = new ToPosCommand(drivetrain,
-                List.of(currentPose, getShootingPose()), false);
-        currentPose = getShootingPose();
-        addToPosCommand(driveToShootingPose);
-    }/* 
-
-    private void threePieceAuto() {
-        // command = new SequentialCommandGroup();
-        this.StartPose = getFirstScoreLocation();
-        this.currentPose = this.StartPose;
-
-        addScoreHigh();
-
-        backUpAndTurn();
-
-        ToPosCommand firstGoToCargo = new ToPosCommand(drivetrain,
-                getTrajPointsWaypoint(currentPose, getCargoLocation()), false);
-        currentPose = getCargoLocation();
-        addToPosCommand(firstGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
-                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
-        currentPose = getSecondScoreLocation();
-        addToPosCommand(returnToScore);
-
-        addScoreHigh();
-
-        backUpAndTurn();
-
-        ToPosCommand secondGoToCargo = new ToPosCommand(drivetrain,
-                getTrajPointsWaypoint(currentPose, getSecondCargoLocation()), false);
-        currentPose = getSecondCargoLocation();
-        addToPosCommand(secondGoToCargo);
-
-        addPiecePickup();
-
-        turn180();
-
-        ToPosCommand returnToScore2 = new ToPosCommand(drivetrain,
-                getTrajPointsWaypointReverse(currentPose, getThirdScoreLocation()), false);
-        currentPose = getThirdScoreLocation();
-        addToPosCommand(returnToScore2);
-
-        addScoreHigh();
-
-        trajectoryList.add(getFullTrajectory());
-    } */
+    // deleted many autos
 
     /**
      * Adds trajectory to move forward and back.
@@ -460,60 +315,43 @@ public class GenerateTrajectories {
         );
     }
 
-    // TODO Fix these methods
-    private void addScoreHigh() {
-        // TODO add this
-        // command.addCommands(new ScoreCommand());
-    }
-
-    private void addScoreMidCone(){
+    private List<Pose2d> getTrajPointsWaypointReverse(Pose2d start, Pose2d end) {
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
+        trajPoints.add(start);
 
         // going around the charging station, if convenient
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            trajPoints.add(BlueNormalEnd);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
         } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            trajPoints.add(RedNormalEnd);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
         }
+        
+        trajPoints.add(end);
+        return trajPoints;
+    }
 
-        trajPoints.add(getCargoLocation());
+    private void addScoreMidCone(){
+        List<Pose2d> trajPoints = getTrajPointsWaypointReverse(currentPose, flipPose(getCargoLocation()));
+        
         command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        command.addCommands(new HoldCommand(elevator, pivotArm));
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
         currentPose = getCargoLocation();
         addToPosCommand(step2);
         
     }
 
     private void addScoreMidCube(){
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
-
-        // going around the charging station, if convenient
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-            trajPoints.add(BlueNormalEnd);
-        } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-            trajPoints.add(RedNormalEnd);
-        }
-
-        trajPoints.add(getCargoLocation());
+        List<Pose2d> trajPoints = getTrajPointsWaypointReverse(currentPose, flipPose(getCargoLocation()));
+        
         command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
+        command.addCommands(new HoldCommand(elevator, pivotArm));
+        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, true);
         currentPose = getCargoLocation();
         addToPosCommand(step2);
         
-    }
-
-    private void addPiecePickup() {
-        command.addCommands(new GetPieceCommand());
     }
 
     private void addToPosCommand(ToPosCommand command) {
@@ -566,89 +404,28 @@ public class GenerateTrajectories {
         ToPosCommand step1 = new ToPosCommand(drivetrain, List.of(StartPose, getFirstScoreLocation()), true);
         currentPose = getFirstScoreLocation();
         addToPosCommand(step1);
-    }/* 
-
-    private void addSecondScoreTrajectory() {
-        ToPosCommand returnToScore = new ToPosCommand(drivetrain,
-                getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), false);
-        currentPose = getSecondScoreLocation();
-        addToPosCommand(returnToScore);
-    } */
-
-    private List<Pose2d> getTrajPointsWaypoint(Pose2d start, Pose2d end) {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(start);
-
-        // going around the charging station, if convenient
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-        } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-        }
-
-        trajPoints.add(end);
-        return trajPoints;
-    }
-
-    private List<Pose2d> getTrajPointsWaypointReverse(Pose2d start, Pose2d end) {
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(start);
-
-        // going around the charging station, if convenient
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
-        } else {
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
-        }
-
-        trajPoints.add(end);
-        return trajPoints;
-    }
-
-    private void addCargoTrajectory() {
-        backUpAndTurn();
-        List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(currentPose);
-
-        // going around the charging station, if convenient
-        if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
-        } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
-        }
-
-        trajPoints.add(getCargoLocation());
-        ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
-        currentPose = getCargoLocation();
-        addToPosCommand(step2);
     }
 
     private void addLeaveCommunityTrajectory() {
         // this method and addCargoTrajectory are almost identical, different by one
         // line
         // TODO: refactor further to avoid confusion
-        backUpAndTurn();
+        // backUpAndTurn();
         List<Pose2d> trajPoints = new ArrayList<Pose2d>();
         trajPoints.add(currentPose);
 
         // going around the charging station, if convenient
         // jank fix
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[0]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[1]);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
         } else {
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[2]);
-            trajPoints.add(ALLIANCE_WAYPOINTS_POSE[3]);
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
         }
-        trajPoints.add(getLeaveCommunityPose(currentPose));
+        trajPoints.add(flipPose(getLeaveCommunityPose(currentPose)));
         ToPosCommand step2 = new ToPosCommand(drivetrain, trajPoints, false);
-        currentPose = getLeaveCommunityPose(currentPose);
+        currentPose = flipPose(getLeaveCommunityPose(currentPose));
         addToPosCommand(step2);
     }
 

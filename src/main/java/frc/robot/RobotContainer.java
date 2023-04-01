@@ -65,28 +65,15 @@ import static frc.robot.Constants.Autonomous;
  */
 public class RobotContainer {
 
-    private static final String kDefaultAuto = "Default";
-    private static final String kCustomAuto = "My Auto";
-    private String m_autoSelected;
-
     private SnailController driveController;
     private SnailController operatorController;
-
-    private Claw claw;
     
     private ArrayList<SnailSubsystem> subsystems;
     
-    
-
-
+    private Claw claw;
     private Drivetrain drivetrain;
     private Vision vision;
     private PivotArm pivotArm;
-
-    private LED led;
-
-
-
     private Elevator elevator;
 
     private Notifier updateNotifier;
@@ -98,22 +85,15 @@ public class RobotContainer {
     // choosers
     public static SendableChooser<Integer> firstScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
-    public static SendableChooser<Integer> startPositionChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
     public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
     private boolean firstScore;
-    private boolean secondScore;
-    private boolean cargo;
     private boolean charge;
     private boolean leaveTarmac = true;
-    private boolean hitAndRun;
 
     private boolean isSimulation;
-
-    private boolean threePiece;
-
     private GenerateTrajectories generateTrajectories;
 
 
@@ -175,9 +155,6 @@ public class RobotContainer {
         pivotArm = new PivotArm();
         pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
         
-        //led = new LED();
-        // led.setDefaultCommand(new LEDToggleCommand(led));
-        
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
         
@@ -186,7 +163,6 @@ public class RobotContainer {
         subsystems.add(claw); 
         subsystems.add(pivotArm);
         subsystems.add(elevator);
-        //subsystems.add(led);
         
         // generate auto
         getAutoCommand();
@@ -259,8 +235,6 @@ public class RobotContainer {
         configureGamePieceChooser();
         configureFirstScorePositionChooser();
         configureChooseAuto();
-        configureScoreLevelChooser();
-        configureStartPositionChooser();
     }
 
     public Pose2d shiftedPose(Pose2d pose) {
@@ -272,29 +246,21 @@ public class RobotContainer {
      * Do the logic to return the auto command to run
      */
     public Command getAutoCommand() {
-        return new InstantCommand();
-        /* updateAutoChoosers();
+        updateAutoChoosers();
 
         generateTrajectories = new GenerateTrajectories(
             drivetrain,
-            charge,
-            firstScore,
-            secondScore,
-            cargo,
-            0,
-            leaveTarmac,
             elevator,
             pivotArm,
-            intake,
-            intakeArm,
-            claw
+            claw,
+            charge
         );
-        
+
         putTrajectoryTime();
 
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         DriverStation.reportWarning("Auto Command Generated", false);
-        return generateTrajectories.getCommand(); */
+        return generateTrajectories.getCommand(); 
         //return new DriveDistanceCommand(drivetrain, 10);
     }
 
@@ -344,16 +310,16 @@ public class RobotContainer {
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            /* Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
             if (traj != null)
-                drivetrain.drawTrajectory(traj); */
+                drivetrain.drawTrajectory(traj); 
         }
 
         if (updateTraj && checkIfUpdate()) {
-            DriverStation.reportWarning("Updating Auto", cargo);
+            DriverStation.reportWarning("Updating Auto", false);
             getAutoCommand();
 
-            // SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
             resetDashboard();
         }
@@ -366,47 +332,31 @@ public class RobotContainer {
         // Field Side
         SmartDashboard.putBoolean("Motor Break", true);
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
-        SmartDashboard.putBoolean("Testing", true);
+        SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
-        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
+        /* SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
+        SmartDashboard.putBoolean("Auto Get Cargo", cargo); */
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", 0);
         SmartDashboard.putBoolean("Update Visual", false);
-        SmartDashboard.putBoolean("3 Ball Auto", false);
+        /* SmartDashboard.putBoolean("3 Ball Auto", false);
         SmartDashboard.putBoolean("Leave Tarmac", true);
-        SmartDashboard.putBoolean("Hit and Run", false);
+        SmartDashboard.putBoolean("Hit and Run", false); */
 
         SmartDashboard.putBoolean("Reset Auto Viewer", false);
         
     }
 
-    public void configureScoreLevelChooser() {
-        firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
+    /* public void configureScoreLevelChooser() {
+        /* firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
         firstScoreLevelChooser.addOption("low arm", 0);
         firstScoreLevelChooser.addOption("mid cone arm", 1);
         firstScoreLevelChooser.addOption("mid cube arm", 2);/* 
         firstScoreLevelChooser.addOption("mid shoot", 3);
-        firstScoreLevelChooser.addOption("high shoot", 4); */
-        SmartDashboard.putData(firstScoreLevelChooser);
-        /* 
-        secondScoreLevelChooser.setDefaultOption("Second score level chooser", 0);
-        secondScoreLevelChooser.addOption("low arm", 0);
-        secondScoreLevelChooser.addOption("mid arm", 1);
-        secondScoreLevelChooser.addOption("high arm", 2);
-        secondScoreLevelChooser.addOption("mid shoot", 3);
-        secondScoreLevelChooser.addOption("high shoot", 4);
-        SmartDashboard.putData(secondScoreLevelChooser);
-
-        thirdScoreLevelChooser.setDefaultOption("Third score level chooser", 0);
-        thirdScoreLevelChooser.addOption("low arm", 0);
-        thirdScoreLevelChooser.addOption("mid arm", 1);
-        thirdScoreLevelChooser.addOption("high arm", 2);
-        thirdScoreLevelChooser.addOption("mid shoot", 3);
-        thirdScoreLevelChooser.addOption("high shoot", 4);
-        SmartDashboard.putData(thirdScoreLevelChooser); */
-    }
+        firstScoreLevelChooser.addOption("high shoot", 4); 
+        SmartDashboard.putData(firstScoreLevelChooser); 
+    } */
     
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
@@ -417,14 +367,7 @@ public class RobotContainer {
         SmartDashboard.putData(gamePieceChooser);
     }
 
-    public void configureStartPositionChooser() {
-        startPositionChooser.setDefaultOption("First Position Chooser", 0);
-        startPositionChooser.addOption("Position 1", 0);
-        startPositionChooser.addOption("Position 2", 1);
-        startPositionChooser.addOption("Position 3", 2);
-        SmartDashboard.putData(startPositionChooser);
-    }
-    
+
     public void configureFirstScorePositionChooser() {
         firstScorePositionChooser.setDefaultOption("Score Position Chooser", 0);
         firstScorePositionChooser.addOption("1st Position", 0);
@@ -445,37 +388,21 @@ public class RobotContainer {
         autoChooser.addOption("Hit & Run", 2);
         SmartDashboard.putData(autoChooser);
     }
-
-    public int getScoreLevel(int scoreNumber) { // low 0, mid 1, high 2
-        switch(scoreNumber) {
-            case 1:
-              return firstScoreLevelChooser.getSelected();
-            default:
-                //bruh
-                throw new InputMismatchException("scoreNumber should be from 1 to 3");
-        }
-    }
+    
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false) 
-            || secondScore != SmartDashboard.getBoolean("Opt. 2nd Auto Score", false) 
-            || cargo != SmartDashboard.getBoolean("Auto Get Cargo", false) 
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false)
             || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
-            || SmartDashboard.getBoolean("Update Visual", false) 
-            || threePiece != SmartDashboard.getBoolean("3 Ball Auto", false);
+            || SmartDashboard.getBoolean("Update Visual", false);
     }
 
     public void updateAutoChoosers() {
         firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
-        secondScore = SmartDashboard.getBoolean("Opt. 2nd Auto Score", secondScore);
-        cargo = SmartDashboard.getBoolean("Auto Get Cargo", cargo);
         charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
-        threePiece = SmartDashboard.getBoolean("3 Ball Auto", threePiece);
         leaveTarmac = SmartDashboard.getBoolean("Leave Tarmac", leaveTarmac);
-        hitAndRun = SmartDashboard.getBoolean("Hit and Run", hitAndRun);
     }
 
     public void putTrajectoryTime() {
-        // SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -484,14 +411,10 @@ public class RobotContainer {
         
         //getting the auto values for score, cargo, and charge
         SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
-        SmartDashboard.putBoolean("Auto Get Cargo", cargo);
         SmartDashboard.putBoolean("Auto Goto Charge", charge);
         SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
         SmartDashboard.putBoolean("Update Visual", false);
-        SmartDashboard.putBoolean("3 Ball Auto", threePiece);
         SmartDashboard.putBoolean("Leave Tarmac", leaveTarmac);
-        SmartDashboard.putBoolean("Hit and Run", hitAndRun);
     }
 
 }

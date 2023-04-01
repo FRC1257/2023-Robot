@@ -69,7 +69,7 @@ public class Elevator extends SnailSubsystem{
         // encoder.setInverted(true);
         encoder.setPosition(0.6);
 
-        limitSwitch = new DigitalInput(16); 
+        // limitSwitch = new DigitalInput(0); 
     }
 
 
@@ -134,7 +134,7 @@ public class Elevator extends SnailSubsystem{
         SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
         SmartDashboard.putNumber("Elevator Setpoint", setpoint);
         SmartDashboard.putString("Elevator State", elevatorState.toString());
-        SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
+        // SmartDashboard.putBoolean("Limit Switch", limitSwitch.get());
         SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
 
     }
