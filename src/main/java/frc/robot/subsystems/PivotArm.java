@@ -70,18 +70,20 @@ public class PivotArm extends SnailSubsystem {
 /*         if (limitSwitch.get()) {
             armEncoder.setPosition(0);
             if (speed < 0) {
+
                 speed = 0;
             }
         } */
 
             
-        if (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_TOP && speed < 0.0) {
+        if (armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) {
             armMotor.set(0);
             return;
-        } else if (armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_BOTTOM && speed > 0.0) {
+        } else if (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM && speed < 0.0) {
             armMotor.set(0);
             return;
         } 
+        
         /* 
         if (state == State.PID && (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM || armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP)) {
             armMotor.set(0);
@@ -89,9 +91,7 @@ public class PivotArm extends SnailSubsystem {
             return;
         }
         */
-        SmartDashboard.putBoolean("Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
-
+        
 
         switch (state) {
             case MANUAL:
@@ -123,6 +123,9 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
+        SmartDashboard.putBoolean("Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
+        SmartDashboard.putBoolean("Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+
         SmartDashboard.putNumber("Pivot Arm Motor Speed", armMotor.get());
         SmartDashboard.putNumber("Pivot Arm Encoder Position", armEncoder.getPosition());
         SmartDashboard.putNumber("Pivot Arm Setpoint", setPoint);
