@@ -22,5 +22,7 @@ public class MidCubeSetpointCommand extends SequentialCommandGroup {
             new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND), 
             new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID)
         );
+
+        addRequirements(elevator, pivotarm);
     }
 }
