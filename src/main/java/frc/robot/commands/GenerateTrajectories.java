@@ -258,6 +258,8 @@ public class GenerateTrajectories {
         if (charge) {
             addChargeTrajectory();
             this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+        } else {
+            turn180();
         }
 
         // if none of these have run something has gone wrong
@@ -321,8 +323,8 @@ public class GenerateTrajectories {
 
         // going around the charging station, if convenient
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
-            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
             trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[0]));
+            trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[1]));
         } else {
             trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[2]));
             trajPoints.add(flipPose(ALLIANCE_WAYPOINTS_POSE[3]));
