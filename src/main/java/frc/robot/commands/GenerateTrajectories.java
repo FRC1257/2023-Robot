@@ -22,6 +22,7 @@ import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;
 import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.BrakeCommand;
+import frc.robot.commands.drivetrain.DriveDistanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.ResetDriveCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
@@ -41,10 +42,16 @@ public class GenerateTrajectories {
         THREE_PIECE, */
         MOVE_FORWARD,
         HIT_AND_RUN,
-        HIT
+        HIT,
+        MOVE_FORWARD_PID
     }
 
-    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN, State.HIT };
+    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, 
+        State.MOVE_FORWARD, 
+        State.HIT_AND_RUN, 
+        State.HIT, 
+        State.MOVE_FORWARD_PID 
+    };
 
     private boolean charge;
     private boolean firstScore;
@@ -238,6 +245,9 @@ public class GenerateTrajectories {
             case HIT:
                 hitAuto();
                 break;
+            case MOVE_FORWARD_PID:
+                moveForwardPID();
+                break;
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -288,13 +298,13 @@ public class GenerateTrajectories {
             }
         }
 
-        if (charge) {
-            addChargeTrajectory();
-            this.command.addCommands(new PDBalanceCommand(drivetrain, true));
-        } else if (goToCyclePose) {
-            addCycleTrajectory();
-            return;
-        }
+        // if (charge) {
+        //     addChargeTrajectory();
+        //     this.command.addCommands(new PDBalanceCommand(drivetrain, true));
+        // } else if (goToCyclePose) {
+        //     addCycleTrajectory();
+        //     return;
+        // }
 
         // if none of these have run something has gone wrong
         // so just leave the community
@@ -302,6 +312,7 @@ public class GenerateTrajectories {
             addLeaveCommunityTrajectory();
         }
 
+        
         turn180();
         
     }
@@ -332,13 +343,14 @@ public class GenerateTrajectories {
      * @see SequentialCommandGroup#addCommands(edu.wpi.first.wpilibj2.command.Command...)
      */
     private void moveForward() {
-        if (getConeOrCube()) {
-            command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
-        } else {
-            command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+        if (firstScore) {
+            if (getConeOrCube()) {
+                command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+            } else {
+                command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+            }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
         }
-        command.addCommands(new HoldCommand(elevator, pivotArm));
-
 
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
@@ -352,6 +364,35 @@ public class GenerateTrajectories {
         trajPointsBack.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
         addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        turn180();
+    }
+
+    private void moveForwardPID() {
+        
+        if (firstScore) {
+            if (getConeOrCube()) {
+                command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+            } else {
+                command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+            }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
+
+        }
+
+        double distance = -10;
+
+        this.command.addCommands(new DriveDistanceCommand(drivetrain, distance));
+
+        // Literally made while queueing for quals during Robbinsville 2023
+        // TODO Redo this so proper Pose2d is used
+        /* List<Pose2d> trajPoints = new ArrayList<Pose2d>();
+        trajPoints.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
+        trajPoints.add(driveOutPose(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
+        */
+        
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
         // addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
         // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
         turn180();
@@ -485,6 +526,8 @@ public class GenerateTrajectories {
                 List.of(currentPose, getHitAndRunPose2d()), true);
         currentPose = getHitAndRunPose2d();
         addToPosCommand(step3);
+
+        command.addCommands(new ResetDriveCommand(drivetrain));
 
         ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, shiftedPose(chargePose[0])), false);
         currentPose = shiftedPose(chargePose[0]);

@@ -46,6 +46,7 @@ import frc.robot.util.Gyro;
 import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -89,7 +90,7 @@ public class RobotContainer {
     public static SendableChooser<Integer> firstScoreLevelChooser = new SendableChooser<>();
 
     //booleans regarding the score, cargo, and charge
-    private boolean firstScore;
+    private boolean firstScore = true;
     private boolean charge;
 
     private boolean isSimulation;
@@ -181,6 +182,7 @@ public class RobotContainer {
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
+        driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
         // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
         
         // Operator bindings for pivot arm PID
@@ -196,9 +198,10 @@ public class RobotContainer {
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
 
 //TESTING
-        operatorController.getButton(Button.kA.value).onTrue(new PickupCommand(elevator, pivotArm));
+        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
         operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
 //Testing
+        driveController.getButton(Button.kB.value).onTrue(new DriveDistanceCommand(drivetrain, -10));
 
 
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
@@ -390,15 +393,16 @@ public class RobotContainer {
     }
 
     public void configureChooseAuto() {
-        autoChooser.setDefaultOption("Move forward", 1);
+        autoChooser.setDefaultOption("Move Forward with drive PID", 4);
         autoChooser.addOption("Normal Auto", 0);
         autoChooser.addOption("Hit & Run", 2);
         autoChooser.addOption("Hit", 3);
+        autoChooser.addOption("Move forward Bad with traj", 1);
         SmartDashboard.putData(autoChooser);
     }
     
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", false)
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", true)
             || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
             || SmartDashboard.getBoolean("Update Visual", false);
     }
