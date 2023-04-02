@@ -22,6 +22,7 @@ public class DriveTimeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.setSlowMode(true);
     st = Timer.getFPGATimestamp();
   }
 
