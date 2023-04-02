@@ -417,7 +417,7 @@ public class GenerateTrajectories {
     }
 
     public Pose2d shiftedPose(Pose2d pose) {
-        double SHIFT_X = -0.4;
+        double SHIFT_X = 0.25;
         if (blue) {
             SHIFT_X *= -1;
         }
@@ -486,8 +486,8 @@ public class GenerateTrajectories {
         currentPose = getHitAndRunPose2d();
         addToPosCommand(step3);
 
-        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[0]), false);
-        currentPose = chargePose[0];
+        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, shiftedPose(chargePose[0])), false);
+        currentPose = shiftedPose(chargePose[0]);
         addToPosCommand(step2);
     }
 
