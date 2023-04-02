@@ -12,19 +12,21 @@ import edu.wpi.first.math.MathUtil;
 
 public class PDBalanceCommand extends CommandBase {
 	private final Drivetrain drivetrain;
-	private final PIDController controller;
+	private PIDController controller;
 	private final Gyro gyro;
 	private double error;
 	private boolean stop;
 	private int levelCounter = 0;
 
+	private TunableNumber kP = new TunableNumber("Balance kP", Autonomous.BALANCE_KP);
+	private TunableNumber maxOutput = new TunableNumber("Balance kD", 0.75);
+
 	public PDBalanceCommand(Drivetrain drivetrain, boolean stop) {
 		this.stop = stop;
 
 		this.drivetrain = drivetrain;
-		this.controller = new PIDController(Autonomous.BALANCE_KP, 0, Autonomous.BALANCE_KD);
+		this.controller = new PIDController(kP.get(), 0, Autonomous.BALANCE_KD);
 		this.controller.setTolerance(Autonomous.BALANCE_THRESHOLD_DEGREES);
-
 		gyro = Gyro.getInstance();
 		error = gyro.getRollAngle();
 		addRequirements(drivetrain);
@@ -32,6 +34,8 @@ public class PDBalanceCommand extends CommandBase {
 
 	@Override
 	public void initialize() {
+		this.controller = new PIDController(kP.get(), 0, Autonomous.BALANCE_KD);
+		this.controller.setTolerance(Autonomous.BALANCE_THRESHOLD_DEGREES);
 		drivetrain.setSlowMode(true);
 	}
 
@@ -46,11 +50,11 @@ public class PDBalanceCommand extends CommandBase {
         
 		SmartDashboard.putNumber("Balance Unclamped velocity", velocity);
 		if (controller.atSetpoint()) {
-			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.2, 0.2), 0);
+			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.1, 0.1), 0);
 			levelCounter ++;
 		} else {
 			levelCounter = 0;
-			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.75, 0.75), 0);
+			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -maxOutput.get(), maxOutput.get()), 0);
 		}
 		
 		// SmartDashboard.putNumber("Align error", error);

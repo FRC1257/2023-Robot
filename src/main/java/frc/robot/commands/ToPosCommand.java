@@ -6,6 +6,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.util.TunableNumber;
+
 import static frc.robot.Constants.Drivetrain.*;
 import java.util.List;
 
@@ -16,11 +18,14 @@ public class ToPosCommand extends CommandBase {
     // save the points for debugging
     private List<Pose2d> points;
 
+    private TunableNumber maxVel = new TunableNumber("Max Velocity", DRIVE_TRAJ_MAX_VEL, true);
+    private TunableNumber maxAccel = new TunableNumber("Max Acceleration", DRIVE_TRAJ_MAX_ACC, true);
+
     public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse) { 
         this.drivetrain = drivetrain;
         points = trajPoints;
         
-        TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC).setReversed(reverse);
+        TrajectoryConfig config = new TrajectoryConfig(maxVel.get(), maxAccel.get()).setReversed(reverse);
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
 
         addRequirements(drivetrain);

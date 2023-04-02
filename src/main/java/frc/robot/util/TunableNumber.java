@@ -15,6 +15,18 @@ public class TunableNumber {
         SmartDashboard.putNumber(key, defaultValue);
     }
 
+    public TunableNumber(String key, double defaultValue, boolean t) {
+        this.key = key;
+        this.defaultValue = defaultValue;
+        this.value = defaultValue;
+
+        if (SmartDashboard.getNumber(key, -1000) == -1000) {
+            // not set
+            SmartDashboard.putNumber(key, defaultValue);
+        }
+
+    }
+
     public double get() {
         return SmartDashboard.getNumber(key, defaultValue);
     }
