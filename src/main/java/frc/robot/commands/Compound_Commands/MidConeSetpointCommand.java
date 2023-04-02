@@ -16,8 +16,9 @@ public class MidConeSetpointCommand extends SequentialCommandGroup{
     public MidConeSetpointCommand(Elevator elevator, PivotArm pivotarm) {
         // TODO: Add new command sequence given Cube Shooting 
         addCommands(
-            new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND),
-            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP)
+            new ParallelCommandGroup(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND),
+            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_UP))
+            
         );
 
         addRequirements(elevator, pivotarm);

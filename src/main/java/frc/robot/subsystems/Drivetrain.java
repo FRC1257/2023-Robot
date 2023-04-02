@@ -439,13 +439,22 @@ public class Drivetrain extends SnailSubsystem {
     public void updateOdometry() {
         poseEstimator.update(Rotation2d.fromDegrees(-Gyro.getInstance().getRobotAngle()), leftEncoder.getPosition(), leftEncoder.getPosition());
 
-        Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
-        if (result == null) 
-            return;
+        try {
+            Optional<EstimatedRobotPose> result = vision.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
+            if (result == null) 
+                return;
 
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+            if (result.isPresent()) {
+                EstimatedRobotPose camPose = result.get();
+                try {
+                    poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
+                } catch (Exception e) {
+                    // lol
+                }
+                
+            }
+        } catch (Exception e) {
+
         }
     }
 

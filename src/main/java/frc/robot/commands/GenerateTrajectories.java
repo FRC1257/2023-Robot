@@ -22,8 +22,8 @@ import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.claw.ClawCloseCommand;
 import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.BrakeCommand;
-import frc.robot.commands.drivetrain.NoPDBalanceCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
+import frc.robot.commands.drivetrain.ResetDriveCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
 import frc.robot.RobotContainer;
 
@@ -40,10 +40,11 @@ public class GenerateTrajectories {
         SHOOTING,
         THREE_PIECE, */
         MOVE_FORWARD,
-        HIT_AND_RUN
+        HIT_AND_RUN,
+        HIT
     }
 
-    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN };
+    State[] autoType = { State.NORMAL/* , State.SHOOTING, State.THREE_PIECE */, State.MOVE_FORWARD, State.HIT_AND_RUN, State.HIT };
 
     private boolean charge;
     private boolean firstScore;
@@ -82,6 +83,7 @@ public class GenerateTrajectories {
         this.drivetrain = drivetrain;
 
         command = new SequentialCommandGroup();
+        command.addCommands(new ResetDriveCommand(drivetrain));
         currentPose = new Pose2d();
         // trajectoryList.add(new Trajectory());
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
@@ -128,6 +130,7 @@ public class GenerateTrajectories {
     }
 
     private boolean getConeOrCube() {
+        //used to decide if we are coning or cubing
         // true = cone
         // false = cube
         switch (RobotContainer.firstScorePositionChooser.getSelected()) {
@@ -232,6 +235,9 @@ public class GenerateTrajectories {
             case HIT_AND_RUN:
                 hitAndRunAuto();
                 break;
+            case HIT:
+                hitAuto();
+                break;
         }
 
         trajectoryList.add(getFullTrajectory());
@@ -246,11 +252,31 @@ public class GenerateTrajectories {
             } else {
                 command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
             }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
         }
 
         addOverChargeTrajectory();
 
-        command.addCommands(new NoPDBalanceCommand(drivetrain));
+        command.addCommands(new PDBalanceCommand(drivetrain, false));
+    }
+
+    private void hitAuto() {
+        
+        if (firstScore) {
+            // addFirstScoreTrajectory();
+            if (getConeOrCube()) {
+                command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
+            } else {
+                command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
+            }
+            command.addCommands(new HoldCommand(elevator, pivotArm));
+        }
+
+        ToPosCommand step2 = new ToPosCommand(drivetrain, List.of(currentPose, chargePose[0]), true);
+        currentPose = chargePose[0];
+        addToPosCommand(step2);
+
+        command.addCommands(new PDBalanceCommand(drivetrain, false));
     }
 
     private void normalAuto() {
@@ -264,7 +290,7 @@ public class GenerateTrajectories {
 
         if (charge) {
             addChargeTrajectory();
-            this.command.addCommands(new NoPDBalanceCommand(drivetrain).withTimeout(8));
+            this.command.addCommands(new PDBalanceCommand(drivetrain, true));
         } else if (goToCyclePose) {
             addCycleTrajectory();
             return;
@@ -311,6 +337,8 @@ public class GenerateTrajectories {
         } else {
             command.addCommands(new ScoreCubeCommand(elevator, pivotArm, claw));
         }
+        command.addCommands(new HoldCommand(elevator, pivotArm));
+
 
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
@@ -324,8 +352,8 @@ public class GenerateTrajectories {
         trajPointsBack.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
 
         addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
-        addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
-        addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
+        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
         turn180();
     }
 

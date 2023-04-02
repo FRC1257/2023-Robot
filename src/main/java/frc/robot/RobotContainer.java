@@ -1,5 +1,7 @@
 package frc.robot;
 
+// hi
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -18,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
-import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.commands.drivetrain.*;
 
 
@@ -40,7 +41,6 @@ import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.commands.Intake.IntakeNeutralCommand;
 import frc.robot.commands.IntakeArm.IntakeArmManualCommand;
 import frc.robot.subsystems.SnailSubsystem;
-import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
@@ -196,7 +196,7 @@ public class RobotContainer {
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
 
 //TESTING
-        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
+        operatorController.getButton(Button.kA.value).onTrue(new PickupCommand(elevator, pivotArm));
         operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
 //Testing
 
@@ -218,9 +218,14 @@ public class RobotContainer {
         // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
         // driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
         
-        driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
+        /* driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
         driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));
+        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180)); */ // uncomment later
+
+        // testing
+        // driveController.getDPad(DPad.RIGHT).onTrue(new NoPDBalanceCommand(drivetrain));
+        driveController.getDPad(DPad.LEFT).onTrue(new PDBalanceCommand(drivetrain, true));
+        // driveController.getDPad(DPad.UP).onTrue(new PDBalanceWithVel(drivetrain, true));
 
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
         operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));
@@ -258,7 +263,7 @@ public class RobotContainer {
         );
 
         putTrajectoryTime();
-
+        int what=1;
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         DriverStation.reportWarning("Auto Command Generated", false);
         return generateTrajectories.getCommand(); 
@@ -388,6 +393,7 @@ public class RobotContainer {
         autoChooser.setDefaultOption("Move forward", 1);
         autoChooser.addOption("Normal Auto", 0);
         autoChooser.addOption("Hit & Run", 2);
+        autoChooser.addOption("Hit", 3);
         SmartDashboard.putData(autoChooser);
     }
     

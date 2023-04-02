@@ -14,13 +14,14 @@ import frc.robot.subsystems.Claw;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
 
-public class MidCubeSetpointCommand extends SequentialCommandGroup {
+public class PickupCommand extends ParallelCommandGroup {
     
     // TODO: Add new command sequence based off of Cube Shooting
-    public MidCubeSetpointCommand(Elevator elevator, PivotArm pivotarm) {
+    // erick prefered
+    public PickupCommand(Elevator elevator, PivotArm pivotarm) {
         addCommands(
             new ParallelCommandGroup(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND), 
-            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_MID))
+            new PivotArmPIDCommand(pivotarm, 110))
             
         );
 

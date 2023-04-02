@@ -23,11 +23,12 @@ public class ClawManualCommand extends CommandBase {
     @Override
     public void execute() {
         double speed = speedSupplier.getAsDouble();
-        
         if (speed < 0) {
-            claw.manualControl(speed/5);
+            // closing
+            claw.manualControl(speed/6);
         } else {
-            claw.manualControl(speed);
+            // opening
+            claw.manualControl(speed/7);
         }
     }
 
