@@ -201,7 +201,7 @@ public class RobotContainer {
         operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
         operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
 //Testing
-        driveController.getButton(Button.kB.value).onTrue(new DriveDistanceCommand(drivetrain, -10));
+        // driveController.getButton(Button.kB.value).onTrue(new DriveDistanceCommand(drivetrain, -10));
 
 
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
@@ -393,11 +393,11 @@ public class RobotContainer {
     }
 
     public void configureChooseAuto() {
-        autoChooser.setDefaultOption("Move Forward with drive PID", 4);
+        autoChooser.setDefaultOption("Move Forward with drive traj", 1);
         autoChooser.addOption("Normal Auto", 0);
         autoChooser.addOption("Hit & Run", 2);
         autoChooser.addOption("Hit", 3);
-        autoChooser.addOption("Move forward Bad with traj", 1);
+        autoChooser.addOption("Move forward Bad with time", 4);
         SmartDashboard.putData(autoChooser);
     }
     

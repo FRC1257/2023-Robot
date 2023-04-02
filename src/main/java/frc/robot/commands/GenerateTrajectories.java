@@ -23,6 +23,7 @@ import frc.robot.commands.claw.ClawCloseCommand;
 import frc.robot.commands.claw.ClawOpenCommand;
 import frc.robot.commands.drivetrain.BrakeCommand;
 import frc.robot.commands.drivetrain.DriveDistanceCommand;
+import frc.robot.commands.drivetrain.DriveTimeCommand;
 import frc.robot.commands.drivetrain.PDBalanceCommand;
 import frc.robot.commands.drivetrain.ResetDriveCommand;
 import frc.robot.commands.drivetrain.TurnAngleCommand;
@@ -381,9 +382,7 @@ public class GenerateTrajectories {
 
         }
 
-        double distance = -10;
-
-        this.command.addCommands(new DriveDistanceCommand(drivetrain, distance));
+        this.command.addCommands(new DriveTimeCommand(drivetrain, 4));
 
         // Literally made while queueing for quals during Robbinsville 2023
         // TODO Redo this so proper Pose2d is used
