@@ -12,8 +12,6 @@ public class ManualDriveCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private final DoubleSupplier speedForwardSupplier;
     private final DoubleSupplier speedTurnSupplier;
-    private final BooleanSupplier visionSupplier;
-    private boolean useVision;
 
     public ManualDriveCommand(Drivetrain drivetrain, DoubleSupplier speedForwardSupplier,
         DoubleSupplier speedTurnSupplier, BooleanSupplier visionSupplier, boolean useVision) {
@@ -21,8 +19,6 @@ public class ManualDriveCommand extends CommandBase {
         this.drivetrain = drivetrain;
         this.speedForwardSupplier = speedForwardSupplier;
         this.speedTurnSupplier = speedTurnSupplier;
-        this.visionSupplier = visionSupplier;
-        this.useVision = useVision;
 
         addRequirements(drivetrain);
     }
@@ -36,9 +32,7 @@ public class ManualDriveCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        double visionAdd = 0;
- 
-        drivetrain.manualDrive(speedForwardSupplier.getAsDouble(), speedTurnSupplier.getAsDouble() + visionAdd);
+        drivetrain.manualDrive(speedForwardSupplier.getAsDouble(), speedTurnSupplier.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.

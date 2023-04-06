@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,10 +22,6 @@ public class Robot extends TimedRobot {
         } else {
             System.out.println("Running on robot");
         }
-    
-        /* var instance = NetworkTableInstance.getDefault();
-        PhotonCamera camera = new PhotonCamera(instance, "Microsoft-LifeCam-3000");
-         */
     }
 
     @Override

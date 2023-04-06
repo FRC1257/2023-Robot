@@ -2,7 +2,6 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.Constants.Autonomous;
@@ -64,7 +63,6 @@ public class PDBalanceWithVel extends CommandBase {
 			drivetrain.velocityDrive(-MathUtil.clamp(velocity, -0.75, 0.75), 0);
 		}
 		
-		// SmartDashboard.putNumber("Align error", error);
 	}
 
 	@Override

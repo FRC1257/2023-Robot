@@ -14,12 +14,8 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import static frc.robot.Constants.VisionConstants;
 
 public class Vision extends SnailSubsystem {
@@ -27,8 +23,6 @@ public class Vision extends SnailSubsystem {
      * Declare the name of the camera used in the pipeline
      */
     PhotonCamera frontCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_FRONT);
-    // no back camera
-    // PhotonCamera backCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_BACK);
 
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
@@ -52,12 +46,6 @@ public class Vision extends SnailSubsystem {
                 VisionConstants.CAMERA_TO_ROBOT_FRONT);
         frontPoseEstimator.setReferencePose(new Pose2d());
 
-        /*
-        backPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
-                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera,
-                VisionConstants.CAMERA_TO_ROBOT_BACK);
-        backPoseEstimator.setReferencePose(new Pose2d());
-        */
     }
 
     @Override
@@ -73,15 +61,6 @@ public class Vision extends SnailSubsystem {
                 return;
             }
 
-            /*currentResult = backCamera.getLatestResult(); // Query the latest result from PhotonVision
-            hasTarget = currentResult.hasTargets(); // If the camera has detected an apriltag target, the hasTarget
-                                                    // boolean
-            // will be
-            // true
-            if (hasTarget) {
-                result = currentResult;
-            }
-            */
         } catch (Exception e) {
             // we had an error where photonvision "saw" a tag that didn't exist
             // this is a dirty try catch but it stops the robot frm breaking
@@ -101,21 +80,13 @@ public class Vision extends SnailSubsystem {
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         frontPoseEstimator.setReferencePose(prevEstimatedRobotPose);
-        // backPoseEstimator.setReferencePose(prevEstimatedRobotPose);
 
         try {
             Optional<EstimatedRobotPose> frontEstimate = frontPoseEstimator.update();
-            // Optional<EstimatedRobotPose> backEstimate = backPoseEstimator.update();
             if (frontEstimate.isPresent()) {
                 chosenEstimate = frontEstimate;
                 return frontEstimate;
-            } 
-            /*
-            else if (backEstimate.isPresent()) {
-                chosenEstimate = backEstimate;
-                return backEstimate;
             }
-            */
 
             chosenEstimate = frontEstimate;
             return frontEstimate;
@@ -179,7 +150,6 @@ public class Vision extends SnailSubsystem {
 
     public void setPipeline(int i) {
         frontCamera.setPipelineIndex(i);
-        // backCamera.setPipelineIndex(i);
     }
 
     public int getDesiredScorePos() {

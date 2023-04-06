@@ -5,12 +5,9 @@ package frc.robot.commands.drivetrain;
 // https://github.com/team6002/FRC2023ChargedUp/blob/main/src/main/java/frc/robot/commands/CMD_AdjustBalance.java
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.Constants.Autonomous;
 import frc.robot.util.Gyro;
 import frc.robot.util.TunableNumber;
 

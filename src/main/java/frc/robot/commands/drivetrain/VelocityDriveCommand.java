@@ -16,8 +16,6 @@ public class VelocityDriveCommand extends CommandBase {
     private final DoubleSupplier speedForwardSupplier;
     private final DoubleSupplier speedTurnSupplier;
     private final SlewRateLimiter limiter;
-    private final BooleanSupplier visionSupplier;
-    private boolean useVision;
 
     public VelocityDriveCommand(Drivetrain drivetrain, DoubleSupplier speedForwardSupplier,
         DoubleSupplier speedTurnSupplier, BooleanSupplier visionSupplier, boolean useVision) {
@@ -26,8 +24,6 @@ public class VelocityDriveCommand extends CommandBase {
         this.speedForwardSupplier = speedForwardSupplier;
         this.speedTurnSupplier = speedTurnSupplier;
         this.limiter = new SlewRateLimiter(DRIVE_CLOSED_MAX_ACC);
-        this.visionSupplier = visionSupplier;
-        this.useVision = useVision;
 
         addRequirements(drivetrain);
     }
