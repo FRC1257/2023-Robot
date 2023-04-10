@@ -203,7 +203,7 @@ public class RobotContainer {
             pivotArm,
             claw,
             charge,
-            SmartDashboard.getBoolean("Auto Close to Cycle", false),
+            SmartDashboard.getBoolean("/Auto/Close to Cycle", false),
             firstScore
         );
 
@@ -251,14 +251,14 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
-        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
+        if (isSimulation && SmartDashboard.getBoolean("/Auto/Reset Auto Viewer", false)) {
             updateTraj = true;
-            SmartDashboard.putBoolean("Reset Auto Viewer", false);
+            SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
         }
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("/Auto/View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj); 
         }
@@ -267,7 +267,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", false);
             getAutoCommand();
 
-            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+            SmartDashboard.putNumber("/Auto/View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
             resetDashboard();
         }
@@ -282,13 +282,13 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Auto Goto Charge", charge);
-        SmartDashboard.putBoolean("Auto Close to Cycle", false);
-        SmartDashboard.putNumber("View Trajectory Pos", 0);
-        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
+        SmartDashboard.putBoolean("/Auto/Close to Cycle", false);
+        SmartDashboard.putNumber("/Auto/View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("/Auto/Update Visual", false);
     
-        SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
         
     }
     
@@ -326,18 +326,18 @@ public class RobotContainer {
     }
     
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", true)
-            || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
-            || SmartDashboard.getBoolean("Update Visual", false);
+        return firstScore != SmartDashboard.getBoolean("/Auto/1st Auto Score", true)
+            || charge != SmartDashboard.getBoolean("/Auto/Goto Charge", false) 
+            || SmartDashboard.getBoolean("/Auto/Update Visual", false);
     }
 
     public void updateAutoChoosers() {
-        firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
-        charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
+        firstScore = SmartDashboard.getBoolean("/Auto/1st Auto Score", firstScore);
+        charge = SmartDashboard.getBoolean("/Auto/Goto Charge", charge);
     }
 
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("/Auto/Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -345,10 +345,10 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Auto Goto Charge", charge);
-        SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
-        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
+        SmartDashboard.putNumber("/Auto/View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("/Auto/Update Visual", false);
     }
 
 }

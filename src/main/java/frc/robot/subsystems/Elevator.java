@@ -22,10 +22,10 @@ public class Elevator extends SnailSubsystem{
     private double setpoint;
     private boolean isPIDFinished;
 
-    private TunableNumber p = new TunableNumber("Elevator P", ELEVATOR_PID[0]);
-    private TunableNumber i = new TunableNumber("Elevator I", ELEVATOR_PID[1]);
-    private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
-    private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
+    private TunableNumber p = new TunableNumber("Elevator", "P", ELEVATOR_PID[0]);
+    private TunableNumber i = new TunableNumber("Elevator", "I", ELEVATOR_PID[1]);
+    private TunableNumber d = new TunableNumber("Elevator", "D", ELEVATOR_PID[2]);
+    private TunableNumber ff = new TunableNumber("Elevator", "FF", ELEVATOR_PID[3]);
 
     public enum State {
         MANUAL,
@@ -71,9 +71,6 @@ public class Elevator extends SnailSubsystem{
             return;
         }
 
-        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
-        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
-
         switch(elevatorState) {
             case MANUAL:
                 elevatorMotor.set(speed);
@@ -111,11 +108,14 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
-        SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
-        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
-        SmartDashboard.putString("Elevator State", elevatorState.toString());
-        SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
+        SmartDashboard.putNumber("/Elevator/Motor Speed", elevatorMotor.get());
+        SmartDashboard.putNumber("/Elevator/Encoder", encoder.getPosition());
+        SmartDashboard.putNumber("/Elevator/Setpoint", setpoint);
+        SmartDashboard.putString("/Elevator/State", elevatorState.toString());
+        SmartDashboard.putString("/Elevator/Brake", elevatorMotor.getIdleMode().toString());
+        
+        SmartDashboard.putBoolean("/Elevator/Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
+        SmartDashboard.putBoolean("/Elevator/Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
 
     }
 

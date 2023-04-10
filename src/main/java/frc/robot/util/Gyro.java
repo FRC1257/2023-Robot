@@ -178,9 +178,9 @@ public class Gyro {
      * Displays the angles on {@code SmartDashboard}.
      */
     public void outputValues() {
-        SmartDashboard.putNumber("Yaw Angle", getYawAngle());
-        SmartDashboard.putNumber("Roll Angle", getRollAngle());
-        SmartDashboard.putNumber("Pitch Angle", getPitchAngle());
+        SmartDashboard.putNumber("/Gyro/Yaw Angle", getYawAngle());
+        SmartDashboard.putNumber("/Gyro/Roll Angle", getRollAngle());
+        SmartDashboard.putNumber("/Gyro/Pitch Angle", getPitchAngle());
 
         SmartDashboard.putNumber("Robot Angle", getRobotAngle());
         SmartDashboard.putNumber("Robot Angle Vel", getRobotAngleVelocity());

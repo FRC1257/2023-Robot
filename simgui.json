@@ -55,7 +55,8 @@
         },
         "SendableChooser[2]": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   }

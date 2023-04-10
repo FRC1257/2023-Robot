@@ -15,6 +15,14 @@ public class TunableNumber {
         SmartDashboard.putNumber(key, defaultValue);
     }
 
+    public TunableNumber(String subsystem, String key, double defaultValue) {
+        this.key = "/" + subsystem + "/" + key;
+        this.defaultValue = defaultValue;
+        this.value = defaultValue;
+
+        SmartDashboard.putNumber(this.key, defaultValue);
+    }
+
     public TunableNumber(String key, double defaultValue, boolean t) {
         this.key = key;
         this.defaultValue = defaultValue;

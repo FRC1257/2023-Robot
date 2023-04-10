@@ -23,11 +23,11 @@ public class PivotArm extends SnailSubsystem {
     private SparkMaxPIDController armPIDController;
     private double setPoint;
 
-    private TunableNumber p = new TunableNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-    private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-    private TunableNumber d = new TunableNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-    private TunableNumber ff = new TunableNumber("Pivot Arm FF", PIVOT_ARM_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
+    private TunableNumber p = new TunableNumber("PivotArm", "P", PIVOT_ARM_PID[0]);
+    private TunableNumber i = new TunableNumber("PivotArm", "I", PIVOT_ARM_PID[1]);
+    private TunableNumber d = new TunableNumber("PivotArm", "D", PIVOT_ARM_PID[2]);
+    private TunableNumber ff = new TunableNumber("PivotArm", "FF", PIVOT_ARM_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("PivotArm", "Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -91,13 +91,13 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putBoolean("Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("/PivotArm/Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
+        SmartDashboard.putBoolean("/PivotArm/Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
 
-        SmartDashboard.putNumber("Pivot Arm Motor Speed", armMotor.get());
-        SmartDashboard.putNumber("Pivot Arm Encoder Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("Pivot Arm Setpoint", setPoint);
-        SmartDashboard.putString("Pivot Arm State", state.name());
+        SmartDashboard.putNumber("/PivotArm/Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("/PivotArm/Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("/PivotArm/Setpoint", setPoint);
+        SmartDashboard.putString("/PivotArm/State", state.name());
     }
 
     @Override
