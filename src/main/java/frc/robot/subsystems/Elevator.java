@@ -4,6 +4,7 @@ import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -18,6 +19,7 @@ public class Elevator extends SnailSubsystem{
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
+    private RelativeEncoder betterEncoder;
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
@@ -58,6 +60,10 @@ public class Elevator extends SnailSubsystem{
         encoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
         encoder.setPosition(0.6);
+
+        betterEncoder = elevatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        betterEncoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
+        betterEncoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
 
     }
 
@@ -110,6 +116,7 @@ public class Elevator extends SnailSubsystem{
     public void displayShuffleboard() {
         SmartDashboard.putNumber("/Elevator/Motor Speed", elevatorMotor.get());
         SmartDashboard.putNumber("/Elevator/Encoder", encoder.getPosition());
+        SmartDashboard.putNumber("/Elevator/Better Encoder", betterEncoder.getPosition());
         SmartDashboard.putNumber("/Elevator/Setpoint", setpoint);
         SmartDashboard.putString("/Elevator/State", elevatorState.toString());
         SmartDashboard.putString("/Elevator/Brake", elevatorMotor.getIdleMode().toString());

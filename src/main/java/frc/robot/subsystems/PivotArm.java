@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,6 +19,7 @@ import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;
     private RelativeEncoder armEncoder;
+    private RelativeEncoder betterEncoder;
     private State state = State.MANUAL;
     private double speed;
     private SparkMaxPIDController armPIDController;
@@ -43,6 +45,10 @@ public class PivotArm extends SnailSubsystem {
         armEncoder = armMotor.getEncoder();
         armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
+
+        betterEncoder = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        betterEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
+        betterEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
         armPIDController = armMotor.getPIDController();
         armPIDController.setP(p.get());
@@ -96,6 +102,7 @@ public class PivotArm extends SnailSubsystem {
 
         SmartDashboard.putNumber("/PivotArm/Motor Speed", armMotor.get());
         SmartDashboard.putNumber("/PivotArm/Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("/PivotArm/Better Encoder Position", betterEncoder.getPosition());
         SmartDashboard.putNumber("/PivotArm/Setpoint", setPoint);
         SmartDashboard.putString("/PivotArm/State", state.name());
     }
