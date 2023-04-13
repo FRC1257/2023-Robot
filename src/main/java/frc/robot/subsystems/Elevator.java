@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.QUADRATURE_COUNTS_PER_REV;
 
 
 public class Elevator extends SnailSubsystem{
@@ -61,7 +62,7 @@ public class Elevator extends SnailSubsystem{
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
         encoder.setPosition(0.6);
 
-        betterEncoder = elevatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, 4096);
+        betterEncoder = elevatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, QUADRATURE_COUNTS_PER_REV);
         betterEncoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
         betterEncoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
 
