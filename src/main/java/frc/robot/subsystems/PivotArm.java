@@ -7,17 +7,15 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 
 import static frc.robot.Constants.PivotArm.*;
 
 import static frc.robot.Constants.ElectricalLayout.*;
-import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
-import com.revrobotics.SparkMaxRelativeEncoder;
+
 
 public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;

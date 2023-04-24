@@ -9,20 +9,9 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
  
 import java.util.Optional;
-import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
-import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
@@ -30,16 +19,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.VecBuilder;
 import frc.robot.util.ArcadeDrive;
 import frc.robot.util.Gyro;
 import org.photonvision.EstimatedRobotPose;
@@ -73,10 +58,9 @@ public class Drivetrain extends SnailSubsystem {
 
     // These classes help us simulate our drivetrain
     public DifferentialDrivetrainSim m_drivetrainSimulator;
-    private final EncoderSim m_leftEncoderSim;
-    private final EncoderSim m_rightEncoderSim;
+
     // The Field2d class shows the field in the sim GUI
-    private final ADXRS450_GyroSim m_gyroSim;
+
 
     private boolean simulation = false;
    
@@ -151,29 +135,7 @@ public class Drivetrain extends SnailSubsystem {
  
         SmartDashboard.putData("Field", m_field);
 
-        if (RobotBase.isSimulation()) { // If our robot is simulated
-            simulation = true;
-            // This class simulates our drivetrain's motion around the field.
-            m_drivetrainSimulator = new DifferentialDrivetrainSim(
-                DriveConstants.kDrivetrainPlant,
-                DriveConstants.kDriveGearbox,
-                DriveConstants.kDriveGearing,
-                DriveConstants.kTrackwidthMeters,
-                DriveConstants.kWheelDiameterMeters / 2.0,
-                VecBuilder.fill(0, 0, 0.0001, 0.1, 0.1, 0.005, 0.005));
-
-            // The encoder and gyro angle sims let us set simulated sensor readings
-            m_leftEncoderSim = new EncoderSim(new Encoder(0, 1)); // makes the simulated verisions of the encoders
-            m_rightEncoderSim = new EncoderSim(new Encoder(2, 3));
-            m_gyroSim = new ADXRS450_GyroSim(Gyro.getInstance().getGyro());
-            // this group of lines right here was why I was getting returned the
-            // pinsAlreadyUsed error
-            // because those pins were already used in this file to create these encoders
-        } else {
-            m_leftEncoderSim = null;
-            m_rightEncoderSim = null;
-            m_gyroSim = null;
-        }
+   
 
         // drivetrain = new DifferentialDrive(frontLeftMotor, frontRightMotor);
         

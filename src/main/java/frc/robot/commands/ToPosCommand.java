@@ -15,15 +15,13 @@ public class ToPosCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
 
-    // save the points for debugging
-    private List<Pose2d> points;
+
 
     private TunableNumber maxVel = new TunableNumber("Max Velocity", DRIVE_TRAJ_MAX_VEL, true);
     private TunableNumber maxAccel = new TunableNumber("Max Acceleration", DRIVE_TRAJ_MAX_ACC, true);
 
     public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse) { 
         this.drivetrain = drivetrain;
-        points = trajPoints;
         
         TrajectoryConfig config = new TrajectoryConfig(maxVel.get(), maxAccel.get()).setReversed(reverse);
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);

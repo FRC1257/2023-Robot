@@ -6,15 +6,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
-import com.revrobotics.SparkMaxRelativeEncoder;
 
 
 public class Elevator extends SnailSubsystem{
@@ -22,7 +19,6 @@ public class Elevator extends SnailSubsystem{
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
-    private DigitalInput limitSwitch; 
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;

@@ -1,7 +1,5 @@
 package frc.robot;
 
-// hi
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
@@ -9,28 +7,19 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Delay;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.*;
 
 
 import frc.robot.commands.elevator.ElevatorManualCommand;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
-import frc.robot.commands.vision.AlignPosCommand;
 
 import frc.robot.commands.pivotArm.*;
 import frc.robot.commands.scoringAssist.DecrementScorePosCommand;
 import frc.robot.commands.scoringAssist.IncrementScorePosCommand;
-import frc.robot.commands.vision.TurnToAprilTagCommand;
 import frc.robot.subsystems.*;
 import frc.robot.commands.GenerateTrajectories;
 import frc.robot.commands.ResetPIDCommand;
@@ -38,24 +27,18 @@ import frc.robot.commands.Compound_Commands.HoldCommand;
 import frc.robot.commands.Compound_Commands.*;
 import frc.robot.commands.Compound_Commands.ScoreConeCommand;
 import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
-import frc.robot.commands.Intake.IntakeNeutralCommand;
-import frc.robot.commands.IntakeArm.IntakeArmManualCommand;
 import frc.robot.subsystems.SnailSubsystem;
 import frc.robot.util.Gyro;
 
 import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
-import java.sql.Driver;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
 
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
 
-import static frc.robot.Constants.Autonomous;
 
 
 /**
@@ -79,7 +62,6 @@ public class RobotContainer {
 
     private Notifier updateNotifier;
     private int outputCounter;
-    private int displayTrajCounter;
 
     private boolean updateTraj = true;
 
@@ -110,7 +92,6 @@ public class RobotContainer {
         configureButtonBindings();
         
         outputCounter = 0;
-        displayTrajCounter = 0;
 
         updateNotifier = new Notifier(this::update);
         updateNotifier.startPeriodic(UPDATE_PERIOD);
@@ -266,7 +247,6 @@ public class RobotContainer {
         );
 
         putTrajectoryTime();
-        int what=1;
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         DriverStation.reportWarning("Auto Command Generated", false);
         return generateTrajectories.getCommand(); 
