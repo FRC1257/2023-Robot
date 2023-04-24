@@ -13,13 +13,10 @@ public class ToPosCommand extends CommandBase {
     private final Drivetrain drivetrain;
     private Trajectory trajectory;
 
-    // save the points for debugging
-    private List<Pose2d> points;
+
 
     public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse) { 
         this.drivetrain = drivetrain;
-        points = trajPoints;
-        
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC).setReversed(reverse);
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
 
