@@ -137,6 +137,7 @@ public class GenerateTrajectories {
             case 8:
                 return true;
         }
+        return true;
     }
 
     private Pose2d getChargeLocation() {
@@ -179,7 +180,7 @@ public class GenerateTrajectories {
             return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
         }
         return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
-
+    }
 
     private Pose2d getHitAndRunPose2d() {
         return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
@@ -262,13 +263,7 @@ public class GenerateTrajectories {
             }
         }
 
-        if (charge) {
-            addChargeTrajectory();
-            this.command.addCommands(new PDBalanceCommand(drivetrain, true));
-        } else if (goToCyclePose) {
-            addCycleTrajectory();
-            return;
-        }
+       
 
         // if none of these have run something has gone wrong
         // so just leave the community
