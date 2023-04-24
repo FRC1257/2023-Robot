@@ -45,7 +45,7 @@
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Auto Get Cargo",
-              "_title": "SmartDashboard/Auto Get Cargo",
+              "_title": "Auto Get Cargo",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -57,8 +57,8 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto Goto Charge",
-              "_title": "SmartDashboard/Auto Goto Charge",
+              "_source0": "network_table:///SmartDashboard/Auto/Goto Charge",
+              "_title": "Goto Charge",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -114,7 +114,7 @@
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/isAllianceBlue",
-              "_title": "SmartDashboard/isAllianceBlue",
+              "_title": "isAllianceBlue",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -469,8 +469,8 @@
             ],
             "content": {
               "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
-              "_title": "SmartDashboard/View Trajectory Pos",
+              "_source0": "network_table:///SmartDashboard/Auto/View Trajectory Pos",
+              "_title": "View Trajectory Pos",
               "_glyph": 148,
               "_showGlyph": false,
               "Slider Settings/Min": 0.0,
@@ -566,7 +566,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
               "_title": "1st Auto Score",
               "_glyph": 148,
               "_showGlyph": false,
@@ -639,7 +639,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_source0": "network_table:///SmartDashboard/Auto/Reset Auto Viewer",
               "_title": "Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2184,7 +2184,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Auto Close to Cycle",
+              "_source0": "network_table:///SmartDashboard/Auto/Close to Cycle",
               "_title": "Auto Close to Cycle",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2299,7 +2299,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto Goto Charge",
+              "_source0": "network_table:///SmartDashboard/Auto/Goto Charge",
               "_title": "Auto Charge",
               "_glyph": 148,
               "_showGlyph": false
@@ -2338,7 +2338,7 @@
             ],
             "content": {
               "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_source0": "network_table:///SmartDashboard/Auto/View Trajectory Pos",
               "_title": "Change View of Trajectory",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2355,7 +2355,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Update Visual",
+              "_source0": "network_table:///SmartDashboard/Auto/Update Visual",
               "_title": "Update Visual",
               "_glyph": 148,
               "_showGlyph": false
@@ -2368,7 +2368,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
               "_title": "Auto Score",
               "_glyph": 148,
               "_showGlyph": false
@@ -2394,7 +2394,7 @@
             ],
             "content": {
               "_type": "Simple Dial",
-              "_source0": "network_table:///SmartDashboard/Trajectory Time",
+              "_source0": "network_table:///SmartDashboard/Auto/Trajectory Time",
               "_title": "Drive Time",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2410,7 +2410,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_source0": "network_table:///SmartDashboard/Auto/Reset Auto Viewer",
               "_title": "Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false
@@ -2423,8 +2423,8 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto Close to Cycle",
-              "_title": "SmartDashboard/Auto Close to Cycle",
+              "_source0": "network_table:///SmartDashboard/Auto/Close to Cycle",
+              "_title": "Auto Close to Cycle",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2449,8 +2449,8 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/1st Auto Score",
-              "_title": "SmartDashboard/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
+              "_title": "1st Auto Score",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2538,7 +2538,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PDBalanceCommand D",
-              "_title": "SmartDashboard/PDBalanceCommand D",
+              "_title": "PDBalanceCommand D",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2551,7 +2551,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PDBalanceCommand P",
-              "_title": "SmartDashboard/PDBalanceCommand P",
+              "_title": "PDBalanceCommand P",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2563,8 +2563,8 @@
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/Roll Angle",
-              "_title": "SmartDashboard/Roll Angle",
+              "_source0": "network_table:///SmartDashboard/Gyro/Roll Angle",
+              "_title": "Roll Angle",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
@@ -2572,8 +2572,7 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Roll Angle": true
+              "Y-axis/Unit": "ul"
             }
           },
           "0,0": {
@@ -2584,7 +2583,7 @@
             "content": {
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/Drive Angle PID (pos, set)",
-              "_title": "SmartDashboard/Drive Angle PID (pos, set)",
+              "_title": "Drive Angle PID (pos, set)",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
@@ -2604,8 +2603,8 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Elevator Bottom",
-              "_title": "/SmartDashboard/Elevator Bottom",
+              "_source0": "network_table:///SmartDashboard/Elevator/Bottom",
+              "_title": "Elevator Bottom",
               "_glyph": 148,
               "_showGlyph": false,
               "Colors/Color when true": "#7CFC00FF",
@@ -2620,7 +2619,7 @@
             "content": {
               "_type": "Toggle Button",
               "_source0": "network_table:///SmartDashboard/Motor mode",
-              "_title": "SmartDashboard/Motor mode",
+              "_title": "Motor mode",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2632,8 +2631,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
-              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_source0": "network_table:///SmartDashboard/PivotArm/Encoder Position",
+              "_title": "Pivot Arm Encoder Position",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2706,8 +2705,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elevator Motor Speed",
-              "_title": "/SmartDashboard/Elevator Motor Speed",
+              "_source0": "network_table:///SmartDashboard/Elevator/Motor Speed",
+              "_title": "Elevator Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2719,8 +2718,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elevator Encoder",
-              "_title": "/SmartDashboard/Elevator Encoder",
+              "_source0": "network_table:///SmartDashboard/Elevator/Encoder",
+              "_title": "Elevator Encoder",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2732,8 +2731,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elevator State",
-              "_title": "/SmartDashboard/Elevator State",
+              "_source0": "network_table:///SmartDashboard/Elevator/State",
+              "_title": "Elevator State",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2758,8 +2757,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm P",
-              "_title": "/SmartDashboard/Pivot Arm P",
+              "_source0": "network_table:///SmartDashboard/PivotArm/P",
+              "_title": "Pivot Arm P",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2771,8 +2770,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm I",
-              "_title": "/SmartDashboard/Pivot Arm I",
+              "_source0": "network_table:///SmartDashboard/PivotArm/I",
+              "_title": "Pivot Arm I",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2784,8 +2783,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm D",
-              "_title": "/SmartDashboard/Pivot Arm D",
+              "_source0": "network_table:///SmartDashboard/PivotArm/D",
+              "_title": "Pivot Arm D",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2797,8 +2796,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm FF",
-              "_title": "/SmartDashboard/Pivot Arm FF",
+              "_source0": "network_table:///SmartDashboard/PivotArm/FF",
+              "_title": "Pivot Arm FF",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2810,8 +2809,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm Max Output",
-              "_title": "/SmartDashboard/Pivot Arm Max Output",
+              "_source0": "network_table:///SmartDashboard/PivotArm/Max Output",
+              "_title": "Pivot Arm Max Output",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2823,7 +2822,7 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm Motor Speed",
+              "_source0": "network_table:///SmartDashboard/PivotArm/Motor Speed",
               "_title": "Pivot Arm Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
@@ -2836,8 +2835,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pivot Arm State",
-              "_title": "/SmartDashboard/Pivot Arm State",
+              "_source0": "network_table:///SmartDashboard/PivotArm/State",
+              "_title": "Pivot Arm State",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2850,7 +2849,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Right Motor Speed",
-              "_title": "SmartDashboard/Claw Right Motor Speed",
+              "_title": "Claw Right Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2863,7 +2862,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw Left Motor Speed",
-              "_title": "SmartDashboard/Claw Left Motor Speed",
+              "_title": "Claw Left Motor Speed",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2876,7 +2875,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Claw State",
-              "_title": "SmartDashboard/Claw State",
+              "_title": "Claw State",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2889,7 +2888,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator Encoder",
-              "_title": "SmartDashboard/Elevator Encoder",
+              "_title": "Elevator Encoder",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2902,7 +2901,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Pivot Arm Encoder Position",
-              "_title": "SmartDashboard/Pivot Arm Encoder Position",
+              "_title": "Pivot Arm Encoder Position",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2912,9 +2911,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.800000011920929,
-    "y": 0.800000011920929,
-    "width": 1534.4000244140625,
-    "height": 910.4000244140625
+    "x": -7.199999809265137,
+    "y": -7.199999809265137,
+    "width": 1550.4000244140625,
+    "height": 830.4000244140625
   }
 }

@@ -13,10 +13,10 @@ public class HoldCommand extends SequentialCommandGroup{
         addCommands( //WITH INTAKE
             //new ElevatorExtendCommand(elevator),
             new ParallelDeadlineGroup(
-            new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_RETRACT),
-            new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_HOLD)
+                new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_RETRACT),
+                new PivotArmPIDCommand(pivotarm, PIVOT_ARM_SETPOINT_HOLD)
             )
-            );
+        );
 
         addRequirements(elevator, pivotarm);
     }

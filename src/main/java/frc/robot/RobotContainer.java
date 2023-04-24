@@ -121,7 +121,6 @@ public class RobotContainer {
         
         vision = new Vision();
         drivetrain = new Drivetrain(getStartingPos(), vision);
-        // drivetrain.setDefaultCommand(new ManualDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn));
         drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
              driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
 
@@ -157,59 +156,23 @@ public class RobotContainer {
      * Define {@link Button} -> command mappings.
      */
     private void configureButtonBindings() {
-        // Drivetrain bindings
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        
+        // Drivetrain bindings        
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
         driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
-        // driveController.getButton(Button.kLeftBumper.value).onTrue(new TurnToAprilTagCommand(drivetrain, vision));
-        
-        // Operator bindings for pivot arm PID
-        // operatorController.getButton(Button.kX.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-        // operatorController.getButton(Button.kY.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_INTAKE));
-        // operatorController.getButton(Button.kA.value).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-        
+
         // compound commands
         operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));
-        // intake and low score are same
-        // operatorController.getDPad(DPad.DOWN).onTrue(new IntakeCommand(elevator, pivotArm, pivotWrist));
-        // operatorController.getDPad(DPad.LEFT).onTrue(new HoldCommand(elevator, pivotArm, pivotWrist));
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
 
-//TESTING
         operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
         operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
-//Testing
-        // driveController.getButton(Button.kB.value).onTrue(new DriveDistanceCommand(drivetrain, -10));
-
 
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
         operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));
 
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));
-
-        // operatorController.getDPad(DPad.DOWN).onTrue(new ElevatorPIDCommand (elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_MIDDLE));
-        // operatorController.getDPad(DPad.LEFT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_MID));
-        // operatorController.getDPad(DPad.RIGHT).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_HOLD));
-        // operatorController.getDPad(DPad.UP).onTrue(new PivotArmPIDCommand(pivotArm, Constants.PivotArm.PIVOT_ARM_SETPOINT_UP));
-
-        /* operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm, pivotWrist)); */
-
-        
-        
-        // driveController.getButton(Button.kY.value).onTrue(new PDBalanceCommand(drivetrain, true));
-        // driveController.getButton(Button.kB.value).onTrue(new NoPDBalanceCommand(drivetrain).withTimeout(1));
-        
-        /* driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, 90));
-        driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, -90));
-        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180)); */ // uncomment later
-
-        // testing
-        // driveController.getDPad(DPad.RIGHT).onTrue(new NoPDBalanceCommand(drivetrain));
-        driveController.getDPad(DPad.LEFT).onTrue(new PDBalanceCommand(drivetrain, true));
-        // driveController.getDPad(DPad.UP).onTrue(new PDBalanceWithVel(drivetrain, true));
 
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
         operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));
@@ -225,11 +188,6 @@ public class RobotContainer {
         configureChooseAuto();
     }
 
-    public Pose2d shiftedPose(Pose2d pose) {
-        double SHIFT_X = -3.75;
-        return new Pose2d(pose.getX() + SHIFT_X, pose.getY(), pose.getRotation());
-    }
-
     /**
      * Do the logic to return the auto command to run
      */
@@ -242,7 +200,7 @@ public class RobotContainer {
             pivotArm,
             claw,
             charge,
-            SmartDashboard.getBoolean("Auto Close to Cycle", false),
+            SmartDashboard.getBoolean("/Auto/Close to Cycle", false),
             firstScore
         );
 
@@ -250,7 +208,6 @@ public class RobotContainer {
         // drivetrain.drawTrajectory(generateTrajedies.getTrajectory());
         DriverStation.reportWarning("Auto Command Generated", false);
         return generateTrajectories.getCommand(); 
-        //return new DriveDistanceCommand(drivetrain, 10);
     }
 
     /**
@@ -292,14 +249,14 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
-        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
+        if (isSimulation && SmartDashboard.getBoolean("/Auto/Reset Auto Viewer", false)) {
             updateTraj = true;
-            SmartDashboard.putBoolean("Reset Auto Viewer", false);
+            SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
         }
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("/Auto/View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj); 
         }
@@ -308,7 +265,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", false);
             getAutoCommand();
 
-            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+            SmartDashboard.putNumber("/Auto/View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
             resetDashboard();
         }
@@ -323,30 +280,15 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        /* SmartDashboard.putBoolean("Opt. 2nd Auto Score", secondScore);
-        SmartDashboard.putBoolean("Auto Get Cargo", cargo); */
-        SmartDashboard.putBoolean("Auto Goto Charge", charge);
-        SmartDashboard.putBoolean("Auto Close to Cycle", false);
-        SmartDashboard.putNumber("View Trajectory Pos", 0);
-        SmartDashboard.putBoolean("Update Visual", false);
-        /* SmartDashboard.putBoolean("3 Ball Auto", false);
-        SmartDashboard.putBoolean("Leave Tarmac", true);
-        SmartDashboard.putBoolean("Hit and Run", false); */
-
-        SmartDashboard.putBoolean("Reset Auto Viewer", false);
+        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
+        SmartDashboard.putBoolean("/Auto/Close to Cycle", false);
+        SmartDashboard.putNumber("/Auto/View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("/Auto/Update Visual", false);
+    
+        SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
         
     }
-
-    /* public void configureScoreLevelChooser() {
-        /* firstScoreLevelChooser.setDefaultOption("First score level chooser", 0);
-        firstScoreLevelChooser.addOption("low arm", 0);
-        firstScoreLevelChooser.addOption("mid cone arm", 1);
-        firstScoreLevelChooser.addOption("mid cube arm", 2);/* 
-        firstScoreLevelChooser.addOption("mid shoot", 3);
-        firstScoreLevelChooser.addOption("high shoot", 4); 
-        SmartDashboard.putData(firstScoreLevelChooser); 
-    } */
     
     public void configureGamePieceChooser() {
         gamePieceChooser.setDefaultOption("Cargo Piece Chooser", 0);
@@ -382,18 +324,18 @@ public class RobotContainer {
     }
     
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("1st Auto Score", true)
-            || charge != SmartDashboard.getBoolean("Auto Goto Charge", false) 
-            || SmartDashboard.getBoolean("Update Visual", false);
+        return firstScore != SmartDashboard.getBoolean("/Auto/1st Auto Score", true)
+            || charge != SmartDashboard.getBoolean("/Auto/Goto Charge", false) 
+            || SmartDashboard.getBoolean("/Auto/Update Visual", false);
     }
 
     public void updateAutoChoosers() {
-        firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
-        charge = SmartDashboard.getBoolean("Auto Goto Charge", charge);
+        firstScore = SmartDashboard.getBoolean("/Auto/1st Auto Score", firstScore);
+        charge = SmartDashboard.getBoolean("/Auto/Goto Charge", charge);
     }
 
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("/Auto/Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -401,10 +343,10 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("Auto Goto Charge", charge);
-        SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
-        SmartDashboard.putBoolean("Update Visual", false);
+        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
+        SmartDashboard.putNumber("/Auto/View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("/Auto/Update Visual", false);
     }
 
 }

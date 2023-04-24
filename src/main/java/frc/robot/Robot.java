@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class Robot extends TimedRobot {
     
     private RobotContainer robotContainer;
@@ -13,6 +16,9 @@ public class Robot extends TimedRobot {
     
     @Override
     public void robotInit() {
+        DataLogManager.start();
+        DriverStation.startDataLog(DataLogManager.getLog());
+        
         robotContainer = new RobotContainer();
 
         PortForwarder.add(5800, "photonvision.local", 5800);
@@ -22,10 +28,6 @@ public class Robot extends TimedRobot {
         } else {
             System.out.println("Running on robot");
         }
-    
-        /* var instance = NetworkTableInstance.getDefault();
-        PhotonCamera camera = new PhotonCamera(instance, "Microsoft-LifeCam-3000");
-         */
     }
 
     @Override

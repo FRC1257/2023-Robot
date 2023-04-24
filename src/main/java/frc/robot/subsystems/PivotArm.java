@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -16,21 +17,22 @@ import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 
+import static frc.robot.Constants.QUADRATURE_COUNTS_PER_REV;
 
 public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;
     private RelativeEncoder armEncoder;
+    private RelativeEncoder betterEncoder;
     private State state = State.MANUAL;
     private double speed;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
-    /* private DigitalInput limitSwitch; */
 
-    private TunableNumber p = new TunableNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-    private TunableNumber i = new TunableNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-    private TunableNumber d = new TunableNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-    private TunableNumber ff = new TunableNumber("Pivot Arm FF", PIVOT_ARM_PID[3]);
-    private TunableNumber maxOutput = new TunableNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
+    private TunableNumber p = new TunableNumber("PivotArm", "P", PIVOT_ARM_PID[0]);
+    private TunableNumber i = new TunableNumber("PivotArm", "I", PIVOT_ARM_PID[1]);
+    private TunableNumber d = new TunableNumber("PivotArm", "D", PIVOT_ARM_PID[2]);
+    private TunableNumber ff = new TunableNumber("PivotArm", "FF", PIVOT_ARM_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("PivotArm", "Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -38,20 +40,18 @@ public class PivotArm extends SnailSubsystem {
     }
 
     public PivotArm() {
-        // leftArmMotor = new CANSparkMax(PIVOT_ARM_LEFT_ID, MotorType.kBrushless);
-        // leftArmMotor.restoreFactoryDefaults();
-        // leftArmMotor.setIdleMode(IdleMode.kBrake);
-        // leftArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
-
         armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
         armMotor.restoreFactoryDefaults();
-        // armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setIdleMode(IdleMode.kCoast);
+        armMotor.setIdleMode(IdleMode.kBrake);
         armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
         armEncoder = armMotor.getEncoder();
         armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
+
+        betterEncoder = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, QUADRATURE_COUNTS_PER_REV);
+        betterEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
+        betterEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
         armPIDController = armMotor.getPIDController();
         armPIDController.setP(p.get());
@@ -60,37 +60,16 @@ public class PivotArm extends SnailSubsystem {
         armPIDController.setFF(ff.get());
         armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
-        /* limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID); */
     }
 
     @Override
     public void update() {
-/*         if (limitSwitch.get()) {
-            armEncoder.setPosition(0);
-            if (speed < 0) {
-
-                speed = 0;
-            }
-        } */
-
-            
-        if (armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) {
+        if ((armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) 
+            || (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM && speed < 0.0)) {
             armMotor.set(0);
-            return;
-        } else if (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM && speed < 0.0) {
-            armMotor.set(0);
-            return;
-        } 
-        
-        /* 
-        if (state == State.PID && (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM || armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP)) {
-            armMotor.set(0);
-            endPID();
             return;
         }
-        */
         
-
         switch (state) {
             case MANUAL:
                 armMotor.set(speed);
@@ -121,14 +100,14 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putBoolean("Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("/PivotArm/Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
+        SmartDashboard.putBoolean("/PivotArm/Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
 
-        SmartDashboard.putNumber("Pivot Arm Motor Speed", armMotor.get());
-        SmartDashboard.putNumber("Pivot Arm Encoder Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("Pivot Arm Setpoint", setPoint);
-        SmartDashboard.putString("Pivot Arm State", state.name());
-        /* SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get()); */
+        SmartDashboard.putNumber("/PivotArm/Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("/PivotArm/Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("/PivotArm/Better Encoder Position", betterEncoder.getPosition());
+        SmartDashboard.putNumber("/PivotArm/Setpoint", setPoint);
+        SmartDashboard.putString("/PivotArm/State", state.name());
     }
 
     @Override

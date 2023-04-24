@@ -55,6 +55,7 @@ public class GenerateTrajectories {
     private SequentialCommandGroup command;
     private Pose2d currentPose;
     private List<Trajectory> trajectoryList = new ArrayList<Trajectory>();
+    
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
@@ -92,15 +93,12 @@ public class GenerateTrajectories {
             blue = false;
         }
 
-        // this.StartPose = ALLIANCE_START_POSE[StartPose];
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
         AutoDecider();
         command.addCommands(new BrakeCommand(drivetrain));
     }
-
-    // TODO make method to get positions
 
     private State getAutoType() {
         return autoType[RobotContainer.autoChooser.getSelected()];
@@ -139,9 +137,48 @@ public class GenerateTrajectories {
             case 8:
                 return true;
         }
-        return true;
     }
 
+    private Pose2d getChargeLocation() {
+        // should be stored as a constant then retrieved for this
+        // currently returning this random thing
+
+        // index 0 is the area outside the community zone
+        // index 1 is the area inside the community zone
+        // in reality there are 2 possible places so we would just need to use the side
+        // of the field we are on
+        if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
+            return chargePose[0];
+        } else if (blue) {
+            return chargePose[1];
+        }
+        // not blue
+        if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
+            return chargePose[0];
+        }
+        return chargePose[1];
+
+    }
+
+    private Pose2d getChargeWaypointLocation() {
+        // should be stored as a constant then retrieved for this
+        // currently returning this random thing
+
+        // index 0 is the area outside the community zone
+        // index 1 is the area inside the community zone
+
+        // in reality there are 2 possible places so we would just need to use the side
+        // of the field we are on
+        if (blue && currentPose.getX() > Autonomous.BLUE_COMMUNITY_X) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
+        } else if (blue) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
+        }
+        // not blue
+        if (currentPose.getX() < Autonomous.RED_COMMUNITY_X) {
+            return ALLIANCE_CHARGE_POSE_WAYPOINT[0];
+        }
+        return ALLIANCE_CHARGE_POSE_WAYPOINT[1];
 
 
     private Pose2d getHitAndRunPose2d() {
@@ -149,15 +186,6 @@ public class GenerateTrajectories {
     }
 
     private Pose2d getLeaveCommunityPose(Pose2d currentPose) {
-        // should be stored as a constant then retrieved for this
-        // currently returning this random thing
-        // TODO fix this
-        // in reality there are 6 possible places so we would just need to use the
-        // varialbes we have
-        // also a jank fix
-        /* if (hitAndRun) {
-            return ALLIANCE_LEAVE_COMMUNITY[2];
-        } */
         if (currentPose.getY() > Autonomous.CHARGE_CENTER_Y) {
             return ALLIANCE_LEAVE_COMMUNITY[0];
         }
@@ -194,7 +222,6 @@ public class GenerateTrajectories {
     private void hitAndRunAuto() {
         
         if (firstScore) {
-            // addFirstScoreTrajectory();
             if (getConeOrCube()) {
                 command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
             } else {
@@ -211,7 +238,6 @@ public class GenerateTrajectories {
     private void hitAuto() {
         
         if (firstScore) {
-            // addFirstScoreTrajectory();
             if (getConeOrCube()) {
                 command.addCommands(new ScoreConeCommand(elevator, pivotArm, claw));
             } else {
@@ -236,20 +262,19 @@ public class GenerateTrajectories {
             }
         }
 
-        // if (charge) {
-        //     addChargeTrajectory();
-        //     this.command.addCommands(new PDBalanceCommand(drivetrain, true));
-        // } else if (goToCyclePose) {
-        //     addCycleTrajectory();
-        //     return;
-        // }
+        if (charge) {
+            addChargeTrajectory();
+            this.command.addCommands(new PDBalanceCommand(drivetrain, true));
+        } else if (goToCyclePose) {
+            addCycleTrajectory();
+            return;
+        }
 
         // if none of these have run something has gone wrong
         // so just leave the community
         if (StartPose.equals(currentPose)) {
             addLeaveCommunityTrajectory();
         }
-
         
         turn180();
         
@@ -320,17 +345,6 @@ public class GenerateTrajectories {
         }
 
         this.command.addCommands(new DriveTimeCommand(drivetrain, 4));
-
-        // Literally made while queueing for quals during Robbinsville 2023
-        // TODO Redo this so proper Pose2d is used
-        /* List<Pose2d> trajPoints = new ArrayList<Pose2d>();
-        trajPoints.add(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]);
-        trajPoints.add(driveOutPose(ALLIANCE_SCORE_POSE[RobotContainer.firstScorePositionChooser.getSelected()]));
-        */
-        
-        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
-        // addToPosCommand(new ToPosCommand(drivetrain, trajPointsBack, false));
-        // addToPosCommand(new ToPosCommand(drivetrain, trajPoints, true));
         turn180();
     }
 
@@ -454,7 +468,7 @@ public class GenerateTrajectories {
     }
 
     public SequentialCommandGroup getCommand() {
-        // AutoDecider();
+        // 
         return command;
     }
 

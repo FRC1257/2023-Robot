@@ -58,10 +58,6 @@ public class Drivetrain extends SnailSubsystem {
 
     // These classes help us simulate our drivetrain
     public DifferentialDrivetrainSim m_drivetrainSimulator;
-
-    // The Field2d class shows the field in the sim GUI
-
-
     private boolean simulation = false;
    
     private DifferentialDriveKinematics driveKinematics;
@@ -134,8 +130,6 @@ public class Drivetrain extends SnailSubsystem {
         pathTimer = new Timer();
  
         SmartDashboard.putData("Field", m_field);
-
-   
 
         // drivetrain = new DifferentialDrive(frontLeftMotor, frontRightMotor);
         
