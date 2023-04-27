@@ -1985,6 +1985,64 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "8,16": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
+              "_title": "1st Auto Score",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "10,16": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Auto Goto Charge",
+              "_title": "Auto Goto Charge",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "12,16": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
+              "_title": "View Trajectory Pos",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "16,16": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
+              "_title": "Reset Auto Viewer",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -2672,32 +2730,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "13,0": {
-            "size": [
-              5,
-              2
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/Claw",
-              "_title": "/SmartDashboard/Claw",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,0": {
-            "size": [
-              5,
-              2
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/Elevator",
-              "_title": "/SmartDashboard/Elevator",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "0,3": {
             "size": [
               3,
@@ -2733,19 +2765,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Elevator/State",
               "_title": "Elevator State",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "6,0": {
-            "size": [
-              4,
-              2
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///SmartDashboard/PivotArm",
-              "_title": "/SmartDashboard/PivotArm",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -2904,6 +2923,54 @@
               "_title": "Pivot Arm Encoder Position",
               "_glyph": 148,
               "_showGlyph": false
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Tab 7",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "titleType": 0,
+        "tiles": {
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Motor mode",
+              "_title": "SmartDashboard/Motor mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://photonvision_Port_1182_MJPEG_Server",
+              "_title": "photonvision_Port_1182_MJPEG_Server",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -22,7 +23,7 @@ import static frc.robot.Constants.QUADRATURE_COUNTS_PER_REV;
 public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;
     private RelativeEncoder armEncoder;
-    private RelativeEncoder betterEncoder;
+    private SparkMaxAbsoluteEncoder betterEncoder;
     private State state = State.MANUAL;
     private double speed;
     private SparkMaxPIDController armPIDController;
@@ -49,7 +50,7 @@ public class PivotArm extends SnailSubsystem {
         armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
-        betterEncoder = armMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, QUADRATURE_COUNTS_PER_REV);
+        betterEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         betterEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
         betterEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 

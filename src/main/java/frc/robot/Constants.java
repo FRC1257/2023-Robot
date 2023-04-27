@@ -393,7 +393,7 @@ public final class Constants {
         public static double CLAW_PID_MAX_OUTPUT = 0.1257; // lol */
 
         public static double CLAW_CLOSED_SPEED = 0.5;
-        public static double CLAW_OPEN_SPEED = -0.25;
+        public static double CLAW_OPEN_SPEED = -0.5;
 
         public static double POSITION_CONVERSION_FACTOR = 1;
 

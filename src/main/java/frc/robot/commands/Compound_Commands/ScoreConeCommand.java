@@ -20,7 +20,7 @@ public class ScoreConeCommand extends SequentialCommandGroup {
                 new ClawCloseCommand(claw, 5)
             ),
             new Delay(0.2),
-            new ClawOpenCommand(claw, 0.5)
+            new ClawOpenCommand(claw, 0.15)
         );
 
         addRequirements(elevator, pivotArm, claw);
