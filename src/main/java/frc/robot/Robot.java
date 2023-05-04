@@ -16,6 +16,16 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         robotContainer = new RobotContainer();
 
+        CommandScheduler.getInstance().onCommandInitialize(command -> {
+            System.out.println("Starting command: " + command.getName());
+        });
+        CommandScheduler.getInstance().onCommandInterrupt(command -> {
+            System.out.println("Interrupting command: " + command.getName());
+        });
+        CommandScheduler.getInstance().onCommandFinish(command -> {
+            System.out.println("Finishing command: " + command.getName());
+        });
+
         PortForwarder.add(5800, "photonvision.local", 5800);
 
         if (isSimulation()) {
@@ -24,9 +34,6 @@ public class Robot extends TimedRobot {
             System.out.println("Running on robot");
         }
     
-        /* var instance = NetworkTableInstance.getDefault();
-        PhotonCamera camera = new PhotonCamera(instance, "Microsoft-LifeCam-3000");
-         */
     }
 
     @Override
