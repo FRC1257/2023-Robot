@@ -2,29 +2,36 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.TunableNumber;
 
 import static frc.robot.Constants.PivotArm.*;
 
 import static frc.robot.Constants.ElectricalLayout.*;
-import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
 public class PivotArm extends SnailSubsystem {
-    private CANSparkMax leftArmMotor, rightArmMotor;
-    private RelativeEncoder leftArmEncoder;
+    private CANSparkMax armMotor;
+    private RelativeEncoder armEncoder;
+    private DutyCycleEncoder absoluteEncoder;
     private State state = State.MANUAL;
     private double speed;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
-    private DigitalInput limitSwitch;
 
+    private TunableNumber p = new TunableNumber("PivotArmValues", "P", PIVOT_ARM_PID[0]);
+    private TunableNumber i = new TunableNumber("PivotArmValues", "I", PIVOT_ARM_PID[1]);
+    private TunableNumber d = new TunableNumber("PivotArmValues", "D", PIVOT_ARM_PID[2]);
+    private TunableNumber ff = new TunableNumber("PivotArmValues", "FF", PIVOT_ARM_PID[3]);
+    private TunableNumber maxOutput = new TunableNumber("PivotArmValues", "Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
 
     public enum State {
         MANUAL,
@@ -32,55 +39,50 @@ public class PivotArm extends SnailSubsystem {
     }
 
     public PivotArm() {
-        leftArmMotor = new CANSparkMax(PIVOT_ARM_LEFT_ID, MotorType.kBrushless);
-        leftArmMotor.restoreFactoryDefaults();
-        leftArmMotor.setIdleMode(IdleMode.kBrake);
-        leftArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        armMotor = new CANSparkMax(PIVOT_ARM_ID, MotorType.kBrushless);
+        armMotor.restoreFactoryDefaults();
+        armMotor.setIdleMode(IdleMode.kBrake);
+        armMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
 
-        rightArmMotor = new CANSparkMax(PIVOT_ARM_RIGHT_ID, MotorType.kBrushless);
-        rightArmMotor.restoreFactoryDefaults();
-        rightArmMotor.setIdleMode(IdleMode.kBrake);
-        rightArmMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        armEncoder = armMotor.getEncoder();
+        armEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
+        armEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
-        rightArmMotor.follow(leftArmMotor);
+        absoluteEncoder = new DutyCycleEncoder(1);
+        absoluteEncoder.setDistancePerRotation(360.0 / 1024.0);
+        absoluteEncoder.setDutyCycleRange(1/1024.0, 1023.0/1024.0);
 
-        leftArmEncoder = leftArmMotor.getEncoder();
-        leftArmEncoder.setPositionConversionFactor(48.0 * Math.PI * 6);
-        leftArmEncoder.setVelocityConversionFactor(48.0 * Math.PI * 6 / 60);
+        armPIDController = armMotor.getPIDController();
+        armPIDController.setP(p.get());
+        armPIDController.setI(i.get());
+        armPIDController.setD(d.get());
+        armPIDController.setFF(ff.get());
+        armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get());
 
-        armPIDController = leftArmMotor.getPIDController();
-        armPIDController.setP(PIVOT_ARM_PID[0]);
-        armPIDController.setI(PIVOT_ARM_PID[1]);
-        armPIDController.setD(PIVOT_ARM_PID[2]);
-        armPIDController.setOutputRange(-PIVOT_ARM_PID_MAX_OUTPUT, PIVOT_ARM_PID_MAX_OUTPUT);
-
-        limitSwitch = new DigitalInput(INTAKE_ARM_BUMP_SWITCH_ID);
     }
 
     @Override
     public void update() {
-        if (limitSwitch.get()) {
-            leftArmEncoder.setPosition(0);
-            if (speed < 0) {
-                speed = 0;
-            }
+        if ((armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) 
+            || (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM && speed < 0.0)) {
+            armMotor.set(0);
+            return;
         }
-
+        
         switch (state) {
-            case MANUAL: {
-                leftArmMotor.set(speed);
+            case MANUAL:
+                armMotor.set(speed);
                 break;
-            }
-            case PID: {
+            case PID:
                 // send the desired setpoint to the PID controller and specify we want to use position control
                 armPIDController.setReference(setPoint, ControlType.kPosition);
 
                 // check our error and update the state if we finish
-                if(Math.abs(leftArmEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
-                    state = State.MANUAL;
+                if(Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE) {
+                    endPID();
+                    armMotor.set(0);
                 }
                 break;
-            }
         }
     }
 
@@ -89,39 +91,45 @@ public class PivotArm extends SnailSubsystem {
         this.setPoint = setpoint;
     }
 
+    // End PID
+    public void endPID() {
+        state = State.MANUAL;
+    }
+    
+
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Motor Speed", leftArmEncoder.getVelocity());
-        SmartDashboard.putNumber("Encoder Position", leftArmEncoder.getPosition());
-        SmartDashboard.putNumber("Setpoint", setPoint);
-        SmartDashboard.putBoolean("Limit Switch State", limitSwitch.get());
+        SmartDashboard.putBoolean("/PivotArmValues/Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
+        SmartDashboard.putBoolean("/PivotArmValues/Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+
+        SmartDashboard.putNumber("/PivotArmValues/Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("/PivotArmValues/Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("/PivotArmValues/Better Encoder Position", absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("/PivotArmValues/Setpoint", setPoint);
+        SmartDashboard.putString("/PivotArmValues/State", state.name());
     }
 
     @Override
     public void tuningInit() {
-        // TODO include PID tuning
-        SmartDashboard.putNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-        SmartDashboard.putNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-        SmartDashboard.putNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-
-        SmartDashboard.putNumber("Pivot Arm Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
-        SmartDashboard.putNumber("Pivot Arm Tolerance", PIVOT_ARM_PID_TOLERANCE);
+        p.reset();
+        i.reset();
+        d.reset();
+        ff.reset();
+        maxOutput.reset();
     }
 
-    @Override
+    @Override 
     public void tuningPeriodic() {
-        PIVOT_ARM_PID[0] = SmartDashboard.getNumber("Pivot Arm P", PIVOT_ARM_PID[0]);
-        PIVOT_ARM_PID[1] = SmartDashboard.getNumber("Pivot Arm I", PIVOT_ARM_PID[1]);
-        PIVOT_ARM_PID[2] = SmartDashboard.getNumber("Pivot Arm D", PIVOT_ARM_PID[2]);
-        
-        if (PIVOT_ARM_PID[0] != armPIDController.getP()) {
-            armPIDController.setP(PIVOT_ARM_PID[0]);
-        }
-        if (PIVOT_ARM_PID[1] != armPIDController.getI()) {
-            armPIDController.setI(PIVOT_ARM_PID[1]);
-        }
-        if (PIVOT_ARM_PID[2] != armPIDController.getD()) {
-            armPIDController.setD(PIVOT_ARM_PID[2]);
+        p.updateFunction(() -> armPIDController.setP(p.get()));
+        i.updateFunction(() -> armPIDController.setI(i.get()));
+        d.updateFunction(() -> armPIDController.setD(d.get()));
+        ff.updateFunction(() -> armPIDController.setFF(ff.get()));
+        maxOutput.updateFunction(() -> armPIDController.setOutputRange(-maxOutput.get(), maxOutput.get()));
+
+        if (SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kBrake) {
+            armMotor.setIdleMode(IdleMode.kBrake);
+        } else if (!SmartDashboard.getBoolean("Motor mode", false) && armMotor.getIdleMode() != IdleMode.kCoast) {
+            armMotor.setIdleMode(IdleMode.kCoast);
         }
     }
 
@@ -131,4 +139,8 @@ public class PivotArm extends SnailSubsystem {
     }
 
     public State getState() { return state; }
+
+    public boolean atSetpoint() {
+        return Math.abs(armEncoder.getPosition() - setPoint) < PIVOT_ARM_PID_TOLERANCE;
+    }
 }

@@ -26,6 +26,9 @@ public class IntakeArm extends SnailSubsystem {
         PID,
     }
 
+    //  make pid tuning a tunable number
+    
+
     private State state;
     private double speed;
     private boolean isPIDFinished;

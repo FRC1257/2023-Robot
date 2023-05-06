@@ -1,122 +1,107 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import static frc.robot.Constants.Claw.*;
-import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
+import frc.robot.util.TunableNumber;
 
 public class Claw extends SnailSubsystem {
-    private CANSparkMax motorLeft;
-    private CANSparkMax motorRight;
-    private DoubleSolenoid solenoid;
+    private CANSparkMax clawMotor;
+    private RelativeEncoder clawEncoder;
+    private double speed;
+    private double setPoint;
+
+    private double addSpeed = 0;
     
-    public enum RollerState {
-      INTAKING,
-      EJECTING,
-      NEUTRAL
+    public enum ClawMoveState {
+        OPENING,
+        CLOSING
     }
-    
+
     public enum ClawState {
-      CUBEINTAKE,
-      CONEINTAKE
+      MANUAL
     }
     
-    //cube and cone states?
-    private RollerState rollerState;
     private ClawState clawState;
+    private ClawMoveState clawMoveState;
+    private TunableNumber deez = new TunableNumber("ClawValues", "Claw Motor Close Speed", 0);
     
     public Claw() {
-        motorLeft = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
-        motorRight = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_RIGHT_ID, MotorType.kBrushless);        
+        clawMotor = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
+        clawMotor.restoreFactoryDefaults();
+        clawMotor.setIdleMode(IdleMode.kBrake);
+        clawMotor.setSmartCurrentLimit(NEO_550_CURRENT_LIMIT);
+        clawMotor.setInverted(true);
 
-        motorInit(motorLeft);
-        motorInit(motorLeft);
+        clawEncoder = clawMotor.getEncoder();
+        clawEncoder.setPositionConversionFactor(POSITION_CONVERSION_FACTOR);
+        clawEncoder.setVelocityConversionFactor(POSITION_CONVERSION_FACTOR / 60);
 
-        motorRight.follow(motorLeft, true);
-        rollerState = RollerState.NEUTRAL;
+        clawState = ClawState.MANUAL;
+        clawMoveState = ClawMoveState.CLOSING;
         
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, ElectricalLayout.CLAW_FORWARD_ID, ElectricalLayout.CLAW_REVERSE_ID);
-        clawState = ClawState.CUBEINTAKE;
-    }
-
-    private void motorInit(CANSparkMax motor) {
-        motor.restoreFactoryDefaults();
-        motor.setIdleMode(IdleMode.kBrake);
-        motor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
     }
     
     @Override
     public void update() {
-        switch(rollerState) {
-            case NEUTRAL:
-                motorLeft.set(ROLLER_NEUTRAL_SPEED);
-                break;
-            case INTAKING:
-                motorLeft.set(ROLLER_INTAKING_SPEED);
-                break;
-            case EJECTING:
-                motorLeft.set(ROLLER_EJECTING_SPEED);
-                break;
-        }
-        
+
         switch(clawState) {
-            case CUBEINTAKE:
-                solenoid.set(Value.kReverse);
+            case MANUAL:
+                 if (speed > 0.1) {
+                    clawMoveState = ClawMoveState.OPENING;
+                } else if (speed < -0.1) {
+                    clawMoveState = ClawMoveState.CLOSING;
+                } 
+                clawMotor.set(speed + addSpeed);
                 break;
-            case CONEINTAKE:
-                solenoid.set(Value.kForward);
+        } 
+
+        switch (clawMoveState) {
+            case OPENING:
+                addSpeed = -0.01;
                 break;
-        }
+            case CLOSING:
+                addSpeed = deez.get();
+                break;
+        } 
+    }
+
+    public void endPID() {
+        this.clawState = ClawState.MANUAL;
     }
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("Left Motor", motorLeft.get());
-        SmartDashboard.putNumber("Right Motor", motorRight.get());
+        SmartDashboard.putNumber("/ClawValues/Claw Motor Speed", clawMotor.get());
+        SmartDashboard.putNumber("/ClawValues/Claw Encoder Position", clawEncoder.getPosition());
+        SmartDashboard.putNumber("/ClawValues/Claw Setpoint", setPoint);
+        SmartDashboard.putString("/ClawValues/Claw Motion State", clawState.name());
+        SmartDashboard.putString("/ClawValues/Claw State", clawMoveState.name());
     }
 
     @Override
-    public void tuningInit() {
-
-    }
+    public void tuningInit() {}
 
     @Override
-    public void tuningPeriodic() {
+    public void tuningPeriodic() {}
 
-    }
-
-    public void neutral() {
-        rollerState = RollerState.NEUTRAL;
-    }
-
-    public void eject() {
-        rollerState = RollerState.EJECTING;
+    public void manualControl(double newSpeed) {
+        clawState = ClawState.MANUAL;
+        speed = newSpeed;
     }
 
-    public void intake() {
-        rollerState = RollerState.INTAKING;
-    }
-    
-    public void cubeintake() {
-        clawState = ClawState.CUBEINTAKE;
-    }
-    
-    public void coneintake() {
-        clawState = ClawState.CONEINTAKE;
-    }
-    
-    public RollerState getRollerState() {
-        return rollerState;
-    }
-    public ClawState getClawState() {
+    public ClawState getMotionState() {
         return clawState;
+    }
+
+    public ClawMoveState getState() {
+        return clawMoveState;
     }
 }
