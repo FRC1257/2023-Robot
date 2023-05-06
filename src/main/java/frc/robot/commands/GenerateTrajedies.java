@@ -14,6 +14,23 @@ import frc.robot.commands.drivetrain.ToPosCommand;
 import frc.robot.RobotContainer;
 
 public class GenerateTrajedies {
+    public enum State {
+        NORMAL,
+        SHOOTING,
+        THREE_PIECE, 
+        MOVE_FORWARD,
+        HIT_AND_RUN,
+        HIT
+    }
+
+    State[] autoType = { State.NORMAL, 
+        State.SHOOTING, 
+        State.THREE_PIECE, 
+        State.MOVE_FORWARD, 
+        State.HIT_AND_RUN, 
+        State.HIT
+    };
+
     private boolean charge;
     private boolean firstScore;
     private boolean secondScore;
@@ -28,7 +45,6 @@ public class GenerateTrajedies {
     private SequentialCommandGroup command;
     private Pose2d currentPose; 
     private List<Trajectory> trajectoryList = new ArrayList<Trajectory>();
-    private Pose2d[] ALLIANCE_START_POSE;
     private Pose2d[] ALLIANCE_CARGO_POSE;
     private Pose2d[] ALLIANCE_SCORE_POSE;
     private Pose2d[] ALLIANCE_WAYPOINTS_POSE;
@@ -52,7 +68,6 @@ public class GenerateTrajedies {
         currentPose = new Pose2d();
         // trajectoryList.add(new Trajectory());
         if (SmartDashboard.getBoolean("isAllianceBlue", false)) {
-            ALLIANCE_START_POSE = Autonomous.BLUE_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.BLUE_CARGO_POSE;
             ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.BLUE_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.BLUE_SCORE_POSE;
@@ -61,7 +76,6 @@ public class GenerateTrajedies {
             ALLIANCE_LEAVE_COMMUNITY = Autonomous.BLUE_LEAVE_COMMUNITY_POSE;
             blue = true;
         } else {
-            ALLIANCE_START_POSE = Autonomous.RED_START_POSE;
             ALLIANCE_CARGO_POSE = Autonomous.RED_CARGO_POSE;
             ALLIANCE_CHARGE_POSE_WAYPOINT = Autonomous.RED_CHARGE_POSE_WAYPOINT;
             ALLIANCE_SCORE_POSE = Autonomous.RED_SCORE_POSE;
@@ -71,11 +85,14 @@ public class GenerateTrajedies {
             blue = false;
         }
 
-        // this.StartPose = ALLIANCE_START_POSE[StartPose]; 
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
         AutoDecider();
+    }
+
+    private State getAutoType() {
+        return autoType[RobotContainer.autoChooser.getSelected()];
     }
 
     // TODO make method to get positions
@@ -165,12 +182,33 @@ public class GenerateTrajedies {
     }
 
     private void AutoDecider() {
-        if (threePiece) {
-            threePieceAuto();
-            return;
+        command = new SequentialCommandGroup();
+        switch (getAutoType()) {
+            case NORMAL:
+                normalAuto();
+                break;
+            case SHOOTING:
+                shootingAuto();
+                break;
+            case THREE_PIECE:
+                threePieceAuto();
+                break;
+            case MOVE_FORWARD:
+                moveForwardAuto();
+                break;
+            case HIT_AND_RUN:
+                hitAndRunAuto();
+                break;
+            case HIT:
+                hitAuto();
+                break;
         }
 
-        command = new SequentialCommandGroup();
+        trajectoryList.add(getFullTrajectory());
+
+    }
+
+    private void normalAuto() {
         // there are 3 possible steps we can take
         // Step 1
         if (firstScore) {
@@ -211,9 +249,6 @@ public class GenerateTrajedies {
         if (StartPose.equals(currentPose)) {
            addLeaveCommunityTrajectory(); 
         }
-
-        trajectoryList.add(getFullTrajectory());
-
     }
 
     private void addScoreHigh() {
@@ -232,7 +267,6 @@ public class GenerateTrajedies {
 
 
     private void threePieceAuto() {
-        command = new SequentialCommandGroup();
         this.StartPose = getFirstScoreLocation();
         this.currentPose = this.StartPose;
 
@@ -259,17 +293,9 @@ public class GenerateTrajedies {
         addToPosCommand(returnToScore2);
 
         addScoreHigh();
-
-        trajectoryList.add(getFullTrajectory());
     }
 
     // step variables aren't random, they actually represent the order of the trajectories
-    private void addFirstScoreTrajectory() {
-        ToPosCommand step1 = new ToPosCommand(drivetrain, List.of(StartPose, getFirstScoreLocation()), true);
-        currentPose = getFirstScoreLocation();
-        addToPosCommand(step1);
-    }
-
     private void addSecondScoreTrajectory() {
         ToPosCommand returnToScore = new ToPosCommand(drivetrain, getTrajPointsWaypointReverse(currentPose, getSecondScoreLocation()), true);
         currentPose = getSecondScoreLocation();
@@ -374,10 +400,6 @@ public class GenerateTrajedies {
         addToPosCommand(step2);
     }
 
-    private void outThenIn(){
-    
-    }
-
     private void addChargeTrajectory() {
         if(!hitAndRun){
         ToPosCommand step3 = new ToPosCommand(drivetrain, List.of(currentPose, getChargeWaypointLocation(), getChargeLocation()), false);
@@ -390,6 +412,7 @@ public class GenerateTrajedies {
         }
     }
 
+    // Helper Methods to use outside of this class
     public SequentialCommandGroup getCommand() {
         // AutoDecider();
         return command;

@@ -14,26 +14,23 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
 import static frc.robot.Constants.VisionConstants;
 
 public class Vision extends SnailSubsystem {
-    PhotonCamera frontCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_FRONT); // Declare the name of the camera used
-                                                                                  // in the
-    // pipeline
-    PhotonCamera backCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_BACK);
-    
+    /*
+     * Declare the name of the camera used in the pipeline
+     */
+    PhotonCamera frontCamera = new PhotonCamera(VisionConstants.USB_CAMERA_NAME_FRONT);
+
     boolean hasTarget; // Stores whether or not a target is detected
     PhotonPipelineResult result; // Stores all the data that Photonvision returns
     PhotonPoseEstimator frontPoseEstimator; // stores the pose estimator
-    PhotonPoseEstimator backPoseEstimator; // stores the pose estimator
+    // PhotonPoseEstimator backPoseEstimator; // stores the pose estimator
     AprilTagFieldLayout aprilTagFieldLayout; // stores the field layout
     public Pose2d prevEstimatedRobotPose;
+    private int desiredScorePos = 1; // Score pos robot should align to for driver assist
 
     private Optional<EstimatedRobotPose> chosenEstimate;
 
@@ -49,15 +46,13 @@ public class Vision extends SnailSubsystem {
                 VisionConstants.CAMERA_TO_ROBOT_FRONT);
         frontPoseEstimator.setReferencePose(new Pose2d());
 
-        backPoseEstimator = new PhotonPoseEstimator(aprilTagFieldLayout,
-                PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_REFERENCE_POSE, backCamera, VisionConstants.CAMERA_TO_ROBOT_BACK);
-        backPoseEstimator.setReferencePose(new Pose2d());
     }
 
     @Override
     public void periodic() {
         try {
-            PhotonPipelineResult currentResult = frontCamera.getLatestResult(); // Query the latest result from PhotonVision
+            PhotonPipelineResult currentResult = frontCamera.getLatestResult(); // Query the latest result from
+                                                                                // PhotonVision
             hasTarget = result.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean
                                              // will be
                                              // true
@@ -66,13 +61,6 @@ public class Vision extends SnailSubsystem {
                 return;
             }
 
-            currentResult = backCamera.getLatestResult(); // Query the latest result from PhotonVision
-            hasTarget = currentResult.hasTargets(); // If the camera has detected an apriltag target, the hasTarget boolean
-                                             // will be
-                                             // true
-            if (hasTarget) {
-                result = currentResult;
-            }
         } catch (Exception e) {
             // we had an error where photonvision "saw" a tag that didn't exist
             // this is a dirty try catch but it stops the robot frm breaking
@@ -92,17 +80,12 @@ public class Vision extends SnailSubsystem {
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         frontPoseEstimator.setReferencePose(prevEstimatedRobotPose);
-        backPoseEstimator.setReferencePose(prevEstimatedRobotPose);
 
         try {
             Optional<EstimatedRobotPose> frontEstimate = frontPoseEstimator.update();
-            Optional<EstimatedRobotPose> backEstimate = backPoseEstimator.update();
             if (frontEstimate.isPresent()) {
                 chosenEstimate = frontEstimate;
                 return frontEstimate;
-            } else if (backEstimate.isPresent()) {
-                chosenEstimate = backEstimate;
-                return backEstimate;
             }
 
             chosenEstimate = frontEstimate;
@@ -139,7 +122,8 @@ public class Vision extends SnailSubsystem {
     }
 
     @Override
-    public void update() {}
+    public void update() {
+    }
 
     @Override
     public void displayShuffleboard() {
@@ -152,22 +136,37 @@ public class Vision extends SnailSubsystem {
                     camPose.estimatedPose.toPose2d().getX(), camPose.estimatedPose.toPose2d().getY(),
                     camPose.timestampSeconds });
         }
+
+        SmartDashboard.putNumber("Desired Score Pos", desiredScorePos);
     }
 
     @Override
     public void tuningInit() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
     public void tuningPeriodic() {
-        // TODO Auto-generated method stub
-
     }
 
     public void setPipeline(int i) {
         frontCamera.setPipelineIndex(i);
-        backCamera.setPipelineIndex(i);
+    }
+
+    public int getDesiredScorePos() {
+        return desiredScorePos;
+    }
+
+    public void incrementScorePos() {
+        desiredScorePos++;
+        if (desiredScorePos > 9) {
+            desiredScorePos = 1;
+        }
+    }
+
+    public void decrementScorePos() {
+        desiredScorePos--;
+        if (desiredScorePos < 1) {
+            desiredScorePos = 9;
+        }
     }
 }
