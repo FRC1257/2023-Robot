@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import static frc.robot.Constants.Drivetrain.*;
@@ -22,6 +23,10 @@ public class ToPosCommand extends CommandBase {
         
         TrajectoryConfig config = new TrajectoryConfig(DRIVE_TRAJ_MAX_VEL, DRIVE_TRAJ_MAX_ACC).setReversed(reverse);
         this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+
+        if (trajectory.getTotalTimeSeconds() <= 0.1) {
+            DriverStation.reportError("Something is wrong with the trajectory", true);
+        }
 
         addRequirements(drivetrain);
     }

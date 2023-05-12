@@ -26,6 +26,7 @@
       "/SmartDashboard/SendableChooser[4]": "String Chooser",
       "/SmartDashboard/SendableChooser[5]": "String Chooser",
       "/SmartDashboard/SendableChooser[6]": "String Chooser",
+      "/SmartDashboard/SendableChooser[7]": "String Chooser",
       "/SmartDashboard/Vision": "Subsystem"
     },
     "windows": {

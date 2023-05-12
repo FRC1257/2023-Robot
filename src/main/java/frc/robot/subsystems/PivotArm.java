@@ -99,14 +99,14 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putBoolean("/PivotArmValues/Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("/PivotArmValues/Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("PivotArm Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
+        SmartDashboard.putBoolean("PivotArm Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
 
-        SmartDashboard.putNumber("/PivotArmValues/Motor Speed", armMotor.get());
-        SmartDashboard.putNumber("/PivotArmValues/Encoder Position", armEncoder.getPosition());
-        SmartDashboard.putNumber("/PivotArmValues/Better Encoder Position", absoluteEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("/PivotArmValues/Setpoint", setPoint);
-        SmartDashboard.putString("/PivotArmValues/State", state.name());
+        SmartDashboard.putNumber("PivotArm Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("PivotArm Encoder Position", armEncoder.getPosition());
+        SmartDashboard.putNumber("PivotArm Better Encoder Position", absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("PivotArm Setpoint", setPoint);
+        SmartDashboard.putString("PivotArm State", state.name());
     }
 
     @Override

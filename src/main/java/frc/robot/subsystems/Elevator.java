@@ -4,7 +4,6 @@ import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
-
 
 public class Elevator extends SnailSubsystem{
 
@@ -24,10 +22,10 @@ public class Elevator extends SnailSubsystem{
     private double setpoint;
     private boolean isPIDFinished;
 
-    private TunableNumber p = new TunableNumber("ElevatorValues", "P", ELEVATOR_PID[0]);
-    private TunableNumber i = new TunableNumber("ElevatorValues", "I", ELEVATOR_PID[1]);
-    private TunableNumber d = new TunableNumber("ElevatorValues", "D", ELEVATOR_PID[2]);
-    private TunableNumber ff = new TunableNumber("ElevatorValues", "FF", ELEVATOR_PID[3]);
+    private TunableNumber p = new TunableNumber("Elevator P", ELEVATOR_PID[0]);
+    private TunableNumber i = new TunableNumber("Elevator I", ELEVATOR_PID[1]);
+    private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
+    private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
     private DutyCycleEncoder absoluteEncoder;
 
     public enum State {
@@ -107,15 +105,15 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("/ElevatorValues/Motor Speed", elevatorMotor.get());
-        SmartDashboard.putNumber("/ElevatorValues/Encoder", encoder.getPosition());
-        SmartDashboard.putNumber("/ElevatorValues/Better Encoder", absoluteEncoder.getAbsolutePosition());
-        SmartDashboard.putNumber("/ElevatorValues/Setpoint", setpoint);
-        SmartDashboard.putString("/ElevatorValues/State", elevatorState.toString());
-        SmartDashboard.putString("/ElevatorValues/Brake", elevatorMotor.getIdleMode().toString());
+        SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
+        SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
+        SmartDashboard.putNumber("Elevator Better Encoder", absoluteEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+        SmartDashboard.putString("Elevator State", elevatorState.toString());
+        SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
         
-        SmartDashboard.putBoolean("/ElevatorValues/Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
-        SmartDashboard.putBoolean("/ElevatorValues/Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
+        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
 
     }
 

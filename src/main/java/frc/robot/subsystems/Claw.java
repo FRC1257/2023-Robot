@@ -31,7 +31,7 @@ public class Claw extends SnailSubsystem {
     
     private ClawState clawState;
     private ClawMoveState clawMoveState;
-    private TunableNumber deez = new TunableNumber("ClawValues", "Claw Motor Close Speed", 0);
+    private TunableNumber deez = new TunableNumber("Claw Motor Close Speed", 0);
     
     public Claw() {
         clawMotor = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
@@ -54,7 +54,7 @@ public class Claw extends SnailSubsystem {
 
         switch(clawState) {
             case MANUAL:
-                 if (speed > 0.1) {
+                if (speed > 0.1) {
                     clawMoveState = ClawMoveState.OPENING;
                 } else if (speed < -0.1) {
                     clawMoveState = ClawMoveState.CLOSING;
@@ -79,11 +79,11 @@ public class Claw extends SnailSubsystem {
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("/ClawValues/Claw Motor Speed", clawMotor.get());
-        SmartDashboard.putNumber("/ClawValues/Claw Encoder Position", clawEncoder.getPosition());
-        SmartDashboard.putNumber("/ClawValues/Claw Setpoint", setPoint);
-        SmartDashboard.putString("/ClawValues/Claw Motion State", clawState.name());
-        SmartDashboard.putString("/ClawValues/Claw State", clawMoveState.name());
+        SmartDashboard.putNumber("Claw Motor Speed", clawMotor.get());
+        SmartDashboard.putNumber("Claw Encoder Position", clawEncoder.getPosition());
+        SmartDashboard.putNumber("Claw Setpoint", setPoint);
+        SmartDashboard.putString("Claw Motion State", clawState.name());
+        SmartDashboard.putString("Claw State", clawMoveState.name());
     }
 
     @Override

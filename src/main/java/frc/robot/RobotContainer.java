@@ -98,6 +98,7 @@ public class RobotContainer {
     public static SendableChooser<Integer> secondScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Integer> gamePieceChooser = new SendableChooser<>(); 
     public static SendableChooser<Integer> secondGamePieceChooser = new SendableChooser<>();
+    public static SendableChooser<Integer> thirdGamePieceChooser = new SendableChooser<>();
     public static SendableChooser<Integer> thirdScorePositionChooser = new SendableChooser<>();
     public static SendableChooser<Boolean> hitAndRunChooser = new SendableChooser<>();
     public static SendableChooser<Integer> autoChooser = new SendableChooser<>();
@@ -210,7 +211,10 @@ public class RobotContainer {
             0,
             threePiece,
             leaveTarmac,
-            hitAndRun 
+            hitAndRun,
+            elevator,
+            pivotArm,
+            claw
         );
 
         if (SmartDashboard.getBoolean("Testing", false)) {
@@ -280,6 +284,7 @@ public class RobotContainer {
         configureSecondScorePositionChooser();
         configureSecondGamePieceChooser();
         configureThirdScorePositionChooser();
+        configureThirdGamePieceChooser();
         configureHitAndRunChooser();
         configureChooseAuto();
     }
@@ -305,7 +310,10 @@ public class RobotContainer {
             0,
             threePiece,
             leaveTarmac,
-            hitAndRun
+            hitAndRun,
+            elevator,
+            pivotArm,
+            claw
         );
         
         putTrajectoryTime();
@@ -352,14 +360,14 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
-        if (isSimulation && SmartDashboard.getBoolean("/Auto/Reset Auto Viewer", false)) {
+        if (isSimulation && SmartDashboard.getBoolean("Auto Reset Auto Viewer", false)) {
             updateTraj = true;
-            SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
+            SmartDashboard.putBoolean("Auto Reset Auto Viewer", false);
         }
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("/Auto/View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("Auto View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj); 
         }
@@ -368,7 +376,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", false);
             getAutoCommand();
 
-            SmartDashboard.putNumber("/Auto/View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+            SmartDashboard.putNumber("Auto View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
             resetDashboard();
         }
@@ -383,13 +391,13 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
-        SmartDashboard.putBoolean("/Auto/Close to Cycle", false);
-        SmartDashboard.putNumber("/Auto/View Trajectory Pos", 0);
-        SmartDashboard.putBoolean("/Auto/Update Visual", false);
+        SmartDashboard.putBoolean("Auto 1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Auto Goto Charge", charge);
+        SmartDashboard.putBoolean("Auto Close to Cycle", false);
+        SmartDashboard.putNumber("Auto View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Auto Update Visual", false);
     
-        SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
+        SmartDashboard.putBoolean("Auto Reset Auto Viewer", false);
         
     }
 
@@ -409,6 +417,15 @@ public class RobotContainer {
         secondGamePieceChooser.addOption("3rd Position", 2);
         secondGamePieceChooser.addOption("4th Position", 3);
         SmartDashboard.putData(secondGamePieceChooser);
+    }
+
+    public void configureThirdGamePieceChooser() {
+        thirdGamePieceChooser.setDefaultOption("Third Cargo Chooser", 0);
+        thirdGamePieceChooser.addOption("1st Position", 0);
+        thirdGamePieceChooser.addOption("2nd Position", 1);
+        thirdGamePieceChooser.addOption("3rd Position", 2);
+        thirdGamePieceChooser.addOption("4th Position", 3);
+        SmartDashboard.putData(thirdGamePieceChooser);
     }
     
     public void configureFirstScorePositionChooser() {
@@ -470,21 +487,21 @@ public class RobotContainer {
     }
 
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("/Auto/1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("/Auto/Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("/Auto/Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("/Auto/Auto Goto Charge", false) || SmartDashboard.getBoolean("/Auto/Update Visual", false) || threePiece != SmartDashboard.getBoolean("/Auto/3 Ball Auto", false);
+        return firstScore != SmartDashboard.getBoolean("Auto 1st Auto Score", false) || secondScore != SmartDashboard.getBoolean("Auto Opt. 2nd Auto Score", false) || cargo != SmartDashboard.getBoolean("Auto Auto Get Cargo", false) || charge != SmartDashboard.getBoolean("Auto Auto Goto Charge", false) || SmartDashboard.getBoolean("Auto Update Visual", false) || threePiece != SmartDashboard.getBoolean("Auto 3 Ball Auto", false);
     }
 
     public void updateAutoChoosers() {
-        firstScore = SmartDashboard.getBoolean("/Auto/1st Auto Score", firstScore);
-        secondScore = SmartDashboard.getBoolean("/Auto/Opt. 2nd Auto Score", secondScore);
-        cargo = SmartDashboard.getBoolean("/Auto/Auto Get Cargo", cargo);
-        charge = SmartDashboard.getBoolean("/Auto/Auto Goto Charge", charge);
-        threePiece = SmartDashboard.getBoolean("/Auto/3 Ball Auto", threePiece);
-        leaveTarmac = SmartDashboard.getBoolean("/Auto/Leave Tarmac", leaveTarmac);
-        hitAndRun = SmartDashboard.getBoolean("/Auto/Hit and Run", hitAndRun);
+        firstScore = SmartDashboard.getBoolean("Auto 1st Auto Score", firstScore);
+        secondScore = SmartDashboard.getBoolean("Auto Opt. 2nd Auto Score", secondScore);
+        cargo = SmartDashboard.getBoolean("Auto Auto Get Cargo", cargo);
+        charge = SmartDashboard.getBoolean("Auto Auto Goto Charge", charge);
+        threePiece = SmartDashboard.getBoolean("Auto 3 Ball Auto", threePiece);
+        leaveTarmac = SmartDashboard.getBoolean("Auto Leave Tarmac", leaveTarmac);
+        hitAndRun = SmartDashboard.getBoolean("Auto Hit and Run", hitAndRun);
     }
 
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("/Auto/Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("Auto Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -492,15 +509,15 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("/Auto/Opt. 2nd Auto Score", secondScore);
-        SmartDashboard.putBoolean("/Auto/Auto Get Cargo", cargo);
-        SmartDashboard.putBoolean("/Auto/Auto Goto Charge", charge);
-        SmartDashboard.putNumber("/Auto/View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
-        SmartDashboard.putBoolean("/Auto/Update Visual", false);
-        SmartDashboard.putBoolean("/Auto/3 Ball Auto", threePiece);
-        SmartDashboard.putBoolean("/Auto/Leave Tarmac", leaveTarmac);
-        SmartDashboard.putBoolean("/Auto/Hit and Run", hitAndRun);
+        SmartDashboard.putBoolean("Auto 1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Auto Opt. 2nd Auto Score", secondScore);
+        SmartDashboard.putBoolean("Auto Auto Get Cargo", cargo);
+        SmartDashboard.putBoolean("Auto Auto Goto Charge", charge);
+        SmartDashboard.putNumber("Auto View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("Auto Update Visual", false);
+        SmartDashboard.putBoolean("Auto 3 Ball Auto", threePiece);
+        SmartDashboard.putBoolean("Auto Leave Tarmac", leaveTarmac);
+        SmartDashboard.putBoolean("Auto Hit and Run", hitAndRun);
     }
 
 }
