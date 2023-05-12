@@ -217,6 +217,10 @@ public class RobotContainer {
             tuningInit();
         }
 
+        for (SnailSubsystem subsystem : subsystems) {
+            SmartDashboard.putData(subsystem);
+        }
+
         putTrajectoryTime();
     }
 
@@ -340,7 +344,6 @@ public class RobotContainer {
     public void tuningInit() {
         for(SnailSubsystem subsystem : subsystems) {
             subsystem.tuningInit();
-            SmartDashboard.putData(subsystem);
         }
     }
 

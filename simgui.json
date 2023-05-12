@@ -11,13 +11,22 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Claw": "Subsystem",
+      "/SmartDashboard/Drivetrain": "Subsystem",
+      "/SmartDashboard/Elevator": "Subsystem",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/Intake": "Subsystem",
+      "/SmartDashboard/IntakeArm": "Subsystem",
+      "/SmartDashboard/LED": "Subsystem",
+      "/SmartDashboard/PivotArm": "Subsystem",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/SendableChooser[1]": "String Chooser",
       "/SmartDashboard/SendableChooser[2]": "String Chooser",
       "/SmartDashboard/SendableChooser[3]": "String Chooser",
       "/SmartDashboard/SendableChooser[4]": "String Chooser",
-      "/SmartDashboard/SendableChooser[5]": "String Chooser"
+      "/SmartDashboard/SendableChooser[5]": "String Chooser",
+      "/SmartDashboard/SendableChooser[6]": "String Chooser",
+      "/SmartDashboard/Vision": "Subsystem"
     },
     "windows": {
       "/SmartDashboard/Field": {
@@ -30,6 +39,9 @@
   "NetworkTables": {
     "transitory": {
       "SmartDashboard": {
+        "PivotArm": {
+          "open": true
+        },
         "open": true
       }
     }

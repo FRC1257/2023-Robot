@@ -115,7 +115,7 @@ public final class Constants {
         public final static int DRIVE_BACK_RIGHT = 4;
 
         // Intakes
-        public final static int INTAKE_MOTOR_ID = 4;
+        public final static int INTAKE_MOTOR_ID = 9;
         
         public static final int INTAKE_ARM_MOTOR_LEFT_ID = 6;
         public static final int INTAKE_ARM_MOTOR_RIGHT_ID = 8;
@@ -429,8 +429,8 @@ public final class Constants {
     }
 
     public static class LED {
-        public static int LED_PORT_NUMBER = 1257;
-        public static int LED_COUNT = 1257;
+        public static int LED_PORT_NUMBER = 3;
+        public static int LED_COUNT = 40;
     }
 
     public static double PI = 3.141592653589793238462643;

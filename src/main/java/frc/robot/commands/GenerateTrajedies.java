@@ -187,7 +187,7 @@ public class GenerateTrajedies {
             case NORMAL:
                 normalAuto();
                 break;
-            case SHOOTING:
+            /* case SHOOTING:
                 shootingAuto();
                 break;
             case THREE_PIECE:
@@ -201,7 +201,7 @@ public class GenerateTrajedies {
                 break;
             case HIT:
                 hitAuto();
-                break;
+                break; */
         }
 
         trajectoryList.add(getFullTrajectory());
