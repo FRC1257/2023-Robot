@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -14,8 +16,15 @@ public class SnailController extends XboxController {
         return new JoystickButton(this, id);
     }
 
-    public XboxTrigger getTrigger(boolean leftHand) {
-        return new XboxTrigger(this, leftHand);
+    public Trigger getTrigger(boolean leftHand) {
+        return new Trigger(getTriggerSupplier(leftHand));
+    }
+
+    public BooleanSupplier getTriggerSupplier(boolean left) {
+        return () -> {
+            if (left) return getLeftTriggerAxis() > 0.5; 
+            else return getRightTriggerAxis() > 0.5;
+        };
     }
 
     public double getElevatorSpeed() {
@@ -66,7 +75,7 @@ public class SnailController extends XboxController {
             return -applyDeadband(getLeftY());
         } else if (getRightBumper()) {
             return -applyDeadband(getRightY());
-        } else if (getTrigger(true).get()) {
+        } else if (getTriggerSupplier(true).getAsBoolean()) {
             return -applyDeadband(getLeftY());
         }
         return 0;
@@ -77,7 +86,7 @@ public class SnailController extends XboxController {
             return applyDeadband(getLeftX());
         } else if (getRightBumper()) {
             return applyDeadband(getLeftX());
-        } else if (getTrigger(true).get()) {
+        } else if (getTriggerSupplier(true).getAsBoolean()) {
             return applyDeadband(getRightX());
         }
         return 0;
