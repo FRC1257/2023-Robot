@@ -4,54 +4,44 @@ import static frc.robot.Constants.ElectricalLayout.ELEVATOR_MOTOR_ID;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
-
-import static frc.robot.Constants.QUADRATURE_COUNTS_PER_REV;
-
 
 public class Elevator extends SnailSubsystem{
 
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
-    private RelativeEncoder betterEncoder;
     private double speed;
     private double setpoint;
     private boolean isPIDFinished;
 
-    private TunableNumber p = new TunableNumber("Elevator", "P", ELEVATOR_PID[0]);
-    private TunableNumber i = new TunableNumber("Elevator", "I", ELEVATOR_PID[1]);
-    private TunableNumber d = new TunableNumber("Elevator", "D", ELEVATOR_PID[2]);
-    private TunableNumber ff = new TunableNumber("Elevator", "FF", ELEVATOR_PID[3]);
+    private TunableNumber p = new TunableNumber("Elevator P", ELEVATOR_PID[0]);
+    private TunableNumber i = new TunableNumber("Elevator I", ELEVATOR_PID[1]);
+    private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
+    private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
+    private DutyCycleEncoder absoluteEncoder;
 
     public enum State {
         MANUAL,
-        PID
+        PID;
     }
 
     private State elevatorState = State.MANUAL; 
-    
-    public Elevator() {        
+
+    public Elevator() {
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         elevatorMotor.restoreFactoryDefaults();
         elevatorMotor.setIdleMode(IdleMode.kBrake);
         elevatorMotor.setSmartCurrentLimit(NEO_CURRENT_LIMIT);
-        /* 
-        //in the forward direction, it will stop at 0.5 inches
-        elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, ELEVATOR_SETPOINT_RETRACT);
-        elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, ELEVATOR_SETPOINT_EXTEND);
-        //in reverse direction, it will stop at 36 inches
-        elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-        elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true); //always true */
+        
         pidController = elevatorMotor.getPIDController();
-
         pidController.setP(p.get());
         pidController.setI(i.get());
         pidController.setD(d.get());
@@ -63,10 +53,11 @@ public class Elevator extends SnailSubsystem{
         encoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
         encoder.setPosition(0.6);
 
-        betterEncoder = elevatorMotor.getAlternateEncoder(SparkMaxAlternateEncoder.Type.kQuadrature, QUADRATURE_COUNTS_PER_REV);
-        betterEncoder.setPositionConversionFactor(ELEVATOR_REV_TO_POS_FACTOR);
-        betterEncoder.setVelocityConversionFactor(ELEVATOR_REV_TO_POS_FACTOR / 60);
+        absoluteEncoder = new DutyCycleEncoder(0);
+        absoluteEncoder.setDistancePerRotation(360.0 * 2 / 1024.0);
+        absoluteEncoder.setDutyCycleRange(1/1024.0, 1023.0/1024.0);
 
+        encoder.setPosition(absoluteEncoder.getDistance() * 28.45 + 0.6);
     }
 
 
@@ -116,15 +107,15 @@ public class Elevator extends SnailSubsystem{
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putNumber("/Elevator/Motor Speed", elevatorMotor.get());
-        SmartDashboard.putNumber("/Elevator/Encoder", encoder.getPosition());
-        SmartDashboard.putNumber("/Elevator/Better Encoder", betterEncoder.getPosition());
-        SmartDashboard.putNumber("/Elevator/Setpoint", setpoint);
-        SmartDashboard.putString("/Elevator/State", elevatorState.toString());
-        SmartDashboard.putString("/Elevator/Brake", elevatorMotor.getIdleMode().toString());
+        SmartDashboard.putNumber("Elevator Motor Speed", elevatorMotor.get());
+        SmartDashboard.putNumber("Elevator Encoder", encoder.getPosition());
+        SmartDashboard.putNumber("Elevator Better Encoder", absoluteEncoder.getDistance());
+        SmartDashboard.putNumber("Elevator Setpoint", setpoint);
+        SmartDashboard.putString("Elevator State", elevatorState.toString());
+        SmartDashboard.putString("Elevator Brake", elevatorMotor.getIdleMode().toString());
         
-        SmartDashboard.putBoolean("/Elevator/Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
-        SmartDashboard.putBoolean("/Elevator/Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
+        SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
 
     }
 
@@ -153,4 +144,5 @@ public class Elevator extends SnailSubsystem{
     public boolean atSetpoint() {
         return Math.abs(encoder.getPosition() - setpoint) < ELEVATOR_PID_TOLERANCE;
     }
+    
 }
