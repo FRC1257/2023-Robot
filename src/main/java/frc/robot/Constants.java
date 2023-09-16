@@ -432,6 +432,8 @@ public final class Constants {
     // public final static int NEO_CURRENT_LIMIT = 80; // amps
 
     public final static int NEO_CURRENT_LIMIT = 80; // amps
+    public static final int HIGH_TEMP_TIME = 2;
+    public static final int HIGH_TEMP = 80;
 }
 
 

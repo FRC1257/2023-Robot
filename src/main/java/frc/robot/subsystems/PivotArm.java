@@ -10,10 +10,12 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 
 import static frc.robot.Constants.PivotArm.*;
+import static frc.robot.Constants.*;
 
 import static frc.robot.Constants.ElectricalLayout.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
@@ -32,6 +34,8 @@ public class PivotArm extends SnailSubsystem {
     private TunableNumber d = new TunableNumber("PivotArmValues", "D", PIVOT_ARM_PID[2]);
     private TunableNumber ff = new TunableNumber("PivotArmValues", "FF", PIVOT_ARM_PID[3]);
     private TunableNumber maxOutput = new TunableNumber("PivotArmValues", "Max Output", PIVOT_ARM_PID_MAX_OUTPUT);
+
+    private Timer temp_timer = new Timer();
 
     public enum State {
         MANUAL,
@@ -66,7 +70,18 @@ public class PivotArm extends SnailSubsystem {
 
     @Override
     public void update() {
-        
+        if (armMotor.getMotorTemperature() > HIGH_TEMP) {
+            if (temp_timer.get() == 0.0) {
+                temp_timer.start();
+            } else if (temp_timer.get() > HIGH_TEMP_TIME) {
+                // swap out for alert later
+                armMotor.set(0.0);
+                return;
+            }
+        } else {
+            temp_timer.stop();
+            temp_timer.reset();
+        }
         
         switch (state) {
             case MANUAL:
@@ -111,6 +126,7 @@ public class PivotArm extends SnailSubsystem {
         SmartDashboard.putNumber("PivotArm Better Encoder Position", absoluteEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("PivotArm Setpoint", setPoint);
         SmartDashboard.putString("PivotArm State", state.name());
+        SmartDashboard.putNumber("PivotArm Motor Temp", armMotor.getMotorTemperature());
     }
 
     @Override

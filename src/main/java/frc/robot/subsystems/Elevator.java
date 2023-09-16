@@ -8,10 +8,11 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
-import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.Constants.*;
 
 public class Elevator extends SnailSubsystem{
 
@@ -27,6 +28,8 @@ public class Elevator extends SnailSubsystem{
     private TunableNumber d = new TunableNumber("Elevator D", ELEVATOR_PID[2]);
     private TunableNumber ff = new TunableNumber("Elevator FF", ELEVATOR_PID[3]);
     private DutyCycleEncoder absoluteEncoder;
+
+    private Timer temp_timer = new Timer();
 
     public enum State {
         MANUAL,
@@ -68,6 +71,19 @@ public class Elevator extends SnailSubsystem{
             || (encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT && speed > 0.0)) {
             elevatorMotor.set(0);
             return;
+        }
+
+        if (elevatorMotor.getMotorTemperature() > HIGH_TEMP) {
+            if (temp_timer.get() == 0.0) {
+                temp_timer.start();
+            } else if (temp_timer.get() > HIGH_TEMP_TIME) {
+                // swap out for alert later
+                elevatorMotor.set(0.0);
+                return;
+            }
+        } else {
+            temp_timer.stop();
+            temp_timer.reset();
         }
 
         switch(elevatorState) {
@@ -116,6 +132,8 @@ public class Elevator extends SnailSubsystem{
         
         SmartDashboard.putBoolean("Elevator Extend", encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND/*  && speed < 0.0*/);
         SmartDashboard.putBoolean("Elevator Bottom", encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT /*&& speed > 0.0*/);
+
+        SmartDashboard.putNumber("Elevator Motor Temp", elevatorMotor.getMotorTemperature());
 
     }
 

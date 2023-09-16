@@ -6,8 +6,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import static frc.robot.Constants.Claw.*;
+import static frc.robot.Constants.*;
 import static frc.robot.Constants.NEO_550_CURRENT_LIMIT;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ElectricalLayout;
 import frc.robot.util.TunableNumber;
@@ -19,6 +21,8 @@ public class Claw extends SnailSubsystem {
     private double setPoint;
 
     private double addSpeed = 0;
+
+    private Timer temp_timer = new Timer();
     
     public enum ClawMoveState {
         OPENING,
@@ -51,6 +55,18 @@ public class Claw extends SnailSubsystem {
     
     @Override
     public void update() {
+        if (clawMotor.getMotorTemperature() > HIGH_TEMP) {
+            if (temp_timer.get() == 0.0) {
+                temp_timer.start();
+            } else if (temp_timer.get() > HIGH_TEMP_TIME) {
+                // swap out for alert later
+                clawMotor.set(0.0);
+                return;
+            }
+        } else {
+            temp_timer.stop();
+            temp_timer.reset();
+        }
 
         switch(clawState) {
             case MANUAL:
@@ -84,6 +100,7 @@ public class Claw extends SnailSubsystem {
         SmartDashboard.putNumber("/Claw/Claw Setpoint", setPoint);
         SmartDashboard.putString("/Claw/Claw Motion State", clawState.name());
         SmartDashboard.putString("/Claw/Claw State", clawMoveState.name());
+        SmartDashboard.putNumber("/Claw/Claw Motor Temp", clawMotor.getMotorTemperature());
     }
 
     @Override
