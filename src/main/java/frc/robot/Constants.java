@@ -118,13 +118,13 @@ public final class Constants {
         public final static int INTAKE_MOTOR_LEFT_ID = 12;
         public final static int INTAKE_MOTOR_RIGHT_ID = 13;
         
-        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 6;
+        public static final int INTAKE_ARM_MOTOR_LEFT_ID = 7;
 
         // Claw
         public static int CLAW_MOTOR_LEFT_ID = 10;
 
         // New Elevator Motor Design
-        public final static int ELEVATOR_MOTOR_ID = 5;
+        public final static int ELEVATOR_MOTOR_ID = 6;
 
         // Pivot ARm
         public static int PIVOT_ARM_ID = 7;
@@ -144,8 +144,8 @@ public final class Constants {
         public static double ELEVATOR_PID_TOLERANCE = 3;
 
         // TODO Tune
-        public static final double ELEVATOR_SETPOINT_RETRACT = 0;
-        public static final double ELEVATOR_SETPOINT_EXTEND = 32;
+        public static final double ELEVATOR_SETPOINT_RETRACT = -18.1;
+        public static final double ELEVATOR_SETPOINT_EXTEND = 17.3;
 
         public static final double ELEVATOR_SETPOINT_MIDDLE = (ELEVATOR_SETPOINT_RETRACT + ELEVATOR_SETPOINT_EXTEND) / 2;
 
