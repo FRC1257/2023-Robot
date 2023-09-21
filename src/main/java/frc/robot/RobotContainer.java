@@ -174,8 +174,8 @@ public class RobotContainer {
 
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));
 
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new DecrementScorePosCommand(vision));
-        operatorController.getButton(Button.kRightBumper.value).onTrue(new IncrementScorePosCommand(vision));
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 2));
+        operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 2));
     }
 
 
