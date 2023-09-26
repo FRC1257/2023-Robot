@@ -112,7 +112,8 @@ public final class Constants {
         public final static int DRIVE_FRONT_LEFT = 1;
         public final static int DRIVE_FRONT_RIGHT = 2;
         public final static int DRIVE_BACK_LEFT = 3;
-        public final static int DRIVE_BACK_RIGHT = 4;
+        //public final static int DRIVE_BACK_RIGHT = 4;
+        public final static int DRIVE_BACK_RIGHT = 6;
 
         // Intakes
         public final static int INTAKE_MOTOR_LEFT_ID = 12;
