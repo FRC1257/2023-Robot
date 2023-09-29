@@ -2043,6 +2043,140 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "3,17": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/PivotArm Pivot Arm Bottom",
+              "_title": "PivotArm Pivot Arm Bottom",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "5,17": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/PivotArm Pivot Arm Extend",
+              "_title": "PivotArm Pivot Arm Extend",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "13,16": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm Motor Speed",
+              "_title": "PivotArm Motor Speed",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "18,16": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm Encoder Position",
+              "_title": "PivotArm Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm Better Encoder Position",
+              "_title": "PivotArm Better Encoder Position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm Setpoint",
+              "_title": "PivotArm Setpoint",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm State",
+              "_title": "PivotArm State",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "13,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PivotArm Motor Temp",
+              "_title": "PivotArm Motor Temp",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "14,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Better Encoder",
+              "_title": "Elevator Better Encoder",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "15,17": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Elevator Motor Temp",
+              "_title": "Elevator Motor Temp",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -2978,9 +3112,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 830.4000244140625
+    "x": 0.0,
+    "y": 0.0,
+    "width": 1536.0,
+    "height": 912.0
   }
 }
