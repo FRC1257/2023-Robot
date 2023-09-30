@@ -15,18 +15,18 @@ import frc.robot.subsystems.PivotArm;
 import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
 
 
-public class ChuckCubeCommand extends SequentialCommandGroup {
+public class ChuckCubeKickCommand extends SequentialCommandGroup {
     // TODO Do this
-    public ChuckCubeCommand(Elevator elevator, PivotArm pivotArm, Claw claw) {
+    public ChuckCubeKickCommand(Elevator elevator, PivotArm pivotArm, Claw claw) {
         double beautifulTimeConstant= 0.2;
 
         // Use addRequirements() here to declare subsystem dependencies.
         addCommands(
             new HoldCommand(elevator, pivotArm),
-            new PivotArmPIDCommand(pivotArm, 95),
             new ParallelCommandGroup(
-                new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND),
-                new Delay(beautifulTimeConstant).andThen(new ClawOpenCommand(claw, 0.15))
+                new PivotArmPIDCommand(pivotArm, 95),
+                new Delay(0.5).andThen(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND)),
+                new Delay(0.5 + beautifulTimeConstant).andThen(new ClawOpenCommand(claw, 0.15))
             )
         );
 
