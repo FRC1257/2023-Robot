@@ -1,5 +1,6 @@
 package frc.robot.commands.Compound_Commands;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Delay;
@@ -18,7 +19,7 @@ public class ChuckCubeCommand extends SequentialCommandGroup {
         // Use addRequirements() here to declare subsystem dependencies.
         addCommands(
             new HoldCommand(elevator, pivotArm),
-            new ParallelDeadlineGroup(
+            new ParallelCommandGroup(
                 new Delay(beautifulTimeConstant).andThen(new ClawOpenCommand(claw, 0.15)), 
                 new MidCubeSetpointCommand(elevator, pivotArm)
             )
