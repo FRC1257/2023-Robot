@@ -406,7 +406,7 @@ public class GenerateTrajectories {
     }
 
     public Pose2d driveOutPose(Pose2d pose) {
-        double SHIFT_X = -Units.feetToMeters(10);
+        double SHIFT_X = -Units.feetToMeters(10.5);
         if (blue) {
             SHIFT_X *= -1;
         }
@@ -452,7 +452,7 @@ public class GenerateTrajectories {
 
     private void addOverChargeTrajectory() {
         ToPosCommand step3 = new ToPosCommand(drivetrain,
-                List.of(currentPose, getHitAndRunPose2d()), true);
+                List.of(currentPose, getHitAndRunPose2d()), true, 1);
         currentPose = getHitAndRunPose2d();
         addToPosCommand(step3);
 

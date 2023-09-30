@@ -57,7 +57,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/Goto Charge",
+              "_source0": "network_table:///SmartDashboard/Goto Charge",
               "_title": "Goto Charge",
               "_glyph": 148,
               "_showGlyph": false
@@ -469,7 +469,7 @@
             ],
             "content": {
               "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Auto/View Trajectory Pos",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
               "_title": "View Trajectory Pos",
               "_glyph": 148,
               "_showGlyph": false,
@@ -566,7 +566,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
               "_title": "1st Auto Score",
               "_glyph": 148,
               "_showGlyph": false,
@@ -639,7 +639,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Auto/Reset Auto Viewer",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
               "_title": "Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2376,7 +2376,7 @@
             ],
             "content": {
               "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Auto/Close to Cycle",
+              "_source0": "network_table:///SmartDashboard/Close to Cycle",
               "_title": "Auto Close to Cycle",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2491,7 +2491,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/Goto Charge",
+              "_source0": "network_table:///SmartDashboard/Goto Charge",
               "_title": "Auto Charge",
               "_glyph": 148,
               "_showGlyph": false
@@ -2530,7 +2530,7 @@
             ],
             "content": {
               "_type": "Number Slider",
-              "_source0": "network_table:///SmartDashboard/Auto/View Trajectory Pos",
+              "_source0": "network_table:///SmartDashboard/View Trajectory Pos",
               "_title": "Change View of Trajectory",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2547,7 +2547,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/Update Visual",
+              "_source0": "network_table:///SmartDashboard/Update Visual",
               "_title": "Update Visual",
               "_glyph": 148,
               "_showGlyph": false
@@ -2560,7 +2560,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
               "_title": "Auto Score",
               "_glyph": 148,
               "_showGlyph": false
@@ -2586,7 +2586,7 @@
             ],
             "content": {
               "_type": "Simple Dial",
-              "_source0": "network_table:///SmartDashboard/Auto/Trajectory Time",
+              "_source0": "network_table:///SmartDashboard/Trajectory Time",
               "_title": "Drive Time",
               "_glyph": 148,
               "_showGlyph": false,
@@ -2602,7 +2602,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/Reset Auto Viewer",
+              "_source0": "network_table:///SmartDashboard/Reset Auto Viewer",
               "_title": "Reset Auto Viewer",
               "_glyph": 148,
               "_showGlyph": false
@@ -2615,7 +2615,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/Close to Cycle",
+              "_source0": "network_table:///SmartDashboard/Close to Cycle",
               "_title": "Auto Close to Cycle",
               "_glyph": 148,
               "_showGlyph": false
@@ -2641,7 +2641,7 @@
             ],
             "content": {
               "_type": "Toggle Button",
-              "_source0": "network_table:///SmartDashboard/Auto/1st Auto Score",
+              "_source0": "network_table:///SmartDashboard/1st Auto Score",
               "_title": "1st Auto Score",
               "_glyph": 148,
               "_showGlyph": false

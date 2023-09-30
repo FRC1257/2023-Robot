@@ -156,26 +156,43 @@ public class RobotContainer {
      * Define {@link Button} -> command mappings.
      */
     private void configureButtonBindings() {
+        // Driver Hold A for arcade drive on left joystick
+        // Driver Hold Right Bumper for split sticks
+
+        // Operator Left and Right Triggers for Elevator
+        // Operator Left Joystick Y for Claw
+        // Operator Right Joystick Y for Pivot Arm
+
         // Drivetrain bindings        
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));
-        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));
-        driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
+        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
+        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
+        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));           // drive X reset 
+        // driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
+
+        // New Driver Turn Commands
+        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));             // drive DPad up 180
+        driveController.getDPad(DPad.DOWN).onTrue(new TurnAngleCommand(drivetrain, 180));          // drive DPad down 180
+        driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, 90));       // drive DPad left 90
+        driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, -90));   // drive DPad right 90
 
         // compound commands
-        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));
-        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));
+        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
+        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
 
-        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));
-        operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));
+        // Score Compound Commands
+        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));   // operator A score cone
+        operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));   // operator B score cube
 
-        operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));
-        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));
+        // Bring to hold position
+        operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
+        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));   // operator DPad up retract elevator
 
-        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));
+        // Reset PID
+        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));  // operator X reset PID
 
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 2));
-        operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 2));
+        // Open Close Claw
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 2));    // operator left bumper open claw
+        operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 2));  // operator right bumper close claw
     }
 
 
@@ -200,7 +217,7 @@ public class RobotContainer {
             pivotArm,
             claw,
             charge,
-            SmartDashboard.getBoolean("/Auto/Close to Cycle", false),
+            SmartDashboard.getBoolean("Close to Cycle", false),
             firstScore
         );
 
@@ -249,14 +266,14 @@ public class RobotContainer {
             subsystems.get(outputCounter / 3).tuningPeriodic();
         }
 
-        if (isSimulation && SmartDashboard.getBoolean("/Auto/Reset Auto Viewer", false)) {
+        if (isSimulation && SmartDashboard.getBoolean("Reset Auto Viewer", false)) {
             updateTraj = true;
-            SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
+            SmartDashboard.putBoolean("Reset Auto Viewer", false);
         }
 
         if (updateTraj) { // change the trajectory drawn
             // generateTrajedies.incrementOutputCounter();
-            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("/Auto/View Trajectory Pos", 0));
+            Trajectory traj = generateTrajectories.getTrajectory((int)SmartDashboard.getNumber("View Trajectory Pos", 0));
             if (traj != null)
                 drivetrain.drawTrajectory(traj); 
         }
@@ -265,7 +282,7 @@ public class RobotContainer {
             DriverStation.reportWarning("Updating Auto", false);
             getAutoCommand();
 
-            SmartDashboard.putNumber("/Auto/View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
+            SmartDashboard.putNumber("View Trajectory Pos", generateTrajectories.getLastTrajectoryIndex());
 
             resetDashboard();
         }
@@ -280,13 +297,13 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         SmartDashboard.putBoolean("Testing", false);
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
-        SmartDashboard.putBoolean("/Auto/Close to Cycle", false);
-        SmartDashboard.putNumber("/Auto/View Trajectory Pos", 0);
-        SmartDashboard.putBoolean("/Auto/Update Visual", false);
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Goto Charge", charge);
+        SmartDashboard.putBoolean("Close to Cycle", false);
+        SmartDashboard.putNumber("View Trajectory Pos", 0);
+        SmartDashboard.putBoolean("Update Visual", false);
     
-        SmartDashboard.putBoolean("/Auto/Reset Auto Viewer", false);
+        SmartDashboard.putBoolean("Reset Auto Viewer", false);
         
     }
     
@@ -324,18 +341,18 @@ public class RobotContainer {
     }
     
     public boolean checkIfUpdate() {
-        return firstScore != SmartDashboard.getBoolean("/Auto/1st Auto Score", true)
-            || charge != SmartDashboard.getBoolean("/Auto/Goto Charge", false) 
-            || SmartDashboard.getBoolean("/Auto/Update Visual", false);
+        return firstScore != SmartDashboard.getBoolean("1st Auto Score", true)
+            || charge != SmartDashboard.getBoolean("Goto Charge", false) 
+            || SmartDashboard.getBoolean("Update Visual", false);
     }
 
     public void updateAutoChoosers() {
-        firstScore = SmartDashboard.getBoolean("/Auto/1st Auto Score", firstScore);
-        charge = SmartDashboard.getBoolean("/Auto/Goto Charge", charge);
+        firstScore = SmartDashboard.getBoolean("1st Auto Score", firstScore);
+        charge = SmartDashboard.getBoolean("Goto Charge", charge);
     }
 
     public void putTrajectoryTime() {
-        SmartDashboard.putNumber("/Auto/Trajectory Time", generateTrajectories.getTrajectoryTime());
+        SmartDashboard.putNumber("Trajectory Time", generateTrajectories.getTrajectoryTime());
     }
 
     public void resetDashboard() {
@@ -343,10 +360,10 @@ public class RobotContainer {
         SmartDashboard.putBoolean("isAllianceBlue", getAllianceColor());
         
         //getting the auto values for score, cargo, and charge
-        SmartDashboard.putBoolean("/Auto/1st Auto Score", firstScore);
-        SmartDashboard.putBoolean("/Auto/Goto Charge", charge);
-        SmartDashboard.putNumber("/Auto/View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
-        SmartDashboard.putBoolean("/Auto/Update Visual", false);
+        SmartDashboard.putBoolean("1st Auto Score", firstScore);
+        SmartDashboard.putBoolean("Goto Charge", charge);
+        SmartDashboard.putNumber("View Trajectory Pos", (int)SmartDashboard.getNumber("View Trajectory Pos", 0));
+        SmartDashboard.putBoolean("Update Visual", false);
     }
 
 }

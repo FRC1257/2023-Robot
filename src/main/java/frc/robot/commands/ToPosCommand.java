@@ -29,6 +29,15 @@ public class ToPosCommand extends CommandBase {
         addRequirements(drivetrain);
     }
 
+    public ToPosCommand(Drivetrain drivetrain, List<Pose2d> trajPoints, boolean reverse, double speed) { 
+        this.drivetrain = drivetrain;
+        
+        TrajectoryConfig config = new TrajectoryConfig(maxVel.get(), maxAccel.get()).setReversed(reverse).setStartVelocity(speed);
+        this.trajectory = TrajectoryGenerator.generateTrajectory(trajPoints, config);
+
+        addRequirements(drivetrain);
+    }
+
     @Override
     public void initialize() {
         drivetrain.driveTrajectory(trajectory);
