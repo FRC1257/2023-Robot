@@ -35,7 +35,7 @@ public class Claw extends SnailSubsystem {
     
     private ClawState clawState;
     private ClawMoveState clawMoveState;
-    private TunableNumber deez = new TunableNumber("Claw", "Claw Motor Close Speed", 0);
+    private TunableNumber deez = new TunableNumber( "Claw Motor Close Speed", 0.15);
     
     public Claw() {
         clawMotor = new CANSparkMax(ElectricalLayout.CLAW_MOTOR_LEFT_ID, MotorType.kBrushless);
@@ -81,10 +81,10 @@ public class Claw extends SnailSubsystem {
 
         switch (clawMoveState) {
             case OPENING:
-                addSpeed = -0.01;
+                addSpeed = deez.get();
                 break;
             case CLOSING:
-                addSpeed = deez.get();
+                addSpeed = -0.01;
                 break;
         } 
     }

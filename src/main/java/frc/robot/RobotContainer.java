@@ -192,7 +192,7 @@ public class RobotContainer {
         operatorController.getButton(Button.kY.value).onTrue(new ChuckCubeKickCommand(elevator, pivotArm, claw));  // operator Y reset PID
 
         // Open Close Claw
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 0.25));    // operator left bumper open claw
+        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
         operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 0.5));  // operator right bumper close claw
     }
 
