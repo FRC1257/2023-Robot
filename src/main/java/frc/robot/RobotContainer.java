@@ -189,6 +189,7 @@ public class RobotContainer {
 
         // Reset PID
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));  // operator X reset PID
+        operatorController.getButton(Button.kY.value).onTrue(new ChuckCubeCommand(elevator, pivotArm, claw));  // operator Y reset PID
 
         // Open Close Claw
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 2));    // operator left bumper open claw
