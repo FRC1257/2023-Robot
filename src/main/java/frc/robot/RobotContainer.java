@@ -10,6 +10,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.*;
@@ -168,6 +170,11 @@ public class RobotContainer {
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));           // drive X reset 
+        driveController.getButton(Button.kA.value).onTrue(new StartEndCommand(
+            () -> drivetrain.setStopCoast(), 
+            () -> drivetrain.setNormalBrake()
+        ));            // drive coast mode button
+
         // driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
 
         // New Driver Turn Commands
@@ -199,6 +206,12 @@ public class RobotContainer {
         // Rumble effect at 40 and 30 seconds
         new Trigger(() -> (getMatchTimeLeft() == 40)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
         new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
+
+        // set drivetrain to brake mode
+        new Trigger(() -> (getMatchTimeLeft() == 0))
+            .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()))
+            .onFalse(new InstantCommand(() -> drivetrain.setNormalBrake()));
+
 
         operatorController.getButton(Button.kA.value).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
     }
