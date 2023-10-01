@@ -170,7 +170,7 @@ public class RobotContainer {
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));           // drive X reset 
-        driveController.getButton(Button.kA.value).onTrue(new StartEndCommand(
+        driveController.getButton(Button.kA.value).whileTrue(new StartEndCommand(
             () -> drivetrain.setStopCoast(), 
             () -> drivetrain.setNormalBrake()
         ));            // drive coast mode button
@@ -208,11 +208,8 @@ public class RobotContainer {
         new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
 
         // set drivetrain to brake mode
-        new Trigger(() -> (getMatchTimeLeft() == 0))
-            .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()))
-            .onFalse(new InstantCommand(() -> drivetrain.setNormalBrake()));
-
-
+        new Trigger(() -> (getMatchTimeLeft()) == 0 && DriverStation.isTeleopEnabled())
+            .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()));
         operatorController.getButton(Button.kA.value).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
     }
 
