@@ -42,6 +42,9 @@ import static frc.robot.Constants.ElectricalLayout.CONTROLLER_DRIVER_ID;
 import static frc.robot.Constants.ElectricalLayout.CONTROLLER_OPERATOR_ID;
 import static frc.robot.Constants.UPDATE_PERIOD;
 
+import static frc.robot.Constants.ElevatorConstants.ELEVATOR_SETPOINT_EXTEND;
+import frc.robot.commands.elevator.ElevatorPIDCommand;
+
 
 
 /**
@@ -170,7 +173,7 @@ public class RobotContainer {
         driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
         driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
         driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));           // drive X reset 
-        driveController.getButton(Button.kA.value).whileTrue(new StartEndCommand(
+        driveController.getButton(Button.kB.value).whileTrue(new StartEndCommand(
             () -> drivetrain.setStopCoast(), 
             () -> drivetrain.setNormalBrake()
         ));            // drive coast mode button
@@ -193,8 +196,9 @@ public class RobotContainer {
 
         // Bring to hold position
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
-        operatorController.getDPad(DPad.UP).onTrue(new PickupCommand(elevator, pivotArm));   // operator DPad up retract elevator
-
+        //operatorController.getDPad(DPad.UP).onTrue(new PickupCommand(elevator, pivotArm));   // operator DPad up retract elevator
+        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND));
+        
         // Reset PID
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));  // operator X reset PID
         operatorController.getButton(Button.kY.value).onTrue(new ChuckCubeKickCommand(elevator, pivotArm, claw));  // operator Y reset PID
@@ -208,13 +212,16 @@ public class RobotContainer {
         new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
 
         // set drivetrain to brake mode
-        new Trigger(() -> (getMatchTimeLeft()) == 0 && DriverStation.isTeleopEnabled())
+        new Trigger(() -> (getMatchTimeLeftDouble()) <= 0.2 && DriverStation.isTeleopEnabled())
             .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()));
-        operatorController.getButton(Button.kA.value).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
     }
 
     public int getMatchTimeLeft() {
         return (int) DriverStation.getMatchTime();
+    }
+
+    public double getMatchTimeLeftDouble() {
+        return DriverStation.getMatchTime();
     }
 
 
