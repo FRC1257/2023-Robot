@@ -212,7 +212,7 @@ public class RobotContainer {
         new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
 
         // set drivetrain to brake mode
-        new Trigger(() -> (getMatchTimeLeftDouble()) <= 0.2 && DriverStation.isTeleopEnabled())
+        new Trigger(() -> (getMatchTimeLeftDouble()) <= 0.2 && DriverStation.isTeleopEnabled() && DriverStation.isFMSAttached())
             .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()));
     }
 

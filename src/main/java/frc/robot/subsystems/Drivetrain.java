@@ -168,6 +168,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     public void setNormalBrake() {
+        SmartDashboard.putNumber("Drive Coast Thing", 1);
         frontLeftMotor.setIdleMode(IdleMode.kBrake);
         frontRightMotor.setIdleMode(IdleMode.kBrake);
         backLeftMotor.setIdleMode(IdleMode.kCoast);
@@ -175,6 +176,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     public void setStopBrake() {
+        SmartDashboard.putNumber("Drive Coast Thing", 0);
         frontLeftMotor.setIdleMode(IdleMode.kBrake);
         frontRightMotor.setIdleMode(IdleMode.kBrake);
         backLeftMotor.setIdleMode(IdleMode.kBrake);
@@ -182,6 +184,7 @@ public class Drivetrain extends SnailSubsystem {
     }
 
     public void setStopCoast() {
+        SmartDashboard.putNumber("Drive Coast Thing", 2);
         frontLeftMotor.setIdleMode(IdleMode.kCoast);
         frontRightMotor.setIdleMode(IdleMode.kCoast);
         backLeftMotor.setIdleMode(IdleMode.kCoast);
