@@ -178,7 +178,7 @@ public class RobotContainer {
 
         // compound commands
         operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
-        operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
+        operatorController.getDPad(DPad.RIGHT).onTrue(new PickupSlideCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
 
         // Score Compound Commands
         // operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));   // operator A score cone
@@ -186,7 +186,7 @@ public class RobotContainer {
 
         // Bring to hold position
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
-        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -Constants.ElevatorConstants.ELEVATOR_SETPOINT_RETRACT));   // operator DPad up retract elevator
+        operatorController.getDPad(DPad.UP).onTrue(new PickupCommand(elevator, pivotArm));   // operator DPad up retract elevator
 
         // Reset PID
         operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));  // operator X reset PID
