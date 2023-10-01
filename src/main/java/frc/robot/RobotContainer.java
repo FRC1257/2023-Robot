@@ -10,6 +10,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.*;
 
@@ -180,8 +181,8 @@ public class RobotContainer {
         operatorController.getDPad(DPad.RIGHT).onTrue(new MidCubeSetpointCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
 
         // Score Compound Commands
-        operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));   // operator A score cone
-        operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));   // operator B score cube
+        // operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));   // operator A score cone
+        // operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));   // operator B score cube
 
         // Bring to hold position
         operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
@@ -194,6 +195,16 @@ public class RobotContainer {
         // Open Close Claw
         operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
         operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 0.5));  // operator right bumper close claw
+
+        // Rumble effect at 40 and 30 seconds
+        new Trigger(() -> (getMatchTimeLeft() == 40)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
+        new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
+
+        operatorController.getButton(Button.kA.value).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
+    }
+
+    public int getMatchTimeLeft() {
+        return (int) DriverStation.getMatchTime();
     }
 
 
