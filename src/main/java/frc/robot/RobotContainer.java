@@ -17,7 +17,7 @@ import frc.robot.commands.claw.*;
 import frc.robot.commands.drivetrain.*;
 
 
-import frc.robot.commands.elevator.ElevatorManualCommand;
+import frc.robot.commands.elevator.ElevatorManualPIDCommand;
 import frc.robot.commands.elevator.ElevatorPIDCommand;
 
 import frc.robot.commands.pivotArm.*;
@@ -31,8 +31,9 @@ import frc.robot.commands.Compound_Commands.*;
 import frc.robot.commands.Compound_Commands.ScoreConeCommand;
 import frc.robot.commands.Compound_Commands.ScoreCubeCommand;
 import frc.robot.subsystems.SnailSubsystem;
+import frc.robot.util.CoolController;
 import frc.robot.util.Gyro;
-
+import frc.robot.util.OtherCoolController;
 import frc.robot.util.SnailController;
 import frc.robot.util.SnailController.DPad;
 
@@ -55,8 +56,8 @@ import frc.robot.commands.elevator.ElevatorPIDCommand;
  */
 public class RobotContainer {
 
-    private SnailController driveController;
-    private SnailController operatorController;
+    private CoolController driveController;
+    private OtherCoolController operatorController;
     
     private ArrayList<SnailSubsystem> subsystems;
     
@@ -89,8 +90,8 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        driveController = new SnailController(CONTROLLER_DRIVER_ID);
-        operatorController = new SnailController(CONTROLLER_OPERATOR_ID);
+        driveController = new CoolController(CONTROLLER_DRIVER_ID);
+        operatorController = new OtherCoolController(CONTROLLER_OPERATOR_ID);
 
         configureAutoChoosers();
         configureShuffleboard();
@@ -127,19 +128,17 @@ public class RobotContainer {
         
         vision = new Vision();
         drivetrain = new Drivetrain(getStartingPos(), vision);
-        drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn,
-             driveController.getButton(Button.kLeftBumper.value)::getAsBoolean, false));
+        drivetrain.setDefaultCommand(new VelocityDriveCommand(drivetrain, driveController::getDriveForward, driveController::getDriveTurn, false));
 
         claw = new Claw();
-        claw.setDefaultCommand(new ClawManualCommand(claw, operatorController::getLeftY));
         
         // Vision
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ElevatorManualCommand(elevator, operatorController::getElevatorSpeed));
+        elevator.setDefaultCommand(new ElevatorManualPIDCommand(elevator, operatorController::getElevatorPosition));
 
         // Pivot Arm
         pivotArm = new PivotArm();
-        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getRightY));
+        pivotArm.setDefaultCommand(new PivotArmManualCommand(pivotArm, operatorController::getPivotPosition));
         
         subsystems = new ArrayList<SnailSubsystem>();
         // add each of the subsystems to the arraylist here
@@ -170,50 +169,30 @@ public class RobotContainer {
         // Operator Right Joystick Y for Pivot Arm
 
         // Drivetrain bindings        
-        driveController.getButton(Button.kY.value).onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
-        driveController.getButton(Button.kStart.value).onTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
-        driveController.getButton(Button.kX.value).onTrue(new ResetDriveCommand(drivetrain));           // drive X reset 
-        driveController.getButton(Button.kB.value).whileTrue(new StartEndCommand(
-            () -> drivetrain.setStopCoast(), 
-            () -> drivetrain.setNormalBrake()
-        ));            // drive coast mode button
+        driveController.getBlackTrigger().onTrue(new ToggleReverseCommand(drivetrain));        // drive Y reverse
+        driveController.getTrigger().whileTrue(new ToggleSlowModeCommand(drivetrain));   // drive start slow mode
+        driveController.getAButton().onTrue(new ResetDriveCommand(drivetrain).andThen(new ResetPIDCommand(elevator, pivotArm)));           // drive X reset 
 
         // driveController.getButton(Button.kB.value).onTrue(new ToSingleSubstation(drivetrain, SmartDashboard.getBoolean("isAllianceBlue", false)));
 
         // New Driver Turn Commands
-        driveController.getDPad(DPad.UP).onTrue(new TurnAngleCommand(drivetrain, 180));             // drive DPad up 180
-        driveController.getDPad(DPad.DOWN).onTrue(new TurnAngleCommand(drivetrain, 180));          // drive DPad down 180
-        driveController.getDPad(DPad.LEFT).onTrue(new TurnAngleCommand(drivetrain, 90));       // drive DPad left 90
-        driveController.getDPad(DPad.RIGHT).onTrue(new TurnAngleCommand(drivetrain, -90));   // drive DPad right 90
 
         // compound commands
-        operatorController.getDPad(DPad.LEFT).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
-        operatorController.getDPad(DPad.RIGHT).onTrue(new PickupSlideCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
-
-        // Score Compound Commands
-        // operatorController.getButton(Button.kA.value).onTrue(new ScoreConeCommand(elevator, pivotArm, claw));   // operator A score cone
-        // operatorController.getButton(Button.kB.value).onTrue(new ScoreCubeCommand(elevator, pivotArm, claw));   // operator B score cube
+        operatorController.getButton(OtherCoolController.Buttons.UP_TWO.getValue()).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
+        operatorController.getButton(OtherCoolController.Buttons.UP_ONE.getValue()).onTrue(new PickupSlideCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
 
         // Bring to hold position
-        operatorController.getDPad(DPad.DOWN).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
+        operatorController.getButton(OtherCoolController.Buttons.DOWN_ONE.getValue()).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
         //operatorController.getDPad(DPad.UP).onTrue(new PickupCommand(elevator, pivotArm));   // operator DPad up retract elevator
-        operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND));
+        // operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND));
         
         // Reset PID
-        operatorController.getButton(Button.kX.value).onTrue(new ResetPIDCommand(elevator, pivotArm));  // operator X reset PID
-        operatorController.getButton(Button.kY.value).onTrue(new ChuckCubeKickCommand(elevator, pivotArm, claw));  // operator Y reset PID
+        operatorController.getButton(OtherCoolController.Buttons.DOWN_TWO.getValue()).onTrue(new ChuckCubeKickCommand(elevator, pivotArm, claw));  // operator Y reset PID
 
         // Open Close Claw
-        operatorController.getButton(Button.kLeftBumper.value).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
-        operatorController.getButton(Button.kRightBumper.value).onTrue(new ClawCloseCommand(claw, 0.5));  // operator right bumper close claw
+        operatorController.getButton(OtherCoolController.Buttons.UP_THREE.getValue()).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
+        operatorController.getButton(OtherCoolController.Buttons.DOWN_THREE.getValue()).onTrue(new ClawCloseCommand(claw, 0.5));  // operator right bumper close claw
 
-        // Rumble effect at 40 and 30 seconds
-        new Trigger(() -> (getMatchTimeLeft() == 40)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
-        new Trigger(() -> (getMatchTimeLeft() == 30)).onTrue(driveController.rumbleCommand().alongWith(operatorController.rumbleCommand()));
-
-        // set drivetrain to brake mode
-        new Trigger(() -> (getMatchTimeLeftDouble()) <= 0.2 && DriverStation.isTeleopEnabled() && DriverStation.isFMSAttached())
-            .onTrue(new InstantCommand(() -> drivetrain.setStopBrake()));
     }
 
     public int getMatchTimeLeft() {

@@ -22,7 +22,7 @@ public class PivotArmManualCommand extends CommandBase {
 
     @Override
     public void execute() {
-        pivotArm.manualControl(speedSupplier.getAsDouble());
+        pivotArm.manual_PIDControl(speedSupplier.getAsDouble());
     }
 
     @Override

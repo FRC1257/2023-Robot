@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.OtherCoolController;
 import frc.robot.util.TunableNumber;
 
 import static frc.robot.Constants.PivotArm.*;
@@ -24,8 +25,8 @@ public class PivotArm extends SnailSubsystem {
     private CANSparkMax armMotor;
     private RelativeEncoder armEncoder;
     private DutyCycleEncoder absoluteEncoder;
-    private State state = State.MANUAL;
-    private double speed;
+    private State state = State.MANUAL_PID;
+    private double position;
     private SparkMaxPIDController armPIDController;
     private double setPoint;
 
@@ -38,7 +39,7 @@ public class PivotArm extends SnailSubsystem {
     private Timer temp_timer = new Timer();
 
     public enum State {
-        MANUAL,
+        MANUAL_PID,
         PID
     }
 
@@ -84,13 +85,8 @@ public class PivotArm extends SnailSubsystem {
         }
         
         switch (state) {
-            case MANUAL:
-                if ((armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP && speed > 0.0) 
-                    || (armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM && speed < 0.0)) {
-                    armMotor.set(0);
-                    return;
-                }
-                armMotor.set(speed);
+            case MANUAL_PID:
+                armPIDController.setReference(position, ControlType.kPosition);
                 break;
             case PID:
                 // send the desired setpoint to the PID controller and specify we want to use position control
@@ -112,16 +108,16 @@ public class PivotArm extends SnailSubsystem {
 
     // End PID
     public void endPID() {
-        state = State.MANUAL;
+        state = State.MANUAL_PID;
     }
     
 
     @Override
     public void displayShuffleboard() {
-        SmartDashboard.putBoolean("PivotArm Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& speed < 0.0*/);
-        SmartDashboard.putBoolean("PivotArm Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& speed > 0.0*/);
+        SmartDashboard.putBoolean("PivotArm Pivot Arm Bottom", armEncoder.getPosition() <= PIVOT_ARM_SETPOINT_BOTTOM /*&& position < 0.0*/);
+        SmartDashboard.putBoolean("PivotArm Pivot Arm Extend", armEncoder.getPosition() >= PIVOT_ARM_SETPOINT_TOP /*&& position > 0.0*/);
 
-        SmartDashboard.putNumber("PivotArm Motor Speed", armMotor.get());
+        SmartDashboard.putNumber("PivotArm Motor position", armMotor.get());
         SmartDashboard.putNumber("PivotArm Encoder Position", armEncoder.getPosition());
         SmartDashboard.putNumber("PivotArm Better Encoder Position", absoluteEncoder.getAbsolutePosition());
         SmartDashboard.putNumber("PivotArm Setpoint", setPoint);
@@ -153,9 +149,9 @@ public class PivotArm extends SnailSubsystem {
         }
     }
 
-    public void manualControl(double newSpeed) {
-        speed = newSpeed;
-        state = State.MANUAL;
+    public void manual_PIDControl(double position) {
+        position = OtherCoolController.mapRange(position, -1, 1, PIVOT_ARM_SETPOINT_BOTTOM, PIVOT_ARM_SETPOINT_TOP);
+        state = State.MANUAL_PID;
     }
 
     public State getState() { return state; }

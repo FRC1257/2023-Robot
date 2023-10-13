@@ -25,7 +25,7 @@ public class PivotArmPIDCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        pivotArm.manualControl(0);
+        pivotArm.endPID();
     }
 
     @Override

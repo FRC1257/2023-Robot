@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.util.OtherCoolController;
 import frc.robot.util.TunableNumber;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.Constants.*;
@@ -19,7 +20,7 @@ public class Elevator extends SnailSubsystem{
     private CANSparkMax elevatorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
-    private double speed;
+    private double position;
     private double setpoint;
     private boolean isPIDFinished;
 
@@ -32,11 +33,11 @@ public class Elevator extends SnailSubsystem{
     private Timer temp_timer = new Timer();
 
     public enum State {
-        MANUAL,
+        MANUAL_PID,
         PID;
     }
 
-    private State elevatorState = State.MANUAL; 
+    private State elevatorState = State.MANUAL_PID; 
 
     public Elevator() {
         elevatorMotor = new CANSparkMax(ELEVATOR_MOTOR_ID, MotorType.kBrushless);
@@ -67,8 +68,8 @@ public class Elevator extends SnailSubsystem{
     @Override
     public void update() {
         // negative speed moves it up
-        if ((encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND && speed < 0.0) 
-            || (encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT && speed > 0.0)) {
+        if ((encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND && position <= -ELEVATOR_SETPOINT_EXTEND) 
+            || (encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT && position >= -ELEVATOR_SETPOINT_RETRACT)) {
             elevatorMotor.set(0);
             return;
         }
@@ -87,8 +88,8 @@ public class Elevator extends SnailSubsystem{
         }
 
         switch(elevatorState) {
-            case MANUAL:
-                elevatorMotor.set(speed);
+            case MANUAL_PID:
+                pidController.setReference(position, CANSparkMax.ControlType.kPosition);
                 break;
             case PID:
                 pidController.setReference(setpoint, CANSparkMax.ControlType.kPosition);
@@ -100,12 +101,13 @@ public class Elevator extends SnailSubsystem{
     }
 
     public void endPID() {
-        elevatorState = State.MANUAL;
+        elevatorState = State.MANUAL_PID;
     }
 
-    public void manual(double speed){
-        this.speed = speed;
-        elevatorState = State.MANUAL;
+    public void manual_PID(double position){
+        // convert the double position to range between the true range of the elevator
+        this.position = OtherCoolController.mapRange(position, -1, 1, -ELEVATOR_SETPOINT_RETRACT, -ELEVATOR_SETPOINT_EXTEND);
+        elevatorState = State.MANUAL_PID;
     }
 
     public void setPosition(double setpoint) {
