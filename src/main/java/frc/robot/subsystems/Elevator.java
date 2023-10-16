@@ -68,11 +68,11 @@ public class Elevator extends SnailSubsystem{
     @Override
     public void update() {
         // negative speed moves it up
-        if ((encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND && position <= -ELEVATOR_SETPOINT_EXTEND) 
+        /* if ((encoder.getPosition() <= -ELEVATOR_SETPOINT_EXTEND && position <= -ELEVATOR_SETPOINT_EXTEND) 
             || (encoder.getPosition() >= -ELEVATOR_SETPOINT_RETRACT && position >= -ELEVATOR_SETPOINT_RETRACT)) {
             elevatorMotor.set(0);
             return;
-        }
+        } */
 
         if (elevatorMotor.getMotorTemperature() > HIGH_TEMP) {
             if (temp_timer.get() == 0.0) {

@@ -178,11 +178,11 @@ public class RobotContainer {
         // New Driver Turn Commands
 
         // compound commands
-        operatorController.getButton(OtherCoolController.Buttons.UP_TWO.getValue()).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
-        operatorController.getButton(OtherCoolController.Buttons.UP_ONE.getValue()).onTrue(new PickupSlideCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
+        // operatorController.getButton(OtherCoolController.Buttons.UP_TWO.getValue()).onTrue(new MidConeSetpointCommand(elevator, pivotArm));   // operator DPad left Cone Setpoint
+        // operatorController.getButton(OtherCoolController.Buttons.UP_ONE.getValue()).onTrue(new PickupSlideCommand(elevator, pivotArm));  // operator DPad right Cube Setpoint
 
         // Bring to hold position
-        operatorController.getButton(OtherCoolController.Buttons.DOWN_ONE.getValue()).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
+        // operatorController.getButton(OtherCoolController.Buttons.DOWN_ONE.getValue()).onTrue(new HoldCommand(elevator, pivotArm));                 // operator DPad down hold setpoint
         //operatorController.getDPad(DPad.UP).onTrue(new PickupCommand(elevator, pivotArm));   // operator DPad up retract elevator
         // operatorController.getDPad(DPad.UP).onTrue(new ElevatorPIDCommand(elevator, -ELEVATOR_SETPOINT_EXTEND));
         
@@ -190,7 +190,7 @@ public class RobotContainer {
         operatorController.getButton(OtherCoolController.Buttons.DOWN_TWO.getValue()).onTrue(new ChuckCubeKickCommand(elevator, pivotArm, claw));  // operator Y reset PID
 
         // Open Close Claw
-        operatorController.getButton(OtherCoolController.Buttons.UP_THREE.getValue()).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
+        operatorController.getButton(OtherCoolController.Buttons.DOWN_THREE.getValue() + 1).onTrue(new ClawOpenCommand(claw, 0.20));    // operator left bumper open claw
         operatorController.getButton(OtherCoolController.Buttons.DOWN_THREE.getValue()).onTrue(new ClawCloseCommand(claw, 0.5));  // operator right bumper close claw
 
     }
